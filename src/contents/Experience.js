@@ -14,7 +14,7 @@ class Experience extends Component {
                     <a href="http://venturesolutionsltd.com" target="_blank">
                       <img
                         alt="WeSpire logo"
-                        src="company.png"
+                        src="../img/company.png"
                         class="responsive-img center-block"
                       />
                     </a>
@@ -87,7 +87,7 @@ class Experience extends Component {
                     <a href="http://http://tryonyx.com" target="_blank">
                       <img
                         alt="WeSpire logo"
-                        src="company.png"
+                        src="../src/company.png"
                         class="responsive-img center-block"
                       />
                     </a>

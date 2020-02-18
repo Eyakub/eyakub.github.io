@@ -56,7 +56,7 @@ class Navbar extends Component {
             <li class="bold">
               <a
                 aria-label="Navigate to the About section"
-                href="#about"
+                href="/about"
                 class="waves-effect waves-dark teal-text"
               >
                 <i class="mdi-social-person small"></i>
@@ -66,7 +66,7 @@ class Navbar extends Component {
             <li class="bold">
               <a
                 aria-label="Navigate to the Experience section"
-                href="#experience"
+                href="/experience"
                 class="waves-effect waves-dark cyan-text"
               >
                 <i class="mdi-action-trending-up small"></i>
@@ -76,7 +76,7 @@ class Navbar extends Component {
             <li class="bold">
               <a
                 aria-label="Navigate to the Projects section"
-                href="#projects"
+                href="/projects"
                 class="waves-effect waves-dark indigo-text"
               >
                 <i class="mdi-av-web small"></i>
@@ -86,7 +86,7 @@ class Navbar extends Component {
             <li class="bold">
               <a
                 aria-label="Navigate to the Skills section"
-                href="#skills"
+                href="/skills"
                 class="waves-effect waves-dark purple-text"
               >
                 <i class="mdi-av-equalizer small"></i>
@@ -96,7 +96,7 @@ class Navbar extends Component {
             <li class="bold">
               <a
                 aria-label="Navigate to the Certification section"
-                href="#certification"
+                href="/certification"
                 class="waves-effect waves-dark red-text"
               >
                 <i class="mdi-action-grade small"></i>
@@ -106,7 +106,7 @@ class Navbar extends Component {
             <li class="bold">
               <a
                 aria-label="Navigate to the Education section"
-                href="#education"
+                href="/education"
                 class="waves-effect waves-dark orange-text"
               >
                 <i class="mdi-social-school small"></i>
@@ -116,7 +116,7 @@ class Navbar extends Component {
             <li class="bold">
               <a
                 aria-label="Navigate to the Education section"
-                href="#activities"
+                href="/activities"
                 class="waves-effect waves-dark purple-text"
               >
                 <i class="mdi-av-equalizer small"></i>
@@ -127,7 +127,7 @@ class Navbar extends Component {
             <li class="bold">
               <a
                 aria-label="Navigate to the Contact section"
-                href="#contact"
+                href="/contact"
                 class="waves-effect waves-dark brown-text"
               >
                 <i class="mdi-content-mail small"></i>
@@ -137,7 +137,7 @@ class Navbar extends Component {
             <li class="bold">
               <a
                 aria-label="Navigate to the Blog section"
-                href="#blog"
+                href="/blog"
                 class="waves-effect waves-dark yellow-text text-darken-2"
               >
                 <i class="mdi-content-create small"></i>

@@ -4,23 +4,23 @@ class Projects extends Component {
   render() {
     return (
       <main>
-       <section id="projects" class="section scrollspy">
-        <h3 class="page-title white-text teal">Projects</h3>
-        <div class="container">
-          <div class="row">
+       <section id="projects" className="section scrollspy">
+        <h3 className="page-title white-text teal">Projects</h3>
+        <div className="container">
+          <div className="row">
             {/* <!-- Moiur --> */}
-            <div class="col s12 m6 l4">
-              <div class="card medium">
-                <div class="card-image waves-effect waves-block waves-light">
+            <div className="col s12 m6 l4">
+              <div className="card medium">
+                <div className="card-image waves-effect waves-block waves-light">
                   <img
                     alt="Screenshot of MOIUR web app"
-                    src="moiur.png"
-                    class="activator"
+                    src={window.location.origin + '/src/img/moiur.png'}
+                    className="activator"
                   />
                 </div>
-                <div class="card-content">
-                  <span class="card-title activator teal-text hoverline"
-                    >Moiur<i class="mdi-navigation-more-vert right"></i
+                <div className="card-content">
+                  <span className="card-title activator teal-text hoverline"
+                    >Moiur<i className="mdi-navigation-more-vert right"></i
                   ></span>
                   <p>
                     A service based web application that can help you to book your venue, party center, catering
@@ -29,7 +29,7 @@ class Projects extends Component {
                 </div>
                 <div class="card-reveal">
                   <span class="card-title brown-text"
-                    >Accomplishments<i class="mdi-navigation-close right"></i
+                    >Accomplishments<i className="mdi-navigation-close right"></i
                   ></span>
                   <ul>
                     <li><strong>Python (Django)</strong> backend</li>
@@ -42,42 +42,42 @@ class Projects extends Component {
                       target="_blank"
                       data-position="top"
                       data-tooltip="View Online"
-                      class="btn-floating btn-large waves-effect waves-light brown tooltipped"
-                      ><i class="fa fa-external-link"></i></a
+                      className="btn-floating btn-large waves-effect waves-light brown tooltipped"
+                      ><i className="fa fa-external-link"></i></a
                     ><a
                       aria-label="Visit the GitHub repo for Moiur project"
                       href="#"
                       data-position="top"
                       data-tooltip="View Source"
-                      class="btn-floating btn-large waves-effect waves-light brown tooltipped"
-                      ><i class="fa fa-github"></i
+                      className="btn-floating btn-large waves-effect waves-light brown tooltipped"
+                      ><i className="fa fa-github"></i
                     ></a>
                   </div>
                 </div>
               </div>
             </div>
             {/* <!-- TourBookBD --> */}
-            <div class="col s12 m6 l4">
-              <div class="card medium">
-                <div class="card-image waves-effect waves-block waves-light">
+            <div className="col s12 m6 l4">
+              <div className="card medium">
+                <div className="card-image waves-effect waves-block waves-light">
                   <img
                     alt="Screenshot of TourBookBD web app"
                     src="tourbookbd.png"
-                    class="activator"
+                    className="activator"
                   />
                 </div>
-                <div class="card-content">
-                  <span class="card-title activator teal-text hoverline"
-                    >TourBookBD<i class="mdi-navigation-more-vert right"></i
+                <div className="card-content">
+                  <span className="card-title activator teal-text hoverline"
+                    >TourBookBD<i className="mdi-navigation-more-vert right"></i
                   ></span>
                   <p>
                     A service based web application that can help you to book your packages
                     for traveling, social platform for sharing status, photos.
                   </p>
                 </div>
-                <div class="card-reveal">
-                  <span class="card-title brown-text"
-                    >Accomplishments<i class="mdi-navigation-close right"></i
+                <div className="card-reveal">
+                  <span className="card-title brown-text"
+                    >Accomplishments<i className="mdi-navigation-close right"></i
                   ></span>
                   <ul>
                     <li><strong>PHP (Laravel)</strong> backend</li>
@@ -90,60 +90,60 @@ class Projects extends Component {
                       target="_blank"
                       data-position="top"
                       data-tooltip="View Online"
-                      class="btn-floating btn-large waves-effect waves-light brown tooltipped"
-                      ><i class="fa fa-external-link"></i></a
+                      className="btn-floating btn-large waves-effect waves-light brown tooltipped"
+                      ><i className="fa fa-external-link"></i></a
                     ><a
                       aria-label="Private Repo"
                       href="#"
                       data-position="top"
                       data-tooltip="View Source"
-                      class="btn-floating btn-large waves-effect waves-light brown tooltipped"
-                      ><i class="fa fa-github"></i
+                      className="btn-floating btn-large waves-effect waves-light brown tooltipped"
+                      ><i className="fa fa-github"></i
                     ></a>
                   </div>
                 </div>
               </div>
             </div>
             {/* <!-- Recipe App --> */}
-            <div class="col s12 m6 l4">
-              <div class="card medium">
-                <div class="card-image waves-effect waves-block waves-light">
+            <div className="col s12 m6 l4">
+              <div className="card medium">
+                <div className="card-image waves-effect waves-block waves-light">
                   <img
                     alt="Screenshot of RecipeApp web app"
                     src="recipeapp.png"
-                    class="activator"
+                    className="activator"
                   />
                 </div>
-                <div class="card-content">
-                  <span class="card-title activator teal-text hoverline"
-                    >Recipe API<i class="mdi-navigation-more-vert right"></i
+                <div className="card-content">
+                  <span className="card-title activator teal-text hoverline"
+                    >Recipe API<i className="mdi-navigation-more-vert right"></i
                   ></span>
                   <p>
                     A total DRF based application about Recipe.
                   </p>
                 </div>
-                <div class="card-reveal">
-                  <span class="card-title brown-text"
+                <div className="card-reveal">
+                  <span className="card-title brown-text"
                     >Accomplishments<i class="mdi-navigation-close right"></i
                   ></span>
                   <ul>
                     <li><strong>Python (Django Rest Framework)</strong> backend</li>
                   </ul>
-                  <div class="card-action">
+                  <div className="card-action">
                     <a
                       aria-label="Visit Recipe API demo"
                       href="https://github.com/Eyakub/recipe-app-api"
                       target="_blank"
                       data-position="top"
                       data-tooltip="View Online"
-                      class="btn-floating btn-large waves-effect waves-light brown tooltipped"
+                      className="btn-floating btn-large waves-effect waves-light brown tooltipped"
                       ><i class="fa fa-external-link"></i></a
                     ><a
                       aria-label="github Repo"
                       href="https://github.com/Eyakub/recipe-app-api"
                       data-position="top"
                       data-tooltip="View Source"
-                      class="btn-floating btn-large waves-effect waves-light brown tooltipped"
+                      className="btn-floating btn-large waves-effect waves-light brown tooltipped"
                       ><i class="fa fa-github"></i
                     ></a>
                   </div>
@@ -152,29 +152,29 @@ class Projects extends Component {
             </div>
             
           </div>
-          <div class="row">
+          <div className="row">
             {/* <!-- Name Contest --> */}
-            <div class="col s12 m6 l4">
-              <div class="card medium">
-                <div class="card-image waves-effect waves-block waves-light">
+            <div className="col s12 m6 l4">
+              <div className="card medium">
+                <div className="card-image waves-effect waves-block waves-light">
                   <img
                     alt="Screenshot"
                     src="namecontest.jpg"
                     class="activator"
                   />
                 </div>
-                <div class="card-content">
-                  <span class="card-title activator teal-text hoverline"
-                    >Name Contest<i class="mdi-navigation-more-vert right"></i
+                <div className="card-content">
+                  <span className="card-title activator teal-text hoverline"
+                    >Name className<i class="mdi-navigation-more-vert right"></i
                   ></span>
                   <p>
                     Contest base android application that actually something like choose better name with this contest
                     for your business.
                   </p>
                 </div>
-                <div class="card-reveal">
-                  <span class="card-title brown-text"
-                    >Accomplishments<i class="mdi-navigation-close right"></i
+                <div className="card-reveal">
+                  <span className="card-title brown-text"
+                    >Accomplishments<i className="mdi-navigation-close right"></i
                   ></span>
                   <ul>
                     <li><strong>Dart (Flutter)</strong></li>
@@ -186,14 +186,14 @@ class Projects extends Component {
                       target="_blank"
                       data-position="top"
                       data-tooltip="View Online"
-                      class="btn-floating btn-large waves-effect waves-light brown tooltipped"
+                      className="btn-floating btn-large waves-effect waves-light brown tooltipped"
                       ><i class="fa fa-external-link"></i></a
                     ><a
                       aria-label="View github Repo"
                       href="https://github.com/Eyakub/Name-Contest"
                       data-position="top"
                       data-tooltip="View Source"
-                      class="btn-floating btn-large waves-effect waves-light brown tooltipped"
+                      className="btn-floating btn-large waves-effect waves-light brown tooltipped"
                       ><i class="fa fa-github"></i
                     ></a>
                   </div>
