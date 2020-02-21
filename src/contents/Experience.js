@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import company_logo from '../img/company.png';
 
 class Experience extends Component {
   render() {
@@ -14,7 +15,7 @@ class Experience extends Component {
                     <a href="http://venturesolutionsltd.com" target="_blank">
                       <img
                         alt="WeSpire logo"
-                        src="../img/company.png"
+                        src={company_logo}
                         class="responsive-img center-block"
                       />
                     </a>
@@ -87,7 +88,7 @@ class Experience extends Component {
                     <a href="http://http://tryonyx.com" target="_blank">
                       <img
                         alt="WeSpire logo"
-                        src="../src/company.png"
+                        src={company_logo}
                         class="responsive-img center-block"
                       />
                     </a>

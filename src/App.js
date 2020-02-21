@@ -55,7 +55,7 @@ function App(){
         </Route>
 
         {/* Route for extraActivities.js content */}
-        <Route path="/extra-activities">
+        <Route path="/activities">
           <ExtraActivities />
         </Route>
 

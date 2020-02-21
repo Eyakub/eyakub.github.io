@@ -7,7 +7,7 @@ class Blog extends Component {
         <section id="blog" class="section scrollspy full-height">
           <h3 class="page-title white-text teal">Blog</h3>
           <div class="container">
-            <h4 id="posts-2019">2019</h4>
+            {/* <h4 id="posts-2019">2019</h4>
             <ul aria-labelledby="posts-2019">
               <li>
                 <a
@@ -25,7 +25,7 @@ class Blog extends Component {
                   </dt>
                 </dl>
               </li>
-            </ul>
+            </ul> */}
           </div>
         </section>
       </main>

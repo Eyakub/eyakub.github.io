@@ -38,8 +38,13 @@ class About extends Component {
               </a>
               &nbsp;//&nbsp;
               <a aria-label='Navigate to the article "Scalable CSS"' href="/">
+                VueJS
+              </a>
+              &nbsp;//&nbsp;
+              <a aria-label='Navigate to the article "Scalable CSS"' href="/">
                 DevOps Tools
               </a>
+              
             </p>
           </div>
         </section>

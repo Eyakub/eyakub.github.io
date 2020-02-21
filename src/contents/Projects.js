@@ -1,4 +1,10 @@
 import React, { Component } from "react";
+import moiur_logo from '../img/moiur.png';
+import tourbookbd_logo from '../img/tourbookbd.png';
+import recipeapp_logo from '../img/recipeapp.png';
+import namecontest_logo from '../img/namecontest.jpg';
+import researchhub_logo from '../img/researchhub.png';
+import foodorder_logo from '../img/foodorder.png';
 
 class Projects extends Component {
   render() {
@@ -14,7 +20,7 @@ class Projects extends Component {
                 <div className="card-image waves-effect waves-block waves-light">
                   <img
                     alt="Screenshot of MOIUR web app"
-                    src={window.location.origin + '/src/img/moiur.png'}
+                    src={ moiur_logo }
                     className="activator"
                   />
                 </div>
@@ -62,7 +68,7 @@ class Projects extends Component {
                 <div className="card-image waves-effect waves-block waves-light">
                   <img
                     alt="Screenshot of TourBookBD web app"
-                    src="tourbookbd.png"
+                    src={tourbookbd_logo}
                     className="activator"
                   />
                 </div>
@@ -110,7 +116,7 @@ class Projects extends Component {
                 <div className="card-image waves-effect waves-block waves-light">
                   <img
                     alt="Screenshot of RecipeApp web app"
-                    src="recipeapp.png"
+                    src={recipeapp_logo}
                     className="activator"
                   />
                 </div>
@@ -159,13 +165,13 @@ class Projects extends Component {
                 <div className="card-image waves-effect waves-block waves-light">
                   <img
                     alt="Screenshot"
-                    src="namecontest.jpg"
+                    src={namecontest_logo}
                     class="activator"
                   />
                 </div>
                 <div className="card-content">
                   <span className="card-title activator teal-text hoverline"
-                    >Name className<i class="mdi-navigation-more-vert right"></i
+                    >Name Contest<i class="mdi-navigation-more-vert right"></i
                   ></span>
                   <p>
                     Contest base android application that actually something like choose better name with this contest
@@ -207,7 +213,7 @@ class Projects extends Component {
                 <div class="card-image waves-effect waves-block waves-light">
                   <img
                     alt="Screenshot"
-                    src="researchhub.png"
+                    src={researchhub_logo}
                     class="activator"
                   />
                 </div>
@@ -253,7 +259,7 @@ class Projects extends Component {
                 <div class="card-image waves-effect waves-block waves-light">
                   <img
                     alt="Screenshot"
-                    src="foodorder.png"
+                    src={foodorder_logo}
                     class="activator"
                   />
                 </div>
