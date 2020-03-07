@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Navitem from "./Navitem";
+import { Link } from "react-router-dom";
 
 class Navbar extends Component {
   constructor(props) {
@@ -105,25 +106,28 @@ class Navbar extends Component {
 
           </ul>
         </nav>
-        <nav class="hide-on-large only trigger z-depth-1">
+        <nav className="hide-on-large only trigger z-depth-1">
           <a
             aria-label="Toggle visibility of the mobile navbar"
-            href="/"
+            href="#"
             data-activates="slide-out"
-            class="button-collapse"
+            className="button-collapse"
           >
-            <i class="mdi-navigation-menu"></i>
+            <i className="mdi-navigation-menu"></i>
           </a>
-          <div class="name-title">
+          {/* <Link tolink="#" className="button-collapse" data-activates="slide-out" >
+          <i className="mdi-navigation-menu"></i>
+          </Link> */}
+          <div className="name-title">
             <a
               id="name"
               aria-label="Navigate to the beginning of the page"
               href="#main"
-              class="teal-text"
+              className="teal-text"
             >
               MD Eyakub Sorkar
             </a>
-            <span class="brown-text light">Software Engineer</span>
+            <span className="brown-text light">Software Engineer</span>
           </div>
         </nav>
         <nav class="hide-on-large only">
