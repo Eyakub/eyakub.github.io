@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 class Navitem extends Component {
-  constructor(props){
-    console.log(props.item);
-  }
+ 
   render() {
     return (
       // <li id={this.props.item}>
@@ -26,8 +24,10 @@ class Navitem extends Component {
       // </li>
       <li className="bold">
         <Link onClick=""
-          className="waves-effect waves-dark teal-text"
-          to={this.props.toLink}>
+          className={`${this.props.c_name}`}
+          to={this.props.tolink}>
+          <i className={`${this.props.icon_class}`}></i>
+          <span>{this.props.item}</span>
         </Link>
       </li>
     );
