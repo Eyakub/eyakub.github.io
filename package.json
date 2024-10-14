@@ -26,7 +26,7 @@
     "gh-pages": "^6.2.0",
     "gray-matter": "^4.0.3",
     "mdx-prism": "^0.3.1",
-    "next": "13",
+    "next": "14",
     "next-connect": "^0.10.1",
     "next-google-fonts": "^2.2.0",
     "next-mdx-remote": "^5.0.0",
