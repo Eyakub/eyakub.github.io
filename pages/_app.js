@@ -47,6 +47,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider resetCSS theme={customTheme}>
       <GlobalStyle>
+        <link rel="icon" href="/favicon.ico" />
         <Component {...pageProps} />
       </GlobalStyle>
     </ChakraProvider>
