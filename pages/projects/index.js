@@ -98,7 +98,7 @@ export default function Projects({ projects }) {
                   imageURL={project.fields.imageUrl}
                   tag={project.fields.tags}
                   title={project.fields.title}
-                  slug={project.fields.slug}
+                  // slug={project.fields.slug}
                 />
               ))}
           </SimpleGrid>

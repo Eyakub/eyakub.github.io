@@ -211,51 +211,55 @@ export default function Post({ metadata, publishedDate, source, toc }) {
 }
 
 export async function getStaticPaths() {
-  // Generate paths from JSON data
-  const paths = projectsData.map((project) => ({
-    params: { slug: project.fields.slug },
-  }))
-
   return {
-    paths,
-    fallback: false,
+    paths: [],
+    fallback: 'blocking',
   }
 }
 
 export async function getStaticProps({ params }) {
-  // Find the project data from JSON
-  const project = projectsData.find(
-    (project) => project.fields.slug === params.slug
-  )
+  try {
+    // Find the project data from JSON
+    const project = projectsData.find(
+      (project) => project.fields && project.fields.slug === params.slug
+    )
 
-  if (!project) {
+    if (!project) {
+      return {
+        notFound: true,
+      }
+    }
+
+    const source = project.body || ''
+    project.readingTime = readingTime(source).text
+    const mdxSource = await serialize(source, {
+      mdxOptions: {
+        rehypePlugins: [mdxPrism],
+      },
+    })
+
+    const headings = source.match(/#{2,4} .+/g) || []
+    const toc = headings.map((heading) => {
+      const level = (heading.match(/#/g) || []).length - 2
+      const title = heading.replace(/#{2,4} /, '')
+      return { title, level }
+    })
+
+    return {
+      props: {
+        metadata: project,
+        publishedDate: project.frontmatter && project.frontmatter.date 
+          ? new Date(project.frontmatter.date).toISOString()
+          : null,
+        source: mdxSource,
+        toc: toc,
+      },
+      revalidate: 30,
+    }
+  } catch (error) {
+    console.error('Error in getStaticProps:', error)
     return {
       notFound: true,
     }
-  }
-
-  const source = project.body
-  project.readingTime = readingTime(source).text
-  const mdxSource = await serialize(source, {
-    mdxOptions: {
-      rehypePlugins: [mdxPrism],
-    },
-  })
-
-  const headings = source.match(/#{2,4} .+/g) || []
-  const toc = headings.map((heading) => {
-    const level = heading.match(/#/g).length - 2
-    const title = heading.replace(/#{2,4} /, '')
-    return { title, level }
-  })
-
-  return {
-    props: {
-      metadata: project,
-      publishedDate: new Date(project.frontmatter.date).toISOString(),
-      source: mdxSource,
-      toc: toc,
-    },
-    revalidate: 30,
   }
 }

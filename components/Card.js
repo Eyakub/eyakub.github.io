@@ -107,7 +107,8 @@ export default function Cards({ imageURL, title, slug, desc, tag = [] }) {
   )
 
   const handleClick = () => {
-    router.push(`/projects/${slug}`)
+    router.push(`/`)
+    // router.push(`/projects/${slug}`)
   }
 
   return (
@@ -119,7 +120,8 @@ export default function Cards({ imageURL, title, slug, desc, tag = [] }) {
       borderColor={{ base: '#333', md: 'borderColor' }}
       borderRadius="10px"
     >
-      <Link href={`/projects/${slug}`}>
+      {/* <Link href={`/projects/${slug}`}> */}
+      <Link href={`/`}>
         <ScaleFade transition={{ duration: 1 }} in={true}>
           <Center w="auto">
             <Image
@@ -150,7 +152,7 @@ export default function Cards({ imageURL, title, slug, desc, tag = [] }) {
               >
                 <Link
                   color="white"
-                  href={`/projects/${slug}`}
+                  href={`/`}
                   onClick={handleClick}
                 >
                   <FaExternalLinkAlt aria-label="project link" size={20} />

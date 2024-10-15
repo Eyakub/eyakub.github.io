@@ -65,3 +65,6 @@ coverage/
 
 ### Next.js Export ###
 out/
+
+pages/projects/[slug].js
+**/[slug].js
