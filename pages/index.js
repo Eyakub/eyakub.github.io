@@ -35,7 +35,7 @@ export default function Index() {
             property="og:description"
           />
           <meta
-            content="https://imagizer.imageshack.com/a/img922/7423/0P3Xty.png"
+            content="https://imgur.com/a/gY0ZSa5"
             property="og:image"
           />
 
@@ -50,7 +50,7 @@ export default function Index() {
             property="twitter:description"
           />
           <meta
-            content="https://imagizer.imageshack.com/a/img922/7423/0P3Xty.png"
+            content="https://imgur.com/a/gY0ZSa5"
             property="twitter:image"
           />
         </Head>
