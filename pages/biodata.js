@@ -22,7 +22,7 @@ import Head from "next/head";
 SwiperCore.use([Pagination, Navigation]);
 
 const Biodata = () => {
-  const sectionTitleColor = useColorModeValue("gray.700", "gray.200");
+  const sectionTitleColor = useColorModeValue("black", "gray.700", "gray.200");
   const footerBg = useColorModeValue("white", "gray.800");
   const footerBorderColor = useColorModeValue("gray.200", "gray.700");
 
@@ -101,7 +101,7 @@ const Biodata = () => {
               >
                 About Me
               </Heading>
-              <Text>
+              <Text color={sectionTitleColor}>
                 I am a warm and caring individual who values family and friendships.
                 I enjoy traveling, learning new things, and staying active. I
                 believe in mutual respect and understanding in a relationship.
@@ -121,7 +121,7 @@ const Biodata = () => {
                 >
                   Personal Details
                 </Heading>
-                <List spacing={2}>
+                <List spacing={2} color={sectionTitleColor}>
                   <ListItem>
                     <strong>Date of Birth:</strong> 26th May 1995
                   </ListItem>
@@ -151,7 +151,7 @@ const Biodata = () => {
                 >
                   Contact Details
                 </Heading>
-                <List spacing={2}>
+                <List spacing={2} color={sectionTitleColor}>
                   <ListItem>
                     <strong>Mobile:</strong> +880 1937424217
                   </ListItem>
@@ -193,7 +193,7 @@ const Biodata = () => {
               >
                 Family Background
               </Heading>
-              <List spacing={2}>
+              <List spacing={2} color={sectionTitleColor}>
                 <ListItem>
                   <strong>Father’s Name & Occupation:</strong> MD Yusuf Sarker,
                   Business
@@ -230,7 +230,7 @@ const Biodata = () => {
               >
                 Education
               </Heading>
-              <Heading as="h5" size="md" mb={1}>
+              <Heading as="h5" size="md" mb={1} color={sectionTitleColor}>
                 Bachelor's in Computer Science
               </Heading>
               <Text color="gray.500">
@@ -249,7 +249,7 @@ const Biodata = () => {
               >
                 Current Job
               </Heading>
-              <List spacing={2}>
+              <List spacing={2} color={sectionTitleColor}>
                 <ListItem>
                   <strong>Position:</strong> Full Stack Engineer at Goama
                 </ListItem>
@@ -270,7 +270,7 @@ const Biodata = () => {
               >
                 Hobbies & Interests
               </Heading>
-              <Text>
+              <Text color={sectionTitleColor}>
                 I enjoy traveling, music, cooking, sports, and reading. These activities help me
                 stay active and continuously learn new things.
               </Text>
