@@ -271,7 +271,7 @@ const Biodata = () => {
                 Hobbies & Interests
               </Heading>
               <Text color={sectionTitleColor}>
-                I enjoy traveling, music, cooking, sports, and reading. These activities help me
+                I enjoy traveling, music, gaming, and reading. These activities help me
                 stay active and continuously learn new things.
               </Text>
             </Box>
