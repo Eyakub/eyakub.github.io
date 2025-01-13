@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://eyakub.github.io
+
+# Sitemaps
+Sitemap: https://eyakub.github.io/sitemap.xml
