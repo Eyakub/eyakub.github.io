@@ -1,0 +1,63 @@
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* Container for the entire biodata card */
+  .profile-section {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  /* Header area styles */
+  .profile-section .header-area {
+    background-color: #a9bcd1;
+    color: #fff;
+    padding: 2rem;
+    text-align: center;
+  }
+  .profile-section .header-area h1 {
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+  .profile-section .header-area p {
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 300;
+  }
+
+  /* Ensure carousel images use 4:3 ratio and are centered */
+  /* You can adjust max-width if you want larger or smaller images */
+  .carousel-item img {
+    display: block;
+    margin: 0 auto;       /* Center image horizontally */
+    width: 100%;          /* Responsive width within the carousel item */
+    max-width: 400px;     /* Constrain image width (adjust as needed) */
+    aspect-ratio: 4 / 3;  /* Force 4:3 aspect ratio */
+    object-fit: cover;    /* Crop edges if the actual image isn't exactly 4:3 */
+    height: 500px;
+    max-height: 600px;
+  }
+
+  /* Body content area */
+  .profile-section .body-area {
+    padding: 2rem;
+  }
+
+  .section-title {
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  /* Footer area */
+  .footer-area {
+    text-align: center;
+    background-color: #fff;
+    padding: 1rem;
+    font-size: 0.875rem;
+    border-top: 1px solid #dee2e6;
+  }
