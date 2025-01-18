@@ -296,7 +296,7 @@ const Biodata = () => {
                   <strong>Height:</strong> Minimum 5'2", prefered.
                 </ListItem>
                 <ListItem>
-                  <strong>Character:</strong> Matured, well-mannered, Practicing Muslim, someone who wants to grow together, i'm looking for a friend.
+                  <strong>Character:</strong> Matured, well-mannered, Soft-spoken, Practicing Muslim, someone who wants to grow together, i'm looking for a friend. (Must have)
                 </ListItem>
                 <ListItem>
                   <strong>Appearance:</strong> Wearing a hijab is not mandatory, but maintaining a decent dress sense is required.
