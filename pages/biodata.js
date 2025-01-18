@@ -314,7 +314,7 @@ const Biodata = () => {
                       Family-oriented and cherishes strong familial bonds.
                     </ListItem>
                     <ListItem>
-                      Enjoys staying active both mentally and physically: Loves engaging in activities that keep the mind sharp and the body healthy. Believes that maintaining a balanced and energetic lifestyle contributes to a happy and harmonious family life.
+                    I want a companion who appreciates maintaining an active lifestyle, both mentally and physically. A healthy and active lifestyle, whether through hobbies, physical activity, or education, contributes to a pleasant and harmonious family life, in my opinion.
                     </ListItem>
                   </UnorderedList>
                 </ListItem>
