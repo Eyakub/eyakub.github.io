@@ -136,7 +136,7 @@ const Biodata = () => {
                     <strong>Religion:</strong> Islam
                   </ListItem>
                   <ListItem>
-                    <strong>Current City:</strong> Dhaka, Bangladesh
+                    <strong>Current City:</strong> Dhaka, Bangladesh (Raised and grew up)
                   </ListItem>
                 </List>
               </Box>
