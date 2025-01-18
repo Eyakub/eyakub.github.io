@@ -8,6 +8,7 @@ import {
   List,
   ListItem,
   Link,
+  UnorderedList,
   Image as ChakraImage,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -263,7 +264,7 @@ const Biodata = () => {
             </Box>
 
             {/* Hobbies / Interests Section */}
-            <Box>
+            <Box mb={6}>
               <Heading
                 as="h3"
                 size="lg"
@@ -278,6 +279,47 @@ const Biodata = () => {
                 stay active and continuously learn new things.
               </Text>
             </Box>
+
+          {/* Expectations from Bride Section */}
+          <Box>
+              <Heading
+                as="h3"
+                size="lg"
+                mb={2}
+                textTransform="uppercase"
+                color={sectionTitleColor}
+              >
+                Expectations from Bride
+              </Heading>
+              <List spacing={2} color={sectionTitleColor}>
+                <ListItem>
+                  <strong>Height:</strong> Minimum 5'2", prefered.
+                </ListItem>
+                <ListItem>
+                  <strong>Character:</strong> Matured, well-mannered, Practicing Muslim, someone who wants to grow together, i'm looking for a friend.
+                </ListItem>
+                <ListItem>
+                  <strong>Appearance:</strong> Wearing a hijab is not mandatory, but maintaining a decent dress sense is required.
+                </ListItem>
+                <ListItem>
+                  <strong>Education:</strong> Preferably holds a bachelor’s degree.
+                </ListItem>
+                <ListItem>
+                  <strong>Additional:</strong>
+                  <UnorderedList spacing={2} pl={4}>
+                    <ListItem>
+                      Values mutual respect, understanding, and open communication in a relationship.
+                    </ListItem>
+                    <ListItem>
+                      Family-oriented and cherishes strong familial bonds.
+                    </ListItem>
+                    <ListItem>
+                      Enjoys staying active both mentally and physically: Loves engaging in activities that keep the mind sharp and the body healthy. Believes that maintaining a balanced and energetic lifestyle contributes to a happy and harmonious family life.
+                    </ListItem>
+                  </UnorderedList>
+                </ListItem>
+              </List>
+            </Box>
           </Box>
 
           {/* Footer */}
@@ -291,6 +333,8 @@ const Biodata = () => {
             <Text fontSize="sm">&copy; 2025 MD Eyakub Sorkar. All rights reserved.</Text>
           </Box>
         </Box>
+
+        
       </Container>
     </>
   );
