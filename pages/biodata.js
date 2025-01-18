@@ -117,7 +117,7 @@ const Biodata = () => {
                   as="h3"
                   size="lg"
                   mb={2}
-                  textTransform="uppercase"
+                  // textTransform="uppercase"
                   color={sectionTitleColor}
                 >
                   Personal Details
@@ -147,7 +147,7 @@ const Biodata = () => {
                   as="h3"
                   size="lg"
                   mb={2}
-                  textTransform="uppercase"
+                  // textTransform="uppercase"
                   color={sectionTitleColor}
                 >
                   Contact Details
@@ -189,7 +189,7 @@ const Biodata = () => {
                 as="h3"
                 size="lg"
                 mb={2}
-                textTransform="uppercase"
+                // textTransform="uppercase"
                 color={sectionTitleColor}
               >
                 Family Background
@@ -229,7 +229,7 @@ const Biodata = () => {
                 as="h3"
                 size="lg"
                 mb={2}
-                textTransform="uppercase"
+                // textTransform="uppercase"
                 color={sectionTitleColor}
               >
                 Education
@@ -248,7 +248,7 @@ const Biodata = () => {
                 as="h3"
                 size="lg"
                 mb={2}
-                textTransform="uppercase"
+                // textTransform="uppercase"
                 color={sectionTitleColor}
               >
                 Current Job
@@ -269,7 +269,7 @@ const Biodata = () => {
                 as="h3"
                 size="lg"
                 mb={2}
-                textTransform="uppercase"
+                // textTransform="uppercase"
                 color={sectionTitleColor}
               >
                 Hobbies & Interests
@@ -286,7 +286,7 @@ const Biodata = () => {
                 as="h3"
                 size="lg"
                 mb={2}
-                textTransform="uppercase"
+                // textTransform="uppercase"
                 color={sectionTitleColor}
               >
                 Expectations from Bride
