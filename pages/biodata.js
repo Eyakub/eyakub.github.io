@@ -209,6 +209,9 @@ const Biodata = () => {
                       Brother #1: Eyahya, Married, Teacher
                     </ListItem>
                     <ListItem>
+                      Brother #2: Eyasir, Late, Student
+                    </ListItem>
+                    <ListItem>
                       Sister #1: Hafsa, Pursuing Bachelor's Degree
                     </ListItem>
                     <ListItem>
