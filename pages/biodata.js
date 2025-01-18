@@ -97,7 +97,7 @@ const Biodata = () => {
                 as="h3"
                 size="lg"
                 mb={2}
-                textTransform="uppercase"
+                // textTransform="uppercase"
                 color={sectionTitleColor}
               >
                 About Me
