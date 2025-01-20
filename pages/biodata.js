@@ -54,7 +54,7 @@ const Biodata = () => {
             >
               <SwiperSlide>
                 <ChakraImage
-                  src="/image1.jpeg"
+                  src="/image1.jpg"
                   alt="Photo 1"
                   objectFit="cover"
                   width="100%"
@@ -103,9 +103,7 @@ const Biodata = () => {
                 About Me
               </Heading>
               <Text color={sectionTitleColor}>
-                I am a warm and caring individual who values family and friendships.
-                I enjoy traveling, learning new things, and staying active. I
-                believe in mutual respect and understanding in a relationship.
+              I’m someone who really values family and friends, and I always try to be warm and caring. I love traveling, exploring new things, and staying active. In relationships, I believe that mutual respect and understanding are essential.
               </Text>
             </Box>
 
