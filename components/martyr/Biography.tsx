@@ -17,7 +17,7 @@ export default function Biography({ data }: BiographyProps) {
       <Container maxW="container.xl">
         <Flex align="center" gap={2} mb={8}>
           <ScrollText size={24} color="blue.500" />
-          <Heading as="h2" size="xl">Biography</Heading>
+          <Heading as="h2" size="xl" color="gray.800">Biography</Heading>
         </Flex>
         <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={8}>
           <VStack spacing={4}>
