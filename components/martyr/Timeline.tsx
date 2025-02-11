@@ -54,7 +54,7 @@ export default function Timeline({ data }: TimelineProps) {
                       <Text fontSize="2xl" fontWeight="bold" color="blue.500">
                         {event.date[language]}
                       </Text>
-                      <Heading as="h3" size="md">{event.title[language]}</Heading>
+                      <Heading as="h3" size="md" color="gray.800">{event.title[language]}</Heading>
                       <Text color="gray.600">{event.description[language]}</Text>
                     </VStack>
                   ) : null}
