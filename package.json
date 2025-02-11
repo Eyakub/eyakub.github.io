@@ -23,6 +23,7 @@
     "eslint-config-next": "13",
     "firebase": "^8.6.7",
     "framer-motion": "^4",
+    "lucide-react": "^0.446.0",
     "gh-pages": "^6.2.0",
     "gray-matter": "^4.0.3",
     "mdx-prism": "^0.3.1",
