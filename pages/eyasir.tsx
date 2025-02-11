@@ -8,10 +8,14 @@ import { LanguageProvider } from "../contexts/LanguageContext";
 import { martyrData } from "../data/martyr";
 import { Box, Container, Heading, Text } from "@chakra-ui/react";
 import { useLanguage } from "../contexts/LanguageContext";
+import Head from 'next/head';
 
 export default function Home() {
   return (
     <LanguageProvider>
+      <Head>
+        <title>Shohid Eyasir Sarker - Biography</title>
+      </Head>
       <Box as="main" minH="100vh">
       <LanguageSwitch />
       <Box bg="gray.900" py={24} color="white" textAlign="center">
