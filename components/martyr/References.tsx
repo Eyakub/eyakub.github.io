@@ -56,7 +56,7 @@ export default function References({ data }: ReferencesProps) {
       <Container maxW="container.xl">
         <Flex align="center" gap={2} mb={8}>
           <Link size={24} color="blue.500" />
-          <Heading as="h2" size="xl">Media Coverage & References</Heading>
+          <Heading as="h2" size="xl" color="gray.800">Media Coverage & References</Heading>
         </Flex>
         <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} gap={6}>
           {data.references.map((reference, index) => (

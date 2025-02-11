@@ -33,7 +33,7 @@ export default function Gallery({ data }: GalleryProps) {
       <Container maxW="container.xl">
         <Flex align="center" gap={2} mb={8}>
           <ImageIcon size={24} color="blue.500" />
-          <Heading as="h2" size="xl">Image Gallery</Heading>
+          <Heading as="h2" size="xl" color="gray.800">Image Gallery</Heading>
         </Flex>
         <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={6}>
           {data.gallery.map((image, index) => (

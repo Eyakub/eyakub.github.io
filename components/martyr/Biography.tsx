@@ -30,7 +30,7 @@ export default function Biography({ data }: BiographyProps) {
               borderRadius="lg"
               boxShadow="lg"
             />
-            <Box bg="gray.50" p={6} borderRadius="lg" w="full">
+            <Box bg="gray.50" p={6} borderRadius="lg" w="full" textColor={"gray.700"}>
               <Heading as="h3" size="md" mb={4}>Quick Facts</Heading>
               <Grid templateColumns="auto 1fr" gap={2}>
                 <Text fontWeight="medium">Born:</Text>

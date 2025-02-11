@@ -17,7 +17,7 @@ export default function Timeline({ data }: TimelineProps) {
       <Container maxW="container.xl">
         <Flex align="center" gap={2} mb={12}>
           <Clock size={24} color="blue.500" />
-          <Heading as="h2" size="xl">Life Timeline</Heading>
+          <Heading as="h2" size="xl" color="gray.800">Life Timeline</Heading>
         </Flex>
         <Box position="relative">
           <Box
@@ -42,7 +42,7 @@ export default function Timeline({ data }: TimelineProps) {
                       <Text fontSize="2xl" fontWeight="bold" color="blue.500">
                         {event.date[language]}
                       </Text>
-                      <Heading as="h3" size="md">{event.title[language]}</Heading>
+                      <Heading as="h3" size="md" color="gray.800">{event.title[language]}</Heading>
                       <Text color="gray.600" textAlign="right">{event.description[language]}</Text>
                     </VStack>
                   ) : null}
