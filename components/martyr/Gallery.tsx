@@ -26,6 +26,7 @@ interface GalleryProps {
 export default function Gallery({ data }: GalleryProps) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const { language } = useLanguage();
+  const lang = language as "en" | "bn";
 
   return (
     <Box as="section" py={16} bg="white">
@@ -46,7 +47,7 @@ export default function Gallery({ data }: GalleryProps) {
             >
               <Image
                 src={image.url}
-                alt={image.alt[language]}
+                alt={image.alt[lang]}
                 h="256px"
                 w="full"
                 objectFit="cover"
@@ -63,7 +64,7 @@ export default function Gallery({ data }: GalleryProps) {
                 display="flex"
                 alignItems="flex-end"
               >
-                <Text color="white" p={4}>{image.caption[language]}</Text>
+                <Text color="white" p={4}>{image.caption[lang]}</Text>
               </Box>
             </Box>
           ))}
