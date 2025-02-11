@@ -19,20 +19,24 @@ export const martyrData: MartyrData = {
   },
   portrait: "./eyasir/eyasir.jpg",
   shortBio: {
-    en: "A young student activist who lost his life during the pro-democracy protests in Bangladesh. He was a second-year student at Govt MW College and stood up for democratic rights and fair elections.",
-    bn: "একজন তরুণ ছাত্র কর্মী যিনি বাংলাদেশে গণতন্ত্রের আন্দোলনে জীবন দিয়েছেন। তিনি সরকারি এমডব্লিউ কলেজের দ্বিতীয় বর্ষের ছাত্র ছিলেন এবং গণতান্ত্রিক অধিকার ও সুষ্ঠু নির্বাচনের জন্য লড়াই করেছেন।"
+    en: "A young student activist who lost his life during the Quota Reform Movement, which later evolved into the 'Ek Dofa Andolon' in Bangladesh. He was a second-year student at Government Adamjee Nagar MW College and stood for his beliefs",
+    bn: "এক তরুণ ছাত্র আন্দোলনকারী, যিনি বাংলাদেশে কোটা সংস্কার আন্দোলন, যা পরবর্তীতে 'এক দফা আন্দোলনে' রূপ নেয়, সেই সংগ্রামের সময় প্রাণ হারান। তিনি সরকারি এম ডব্লিউ কলেজের দ্বিতীয় বর্ষের ছাত্র ছিলেন।"
   },
   biography: {
-    en: `MD Eyasir Sarker was a brave young activist who participated in the pro-democracy movement in Bangladesh. As a student of Govt MW College in his second year of studies in 2024, he represented the voice of educated youth seeking positive change in their country.
+    en: `Shohid Eyasir Sarker, a young and spirited individual, was known for his unwavering courage and deep sense of responsibility. As the fourth among five siblings, he was the heart of his family, always bringing joy with his cheerful demeanor. Even as a student, he displayed leadership qualities and took on responsibilities beyond his years. His sense of justice and love for his fellow countrymen led him to join the July movement against oppression and injustice in Bangladesh.
 
-He received his early education from Bornomala Adorsho School before pursuing higher studies. Despite his young age, he showed remarkable courage and commitment to democratic values, believing in the power of peaceful protest to bring about meaningful change in society.
+    His journey in the protest began after the tragic martyrdom of Abu Sayeed, which ignited nationwide demonstrations. Eyasir actively participated in the movement, believing in unity and fearlessness against oppression. His strong conviction was evident when he stood his ground against attackers during protests, inspiring those around him.
 
-His participation in the protests demonstrated his unwavering commitment to democratic values and his belief in the right of the people to have fair and free elections. Like many young Bangladeshis, he was concerned about the future of democracy in his country and was willing to stand up for his beliefs.`,
-    bn: `এম ডি ইয়াসির সরকার ছিলেন একজন সাহসী তরুণ কর্মী যিনি বাংলাদেশের গণতন্ত্র আন্দোলনে অংশগ্রহণ করেছিলেন। ২০২৪ সালে সরকারি এমডব্লিউ কলেজের দ্বিতীয় বর্ষের ছাত্র হিসেবে তিনি দেশের ইতিবাচক পরিবর্তন চাওয়া শিক্ষিত যুব সমাজের কণ্ঠস্বর ছিলেন।
+    On August 5, 2024, despite his family's warnings, Eyasir joined the mass protests again. He was distributing water to protesters when clashes erupted near Jatrabari. In the chaos, he was shot while urging police to stop firing at unarmed protesters. The news of his death sent shockwaves across his family and community. His body was found at Dhaka Medical College, bearing the marks of his sacrifice—a bullet wound to his chest, his flag-bearing hand still clenched in determination.
 
-তিনি উচ্চ শিক্ষা গ্রহণের আগে বর্ণমালা আদর্শ স্কুল থেকে প্রাথমিক শিক্ষা সম্পন্ন করেন। কম বয়স সত্ত্বেও তিনি গণতান্ত্রিক মূল্যবোধের প্রতি অসাধারণ সাহস ও প্রতিশ্রুতি দেখিয়েছেন, শান্তিপূর্ণ প্রতিবাদের মাধ্যমে সমাজে অর্থপূর্ণ পরিবর্তন আনা যায় বলে বিশ্বাস করতেন।
+    Eyasir’s death left an irreplaceable void in his family and among those who knew him. His unwavering spirit, patriotism, and ultimate sacrifice make him a lasting symbol of resistance in Bangladesh’s history. His memory continues to inspire those who stand against injustice, proving that true heroes never fade—they live on in the hearts of those they fought for.`,
+    bn: `শহীদ ইয়াসির সরকার ছিলেন এক উদ্যমী ও সাহসী তরুণ, যিনি তার আত্মবিশ্বাস এবং দায়িত্বশীলতার জন্য পরিচিত ছিলেন। পাঁচ ভাই-বোনের মধ্যে চতুর্থ ইয়াসির পরিবারের প্রাণ ছিল। ছোটবেলা থেকেই তিনি নেতৃত্বের গুণাবলী দেখিয়েছিলেন এবং দায়িত্ব নিতে পছন্দ করতেন। দেশের প্রতি তার অগাধ ভালোবাসা ও অন্যায়ের প্রতি ঘৃণা তাকে জুলাই গণআন্দোলনে যুক্ত হতে অনুপ্রাণিত করেছিল।
 
-বিক্ষোভে তাঁর অংশগ্রহণ গণতান্ত্রিক মূল্যবোধের প্রতি অবিচল প্রতিশ্রুতি এবং সুষ্ঠু ও নিরপেক্ষ নির্বাচনের অধিকারে জনগণের বিশ্বাসকে তুলে ধরে। অনেক তরুণ বাংলাদেশির মতো তিনিও দেশের গণতন্ত্রের ভবিষ্যৎ নিয়ে উদ্বিগ্ন ছিলেন এবং তাঁর বিশ্বাসের জন্য দাঁড়াতে ইচ্ছুক ছিলেন।`
+    আবু সাঈদের শহীদ হওয়ার পর আন্দোলন শুরু হলে ইয়াসির তার প্রতি অবিচারের প্রতিবাদে রাস্তায় নামে। তিনি বিশ্বাস করতেন, অন্যায়ের বিরুদ্ধে একতাবদ্ধ হওয়া ও ভয়কে জয় করাই মুক্তির পথ। আন্দোলনের সময় তিনি সাহসিকতার পরিচয় দেন, যখন পুলিশের আক্রমণের মুখেও তিনি দমে যাননি বরং প্রতিবাদীদের ঐক্যবদ্ধ করেছিলেন।
+
+    ৫ আগস্ট ২০২৪ সালে, পরিবারের নিষেধ সত্ত্বেও, ইয়াসির আবারও আন্দোলনে অংশ নেন। তখন তিনি প্রতিবাদকারীদের জন্য পানি বিতরণ করছিলেন। যাত্রাবাড়ীর কাছে সংঘর্ষ শুরু হলে, পুলিশের দিকে এগিয়ে গিয়ে তিনি তাদের অনুরোধ করেন যেন নিরস্ত্র মানুষের উপর গুলি চালানো বন্ধ করা হয়। ঠিক তখনই, একটি গুলি তার বুকে বিদ্ধ হয়। তার মৃত্যু সংবাদ মুহূর্তের মধ্যে ছড়িয়ে পড়ে, পরিবার ও দেশজুড়ে শোকের ছায়া নেমে আসে। ঢাকা মেডিকেলে তার নিথর দেহ পাওয়া যায়, হাতে এখনো পতাকা আঁকড়ে রাখা ছিল—যে পতাকা নিয়ে তিনি দেশমাতার জন্য লড়েছিলেন।
+
+    তার মৃত্যু তার পরিবার ও সমাজের জন্য এক অপূরণীয় ক্ষতি হয়ে থাকে। ইয়াসিরের দেশপ্রেম, তার সাহস ও আত্মত্যাগ তাকে বাংলাদেশের প্রতিরোধ আন্দোলনের চিরস্মরণীয় এক প্রতীক করে তুলেছে। অন্যায়ের বিরুদ্ধে দাঁড়ানোর জন্য তার আত্মত্যাগ আজও মানুষকে অনুপ্রাণিত করে, প্রমাণ করে যে প্রকৃত বীর কখনো মরে না—তারা বেঁচে থাকে মানুষের হৃদয়ে ও স্মৃতিতে।`
   },
   timeline: [
     {
@@ -108,16 +112,16 @@ His participation in the protests demonstrated his unwavering commitment to demo
   ],
   deathDetails: {
     location: {
-      en: "Dhaka, Bangladesh",
-      bn: "ঢাকা, বাংলাদেশ"
+      en: "Jatrabari, Dhaka, Bangladesh",
+      bn: "যাত্রাবাড়ী, ঢাকা, বাংলাদেশ"
     },
     cause: {
-      en: "Killed during protests",
-      bn: "বিক্ষোভের সময় নিহত"
+      en: "He was shot and martyred in a mass killing by Jatrabari police, alongside other unarmed protesters, during the 'Ek Dofa Andolon,' which demanded the resignation of Prime Minister Sheikh Hasina.",
+      bn: "'এক দফা আন্দোলনের' অংশ হিসেবে প্রধানমন্ত্রী শেখ হাসিনার পদত্যাগের দাবিতে গণভবনের দিকে লং মার্চ করার সময়, যাত্রাবাড়ী থানার পুলিশ নিরস্ত্র আন্দোলনকারীদের ওপর গণহত্যা চালায়। সেই হত্যাযজ্ঞে অন্যান্য প্রতিবাদকারীদের সঙ্গে তিনিও পুলিশের গুলিতে শহীদ হন।"
     },
     description: {
-      en: `MD Eyasir Sarker lost his life during the mass protests in Dhaka on August 5, 2024. As a second-year student of Govt MW College, he was among the protesters who had gathered to demand fair elections and democratic reforms in Bangladesh. His death during one of the largest pro-democracy demonstrations in recent Bangladeshi history highlights the significant risks young activists face in their struggle for democratic rights.`,
-      bn: `এম ডি ইয়াসির সরকার ২০২৪ সালের ৫ আগস্ট ঢাকায় গণবিক্ষোভের সময় জীবন হারান। সরকারি এমডব্লিউ কলেজের দ্বিতীয় বর্ষের ছাত্র হিসেবে তিনি সেই বিক্ষোভকারীদের মধ্যে ছিলেন যারা বাংলাদেশে সুষ্ঠু নির্বাচন ও গণতান্ত্রিক সংস্কারের দাবিতে জমায়েত হয়েছিলেন। সাম্প্রতিক বাংলাদেশের ইতিহাসে অন্যতম বৃহত্তম গণতন্ত্র বিক্ষোভের সময় তাঁর মৃত্যু গণতান্ত্রিক অধিকারের জন্য সংগ্রামে তরুণ কর্মীদের সম্মুখীন হওয়া উল্লেখযোগ্য ঝুঁকিকে তুলে ধরে।`
+      en: `Shohid Eyasir Sarker was a young student activist who played a significant role in the Quota Reform Movement, which later transformed into the "Ek Dofa" in Bangladesh. As a second-year student at Govt. MW College, he actively participated in the nationwide protests demanding fair elections and democratic rights. On August 5, 2024, during a mass march towards Gonobhaban, where thousands of protesters gathered to voice their demands, the police opened fire. Eyasir was shot and martyred in the struggle for justice. His sacrifice turned him into a symbol of resistance, inspiring future generations to stand for their beliefs and fight against oppression.`,
+      bn: `শহীদ ইয়াসির সরকার ছিলেন এক তরুণ ছাত্র আন্দোলনকারী, যিনি কোটা সংস্কার আন্দোলন থেকে শুরু করে পরবর্তী "এক দফা আন্দোলনে" গুরুত্বপূর্ণ ভূমিকা পালন করেন। সরকারি এম ডব্লিউ কলেজের দ্বিতীয় বর্ষের এই ছাত্র সুষ্ঠু নির্বাচন ও গণতান্ত্রিক অধিকারের দাবিতে চলমান আন্দোলনে সক্রিয়ভাবে অংশ নেন। ২০২৪ সালের ৫ আগস্ট, হাজারো আন্দোলনকারী যখন গণভবনের দিকে লং মার্চের জন্য সমবেত হয়, তখন পুলিশ গুলি চালায়। ইয়াসির গুলিবিদ্ধ হয়ে শহীদ হন। তার এই আত্মত্যাগ তাকে প্রতিরোধের প্রতীক করে তুলেছে, যা ভবিষ্যৎ প্রজন্মকে অন্যায়ের বিরুদ্ধে রুখে দাঁড়ানোর অনুপ্রেরণা জোগাবে।`
     }
   },
   gallery: [
