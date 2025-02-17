@@ -312,5 +312,26 @@ export const martyrData: MartyrData = {
       },
       thumbnail: './eyasir/channel24_fb.png'
     },
+    {
+      type: 'news',
+      title: {
+        en: 'Bangladesh Gazzette list of martyrs',
+        bn: 'বাংলাদেশ গেজেট শহীদদের তালিকা'
+      },
+      url: 'https://drive.google.com/file/d/1i27LWMO9AUiKLzsjnkgpDaCiUkY88Jj_/view?usp=sharing',
+      source: {
+        en: 'Bangladesh Govt',
+        bn: 'Bangladesh Govt'
+      },
+      date: {
+        en: 'January 15 2025',
+        bn: '১৫ জানুয়ারি ২০২৫'
+      },
+      description: {
+        en: 'Out of 834 martyrs, Eyasir Sarker is listed as 256 no',
+        bn: '৮৩৪ জন শহীদের মধ্যে, ইয়াসির সরকার ২৫৬ নম্বরে তালিকাভুক্ত।'
+      },
+      thumbnail: './eyasir/gazzettes_list.png'
+    },
   ]
 };
