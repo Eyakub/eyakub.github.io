@@ -39,6 +39,8 @@ export default function Biography({ data }: BiographyProps) {
                 <Text textAlign="right">{data.birthPlace[language]}</Text>
                 <Text fontWeight="medium">Died:</Text>
                 <Text textAlign="right">{data.deathDate[language]}</Text>
+                <Text fontWeight="medium">Bangladesh Shaheed Gazette No:</Text>
+                <Text textAlign="right">{data.gazette_no[language]}</Text>
               </Grid>
             </Box>
           </VStack>

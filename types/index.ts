@@ -33,6 +33,7 @@ export interface MartyrData {
   portrait: string;
   shortBio: LocalizedString;
   biography: LocalizedString;
+  gazette_no: LocalizedString;
   timeline: TimelineEvent[];
   deathDetails: {
     location: LocalizedString;

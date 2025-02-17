@@ -17,6 +17,10 @@ export const martyrData: MartyrData = {
     en: "Bangladesh",
     bn: "বাংলাদেশ"
   },
+  gazette_no: {
+    en: "256",
+    bn: "২৫৬"
+  },
   portrait: "./eyasir/eyasir.jpg",
   shortBio: {
     en: "A young student activist who lost his life during the Quota Reform Movement, which later evolved into the 'Ek Dofa Andolon' in Bangladesh. He was a second-year student at Government Adamjee Nagar MW College and stood for his beliefs",
@@ -42,7 +46,7 @@ export const martyrData: MartyrData = {
     {
       date: {
         en: "2006",
-        bn: "২০০6"
+        bn: "২০০৬"
       },
       title: {
         en: "Birth",
