@@ -54,7 +54,7 @@ const Biodata = () => {
             >
               <SwiperSlide>
                 <ChakraImage
-                  src="/image1.jpg"
+                  src="/image1.jpeg"
                   alt="Photo 1"
                   objectFit="cover"
                   width="100%"
@@ -97,13 +97,15 @@ const Biodata = () => {
                 as="h3"
                 size="lg"
                 mb={2}
-                // textTransform="uppercase"
+                textTransform="uppercase"
                 color={sectionTitleColor}
               >
                 About Me
               </Heading>
               <Text color={sectionTitleColor}>
-              I’m someone who really values family and friends, and I always try to be warm and caring. I love traveling, exploring new things, and staying active. In relationships, I believe that mutual respect and understanding are essential.
+                I am a warm and caring individual who values family and friendships.
+                I enjoy traveling, learning new things, and staying active. I
+                believe in mutual respect and understanding in a relationship.
               </Text>
             </Box>
 
@@ -115,7 +117,7 @@ const Biodata = () => {
                   as="h3"
                   size="lg"
                   mb={2}
-                  // textTransform="uppercase"
+                  textTransform="uppercase"
                   color={sectionTitleColor}
                 >
                   Personal Details
@@ -145,7 +147,7 @@ const Biodata = () => {
                   as="h3"
                   size="lg"
                   mb={2}
-                  // textTransform="uppercase"
+                  textTransform="uppercase"
                   color={sectionTitleColor}
                 >
                   Contact Details
@@ -187,7 +189,7 @@ const Biodata = () => {
                 as="h3"
                 size="lg"
                 mb={2}
-                // textTransform="uppercase"
+                textTransform="uppercase"
                 color={sectionTitleColor}
               >
                 Family Background
@@ -227,7 +229,7 @@ const Biodata = () => {
                 as="h3"
                 size="lg"
                 mb={2}
-                // textTransform="uppercase"
+                textTransform="uppercase"
                 color={sectionTitleColor}
               >
                 Education
@@ -246,7 +248,7 @@ const Biodata = () => {
                 as="h3"
                 size="lg"
                 mb={2}
-                // textTransform="uppercase"
+                textTransform="uppercase"
                 color={sectionTitleColor}
               >
                 Current Job
@@ -267,7 +269,7 @@ const Biodata = () => {
                 as="h3"
                 size="lg"
                 mb={2}
-                // textTransform="uppercase"
+                textTransform="uppercase"
                 color={sectionTitleColor}
               >
                 Hobbies & Interests
@@ -284,7 +286,7 @@ const Biodata = () => {
                 as="h3"
                 size="lg"
                 mb={2}
-                // textTransform="uppercase"
+                textTransform="uppercase"
                 color={sectionTitleColor}
               >
                 Expectations from Bride
@@ -312,7 +314,7 @@ const Biodata = () => {
                       Family-oriented and cherishes strong familial bonds.
                     </ListItem>
                     <ListItem>
-                    I want a companion who appreciates maintaining an active lifestyle, both mentally and physically. A healthy and active lifestyle, whether through hobbies, physical activity, or education, contributes to a pleasant and harmonious family life, in my opinion.
+                      Enjoys staying active both mentally and physically: Loves engaging in activities that keep the mind sharp and the body healthy. Believes that maintaining a balanced and energetic lifestyle contributes to a happy and harmonious family life.
                     </ListItem>
                   </UnorderedList>
                 </ListItem>

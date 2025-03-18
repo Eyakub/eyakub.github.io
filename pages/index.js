@@ -5,11 +5,14 @@ import Introduction from '../components/Introduction'
 import FeaturedProjects from '../components/FeaturedProjects'
 import AboutMe from '../components/AboutMe'
 import ContactMe from '../components/ContactMe'
+import WorkExperience from '../components/WorkExperience' 
 
 // Import JSON data
 import introductionData from '../data/introduction.json'
 import projectsData from '../data/projects.json'
 import contactMeData from '../data/contactMe.json'
+import workExperienceData from '../data/workexperience.json'
+
 
 export default function Index() {
   return (
@@ -66,6 +69,7 @@ export default function Index() {
           <Introduction introduction={introductionData} />
           <AboutMe />
           <FeaturedProjects projects={projectsData} />
+          <WorkExperience  workExperience={workExperienceData}/>
           <ContactMe contactMe={contactMeData} />
         </Stack>
       </Container>

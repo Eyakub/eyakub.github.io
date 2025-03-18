@@ -1,0 +1,94 @@
+[
+    {
+        "company": "Goama",
+        "title": "Full-stack Developer",
+        "startDate": "May 2022",
+        "endDate": "Present",
+        "location": "Dhaka, Bangladesh (Hybrid)",
+        "description": "",
+        "responsibilities": [
+            "Led backend development with Python/Django/DRF, boosting API performance for high-traffic apps.",
+            "Implemented unit testing, resulting in a 30% reduction in bugs and improved code reliability.",
+            "Integrated third-party APIs and payment gateways, expanding market by 20% in Latin America.",
+            "Conducted code reviews, ensuring high-quality, maintainable, and performant code with constructive feedback",
+            "Managed CI/CD with Bitbucket and Kubernetes, automating deployment for improved reliability."
+        ],
+        "technologies": [
+            "React",
+            "Node.js",
+            "JavaScript",
+            "TypeScript",
+            "AWS",
+            "Docker",
+            "Git"
+        ],
+        "logoUrl": "/goama_logo.webp"
+    },
+    {
+        "company": "Aadi BD Ltd.",
+        "title": "Software Engineer",
+        "startDate": "June 2020",
+        "endDate": "April 2022",
+        "location": "Dhaka, Bangladesh (Hybrid)",
+        "description": "",
+        "responsibilities": [
+            "Developed and maintained an e-commerce platform serving millions of users worldwide.",
+            "Led local delivery system implementation, boosting logistics efficiency by 40%.",
+            "Conducted code reviews, ensuring high standards of quality, maintainability, and performance.",
+            "Built internal CRM and CMS, collaborating closely with a small, focused team.",
+            "Implemented API services and managed AWS EC2 instances and S3 for optimized performance.",
+            "Integrated logistics partners (Redx, Pathao, DHL, UPS), enhancing delivery processes and service reach."
+        ],
+        "technologies": [
+            "HTML",
+            "CSS",
+            "JavaScript",
+            "React",
+            "Vue.js",
+            "Webpack"
+        ],
+        "logoUrl": "/aadi_logo.png"
+    },
+    {
+        "company": "Venture Solutions Ltd.",
+        "title": "Jr. Software Engineer",
+        "startDate": "May 2019",
+        "endDate": "March 2020",
+        "location": "Dhaka, Bangladesh (On-site)",
+        "description": "",
+        "responsibilities": [
+            "Built booking app for convention hall/catering, increasing client satisfaction by 25%.",
+            "Developed an internal CRM and CMS to streamline project management processes.",
+            "Integrated payment gateway APIs and managed IFIC bank server application deployment."
+        ],
+        "technologies": [
+            "HTML",
+            "CSS",
+            "JavaScript",
+            "Wordpress",
+            "PHP"
+        ],
+        "logoUrl": "/venture_logo.png"
+    },
+    {
+        "company": "Tryonyx(Currently The Prestige Global",
+        "title": "Internship",
+        "startDate": "Feb 2019",
+        "endDate": "May 2019",
+        "location": "Remote",
+        "description": "",
+        "responsibilities": [
+            "Gained foundational skills in Python/Django for web dev and Flutter for mobile app dev.",
+            "Teamwork & Management",
+            "Contributed to team projects, improving collaboration and understanding of software development lifecycle."
+        ],
+        "technologies": [
+            "HTML",
+            "CSS",
+            "JavaScript",
+            "Wordpress",
+            "PHP"
+        ],
+        "logoUrl": "/prestige_logo.png"
+    }
+]
