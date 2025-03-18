@@ -32,7 +32,7 @@ import useMediaQuery from '../hook/useMediaQuery'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
-export default function Cards({ imageURL, title, slug, desc, tag = [] }) {
+export default function Cards({ imageURL, liveUrl, title, slug, desc, tag = [] }) {
   const getTag = (tag) => {
     let values = []
     if (tag == 'React') {
@@ -121,7 +121,7 @@ export default function Cards({ imageURL, title, slug, desc, tag = [] }) {
       borderRadius="10px"
     >
       {/* <Link href={`/projects/${slug}`}> */}
-      <Link href={`/`}>
+      <Stack href={`/`} >
         <ScaleFade transition={{ duration: 1 }} in={true}>
           <Center w="auto">
             <Image
@@ -152,8 +152,9 @@ export default function Cards({ imageURL, title, slug, desc, tag = [] }) {
               >
                 <Link
                   color="white"
-                  href={`/`}
-                  onClick={handleClick}
+                  href={`${liveUrl}`}
+                  target='_blank'
+                  // onClick={handleClick}
                 >
                   <FaExternalLinkAlt aria-label="project link" size={20} />
                 </Link>
@@ -169,7 +170,7 @@ export default function Cards({ imageURL, title, slug, desc, tag = [] }) {
             </Text>
           </Stack>
         </ScaleFade>
-      </Link>
+      </Stack>
     </Stack>
   )
 }

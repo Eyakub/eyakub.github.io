@@ -63,6 +63,7 @@ export default function FeaturedProjects() {
               slug={projectsData[0].fields.slug}
               desc={projectsData[0].fields.description}
               imageURL={projectsData[0].fields.imageUrl}
+              liveUrl={projectsData[0].fields.liveUrl}
               tag={projectsData[0].fields.tags}
               title={projectsData[0].fields.title}
             />
@@ -73,6 +74,7 @@ export default function FeaturedProjects() {
                 slug={projectsData[1].fields.slug}
                 desc={projectsData[1].fields.description}
                 imageURL={projectsData[1].fields.imageUrl}
+                liveUrl={projectsData[1].fields.liveUrl}        
                 tag={projectsData[1].fields.tags}
                 title={projectsData[1].fields.title}
               />
@@ -83,6 +85,7 @@ export default function FeaturedProjects() {
               slug={projectsData[2].fields.slug}
               desc={projectsData[2].fields.description}
               imageURL={projectsData[2].fields.imageUrl}
+              liveUrl={projectsData[2].fields.liveUrl}      
               tag={projectsData[2].fields.tags}
               title={projectsData[2].fields.title}
             />
