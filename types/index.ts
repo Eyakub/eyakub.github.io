@@ -25,6 +25,11 @@ export interface Reference {
   thumbnail?: string;
 }
 
+export interface SocialMedia {
+  platform: 'facebook' | 'twitter' | 'instagram' | 'youtube';
+  url: string;
+}
+
 export interface MartyrData {
   name: LocalizedString;
   birthDate: LocalizedString;
@@ -34,6 +39,7 @@ export interface MartyrData {
   shortBio: LocalizedString;
   biography: LocalizedString;
   gazette_no: LocalizedString;
+  mis_id: LocalizedString;
   timeline: TimelineEvent[];
   deathDetails: {
     location: LocalizedString;
@@ -42,4 +48,5 @@ export interface MartyrData {
   };
   gallery: GalleryImage[];
   references: Reference[];
+  social_media: SocialMedia[];
 }

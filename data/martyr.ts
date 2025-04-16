@@ -19,7 +19,11 @@ export const martyrData: MartyrData = {
   },
   gazette_no: {
     en: "256",
-    bn: "২৫৬"
+    bn: "256"
+  },
+  mis_id: {
+    en: "20818",
+    bn: "20818"
   },
   portrait: "./eyasir/eyasir.jpg",
   shortBio: {
@@ -240,7 +244,7 @@ export const martyrData: MartyrData = {
         bn: 'International Truth and Justice Project'
       },
       date: {
-        en: 'January 14, 2025',
+        en: 'Jan 14, 2025',
         bn: '১৪ জানুয়ারি ২০২৫'
       },
       description: {
@@ -324,7 +328,7 @@ export const martyrData: MartyrData = {
         bn: 'Bangladesh Govt'
       },
       date: {
-        en: 'January 15 2025',
+        en: 'Jan 15 2025',
         bn: '১৫ জানুয়ারি ২০২৫'
       },
       description: {
@@ -333,5 +337,53 @@ export const martyrData: MartyrData = {
       },
       thumbnail: './eyasir/gazzettes_list.png'
     },
+    {
+      type: 'news',
+      title: {
+        en: "Imam, Shafik, and Eyasir's exam registration cards have arrived, but they are no longer here.",
+        bn: 'ইমাম, শাফিক ও ইয়াসিরের পরীক্ষার রেজিস্ট্রেশন কার্ড এসেছে, কিন্তু তারাই নেই'
+      },
+      url: 'https://www.prothomalo.com/bangladesh/pysoa2rmm4',
+      source: {
+        en: 'Prothomalo',
+        bn: 'প্রথম আলো'
+      },
+      date: {
+        en: 'March 14, 2025',
+        bn: '১৪ মার্চ ২০২৫'
+      },
+      description: {
+        en: 'Shaheed Md. Eyasir Sarker was supposed to take the Higher Secondary Certificate (HSC) exam this year. The registration card for the exam had also arrived. However...',
+        bn: 'মো. ইয়াসির সরকারের চলতি বছরের উচ্চমাধ্যমিক সার্টিফিকেট (এইচএসসি) পরীক্ষা দেওয়ার কথা ছিল। পরীক্ষার রেজিস্ট্রেশন কার্ডও এসেছে। তবে...'
+      },
+      thumbnail: './eyasir/eyasir_prothom_alo1.png'
+    },
+    {
+      type: 'news',
+      title: {
+        en: 'The family of Shaheed Eyasir, who was brutally killed by police gunshots, how are they doing?',
+        bn: 'পুলিশের গু/লি/তে নি/র্ম/ম ভাবে নিহত ইয়াসিরের পরিবার কেমন আছে?'
+      },
+      url: 'https://www.facebook.com/rtvonline/videos/1877052566374482',
+      source: {
+        en: 'RTV',
+        bn: 'RTV'
+      },
+      date: {
+        en: 'April 10 2025',
+        bn: '১০ অগাস্ট ২০২৫'
+      },
+      description: {
+        en: 'Shaheed MD Eyasir Sarker was brutally martyred by police gunshots on August 5, 2024, on the main road of Kutubkhali, near Jatrabari. How is his family doing?',
+        bn: 'পুলিশের গু/লি/তে ৫ আগস্ট ২০২৪ যাত্রাবাড়ীর কাছে কুতুবখালীর প্রধান সড়কে নি/র্ম/ম ভাবে শহীদ হন ইয়াসির সরকার। কেমন আছে তার পরিবার?'
+      },
+      thumbnail: './eyasir/eyasir_rtv.png'
+    },
+  ],
+  social_media: [
+    {
+      'platform': 'facebook',
+      'url': 'https://www.facebook.com/photo/?fbid=122147135672469006&set=a.122095744508469006',
+    }
   ]
 };

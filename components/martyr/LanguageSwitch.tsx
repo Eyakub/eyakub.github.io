@@ -16,7 +16,7 @@ export default function LanguageSwitch() {
       onClick={toggleLanguage}
       zIndex={1000}
     >
-      {language === 'en' ? 'বাংলা' : 'English'}
+      {language === 'bn' ? 'English' : 'বাংলা'}
     </Button>
   );
 }
