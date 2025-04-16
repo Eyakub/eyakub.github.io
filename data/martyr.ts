@@ -371,7 +371,7 @@ export const martyrData: MartyrData = {
       },
       date: {
         en: 'April 10 2025',
-        bn: '১০ অগাস্ট ২০২৫'
+        bn: '১০ এপ্রিল ২০২৫'
       },
       description: {
         en: 'Shaheed MD Eyasir Sarker was brutally martyred by police gunshots on August 5, 2024, on the main road of Kutubkhali, near Jatrabari. How is his family doing?',
