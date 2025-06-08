@@ -379,6 +379,27 @@ export const martyrData: MartyrData = {
       },
       thumbnail: './eyasir/eyasir_rtv.png'
     },
+    {
+      type: 'news',
+      title: {
+        en: 'সন্তান ছাড়া কেমন ঈদ কাটাচ্ছেন জুলাই শহীদ পরিবার?',
+        bn: 'সন্তান ছাড়া কেমন ঈদ কাটাচ্ছেন জুলাই শহীদ পরিবার?'
+      },
+      url: 'https://www.facebook.com/watch/?v=24059182157040350&rdid=FAcuQsMvofbLHpyh',
+      source: {
+        en: 'Desh TV',
+        bn: 'Desh TV'
+      },
+      date: {
+        en: 'June 7 2025',
+        bn: '৭ জুন ২০২৫'
+      },
+      description: {
+        en: 'Shaheed MD Eyasir Sarker was brutally martyred by police gunshots on August 5, 2024, on the main road of Kutubkhali, near Jatrabari. How is his family doing?',
+        bn: 'পুলিশের গু/লি/তে ৫ আগস্ট ২০২৪ যাত্রাবাড়ীর কাছে কুতুবখালীর প্রধান সড়কে নি/র্ম/ম ভাবে শহীদ হন ইয়াসির সরকার। কেমন আছে তার পরিবার?'
+      },
+      thumbnail: './eyasir/eyasir_deshtv.png'
+    },
   ],
   social_media: [
     {
