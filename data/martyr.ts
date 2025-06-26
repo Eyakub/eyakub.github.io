@@ -400,6 +400,27 @@ export const martyrData: MartyrData = {
       },
       thumbnail: './eyasir/eyasir_deshtv.png'
     },
+    {
+      type: 'news',
+      title: {
+        en: 'বেঁচে থাকলে আজ ওরা পরীক্ষা দিত ',
+        bn: 'বেঁচে থাকলে আজ ওরা পরীক্ষা দিত '
+      },
+      url: 'https://www.prothomalo.com/bangladesh/4pdi0pwh7d',
+      source: {
+        en: 'Prothom Alo',
+        bn: 'Prothom Alo'
+      },
+      date: {
+        en: 'June 26 2025',
+        bn: '২৬ জুন ২০২৫'
+      },
+      description: {
+        en: 'Shaheed MD Eyasir Sarker was supposed to take the Higher Secondary Certificate (HSC) exam this year. However...',
+        bn: 'মো. ইয়াসির সরকারের চলতি বছরের উচ্চমাধ্যমিক সার্টিফিকেট (এইচএসসি) পরীক্ষা দেওয়ার কথা ছিল তবে...'
+      },
+      thumbnail: './eyasir/hsc_prothom_alo.jpg'
+    },
   ],
   social_media: [
     {
