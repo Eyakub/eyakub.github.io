@@ -1,9 +1,34 @@
 [
     {
+        "company": "SDS Manager",
+        "title": "Software Engineer",
+        "startDate": "July 2025",
+        "endDate": "Present",
+        "location": "Dhaka, Bangladesh (On-site)",
+        "description": "",
+        "responsibilities": [
+            "Developed and maintained backend services using FastAPI, powering AI-driven chatbot solutions with Gemini models for SDS-focused responses.",
+            "Engineered the SDS Authoring platform to automate Safety Data Sheet creation from user-provided data.",
+            "Applied hazard classification using historical data and international standards for compliance.",
+            "Optimized data ingestion pipelines to enhance model performance and response reliability.",
+            "Built responsive frontend components with Tailwind CSS to improve usability.",
+            "Improved system scalability and maintainability through clean API design and testing practices."
+        ],
+        "technologies": [
+            "FastAPI",
+            "Python",
+            "Gemini AI",
+            "Tailwind CSS",
+            "Docker",
+            "Git"
+        ],
+        "logoUrl": "/sds_logo.webp"
+    },
+    {
         "company": "Goama",
         "title": "Full-stack Developer",
         "startDate": "May 2022",
-        "endDate": "Present",
+        "endDate": "August 2025",
         "location": "Dhaka, Bangladesh (Hybrid)",
         "description": "",
         "responsibilities": [

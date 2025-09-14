@@ -1,12 +1,31 @@
 [
     {
         "fields": {
+            "slug": "sds_manager",
+            "description": [
+                ""
+            ],
+            "imageUrl": "/sds_manager.png",
+            "liveUrl": "https://exactsds.sdsmanager.com/",
+            "tags": [
+                "Python",
+                "FastAPI",
+                "Docker",
+                "Gemini AI",
+                "Tailwind CSS",
+                "Git"
+            ],
+            "title": "SDS Manager"
+        }
+    },
+    {
+        "fields": {
             "slug": "go_games",
             "description": [
                 "Developed engaging games for global companies, integrating a gamification platform for user engagement. Implemented as a part of my role at Goama."
             ],
             "imageUrl": "/go-games.png",
-            "liveUrl": "https://go-games.gg/",
+            "liveUrl": "https://go-games.gg/tournament?app=goama&country=SG",
             "tags": [
                 "Python",
                 "Django",

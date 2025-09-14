@@ -1,11 +1,16 @@
-import { Link, Button, chakra, Heading, Stack, Text } from '@chakra-ui/react'
-import useMediaQuery from '../hook/useMediaQuery'
+import { Link, Button, chakra, Heading, Stack, Text, useBreakpointValue } from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
 import { FaLinkedin, FaEnvelope, FaFileAlt } from 'react-icons/fa'
 import SlideUpWhenVisible from '../hook/SlideUpWhenVisible'
 import contactMeData from '../data/contactMe.json'
 
 export default function ContactMe() {
-  const isLargerThan800 = useMediaQuery(800)
+  const [mounted, setMounted] = useState(false)
+  const isLargerThan800 = useBreakpointValue({ base: false, md: true })
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <Stack alignItems="center" justifyContent="center" w="100%" spacing={10}>
@@ -38,7 +43,7 @@ export default function ContactMe() {
               pos="static"
               color="white"
               leftIcon={<FaLinkedin fill="#3CCF91" />}
-              size={isLargerThan800 ? 'md' : 'sm'}
+              size={mounted && isLargerThan800 ? 'md' : 'sm'}
               _hover={{ bg: 'gray.700' }}
               bg="#171717"
             >
@@ -51,7 +56,7 @@ export default function ContactMe() {
               color="white"
               transition="0.3s"
               leftIcon={<FaEnvelope fill="#3CCF91" />}
-              size={isLargerThan800 ? 'md' : 'sm'}
+              size={mounted && isLargerThan800 ? 'md' : 'sm'}
               bg="#171717"
               _hover={{ bg: 'gray.700' }}
             >
@@ -59,14 +64,14 @@ export default function ContactMe() {
             </Button>
           </Link>
           <Link
-            href="https://drive.google.com/file/d/1tvYgAX2Udoh0980xlEa8R8G9X_zSRUau/view?usp=sharing"
+            href="https://drive.google.com/file/d/1KPUkyNtMhGjGncjVA_U99YA6QZMr7WlN/view?usp=sharing"
             isExternal
           >
             <Button
               pos="static"
               color="white"
               leftIcon={<FaFileAlt fill="#3CCF91" />}
-              size={isLargerThan800 ? 'md' : 'sm'}
+              size={mounted && isLargerThan800 ? 'md' : 'sm'}
               _hover={{ bg: 'gray.700' }}
               bg="#171717"
             >

@@ -9,6 +9,7 @@ import {
   TagLabel,
   TagLeftIcon,
   Text,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import {
   FaBootstrap,
@@ -28,7 +29,7 @@ import {
 } from 'react-icons/fa'
 import { SiDjango, SiKubernetes, SiScrapy } from 'react-icons/si'
 import { SiChakraui, SiNextdotjs } from 'react-icons/si'
-import useMediaQuery from '../hook/useMediaQuery'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
@@ -87,8 +88,13 @@ export default function Cards({ imageURL, liveUrl, title, slug, desc, tag = [] }
     return values
   }
 
-  const isLargerThan800 = useMediaQuery(800)
+  const [mounted, setMounted] = useState(false)
+  const isLargerThan800 = useBreakpointValue({ base: false, md: true })
   const router = useRouter()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const Tags = (
     <Box display="flex" flexWrap="wrap" mt={2} mx={-1}>
@@ -96,7 +102,7 @@ export default function Cards({ imageURL, liveUrl, title, slug, desc, tag = [] }
         <Box key={item} p={1}>
           <Tag
             colorScheme={getTag(item)[0]}
-            size={isLargerThan800 ? 'md' : 'sm'}
+            size={mounted && isLargerThan800 ? 'md' : 'sm'}
           >
             <TagLeftIcon as={getTag(item)[1]} />
             <TagLabel>{item}</TagLabel>
@@ -121,7 +127,7 @@ export default function Cards({ imageURL, liveUrl, title, slug, desc, tag = [] }
       borderRadius="10px"
     >
       {/* <Link href={`/projects/${slug}`}> */}
-      <Stack href={`/`} >
+      <Stack>
         <ScaleFade transition={{ duration: 1 }} in={true}>
           <Center w="auto">
             <Image
@@ -150,14 +156,16 @@ export default function Cards({ imageURL, liveUrl, title, slug, desc, tag = [] }
                 isInline
                 spacing={4}
               >
-                <Link
-                  color="white"
-                  href={`${liveUrl}`}
-                  target='_blank'
-                  // onClick={handleClick}
-                >
-                  <FaExternalLinkAlt aria-label="project link" size={20} />
-                </Link>
+                {liveUrl && liveUrl.trim() !== '' && (
+                  <Link
+                    color="white"
+                    href={liveUrl}
+                    target='_blank'
+                    // onClick={handleClick}
+                  >
+                    <FaExternalLinkAlt aria-label="project link" size={20} />
+                  </Link>
+                )}
               </Stack>
             </Stack>
             {Tags}

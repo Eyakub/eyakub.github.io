@@ -96,9 +96,10 @@ export default function Projects({ projects }) {
                   key={project.fields.title}
                   desc={project.fields.description}
                   imageURL={project.fields.imageUrl}
+                  liveUrl={project.fields.liveUrl}
                   tag={project.fields.tags}
                   title={project.fields.title}
-                  // slug={project.fields.slug}
+                  slug={project.fields.slug}
                 />
               ))}
           </SimpleGrid>

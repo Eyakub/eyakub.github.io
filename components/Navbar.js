@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import {
   Button,
   Flex,
@@ -14,14 +14,19 @@ import {
   DrawerBody,
   Stack,
   Icon,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import styled from '@emotion/styled'
-import useMediaQuery from '../hook/useMediaQuery'
 import { AiOutlineMenu } from 'react-icons/ai'
 
 export default function Navbar({ enableTransition }) {
-  const isLargerThan768 = useMediaQuery(768)
+  const [mounted, setMounted] = useState(false)
+  const isLargerThan768 = useBreakpointValue({ base: false, md: true })
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   const { isOpen, onOpen, onClose } = useDisclosure()
   const firstField = useRef()
   const Bracket = styled.span`
@@ -77,7 +82,7 @@ export default function Navbar({ enableTransition }) {
             ? { enter: { duration: 0.5, delay: 0.01 } }
             : { enter: { duration: 0, delay: 0 } }
         }
-        in={true}
+        in={mounted}
         reverse
       >
         <Flex
@@ -102,7 +107,7 @@ export default function Navbar({ enableTransition }) {
               <Bracket>&#123;</Bracket>E<Bracket>&#125;</Bracket>
             </Text>
           </NextLink>
-          {isLargerThan768 ? (
+          {mounted && isLargerThan768 ? (
             <Box mr={7} color="displayColor">
               <NextLink passHref href="/">
                 <Button as="a" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>

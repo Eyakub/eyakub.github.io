@@ -14,38 +14,31 @@ import {
   PopoverArrow,
 } from '@chakra-ui/react'
 
-import useMediaQuery from '../hook/useMediaQuery'
 import SlideUpWhenVisible from '../hook/SlideUpWhenVisible'
 
 export default function AboutMe() {
-  const isLargerThan800 = useMediaQuery(800)
 
   const MoreInfo = ({ text, content }) => {
     return (
       <>
         {' '}
-        {isLargerThan800 ? (
-          <Popover isLazy placement="right" trigger="hover">
-            <PopoverTrigger>
-              <chakra.span
-                color="button1"
-                cursor="help"
-              >
-                {text}
-              </chakra.span>
-            </PopoverTrigger>
-            <PopoverContent color="white" bg="secondary" borderColor="button1">
-              <PopoverArrow bg="button1" />
-              <PopoverBody color="textPrimary" fontSize="sm">
-                {content}
-              </PopoverBody>
-            </PopoverContent>
-          </Popover>
-        ) : (
-          <Text as="span" color="button1">
-            {text}
-          </Text>
-        )}{' '}
+        <Popover isLazy placement="right" trigger="hover">
+          <PopoverTrigger>
+            <chakra.span
+              color="button1"
+              cursor="help"
+            >
+              {text}
+            </chakra.span>
+          </PopoverTrigger>
+          <PopoverContent color="white" bg="secondary" borderColor="button1">
+            <PopoverArrow bg="button1" />
+            <PopoverBody color="textPrimary" fontSize="sm">
+              {content}
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
+        {' '}
       </>
     )
   }
@@ -62,14 +55,14 @@ export default function AboutMe() {
             fontSize={{ base: '14px', md: '16px' }}
             whiteSpace="pre-line"
           >
-            Hey! I'm MD Eyakub Sorkar, a Backend Developer specializing in Python, Django, and Django REST Framework (DRF), with over 4 years of experience building scalable and efficient systems for web applications serving millions of users globally.
+            Hey! I'm MD Eyakub Sorkar, a Backend Developer specializing in Python, Django, and Django REST Framework (DRF), FastAPI, with over 5 years of experience building scalable and efficient systems for web applications serving millions of users globally.
             <br /><br />
             I excel at creating custom web solutions, tackling complex technical challenges, and ensuring smooth, reliable server-side performance. My work spans across {' '}
             where I’ve had the privilege to contribute to solutions that serve millions.
             <br /><br />
             I'm passionate about leveraging modern technologies to solve real-world problems efficiently and effectively. Currently, I’m focused on{' '}
             <MoreInfo
-              content="Building Web Applications using Python, Django, and Django REST Framework (DRF), besides trying to learn new things like Machine Learning and AI."
+              content="Building Web Applications using Python, Django, and Django REST Framework (DRF), FastAPI, besides trying to learn new things like Machine Learning and AI."
               text="Web Aplication & Machine Learning"
             />
             and sharpening my problem-solving skills through{' '}
@@ -105,7 +98,7 @@ export default function AboutMe() {
               objectFit="cover"
               borderRadius="50%"
               alt="Eyakub Sorkar"
-              src="https://i.imgur.com/jixfMqy.png"
+              src="/eyakub_circle.png"
             />
           </Box>
         </Flex>

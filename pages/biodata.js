@@ -255,10 +255,10 @@ const Biodata = () => {
               </Heading>
               <List spacing={2} color={sectionTitleColor}>
                 <ListItem>
-                  <strong>Position:</strong> Full Stack Engineer at Goama
+                  <strong>Position:</strong> Software Engineer (SDS Manager)
                 </ListItem>
                 <ListItem>
-                  <strong>Location:</strong> Gulshan 2, Dhaka
+                  <strong>Location:</strong> Mohakhali, Dhaka (On-site)
                 </ListItem>
               </List>
             </Box>

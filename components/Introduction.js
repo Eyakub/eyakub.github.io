@@ -7,13 +7,19 @@ import {
   Button,
   SlideFade,
   Image,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import { FaEnvelope, FaGithub, FaLinkedin, FaFileAlt } from 'react-icons/fa'
-import useMediaQuery from '../hook/useMediaQuery'
+import { useState, useEffect } from 'react'
 import introductionData from '../data/introduction.json'
 
 export default function Introduction() {
-  const isLargerThan800 = useMediaQuery(800)
+  const [mounted, setMounted] = useState(false)
+  const isLargerThan800 = useBreakpointValue({ base: false, md: true })
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <Stack
@@ -76,7 +82,7 @@ export default function Introduction() {
             Software Engineer
           </Box>{' '}
           with a strong foundation in Computer Science
-          {isLargerThan800
+          {mounted && isLargerThan800
             ? ' and \na commitment to continuous learning and problem-solving.'
             : ' and a commitment to continuous learning and problem-solving.'}
         </Heading>
@@ -124,7 +130,7 @@ export default function Introduction() {
               bg="#171717"  // Change this to black to match the third image
               _hover={{ bg: 'gray.700' }}
               leftIcon={<FaGithub color="#3CCF91" />}
-              size={isLargerThan800 ? 'md' : 'sm'}
+              size={mounted && isLargerThan800 ? 'md' : 'sm'}
             >
               Github
             </Button>
@@ -137,7 +143,7 @@ export default function Introduction() {
               bg="#171717"  // Change this to black to match the third image
               _hover={{ bg: 'gray.700' }}
               leftIcon={<FaLinkedin color="#3CCF91" />}
-              size={isLargerThan800 ? 'md' : 'sm'}
+              size={mounted && isLargerThan800 ? 'md' : 'sm'}
             >
               LinkedIn
             </Button>
@@ -151,21 +157,21 @@ export default function Introduction() {
               _hover={{ bg: 'gray.700' }}
               transition="0.3s"
               leftIcon={<FaEnvelope fill="#3CCF91" />}
-              size={isLargerThan800 ? 'md' : 'sm'}
+              size={mounted && isLargerThan800 ? 'md' : 'sm'}
             >
               Email
             </Button>
           </Link>
 
           <Link
-            href="https://drive.google.com/file/d/1tvYgAX2Udoh0980xlEa8R8G9X_zSRUau/view?usp=sharing"
+            href="https://drive.google.com/file/d/1KPUkyNtMhGjGncjVA_U99YA6QZMr7WlN/view?usp=sharing"
             isExternal
           >
             <Button
               pos="static"
               color="white"
               leftIcon={<FaFileAlt fill="#3CCF91" />}
-              size={isLargerThan800 ? 'md' : 'sm'}
+              size={mounted && isLargerThan800 ? 'md' : 'sm'}
               _hover={{ bg: 'gray.700' }}
               bg="#171717"
             >

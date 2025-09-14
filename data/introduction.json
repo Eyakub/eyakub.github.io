@@ -2,15 +2,15 @@
     {
         "fields": {
             "emoji": "👋",
-            "description": "I'm a passionate Backend Developer."
+            "description": "I'm a passionate Software Engineer."
         }
     },
     {
         "fields": {
             "emoji": "💼",
             "description": "Currently working at",
-            "company": "Goama",
-            "companyUrl": "https://go-games.gg"
+            "company": "SDS Manager",
+            "companyUrl": "https://sdsmanager.com/"
         }
     }
 ]

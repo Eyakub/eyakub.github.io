@@ -1,16 +1,26 @@
 import { motion, useAnimation } from 'framer-motion'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 
 export default function SlideUpWhenVisible({ children, threshold }) {
+  const [mounted, setMounted] = useState(false)
   const controls = useAnimation()
   const [ref, inView] = useInView({ threshold: threshold ? threshold : 0.35 })
 
   useEffect(() => {
-    if (inView) {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (mounted && inView) {
       controls.start('visible')
     }
-  }, [controls, inView])
+  }, [controls, inView, mounted])
+
+  if (!mounted) {
+    return <div>{children}</div>
+  }
+
   return (
     <motion.div
       ref={ref}
