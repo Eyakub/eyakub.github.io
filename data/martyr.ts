@@ -2,8 +2,8 @@ import { MartyrData } from '../types';
 
 export const martyrData: MartyrData = {
   name: {
-    en: "MD Eyasir Sarker",
-    bn: "এম ডি ইয়াসির সরকার"
+    en: "MD EYASIR SARKER",
+    bn: "মো: ইয়াসির সরকার"
   },
   birthDate: {
     en: "November 20, 2006",
@@ -19,16 +19,16 @@ export const martyrData: MartyrData = {
   },
   gazette_no: {
     en: "256",
-    bn: "256"
+    bn: "২৫৬"
   },
   mis_id: {
     en: "20818",
-    bn: "20818"
+    bn: "২০৮১৮"
   },
   portrait: "./eyasir/eyasir.jpg",
   shortBio: {
     en: "A young student activist who lost his life during the Quota Reform Movement, which later evolved into the 'Ek Dofa Andolon' in Bangladesh. He was a second-year student at Government Adamjee Nagar MW College and stood for his beliefs",
-    bn: "এক তরুণ ছাত্র আন্দোলনকারী, যিনি বাংলাদেশে কোটা সংস্কার আন্দোলন, যা পরবর্তীতে 'এক দফা আন্দোলনে' রূপ নেয়, সেই সংগ্রামের সময় প্রাণ হারান। তিনি সরকারি এম ডব্লিউ কলেজের দ্বিতীয় বর্ষের ছাত্র ছিলেন।"
+    bn: "এক তরুণ ছাত্র আন্দোলনকারী, যিনি বাংলাদেশে কোটা সংস্কার আন্দোলন, যা পরবর্তীতে 'এক দফা আন্দোলনে' রূপ নেয়, সেই সংগ্রামের সময় শহীদ হয়। তিনি সরকারি এম ডব্লিউ কলেজের দ্বিতীয় বর্ষের ছাত্র ছিলেন।"
   },
   biography: {
     en: `Shohid Eyasir Sarker, a young and spirited individual, was known for his unwavering courage and deep sense of responsibility. As the fourth among five siblings, he was the heart of his family, always bringing joy with his cheerful demeanor. Even as a student, he displayed leadership qualities and took on responsibilities beyond his years. His sense of justice and love for his fellow countrymen led him to join the July movement against oppression and injustice in Bangladesh.

@@ -31,7 +31,7 @@ export default function Timeline({ data }: TimelineProps) {
             display={{ base: "block", md: "block" }}
           />
           
-          <VStack spacing={8}>
+          <VStack spacing={{ base: 4, md: 8 }}>
             {data.timeline.map((event, index) => (
               <Box key={index} w="full">
                 {/* Desktop Layout */}
@@ -130,33 +130,33 @@ export default function Timeline({ data }: TimelineProps) {
                   direction="row"
                   display={{ base: "flex", md: "none" }}
                   align="flex-start"
-                  gap={4}
+                  gap={3}
                 >
                   <Box position="relative">
                     <Circle 
-                      size={6} 
+                      size={5} 
                       bg="blue.500" 
-                      border="4px" 
+                      border="3px" 
                       borderColor="white" 
-                      boxShadow="lg"
+                      boxShadow="md"
                     />
                   </Box>
                   
                   <Box
                     bg="white"
-                    p={6}
-                    borderRadius="xl"
-                    boxShadow="lg"
+                    p={4}
+                    borderRadius="lg"
+                    boxShadow="md"
                     border="1px solid"
                     borderColor="gray.200"
                     flex={1}
                   >
-                    <VStack align="flex-start" spacing={3}>
-                      <Text fontSize="lg" fontWeight="bold" color="blue.500">
+                    <VStack align="flex-start" spacing={2}>
+                      <Text fontSize="sm" fontWeight="bold" color="blue.500">
                         {event.date[language]}
                       </Text>
-                      <Heading as="h3" size="md" color="gray.800">{event.title[language]}</Heading>
-                      <Text color="gray.600" lineHeight="tall">
+                      <Heading as="h3" size="sm" color="gray.800">{event.title[language]}</Heading>
+                      <Text color="gray.600" lineHeight="tall" fontSize="sm">
                         {event.description[language]}
                       </Text>
                     </VStack>
