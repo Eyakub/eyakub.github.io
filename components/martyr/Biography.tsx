@@ -13,46 +13,138 @@ export default function Biography({ data }: BiographyProps) {
   const { language } = useLanguage();
 
   return (
-    <Box as="section" py={16} bg="white">
+    <Box as="section" id="biography" py={16} bg="white">
       <Container maxW="container.xl">
         <Flex align="center" gap={2} mb={8}>
           <ScrollText size={24} color="blue.500" />
           <Heading as="h2" size="xl" color="gray.800">Biography</Heading>
         </Flex>
-        <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={8}>
-          <VStack spacing={4}>
-            <Image
-              src={data.portrait}
-              alt={data.name[language]}
-              objectFit="cover"
-              h="400px"
+        <Grid templateColumns={{ base: '1fr', lg: '400px 1fr' }} gap={{ base: 8, lg: 12 }} alignItems="start">
+          <VStack spacing={6} position={{ base: "static", lg: "sticky" }} top={{ base: "auto", lg: 8 }}>
+            <Box position="relative">
+              <Image
+                src={data.portrait}
+                alt={data.name[language]}
+                objectFit="cover"
+                h={{ base: "350px", lg: "450px" }}
+                w="full"
+                borderRadius="xl"
+                boxShadow="2xl"
+                border="4px solid"
+                borderColor="red.100"
+              />
+              {/* Memorial Badge */}
+              <Box
+                position="absolute"
+                top={4}
+                right={4}
+                bg="red.500"
+                color="white"
+                px={3}
+                py={1}
+                borderRadius="full"
+                fontSize="sm"
+                fontWeight="bold"
+                letterSpacing="wide"
+              >
+                শহীদ
+              </Box>
+            </Box>
+            
+            <Box 
+              bg="linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%)" 
+              p={{ base: 6, lg: 8 }} 
+              borderRadius="xl" 
               w="full"
-              borderRadius="lg"
+              border="1px solid"
+              borderColor="gray.200"
               boxShadow="lg"
-            />
-            <Box bg="gray.50" p={6} borderRadius="lg" w="full" textColor={"gray.700"}>
-              <Heading as="h3" size="md" mb={4}>Quick Facts</Heading>
-              <Grid templateColumns="auto 1fr" gap={2}>
-                <Text fontWeight="medium">Born:</Text>
-                <Text textAlign="right">{data.birthDate[language]}</Text>
-                <Text fontWeight="medium">Birthplace:</Text>
-                <Text textAlign="right">{data.birthPlace[language]}</Text>
-                <Text fontWeight="medium">Died:</Text>
-                <Text textAlign="right">{data.deathDate[language]}</Text>
-                <Text fontWeight="medium">Bangladesh Shaheed Gazette No:</Text>
-                <Text textAlign="right">{data.gazette_no[language]}</Text>
-                <Text fontWeight="medium">MIS ID:</Text>
-                <Text textAlign="right">{data.mis_id[language]}</Text>
-              </Grid>
+            >
+              <Heading as="h3" size="lg" mb={6} color="gray.800" textAlign="center">
+                Quick Facts
+              </Heading>
+              <VStack spacing={4} align="stretch">
+                <Box>
+                  <Text fontSize="sm" color="gray.500" fontWeight="semibold" mb={1}>
+                    Born
+                  </Text>
+                  <Text fontSize="lg" color="gray.800" fontWeight="medium">
+                    {data.birthDate[language]}
+                  </Text>
+                </Box>
+                <Box>
+                  <Text fontSize="sm" color="gray.500" fontWeight="semibold" mb={1}>
+                    Birthplace
+                  </Text>
+                  <Text fontSize="lg" color="gray.800" fontWeight="medium">
+                    {data.birthPlace[language]}
+                  </Text>
+                </Box>
+                <Box>
+                  <Text fontSize="sm" color="gray.500" fontWeight="semibold" mb={1}>
+                    Martyrdom
+                  </Text>
+                  <Text fontSize="lg" color="red.600" fontWeight="medium">
+                    {data.deathDate[language]}
+                  </Text>
+                </Box>
+                <Box>
+                  <Text fontSize="sm" color="gray.500" fontWeight="semibold" mb={1}>
+                    Bangladesh Shaheed Gazette No
+                  </Text>
+                  <Text fontSize="lg" color="gray.800" fontWeight="medium">
+                    {data.gazette_no[language]}
+                  </Text>
+                </Box>
+                <Box>
+                  <Text fontSize="sm" color="gray.500" fontWeight="semibold" mb={1}>
+                    MIS ID
+                  </Text>
+                  <Text fontSize="lg" color="gray.800" fontWeight="medium">
+                    {data.mis_id[language]}
+                  </Text>
+                </Box>
+              </VStack>
             </Box>
           </VStack>
-          <VStack align="stretch" spacing={6}>
-            <Text fontSize="xl" color="gray.600">{data.shortBio[language]}</Text>
-            {data.biography[language].split('\n\n').map((paragraph, index) => (
-              <Text key={index} color="gray.700" lineHeight="tall">
-                {paragraph}
+          
+          <VStack align="stretch" spacing={{ base: 6, lg: 8 }}>
+            <Box>
+              <Text 
+                fontSize={{ base: "xl", lg: "2xl" }} 
+                color="gray.700" 
+                lineHeight="tall"
+                fontWeight="medium"
+                mb={6}
+                textAlign="center"
+                bg="gray.50"
+                p={{ base: 4, lg: 6 }}
+                borderRadius="lg"
+                borderLeft="4px solid"
+                borderLeftColor="red.500"
+              >
+                {data.shortBio[language]}
               </Text>
-            ))}
+            </Box>
+            
+            <Box>
+              <Heading as="h3" size="lg" mb={6} color="gray.800">
+                Life Story
+              </Heading>
+              <VStack spacing={{ base: 4, lg: 6 }} align="stretch">
+                {data.biography[language].split('\n\n').map((paragraph, index) => (
+                  <Text 
+                    key={index} 
+                    color="gray.700" 
+                    lineHeight="tall"
+                    fontSize={{ base: "md", lg: "lg" }}
+                    textAlign="justify"
+                  >
+                    {paragraph}
+                  </Text>
+                ))}
+              </VStack>
+            </Box>
           </VStack>
         </Grid>
       </Container>

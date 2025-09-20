@@ -17,6 +17,7 @@ import {
   ModalBody,
   ModalCloseButton,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 
 interface GalleryProps {
@@ -29,42 +30,72 @@ export default function Gallery({ data }: GalleryProps) {
   const lang = language as "en" | "bn";
 
   return (
-    <Box as="section" py={16} bg="white">
+    <Box as="section" id="gallery" py={16} bg="white">
       <Container maxW="container.xl">
         <Flex align="center" gap={2} mb={8}>
           <ImageIcon size={24} color="blue.500" />
           <Heading as="h2" size="xl" color="gray.800">Image Gallery</Heading>
         </Flex>
-        <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={6}>
+        <Grid templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} gap={{ base: 4, md: 6, lg: 8 }}>
           {data.gallery.map((image, index) => (
             <Box
               key={index}
               position="relative"
               cursor="pointer"
               onClick={() => setSelectedImage(index)}
-              transition="transform 0.3s"
-              _hover={{ transform: 'scale(1.05)' }}
+              transition="all 0.3s ease"
+              _hover={{ 
+                transform: 'translateY(-8px)',
+                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)'
+              }}
+              borderRadius="xl"
+              overflow="hidden"
+              bg="white"
+              boxShadow="lg"
+              border="1px solid"
+              borderColor="gray.200"
             >
               <Image
                 src={image.url}
                 alt={image.alt[lang]}
-                h="256px"
+                h={{ base: "200px", md: "240px", lg: "280px" }}
                 w="full"
                 objectFit="cover"
-                borderRadius="lg"
+                transition="transform 0.3s ease"
+                _groupHover={{ transform: 'scale(1.1)' }}
               />
               <Box
                 position="absolute"
                 inset={0}
-                bg="blackAlpha.400"
+                bg="linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)"
                 opacity={0}
-                transition="opacity 0.3s"
+                transition="opacity 0.3s ease"
                 _hover={{ opacity: 1 }}
-                borderRadius="lg"
                 display="flex"
                 alignItems="flex-end"
+                p={{ base: 4, lg: 6 }}
               >
-                <Text color="white" p={4}>{image.caption[lang]}</Text>
+                <VStack align="flex-start" spacing={2} w="full">
+                  <Text 
+                    color="white" 
+                    fontSize={{ base: "md", lg: "lg" }} 
+                    fontWeight="semibold"
+                    lineHeight="short"
+                  >
+                    {image.caption[lang]}
+                  </Text>
+                  <Box
+                    bg="rgba(255, 255, 255, 0.2)"
+                    px={{ base: 2, lg: 3 }}
+                    py={1}
+                    borderRadius="full"
+                    fontSize={{ base: "xs", lg: "sm" }}
+                    color="white"
+                    fontWeight="medium"
+                  >
+                    Click to view
+                  </Box>
+                </VStack>
               </Box>
             </Box>
           ))}
