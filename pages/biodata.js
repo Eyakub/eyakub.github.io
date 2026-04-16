@@ -58,7 +58,7 @@ const Biodata = () => {
   if (!mounted) return null;
 
   return (
-    <Box bg={colors.surface} color={colors.onSurface} minH="100vh" fontFamily={fonts.sans}>
+    <Box bg={colors.surface} color={colors.onSurface} minH="100vh" w="full" maxW="100vw" overflowX="hidden" fontFamily={fonts.sans}>
       <Head>
         <title>Biodata - MD Eyakub Sorkar</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -80,7 +80,7 @@ const Biodata = () => {
       </Head>
 
       {/* Main Content */}
-      <Box as="main" py={{ base: 12, lg: 20 }} px={{ base: 6, lg: 12 }} maxW="6xl" mx="auto">
+      <Box as="main" py={{ base: 8, lg: 20 }} px={{ base: 4, lg: 12 }} maxW="6xl" mx="auto" w="full">
 
         {/* Hero Section */}
         <Grid templateColumns={{ base: "1fr", lg: "repeat(12, 1fr)" }} gap={12} alignItems="end" mb={24}>
@@ -88,7 +88,7 @@ const Biodata = () => {
             <Box display="inline-block" px={4} py={1} bg={colors.tertiaryContainer} color={colors.tertiaryFixedDim} borderRadius="full" fontSize="xs" fontWeight="bold" textTransform="uppercase" letterSpacing="0.2em" mb={4}>
               Marriage Biodata
             </Box>
-            <Heading fontFamily={fonts.serif} fontSize={{ base: "6xl", lg: "8xl" }} fontWeight="bold" color={colors.primary} letterSpacing="tight" lineHeight="1.1" mb={6}>
+            <Heading fontFamily={fonts.serif} fontSize={{ base: "4xl", md: "6xl", lg: "8xl" }} fontWeight="bold" color={colors.primary} letterSpacing="tight" lineHeight="1.1" mb={6}>
               MD Eyakub <br /> <Box as="span" fontStyle="italic" fontWeight="normal">Sorkar</Box>
             </Heading>
             <Text fontSize="xl" color={colors.onSurfaceVariant} fontWeight="light" maxW="xl" lineHeight="relaxed">
@@ -96,20 +96,19 @@ const Biodata = () => {
             </Text>
           </GridItem>
 
-          <GridItem colSpan={{ lg: 5 }} position="relative" role="group">
+          <GridItem colSpan={{ lg: 5 }} position="relative" role="group" minW={0} minH={0}>
             <Box position="absolute" top="-1rem" left="-1rem" right="-1rem" bottom="-1rem" bg={colors.surfaceLow} borderRadius="xl" zIndex={0} transition="transform 0.5s" _groupHover={{ transform: "scale(1.05)" }} />
 
             {/* Real Carousel Integration */}
-            <Box position="relative" zIndex={1} w="full" sx={{ aspectRatio: "4/5" }} borderRadius="xl" overflow="hidden" boxShadow="2xl">
+            <Box position="relative" zIndex={1} w="full" minW={0} minH={0} sx={{ aspectRatio: "4/5" }} borderRadius="xl" overflow="hidden" boxShadow="2xl">
               <Swiper
-                modules={[Pagination, Navigation, Autoplay, EffectFade]}
+                modules={[Pagination, Navigation, Autoplay]}
                 spaceBetween={0}
                 slidesPerView={1}
                 loop={true}
                 pagination={{ clickable: true, dynamicBullets: true }}
                 navigation={{ enabled: true }}
                 autoplay={{ delay: 3500, disableOnInteraction: false }}
-                effect="fade"
                 style={{ width: "100%", height: "100%" }}
               >
                 {["/image3.webp", "/image4.webp", "/image5.webp", "/image1.jpeg", "/eyakub2.jpg", "/eyakub3.jpg"].map((src, idx) => (
@@ -126,7 +125,7 @@ const Biodata = () => {
         <Grid templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} gap={8}>
 
           {/* Personal Vitals */}
-          <GridItem colSpan={{ md: 2 }} bg={colors.surfaceLow} p={{ base: 6, md: 10 }} borderRadius="xl">
+          <GridItem colSpan={{ md: 2 }} bg={colors.surfaceLow} p={{ base: 6, md: 10 }} borderRadius="xl" overflow="hidden">
             <HStack mb={8} spacing={3}>
               <Box w={12} h="1px" bg={colors.tertiaryFixedDim} />
               <Heading fontFamily={fonts.serif} fontSize="sm" fontWeight="bold" color={colors.primary} textTransform="uppercase" letterSpacing="widest">
@@ -162,7 +161,7 @@ const Biodata = () => {
           </GridItem>
 
           {/* Professional Pedigree */}
-          <GridItem bg={colors.primary} color={colors.onPrimary} p={{ base: 6, md: 10 }} borderRadius="xl" display="flex" flexDir="column" justify="space-between">
+          <GridItem bg={colors.primary} color={colors.onPrimary} p={{ base: 6, md: 10 }} borderRadius="xl" overflow="hidden" display="flex" flexDir="column" justify="space-between">
             <Box>
               <MaterialIcon icon="terminal" color={colors.tertiaryFixedDim} fontSize="4xl" mb={6} />
               <Heading fontFamily={fonts.serif} fontSize="2xl" fontWeight="bold" mb={2}>Career & Education</Heading>
@@ -171,7 +170,7 @@ const Biodata = () => {
                 <Box>
                   <Text fontSize="10px" fontWeight="bold" textTransform="uppercase" letterSpacing="widest" color={colors.tertiaryFixedDim} mb={1}>Current Role</Text>
                   <Text fontWeight="semibold">SDS Manager (Software Engineer)</Text>
-                  <Text fontSize="xs" opacity={0.6}>Mohakhali, Dhaka (On-site)</Text>
+                  <Text fontSize="xs" opacity={0.6}>The Glass House, Gulshan 1</Text>
                 </Box>
                 <Box>
                   <Text fontSize="10px" fontWeight="bold" textTransform="uppercase" letterSpacing="widest" color={colors.tertiaryFixedDim} mb={1}>Academic Background</Text>
@@ -183,7 +182,7 @@ const Biodata = () => {
           </GridItem>
 
           {/* Family Heritage */}
-          <GridItem colSpan={{ md: 2 }} bg={colors.surfaceLowest} p={{ base: 6, md: 10 }} borderRadius="xl" boxShadow="xl">
+          <GridItem colSpan={{ md: 2 }} bg={colors.surfaceLowest} p={{ base: 6, md: 10 }} borderRadius="xl" boxShadow="xl" overflow="hidden">
             <HStack mb={8} spacing={3}>
               <Box w={8} h="1px" bg={colors.tertiaryFixedDim} />
               <Heading fontFamily={fonts.serif} fontSize="sm" fontWeight="bold" color={colors.primary} textTransform="uppercase" letterSpacing="widest">
@@ -237,7 +236,7 @@ const Biodata = () => {
           </GridItem>
 
           {/* Expectations */}
-          <GridItem bg={colors.tertiaryContainer} color={colors.onPrimary} p={{ base: 6, md: 10 }} borderRadius="xl" borderLeft="8px solid" borderColor={colors.tertiaryFixedDim}>
+          <GridItem bg={colors.tertiaryContainer} color={colors.onPrimary} p={{ base: 6, md: 10 }} borderRadius="xl" borderLeft="8px solid" borderColor={colors.tertiaryFixedDim} overflow="hidden">
             <HStack mb={8} spacing={3}>
               <Box w={8} h="1px" bg={colors.tertiaryFixedDim} />
               <Heading fontFamily={fonts.serif} fontSize="sm" fontWeight="bold" textTransform="uppercase" letterSpacing="widest">
@@ -267,7 +266,6 @@ const Biodata = () => {
 
         {/* Contact Footer */}
         <Box mt={24} bg={colors.surfaceLow} borderRadius="3xl" p={{ base: 8, md: 12 }} overflow="hidden" position="relative">
-          <Box position="absolute" top={0} right={0} w={64} h={64} bg="rgba(233, 193, 118, 0.1)" borderRadius="full" filter="blur(60px)" mr="-8rem" mt="-8rem" />
           <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)" }} gap={12} position="relative" zIndex={10}>
             <Box>
               <Heading fontFamily={fonts.serif} fontSize="4xl" fontWeight="bold" color={colors.primary} mb={4} lineHeight="tight">
@@ -284,7 +282,7 @@ const Biodata = () => {
               </Box>
               <Box>
                 <Text fontSize="10px" fontWeight="black" textTransform="uppercase" letterSpacing="0.2em" color={colors.onSurfaceVariant} mb={2}>Email</Text>
-                <Text fontSize="lg" fontWeight="bold" color={colors.primary}>eyakubsorkar@gmail.com</Text>
+                <Text fontSize="lg" fontWeight="bold" color={colors.primary} wordBreak="break-word">eyakubsorkar@gmail.com</Text>
               </Box>
               <Box>
                 <Text fontSize="10px" fontWeight="black" textTransform="uppercase" letterSpacing="0.2em" color={colors.onSurfaceVariant} mb={2}>Instagram</Text>
