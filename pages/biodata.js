@@ -92,7 +92,7 @@ const Biodata = () => {
               MD Eyakub <br /> <Box as="span" fontStyle="italic" fontWeight="normal">Sorkar</Box>
             </Heading>
             <Text fontSize="xl" color={colors.onSurfaceVariant} fontWeight="light" maxW="xl" lineHeight="relaxed">
-              Software Engineer & SDS Manager based in Dhaka. A warm and caring individual balancing modern tech with traditional family values.
+              Software Engineer based in Dhaka. A warm and caring individual balancing modern tech with traditional family values.
             </Text>
           </GridItem>
 
@@ -169,7 +169,7 @@ const Biodata = () => {
               <VStack align="stretch" spacing={6}>
                 <Box>
                   <Text fontSize="10px" fontWeight="bold" textTransform="uppercase" letterSpacing="widest" color={colors.tertiaryFixedDim} mb={1}>Current Role</Text>
-                  <Text fontWeight="semibold">SDS Manager (Software Engineer)</Text>
+                  <Text fontWeight="semibold">Software Engineer</Text>
                   <Text fontSize="xs" opacity={0.6}>The Glass House, Gulshan 1</Text>
                 </Box>
                 <Box>
