@@ -86,7 +86,7 @@ const WorkExperience: React.FC = () => {
           Work Experience
         </Heading>
         <Text color="textSecondary" fontSize={{ base: 'sm', md: 'md' }}>
-          5+ years building backend systems and full-stack applications.
+          6+ years building backend systems and full-stack applications.
         </Text>
       </Stack>
 
