@@ -1,172 +1,79 @@
 'use client';
 
-import { MartyrData } from "../../types";
-import { Clock } from "lucide-react";
-import { useLanguage } from "../../contexts/LanguageContext";
-import { Box, Container, Flex, Heading, Text, VStack, HStack, Circle, Divider } from "@chakra-ui/react";
+import { MartyrData } from '../../types';
+import { Baby, BookOpen, GraduationCap, Megaphone, Flame } from 'lucide-react';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { SectionHeading } from './ui/Ornament';
 
 interface TimelineProps {
   data: MartyrData;
 }
 
+const eventIcons = [Baby, BookOpen, GraduationCap, Megaphone, Flame];
+
 export default function Timeline({ data }: TimelineProps) {
   const { language } = useLanguage();
+  const isBn = language === 'bn';
 
   return (
-    <Box as="section" id="timeline" py={16} bg="gray.50">
-      <Container maxW="container.xl">
-        <Flex align="center" gap={2} mb={12}>
-          <Clock size={24} color="blue.500" />
-          <Heading as="h2" size="xl" color="gray.800">Life Timeline</Heading>
-        </Flex>
-        <Box position="relative">
-          {/* Desktop Timeline Line */}
-          <Box
-            position="absolute"
-            left={{ base: "20px", md: "50%" }}
-            transform={{ base: "none", md: "translateX(-50%)" }}
-            h="full"
-            w={{ base: "2px", md: "2px" }}
-            bg="linear-gradient(to bottom, #3182ce, #e53e3e)"
-            display={{ base: "block", md: "block" }}
-          />
-          
-          <VStack spacing={{ base: 4, md: 8 }}>
-            {data.timeline.map((event, index) => (
-              <Box key={index} w="full">
-                {/* Desktop Layout */}
-                <Flex
-                  w="full"
-                  justify="center"
-                  direction={{ base: "column", md: index % 2 === 0 ? 'row' : 'row-reverse' }}
-                  display={{ base: "none", md: "flex" }}
+    <section id="timeline" className="relative bg-parchment/60 py-20 md:py-28">
+      <div className="mx-auto max-w-5xl px-5 lg:px-8">
+        <SectionHeading eyebrow="A Life in Brief" en="Timeline" bn="জীবনের ধারা" />
+
+        <ol className="relative space-y-12 before:absolute before:left-3 before:top-2 before:bottom-2 before:w-px before:bg-gradient-to-b before:from-bd-green/70 before:via-ink/20 before:to-bd-red/80 md:before:left-1/2 md:before:-translate-x-1/2">
+          {data.timeline.map((event, i) => {
+            const Icon = eventIcons[i] ?? BookOpen;
+            const isLast = i === data.timeline.length - 1;
+            const alignRight = i % 2 === 1;
+            return (
+              <li key={i} className="relative pl-14 md:pl-0">
+                <span
+                  className={`absolute left-0 top-1 z-10 flex h-6 w-6 items-center justify-center rounded-full ring-4 ring-parchment md:left-1/2 md:-translate-x-1/2 ${
+                    isLast ? 'bg-bd-red' : 'bg-bd-green'
+                  }`}
+                  aria-hidden
                 >
-                  <Box w="50%" pr={index % 2 === 0 ? 8 : 0} pl={index % 2 === 0 ? 0 : 8}>
-                    {index % 2 === 0 ? (
-                      <Box
-                        bg="white"
-                        p={6}
-                        borderRadius="xl"
-                        boxShadow="lg"
-                        border="1px solid"
-                        borderColor="gray.200"
-                        position="relative"
-                        _before={{
-                          content: '""',
-                          position: "absolute",
-                          right: "-12px",
-                          top: "50%",
-                          transform: "translateY(-50%)",
-                          width: 0,
-                          height: 0,
-                          borderTop: "12px solid transparent",
-                          borderBottom: "12px solid transparent",
-                          borderLeft: "12px solid white"
-                        }}
-                      >
-                        <VStack align="flex-end" spacing={3}>
-                          <Text fontSize="xl" fontWeight="bold" color="blue.500">
-                            {event.date[language]}
-                          </Text>
-                          <Heading as="h3" size="md" color="gray.800">{event.title[language]}</Heading>
-                          <Text color="gray.600" textAlign="right" lineHeight="tall">
-                            {event.description[language]}
-                          </Text>
-                        </VStack>
-                      </Box>
-                    ) : null}
-                  </Box>
-                  
-                  <Box position="relative" zIndex={2}>
-                    <Circle 
-                      size={6} 
-                      bg="blue.500" 
-                      border="4px" 
-                      borderColor="white" 
-                      boxShadow="lg"
-                    />
-                  </Box>
-                  
-                  <Box w="50%" pl={index % 2 === 0 ? 8 : 0} pr={index % 2 === 0 ? 0 : 8}>
-                    {index % 2 === 1 ? (
-                      <Box
-                        bg="white"
-                        p={6}
-                        borderRadius="xl"
-                        boxShadow="lg"
-                        border="1px solid"
-                        borderColor="gray.200"
-                        position="relative"
-                        _before={{
-                          content: '""',
-                          position: "absolute",
-                          left: "-12px",
-                          top: "50%",
-                          transform: "translateY(-50%)",
-                          width: 0,
-                          height: 0,
-                          borderTop: "12px solid transparent",
-                          borderBottom: "12px solid transparent",
-                          borderRight: "12px solid white"
-                        }}
-                      >
-                        <VStack align="flex-start" spacing={3}>
-                          <Text fontSize="xl" fontWeight="bold" color="blue.500">
-                            {event.date[language]}
-                          </Text>
-                          <Heading as="h3" size="md" color="gray.800">{event.title[language]}</Heading>
-                          <Text color="gray.600" lineHeight="tall">
-                            {event.description[language]}
-                          </Text>
-                        </VStack>
-                      </Box>
-                    ) : null}
-                  </Box>
-                </Flex>
-                
-                {/* Mobile Layout */}
-                <Flex
-                  w="full"
-                  direction="row"
-                  display={{ base: "flex", md: "none" }}
-                  align="flex-start"
-                  gap={3}
+                  <Icon size={12} className="text-ivory" strokeWidth={2.5} />
+                </span>
+
+                <div
+                  className={`md:w-[calc(50%-2.5rem)] ${
+                    alignRight ? 'md:ml-auto md:pl-10 md:text-left' : 'md:pr-10 md:text-right'
+                  }`}
                 >
-                  <Box position="relative">
-                    <Circle 
-                      size={5} 
-                      bg="blue.500" 
-                      border="3px" 
-                      borderColor="white" 
-                      boxShadow="md"
-                    />
-                  </Box>
-                  
-                  <Box
-                    bg="white"
-                    p={4}
-                    borderRadius="lg"
-                    boxShadow="md"
-                    border="1px solid"
-                    borderColor="gray.200"
-                    flex={1}
+                  <div
+                    className={`inline-block rounded-sm border border-ink/10 bg-ivory px-5 py-4 shadow-sm ${
+                      alignRight ? 'text-left' : 'md:text-right'
+                    }`}
                   >
-                    <VStack align="flex-start" spacing={2}>
-                      <Text fontSize="sm" fontWeight="bold" color="blue.500">
-                        {event.date[language]}
-                      </Text>
-                      <Heading as="h3" size="sm" color="gray.800">{event.title[language]}</Heading>
-                      <Text color="gray.600" lineHeight="tall" fontSize="sm">
-                        {event.description[language]}
-                      </Text>
-                    </VStack>
-                  </Box>
-                </Flex>
-              </Box>
-            ))}
-          </VStack>
-        </Box>
-      </Container>
-    </Box>
+                    <p
+                      className={`display text-2xl font-bold leading-none md:text-3xl ${
+                        isLast ? 'text-bd-red' : 'text-bd-green'
+                      } ${isBn ? 'font-bn-serif' : ''}`}
+                    >
+                      {event.date[language]}
+                    </p>
+                    <h3
+                      className={`mt-2 text-lg font-semibold text-ink md:text-xl ${
+                        isBn ? 'font-bn-serif' : 'font-serif'
+                      }`}
+                    >
+                      {event.title[language]}
+                    </h3>
+                    <p
+                      className={`mt-2 text-[15px] leading-relaxed text-ink-soft ${
+                        isBn ? 'font-bn' : 'font-serif'
+                      }`}
+                    >
+                      {event.description[language]}
+                    </p>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    </section>
   );
 }

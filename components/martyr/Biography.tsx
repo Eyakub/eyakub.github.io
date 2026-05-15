@@ -1,9 +1,8 @@
 'use client';
 
-import { MartyrData } from "../../types";
-import { ScrollText } from "lucide-react";
-import { Box, Container, Flex, Grid, GridItem, Heading, Image, Text, VStack } from "@chakra-ui/react";
-import { useLanguage } from "../../contexts/LanguageContext";
+import { MartyrData } from '../../types';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { SectionHeading } from './ui/Ornament';
 
 interface BiographyProps {
   data: MartyrData;
@@ -11,143 +10,105 @@ interface BiographyProps {
 
 export default function Biography({ data }: BiographyProps) {
   const { language } = useLanguage();
+  const isBn = language === 'bn';
+  const paragraphs = data.biography[language]
+    .split('\n\n')
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+  const pullQuoteEn =
+    'His sense of justice and love for his fellow countrymen led him to join the July movement.';
+  const pullQuoteBn = 'দেশের প্রতি তার অগাধ ভালোবাসা ও অন্যায়ের প্রতি ঘৃণা তাকে জুলাই গণআন্দোলনে যুক্ত হতে অনুপ্রাণিত করেছিল।';
 
   return (
-    <Box as="section" id="biography" py={16} bg="white">
-      <Container maxW="container.xl">
-        <Flex align="center" gap={2} mb={8}>
-          <ScrollText size={24} color="blue.500" />
-          <Heading as="h2" size="xl" color="gray.800">Biography</Heading>
-        </Flex>
-        <Grid templateColumns={{ base: '1fr', lg: '400px 1fr' }} gap={{ base: 8, lg: 12 }} alignItems="start">
-          <VStack spacing={6} position={{ base: "static", lg: "sticky" }} top={{ base: "auto", lg: 8 }}>
-            <Box position="relative">
-              <Image
-                src={data.portrait}
-                alt={data.name[language]}
-                objectFit="cover"
-                h={{ base: "350px", lg: "450px" }}
-                w="full"
-                borderRadius="xl"
-                boxShadow="2xl"
-                border="4px solid"
-                borderColor="red.100"
-              />
-              {/* Memorial Badge */}
-              <Box
-                position="absolute"
-                top={4}
-                right={4}
-                bg="red.500"
-                color="white"
-                px={3}
-                py={1}
-                borderRadius="full"
-                fontSize="sm"
-                fontWeight="bold"
-                letterSpacing="wide"
-              >
-                শহীদ
-              </Box>
-            </Box>
-            
-            <Box 
-              bg="linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%)" 
-              p={{ base: 6, lg: 8 }} 
-              borderRadius="xl" 
-              w="full"
-              border="1px solid"
-              borderColor="gray.200"
-              boxShadow="lg"
+    <section id="biography" className="relative py-20 md:py-28">
+      <div className="mx-auto max-w-6xl px-5 lg:px-8">
+        <SectionHeading eyebrow="A Life · জীবনী" en="Biography" bn="তাঁর কথা" />
+
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_320px] lg:gap-16">
+          {/* Editorial body */}
+          <article className={`has-dropcap max-w-[68ch] ${isBn ? 'font-bn' : 'font-serif'}`}>
+            <p
+              className={`mb-10 border-l-2 border-bd-red/70 pl-6 text-xl leading-relaxed text-ink-soft md:text-2xl ${
+                isBn ? 'font-bn' : 'font-serif italic'
+              }`}
             >
-              <Heading as="h3" size="lg" mb={6} color="gray.800" textAlign="center">
+              {data.shortBio[language]}
+            </p>
+
+            {paragraphs.map((para, i) => (
+              <div key={i}>
+                <p className="mb-6 text-[18px] leading-[1.85] text-ink-soft md:text-[19px]">
+                  {para}
+                </p>
+                {i === 1 && (
+                  <aside className="my-10 border-y border-ink/15 py-6 text-center">
+                    <p
+                      className={`pull-quote ${isBn ? 'bn font-bn-serif' : ''} text-2xl leading-snug text-ink md:text-3xl`}
+                    >
+                      “{isBn ? pullQuoteBn : pullQuoteEn}”
+                    </p>
+                  </aside>
+                )}
+              </div>
+            ))}
+          </article>
+
+          {/* Quick facts rail */}
+          <aside className="lg:sticky lg:top-20 lg:self-start">
+            <div className="rounded-sm border border-ink/15 bg-parchment/80 p-6 shadow-sm">
+              <p className="mb-5 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-bd-red">
+                <span className="h-px w-6 bg-bd-red" />
                 Quick Facts
-              </Heading>
-              <VStack spacing={4} align="stretch">
-                <Box>
-                  <Text fontSize="sm" color="gray.500" fontWeight="semibold" mb={1}>
-                    Born
-                  </Text>
-                  <Text fontSize="lg" color="gray.800" fontWeight="medium">
-                    {data.birthDate[language]}
-                  </Text>
-                </Box>
-                <Box>
-                  <Text fontSize="sm" color="gray.500" fontWeight="semibold" mb={1}>
-                    Birthplace
-                  </Text>
-                  <Text fontSize="lg" color="gray.800" fontWeight="medium">
-                    {data.birthPlace[language]}
-                  </Text>
-                </Box>
-                <Box>
-                  <Text fontSize="sm" color="gray.500" fontWeight="semibold" mb={1}>
-                    Martyrdom
-                  </Text>
-                  <Text fontSize="lg" color="red.600" fontWeight="medium">
-                    {data.deathDate[language]}
-                  </Text>
-                </Box>
-                <Box>
-                  <Text fontSize="sm" color="gray.500" fontWeight="semibold" mb={1}>
-                    Bangladesh Shaheed Gazette No
-                  </Text>
-                  <Text fontSize="lg" color="gray.800" fontWeight="medium">
-                    {data.gazette_no[language]}
-                  </Text>
-                </Box>
-                <Box>
-                  <Text fontSize="sm" color="gray.500" fontWeight="semibold" mb={1}>
-                    MIS ID
-                  </Text>
-                  <Text fontSize="lg" color="gray.800" fontWeight="medium">
-                    {data.mis_id[language]}
-                  </Text>
-                </Box>
-              </VStack>
-            </Box>
-          </VStack>
-          
-          <VStack align="stretch" spacing={{ base: 6, lg: 8 }}>
-            <Box>
-              <Text 
-                fontSize={{ base: "xl", lg: "2xl" }} 
-                color="gray.700" 
-                lineHeight="tall"
-                fontWeight="medium"
-                mb={6}
-                textAlign="center"
-                bg="gray.50"
-                p={{ base: 4, lg: 6 }}
-                borderRadius="lg"
-                borderLeft="4px solid"
-                borderLeftColor="red.500"
-              >
-                {data.shortBio[language]}
-              </Text>
-            </Box>
-            
-            <Box>
-              <Heading as="h3" size="lg" mb={6} color="gray.800">
-                Life Story
-              </Heading>
-              <VStack spacing={{ base: 4, lg: 6 }} align="stretch">
-                {data.biography[language].split('\n\n').map((paragraph, index) => (
-                  <Text 
-                    key={index} 
-                    color="gray.700" 
-                    lineHeight="tall"
-                    fontSize={{ base: "md", lg: "lg" }}
-                    textAlign="justify"
-                  >
-                    {paragraph}
-                  </Text>
-                ))}
-              </VStack>
-            </Box>
-          </VStack>
-        </Grid>
-      </Container>
-    </Box>
+              </p>
+              <dl className="space-y-5">
+                <Fact label="Born" labelBn="জন্ম" value={data.birthDate[language]} isBn={isBn} />
+                <Fact label="Birthplace" labelBn="জন্মস্থান" value={data.birthPlace[language]} isBn={isBn} />
+                <Fact label="Martyrdom" labelBn="শাহাদাত" value={data.deathDate[language]} emphasis isBn={isBn} />
+                <Fact label="Gazette No." labelBn="গেজেট নং" value={data.gazette_no[language]} isBn={isBn} />
+                <Fact label="MIS ID" labelBn="এমআইএস আইডি" value={data.mis_id[language]} isBn={isBn} />
+              </dl>
+            </div>
+
+            <div className="mt-5 rounded-sm border border-bd-red/30 bg-bd-red/5 p-5">
+              <p className="font-bn-serif text-lg text-bd-red">৪র্থ সন্তান</p>
+              <p className={`mt-1 text-sm leading-relaxed text-ink-soft ${isBn ? 'font-bn' : 'font-serif italic'}`}>
+                Fourth of five siblings — the heart of his family.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Fact({
+  label,
+  labelBn,
+  value,
+  emphasis,
+  isBn,
+}: {
+  label: string;
+  labelBn: string;
+  value: string;
+  emphasis?: boolean;
+  isBn: boolean;
+}) {
+  return (
+    <div className="border-b border-ink/10 pb-4 last:border-b-0 last:pb-0">
+      <dt className="text-[11px] font-semibold uppercase tracking-wider text-ink-muted">
+        {label}
+        <span className="font-bn ml-2 normal-case tracking-normal text-ink-muted/80">· {labelBn}</span>
+      </dt>
+      <dd
+        className={`mt-1.5 text-lg font-semibold ${emphasis ? 'text-bd-red' : 'text-ink'} ${
+          isBn ? 'font-bn' : ''
+        }`}
+      >
+        {value}
+      </dd>
+    </div>
   );
 }

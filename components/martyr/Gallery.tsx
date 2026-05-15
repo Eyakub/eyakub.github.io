@@ -1,134 +1,98 @@
 'use client';
 
-import { MartyrData } from "../../types";
-import { Image as ImageIcon } from "lucide-react";
-import { useState } from "react";
-import { useLanguage } from "../../contexts/LanguageContext";
-import {
-  Box,
-  Container,
-  Flex,
-  Grid,
-  Heading,
-  Image,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  ModalCloseButton,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { MartyrData } from '../../types';
+import { Expand } from 'lucide-react';
+import { useState } from 'react';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { Dialog, DialogContent, DialogTrigger } from './ui/Dialog';
+import { SectionHeading } from './ui/Ornament';
 
 interface GalleryProps {
   data: MartyrData;
 }
 
+// Span recipe to create magazine-style varied masonry
+// 6-col grid; pattern repeats for any gallery length
+const spanPattern = [
+  'col-span-4 row-span-3',
+  'col-span-2 row-span-2',
+  'col-span-2 row-span-2',
+  'col-span-3 row-span-2',
+  'col-span-3 row-span-2',
+  'col-span-2 row-span-2',
+  'col-span-4 row-span-3',
+];
+
 export default function Gallery({ data }: GalleryProps) {
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const { language } = useLanguage();
-  const lang = language as "en" | "bn";
+  const isBn = language === 'bn';
+  const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <Box as="section" id="gallery" py={16} bg="white">
-      <Container maxW="container.xl">
-        <Flex align="center" gap={2} mb={8}>
-          <ImageIcon size={24} color="blue.500" />
-          <Heading as="h2" size="xl" color="gray.800">Image Gallery</Heading>
-        </Flex>
-        <Grid templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} gap={{ base: 4, md: 6, lg: 8 }}>
-          {data.gallery.map((image, index) => (
-            <Box
-              key={index}
-              position="relative"
-              cursor="pointer"
-              onClick={() => setSelectedImage(index)}
-              transition="all 0.3s ease"
-              _hover={{ 
-                transform: 'translateY(-8px)',
-                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)'
-              }}
-              borderRadius="xl"
-              overflow="hidden"
-              bg="white"
-              boxShadow="lg"
-              border="1px solid"
-              borderColor="gray.200"
-            >
-              <Image
-                src={image.url}
-                alt={image.alt[lang]}
-                h={{ base: "200px", md: "240px", lg: "280px" }}
-                w="full"
-                objectFit="cover"
-                transition="transform 0.3s ease"
-                _groupHover={{ transform: 'scale(1.1)' }}
-              />
-              <Box
-                position="absolute"
-                inset={0}
-                bg="linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)"
-                opacity={0}
-                transition="opacity 0.3s ease"
-                _hover={{ opacity: 1 }}
-                display="flex"
-                alignItems="flex-end"
-                p={{ base: 4, lg: 6 }}
-              >
-                <VStack align="flex-start" spacing={2} w="full">
-                  <Text 
-                    color="white" 
-                    fontSize={{ base: "md", lg: "lg" }} 
-                    fontWeight="semibold"
-                    lineHeight="short"
-                  >
-                    {image.caption[lang]}
-                  </Text>
-                  <Box
-                    bg="rgba(255, 255, 255, 0.2)"
-                    px={{ base: 2, lg: 3 }}
-                    py={1}
-                    borderRadius="full"
-                    fontSize={{ base: "xs", lg: "sm" }}
-                    color="white"
-                    fontWeight="medium"
-                  >
-                    Click to view
-                  </Box>
-                </VStack>
-              </Box>
-            </Box>
-          ))}
-        </Grid>
+    <section id="gallery" className="relative py-20 md:py-28">
+      <div className="mx-auto max-w-6xl px-5 lg:px-8">
+        <SectionHeading eyebrow="Photographs · আলোকচিত্র" en="Gallery" bn="স্মৃতিচিত্র" />
 
-        <Modal
-          isOpen={selectedImage !== null}
-          onClose={() => setSelectedImage(null)}
-          size="4xl"
-          isCentered
-        >
-          <ModalOverlay />
-          <ModalContent bg="transparent" boxShadow="none">
-            <ModalCloseButton color="white" />
-            <ModalBody p={4}>
-              {selectedImage !== null && (
-                <Box>
-                  <Image
-                    src={data.gallery[selectedImage].url}
-                    alt={data.gallery[selectedImage].alt[language]}
-                    maxH="80vh"
-                    w="full"
-                    objectFit="contain"
-                  />
-                  <Text color="white" textAlign="center" mt={4}>
-                    {data.gallery[selectedImage].caption[language]}
-                  </Text>
-                </Box>
-              )}
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-      </Container>
-    </Box>
+        <div className="gallery-grid">
+          {data.gallery.map((image, index) => {
+            const span = spanPattern[index % spanPattern.length];
+            return (
+              <Dialog
+                key={index}
+                open={open === index}
+                onOpenChange={(v) => setOpen(v ? index : null)}
+              >
+                <DialogTrigger asChild>
+                  <button
+                    type="button"
+                    className={`group relative block overflow-hidden rounded-sm bg-parchment shadow-sm ring-1 ring-ink/10 transition hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-bd-green ${span}`}
+                  >
+                    <img
+                      src={image.url}
+                      alt={image.alt[language] || image.caption[language] || 'Memorial image'}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent opacity-0 transition group-hover:opacity-100" />
+                    <div className="absolute inset-x-0 bottom-0 translate-y-2 p-4 text-left opacity-0 transition group-hover:translate-y-0 group-hover:opacity-100">
+                      {image.caption[language] && (
+                        <p
+                          className={`text-sm font-medium text-ivory drop-shadow md:text-base ${
+                            isBn ? 'font-bn' : 'font-serif italic'
+                          }`}
+                        >
+                          {image.caption[language]}
+                        </p>
+                      )}
+                    </div>
+                    <span className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-ivory/95 text-ink opacity-0 shadow transition group-hover:opacity-100">
+                      <Expand size={14} />
+                    </span>
+                  </button>
+                </DialogTrigger>
+                <DialogContent>
+                  <div className="overflow-hidden rounded-sm bg-ink shadow-2xl ring-1 ring-ivory/10">
+                    <img
+                      src={image.url}
+                      alt={image.alt[language] || ''}
+                      className="max-h-[80vh] w-full object-contain"
+                    />
+                    {image.caption[language] && (
+                      <p
+                        className={`px-6 py-4 text-center text-ivory/90 ${
+                          isBn ? 'font-bn' : 'font-serif italic'
+                        }`}
+                      >
+                        {image.caption[language]}
+                      </p>
+                    )}
+                  </div>
+                </DialogContent>
+              </Dialog>
+            );
+          })}
+        </div>
+      </div>
+    </section>
   );
 }

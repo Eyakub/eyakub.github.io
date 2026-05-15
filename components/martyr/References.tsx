@@ -1,164 +1,126 @@
 'use client';
 
-import { MartyrData, Reference } from "../../types";
-import { Link, Newspaper } from "lucide-react";
-import { useLanguage } from "../../contexts/LanguageContext";
-import {
-  Box,
-  Container,
-  Flex,
-  Grid,
-  Heading,
-  Text,
-  LinkBox,
-  LinkOverlay,
-  Image,
-  Icon,
-  Badge,
-} from "@chakra-ui/react";
-import { FaFacebook, FaYoutube, FaNewspaper } from "react-icons/fa";
+import { MartyrData, Reference } from '../../types';
+import { ExternalLink } from 'lucide-react';
+import { FaFacebook, FaYoutube, FaNewspaper } from 'react-icons/fa';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { SectionHeading } from './ui/Ornament';
 
 interface ReferencesProps {
   data: MartyrData;
 }
 
-const getIcon = (type: Reference['type']) => {
-  switch (type) {
-    case 'facebook':
-      return FaFacebook;
-    case 'youtube':
-      return FaYoutube;
-    case 'news':
-      return FaNewspaper;
-    default:
-      return Newspaper;
-  }
-};
-
-const getTypeColor = (type: Reference['type']) => {
-  switch (type) {
-    case 'facebook':
-      return 'facebook.500';
-    case 'youtube':
-      return 'red.500';
-    case 'news':
-      return 'purple.500';
-    default:
-      return 'blue.500';
-  }
+const typeMeta: Record<
+  Reference['type'],
+  { Icon: any; label: string; accent: string; chipBg: string }
+> = {
+  facebook: {
+    Icon: FaFacebook,
+    label: 'Facebook',
+    accent: 'text-[#1877F2]',
+    chipBg: 'bg-[#1877F2]/10 text-[#1877F2] ring-[#1877F2]/30',
+  },
+  youtube: {
+    Icon: FaYoutube,
+    label: 'YouTube',
+    accent: 'text-bd-red',
+    chipBg: 'bg-bd-red/10 text-bd-red ring-bd-red/30',
+  },
+  news: {
+    Icon: FaNewspaper,
+    label: 'News',
+    accent: 'text-bd-green',
+    chipBg: 'bg-bd-green/10 text-bd-green ring-bd-green/30',
+  },
 };
 
 export default function References({ data }: ReferencesProps) {
   const { language } = useLanguage();
+  const isBn = language === 'bn';
 
   return (
-    <Box as="section" id="references" py={16} bg="gray.50">
-      <Container maxW="container.xl">
-        <Flex align="center" gap={2} mb={8}>
-          <Link size={24} color="blue.500" />
-          <Heading as="h2" size="xl" color="gray.800">Media Coverage & References</Heading>
-        </Flex>
-        <Grid templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} gap={{ base: 4, md: 6, lg: 8 }}>
-          {data.references.map((reference, index) => (
-            <LinkBox
-              key={index}
-              as="article"
-              bg="white"
-              p={0}
-              borderRadius="xl"
-              boxShadow="lg"
-              transition="all 0.3s ease"
-              _hover={{ 
-                transform: 'translateY(-8px)', 
-                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)',
-                borderColor: 'blue.200'
-              }}
-              border="1px solid"
-              borderColor="gray.200"
-              overflow="hidden"
-            >
-              <Flex gap={0} h="full" direction="column">
-                {reference.thumbnail && (
-                  <Box position="relative" overflow="hidden">
-                    <Image
-                      src={reference.thumbnail}
-                      alt={reference.title[language]}
-                      objectFit="cover"
-                      h={{ base: "140px", md: "160px", lg: "180px" }}
-                      w="full"
-                      transition="transform 0.3s ease"
-                      _groupHover={{ transform: 'scale(1.05)' }}
+    <section id="references" className="relative bg-parchment/60 py-20 md:py-28">
+      <div className="mx-auto max-w-6xl px-5 lg:px-8">
+        <SectionHeading
+          eyebrow="As Reported · গণমাধ্যমে"
+          en="Media Coverage & References"
+          bn="তথ্যসূত্র"
+        />
+
+        <div className="mb-8 text-center text-sm text-ink-muted">
+          <span className="display text-2xl font-bold text-ink">{data.references.length}</span>
+          <span className={`ml-2 ${isBn ? 'font-bn' : 'font-serif'}`}>
+            primary sources collected
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {data.references.map((ref, i) => {
+            const meta = typeMeta[ref.type] ?? typeMeta.news;
+            const Icon = meta.Icon;
+            return (
+              <a
+                key={i}
+                href={ref.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex flex-col overflow-hidden rounded-sm border border-ink/10 bg-ivory shadow-sm transition hover:-translate-y-1 hover:border-bd-green/40 hover:shadow-xl"
+              >
+                {ref.thumbnail && (
+                  <div className="relative aspect-[16/10] overflow-hidden bg-parchment">
+                    <img
+                      src={ref.thumbnail}
+                      alt={ref.title[language]}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                     />
-                    <Box
-                      position="absolute"
-                      top={4}
-                      right={4}
-                      bg="rgba(255, 255, 255, 0.9)"
-                      backdropFilter="blur(10px)"
-                      borderRadius="full"
-                      p={2}
-                    >
-                      <Icon as={getIcon(reference.type)} color={getTypeColor(reference.type)} boxSize={5} />
-                    </Box>
-                  </Box>
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink/30 to-transparent" />
+                    <span className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-ivory/95 shadow ring-1 ring-ink/10">
+                      <Icon className={meta.accent} size={16} />
+                    </span>
+                  </div>
                 )}
-                
-                <Box p={{ base: 4, lg: 6 }} flex={1} display="flex" flexDirection="column">
-                  <Flex align="center" gap={2} mb={{ base: 3, lg: 4 }}>
-                    <Badge 
-                      colorScheme={reference.type === 'facebook' ? 'facebook' : reference.type === 'youtube' ? 'red' : 'purple'}
-                      variant="subtle"
-                      fontSize="3xs"
-                      px={1}
-                      py={0.5}
-                      borderRadius="full"
-                      opacity={0.8}
-                      minH="auto"
-                      h="auto"
-                      lineHeight="1"
-                      transform="scale(0.85)"
-                      transformOrigin="left center"
+                <div className="flex flex-1 flex-col p-5">
+                  <div className="mb-3 flex items-center justify-between gap-2">
+                    <span
+                      className={`inline-flex items-center rounded-sm px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ring-1 ${meta.chipBg}`}
                     >
-                      {reference.type.toUpperCase()}
-                    </Badge>
-                    <Text fontSize={{ base: "xs", lg: "sm" }} color="gray.500">
-                      {reference.date[language]}
-                    </Text>
-                  </Flex>
-                  
-                  <Box flex={1}>
-                    <LinkOverlay href={reference.url} isExternal>
-                      <Heading as="h3" size={{ base: "sm", lg: "md" }} mb={{ base: 2, lg: 3 }} lineHeight="short" color="gray.800">
-                        {reference.title[language]}
-                      </Heading>
-                    </LinkOverlay>
-                    {reference.description && (
-                      <Text color="gray.600" noOfLines={{ base: 2, lg: 3 }} mb={{ base: 3, lg: 4 }} lineHeight="tall" fontSize={{ base: "xs", lg: "sm" }}>
-                        {reference.description[language]}
-                      </Text>
-                    )}
-                  </Box>
-                  
-                  <Flex justify="space-between" align="center" fontSize={{ base: "xs", lg: "sm" }} color="gray.500" pt={{ base: 3, lg: 4 }} borderTop="1px solid" borderColor="gray.100">
-                    <Text fontWeight="medium" fontSize={{ base: "xs", lg: "sm" }}>{reference.source[language]}</Text>
-                    <Box
-                      bg="blue.50"
-                      color="blue.600"
-                      px={{ base: 2, lg: 3 }}
-                      py={1}
-                      borderRadius="full"
-                      fontSize={{ base: "2xs", lg: "xs" }}
-                      fontWeight="semibold"
+                      {meta.label}
+                    </span>
+                    <span className={`text-xs text-ink-muted ${isBn ? 'font-bn' : ''}`}>
+                      {ref.date[language]}
+                    </span>
+                  </div>
+                  <h3
+                    className={`mb-2 line-clamp-3 text-[17px] font-semibold leading-snug text-ink md:text-lg ${
+                      isBn ? 'font-bn' : 'font-serif'
+                    }`}
+                  >
+                    {ref.title[language]}
+                  </h3>
+                  {ref.description && (
+                    <p
+                      className={`mb-4 line-clamp-3 text-sm leading-relaxed text-ink-soft ${
+                        isBn ? 'font-bn' : 'font-serif'
+                      }`}
                     >
-                      Read More
-                    </Box>
-                  </Flex>
-                </Box>
-              </Flex>
-            </LinkBox>
-          ))}
-        </Grid>
-      </Container>
-    </Box>
+                      {ref.description[language]}
+                    </p>
+                  )}
+                  <div className="mt-auto flex items-center justify-between border-t border-ink/10 pt-3 text-xs">
+                    <span className={`font-medium uppercase tracking-wider text-ink-soft ${isBn ? 'font-bn' : ''}`}>
+                      {ref.source[language]}
+                    </span>
+                    <span className="inline-flex items-center gap-1 font-semibold text-bd-green transition group-hover:gap-1.5">
+                      Read <ExternalLink size={12} />
+                    </span>
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
   );
 }
