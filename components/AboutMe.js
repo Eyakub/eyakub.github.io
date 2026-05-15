@@ -53,7 +53,7 @@ export default function AboutMe() {
           fontFamily="Ubuntu"
           fontSize={{ base: '3xl', md: '4xl' }}
         >
-          Hi, I&apos;m Eyakub.
+          A bit about me
         </Heading>
         <Text color="textSecondary" fontSize={{ base: 'sm', md: 'md' }}>
           A software engineer who cares more about outcomes than tooling.
@@ -69,7 +69,6 @@ export default function AboutMe() {
         w="full"
         px={{ base: 4, md: 6 }}
       >
-        {/* Portrait + stats */}
         <SlideUpWhenVisible>
           <Flex direction="column" align="center" gap={8}>
             <Box
@@ -77,7 +76,6 @@ export default function AboutMe() {
               w={{ base: '260px', md: '320px' }}
               h={{ base: '260px', md: '320px' }}
             >
-              {/* Brand accent ring */}
               <Box
                 position="absolute"
                 inset="-10px"
@@ -141,14 +139,9 @@ export default function AboutMe() {
           </Flex>
         </SlideUpWhenVisible>
 
-        {/* Narrative + highlights */}
         <SlideUpWhenVisible>
           <Stack spacing={6}>
-            <Text
-              color="textPrimary"
-              fontSize={{ base: 'md', md: 'lg' }}
-              lineHeight="1.75"
-            >
+            <Text color="textPrimary" fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.75">
               I&apos;m a software engineer based in Dhaka, building products that
               serve real users — from cross-border marketplaces to AI-powered
               compliance tooling. Six years in, my focus has shifted from{' '}

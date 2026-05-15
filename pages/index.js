@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Stack } from '@chakra-ui/react'
+import { Box, Stack } from '@chakra-ui/react'
 import Container from '../components/Container'
 import Introduction from '../components/Introduction'
 import FeaturedProjects from '../components/FeaturedProjects'
@@ -62,13 +62,15 @@ export default function Index() {
           as="main"
           alignItems="flex-start"
           justifyContent="center"
-          mt={{ base: '15vh', md: '20vh' }}
+          mt={{ base: '12vh', md: '16vh' }}
           pb="144px"
           spacing={{ base: '100px', md: '144px' }}
         >
           <Introduction introduction={introductionData} />
           <AboutMe />
-          <FeaturedProjects projects={projectsData} />
+          <Box id="projects" w="full" scrollMarginTop="80px">
+            <FeaturedProjects projects={projectsData} />
+          </Box>
           <WorkExperience  workExperience={workExperienceData}/>
           <ContactMe contactMe={contactMeData} />
         </Stack>
