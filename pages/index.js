@@ -62,12 +62,14 @@ export default function Index() {
           as="main"
           alignItems="flex-start"
           justifyContent="center"
-          mt={{ base: '12vh', md: '16vh' }}
+          mt={{ base: '15vh', md: '20vh' }}
           pb="144px"
           spacing={{ base: '100px', md: '144px' }}
         >
           <Introduction introduction={introductionData} />
-          <AboutMe />
+          <Box id="about" w="full" scrollMarginTop="80px">
+            <AboutMe />
+          </Box>
           <Box id="projects" w="full" scrollMarginTop="80px">
             <FeaturedProjects projects={projectsData} />
           </Box>

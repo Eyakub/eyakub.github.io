@@ -3,6 +3,7 @@ import {
   Button,
   Heading,
   HStack,
+  Image,
   Link,
   SlideFade,
   Stack,
@@ -10,7 +11,7 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react'
 import { FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa'
-import { ArrowRight, FileText, MapPin } from 'lucide-react'
+import { ArrowRight, FileText, ArrowDown } from 'lucide-react'
 
 const SOCIALS = [
   { Icon: FaGithub, href: 'https://github.com/eyakub', label: 'GitHub' },
@@ -29,60 +30,38 @@ export default function Introduction() {
       align="flex-start"
       justify="flex-start"
       w="100%"
-      spacing={{ base: 8, md: 10 }}
+      spacing={{ base: 6, md: 8 }}
     >
-      {/* Status pill */}
-      <SlideFade direction="top" transition={{ enter: { duration: 0.4, delay: 0.55 } }} in={true}>
-        <HStack
-          spacing={2}
-          bg="rgba(60,207,145,0.1)"
-          color="button1"
-          px={3}
-          py={1.5}
-          rounded="full"
-          fontSize="xs"
-          fontWeight="600"
-          border="1px solid rgba(60,207,145,0.25)"
-        >
-          <Box position="relative" w="8px" h="8px">
-            <Box position="absolute" inset={0} bg="button1" rounded="full" boxShadow="0 0 8px #3CCF91" />
-            <Box
-              position="absolute"
-              inset="-2px"
-              bg="button1"
-              rounded="full"
-              opacity={0.35}
-              sx={{
-                animation: 'introPing 2s cubic-bezier(0,0,0.2,1) infinite',
-                '@keyframes introPing': {
-                  '0%': { transform: 'scale(1)', opacity: 0.6 },
-                  '75%, 100%': { transform: 'scale(2.4)', opacity: 0 },
-                },
-              }}
-            />
-          </Box>
-          <Text>Available for new opportunities</Text>
-          <Text opacity={0.5}>·</Text>
-          <Box as={MapPin} boxSize="12px" />
-          <Text>Dhaka, Bangladesh</Text>
-        </HStack>
-      </SlideFade>
-
       {/* Name + greeting */}
       <SlideFade direction="top" transition={{ enter: { duration: 0.4, delay: 0.7 } }} in={true}>
-        <Stack spacing={2}>
-          <Text color="button1" fontSize="display2" fontWeight="500">
-            Hey there, I&apos;m
-          </Text>
-          <Heading
-            color="displayColor"
-            fontSize="display"
-            lineHeight="0.95"
-            letterSpacing={{ sm: '-1.2px', md: '-1.8px' }}
-          >
-            Eyakub Sorkar.
-          </Heading>
-        </Stack>
+        <Box position="relative">
+          <Image
+            position="absolute"
+            zIndex={0}
+            top={{ base: '-10px', md: '-30px' }}
+            left={{ base: '-12px', md: '-32px' }}
+            w={{ base: '80px', md: '160px' }}
+            alt=""
+            filter="invert(0.1)"
+            opacity={0.9}
+            src="https://svgsilh.com/svg/26432.svg"
+            pointerEvents="none"
+            aria-hidden
+          />
+          <Stack spacing={2} position="relative" zIndex={1}>
+            <Text color="button1" fontSize="display2" fontWeight="500">
+              Hey there, I&apos;m
+            </Text>
+            <Heading
+              color="displayColor"
+              fontSize="display"
+              lineHeight="0.95"
+              letterSpacing={{ sm: '-1.2px', md: '-1.8px' }}
+            >
+              Eyakub Sorkar.
+            </Heading>
+          </Stack>
+        </Box>
       </SlideFade>
 
       {/* Role headline */}
@@ -93,13 +72,10 @@ export default function Introduction() {
           fontSize="display2"
           fontWeight="500"
           letterSpacing="-1.6px"
-          whiteSpace="pre-wrap"
+          lineHeight="1.15"
         >
           <Box as="span" color="displayColor">Software Engineer</Box>{' '}
-          with 6+ years of experience building scalable systems
-          {isLargerThan800
-            ? ' and \nshipping AI-augmented, full-stack products.'
-            : ' and shipping AI-augmented, full-stack products.'}
+          with 6+ years building scalable, AI-augmented full-stack products.
         </Heading>
       </SlideFade>
 
@@ -180,6 +156,37 @@ export default function Introduction() {
             ))}
           </HStack>
         </Stack>
+      </SlideFade>
+
+      {/* Scroll hint */}
+      <SlideFade direction="top" transition={{ enter: { duration: 0.4, delay: 1.2 } }} in={true}>
+        <HStack
+          as="a"
+          href="#about"
+          spacing={2}
+          color="textSecondary"
+          fontSize="xs"
+          fontWeight="500"
+          letterSpacing="0.2em"
+          textTransform="uppercase"
+          pt={{ base: 2, md: 4 }}
+          opacity={0.75}
+          transition="opacity 0.2s ease, color 0.2s ease"
+          _hover={{ opacity: 1, color: 'button1' }}
+          sx={{
+            '@keyframes scrollBounce': {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(4px)' },
+            },
+          }}
+        >
+          <Text>Scroll to explore</Text>
+          <Box
+            as={ArrowDown}
+            boxSize="14px"
+            sx={{ animation: 'scrollBounce 1.6s ease-in-out infinite' }}
+          />
+        </HStack>
       </SlideFade>
     </Stack>
   )
