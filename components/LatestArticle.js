@@ -1,5 +1,4 @@
-import { Heading } from '@chakra-ui/layout'
-import { Box, Flex, Link, Stack, Text, SimpleGrid } from '@chakra-ui/react'
+import { Box, Flex, Heading, Link, Stack, Text, SimpleGrid } from '@chakra-ui/react'
 import dateFormat from 'dateformat'
 import SlideUpWhenVisible from '../hook/SlideUpWhenVisible'
 import NextLink from 'next/link'

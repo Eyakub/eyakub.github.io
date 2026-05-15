@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { Stack, Heading, Text, SimpleGrid, Divider } from '@chakra-ui/react'
+import { Stack, Heading, Text, SimpleGrid, Divider, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 
 import Cards from '../../components/Card'
 import Container from '../../components/Container'
 import Head from 'next/head'
-import { Input, InputGroup, InputRightElement } from '@chakra-ui/input'
 import { FaSearch } from 'react-icons/fa'
 import projectsData from '../../data/projects.json'
 
