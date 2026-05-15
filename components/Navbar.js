@@ -62,7 +62,6 @@ export default function Navbar({ enableTransition }) {
     <Box pos="sticky" zIndex={99}>
       <Slide
         direction="top"
-        bg="black"
         transition={
           enableTransition
             ? { enter: { duration: 0.5, delay: 0.01 } }
