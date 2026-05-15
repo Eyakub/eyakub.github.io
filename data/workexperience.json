@@ -89,9 +89,7 @@
         "technologies": [
             "HTML",
             "CSS",
-            "JavaScript",
-            "Wordpress",
-            "PHP"
+            "JavaScript"
         ],
         "logoUrl": "/venture_logo.png"
     },
@@ -108,11 +106,9 @@
             "Contributed to team projects, improving collaboration and understanding of software development lifecycle."
         ],
         "technologies": [
-            "HTML",
-            "CSS",
-            "JavaScript",
-            "Wordpress",
-            "PHP"
+            "Python",
+            "Django",
+            "Flutter"
         ],
         "logoUrl": "/prestige_logo.png"
     }
