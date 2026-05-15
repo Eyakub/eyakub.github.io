@@ -1,14 +1,14 @@
 module.exports = {
   images: {
     unoptimized: true,
-    domains: [
-      'imagizer.imageshack.com',
-      'i.imgur.com',
-      'images.unsplash.com',
-      'media.giphy.com',
-      'cdn-images-1.medium.com',
-      'github.com',
-      'imgur.com',
+    remotePatterns: [
+      { protocol: 'https', hostname: 'imagizer.imageshack.com' },
+      { protocol: 'https', hostname: 'i.imgur.com' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'media.giphy.com' },
+      { protocol: 'https', hostname: 'cdn-images-1.medium.com' },
+      { protocol: 'https', hostname: 'github.com' },
+      { protocol: 'https', hostname: 'imgur.com' },
     ],
   },
   output: 'export',

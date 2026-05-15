@@ -50,21 +50,15 @@ export default function Navbar({ enableTransition }) {
 
           <DrawerBody>
             <Stack spacing="24px">
-              <NextLink passHref legacyBehavior href="/">
-                <Button as="a" fontSize="16px" variant="ghost">
-                  Home
-                </Button>
-              </NextLink>
-              <NextLink passHref legacyBehavior href="/projects">
-                <Button as="a" fontSize="16px" variant="ghost">
-                  Projects
-                </Button>
-              </NextLink>
-              <NextLink passHref legacyBehavior href="/blog">
-                <Button as="a" fontSize="16px" variant="ghost">
-                  Blog
-                </Button>
-              </NextLink>
+              <Button as={NextLink} href="/" fontSize="16px" variant="ghost">
+                Home
+              </Button>
+              <Button as={NextLink} href="/projects" fontSize="16px" variant="ghost">
+                Projects
+              </Button>
+              <Button as={NextLink} href="/blog" fontSize="16px" variant="ghost">
+                Blog
+              </Button>
             </Stack>
           </DrawerBody>
         </DrawerContent>
@@ -96,33 +90,28 @@ export default function Navbar({ enableTransition }) {
           bg="black"
           borderBottom="0.5px solid #1e2029"
         >
-          <NextLink passHref legacyBehavior href="/">
-            <Text
+          <NextLink href="/" style={{ textDecoration: 'none' }}>
+            <Box
+              as="span"
               color="displayColor"
               fontSize="32px"
               fontWeight="bold"
               cursor="pointer"
             >
               <Bracket>&#123;</Bracket>E<Bracket>&#125;</Bracket>
-            </Text>
+            </Box>
           </NextLink>
           {mounted && isLargerThan768 ? (
             <Box mr={7} color="displayColor">
-              <NextLink passHref legacyBehavior href="/">
-                <Button as="a" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
-                  Home
-                </Button>
-              </NextLink>
-              <NextLink passHref legacyBehavior href="/projects">
-                <Button as="a" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
-                  Projects
-                </Button>
-              </NextLink>
-              <NextLink passHref legacyBehavior href="/blog">
-                <Button as="a" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
-                  Blog
-                </Button>
-              </NextLink>{' '}
+              <Button as={NextLink} href="/" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
+                Home
+              </Button>
+              <Button as={NextLink} href="/projects" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
+                Projects
+              </Button>
+              <Button as={NextLink} href="/blog" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
+                Blog
+              </Button>
             </Box>
           ) : (
             <Icon as={AiOutlineMenu} w={7} h={7} onClick={onOpen} />
@@ -131,5 +120,5 @@ export default function Navbar({ enableTransition }) {
       </Slide>
       <NavbarDrawer />
     </Box>
-  )
+  );
 }

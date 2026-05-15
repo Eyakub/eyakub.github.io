@@ -29,33 +29,29 @@ export default function FeaturedProjects() {
               >
                 All Creative Works.
               </Heading>
-              <NextLink passHref legacyBehavior href="/projects">
-                <Link>
-                  <Text
-                    _hover={{ color: 'button2' }}
-                    color="button1"
-                    display={{ base: 'block', md: 'none' }}
-                    fontSize={{ base: 'sm', md: 'xl' }}
-                  >
-                    {' '}
-                    Explore more &rarr;
-                  </Text>
-                </Link>
-              </NextLink>
+              <Link
+                as={NextLink}
+                href="/projects"
+                _hover={{ color: 'button2', textDecoration: 'none' }}
+                color="button1"
+                display={{ base: 'block', md: 'none' }}
+                fontSize={{ base: 'sm', md: 'xl' }}
+              >
+                Explore more &rarr;
+              </Link>
             </Stack>
             <Text color="textSecondary" fontSize={{ base: 'md', md: 'xl' }}>
               Here's some of my projects that I have worked on.
             </Text>
-            <NextLink href="/projects" passHref legacyBehavior>
-              <Link>
-                <Text
-                  display={{ base: 'none', md: 'block' }}
-                  fontSize={{ base: 'md', md: 'xl' }}
-                >
-                  Explore more &rarr;
-                </Text>
-              </Link>
-            </NextLink>
+            <Link
+              as={NextLink}
+              href="/projects"
+              display={{ base: 'none', md: 'block' }}
+              fontSize={{ base: 'md', md: 'xl' }}
+              _hover={{ textDecoration: 'none' }}
+            >
+              Explore more &rarr;
+            </Link>
           </Stack>
         </SlideUpWhenVisible>
         <SlideUpWhenVisible>
@@ -92,5 +88,5 @@ export default function FeaturedProjects() {
           </SlideUpWhenVisible>
       </SimpleGrid>
     </Stack>
-  )
+  );
 }

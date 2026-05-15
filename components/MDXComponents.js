@@ -22,11 +22,7 @@ const CustomLink = (props) => {
   const isInternalLink = href && (href.startsWith('/') || href.startsWith('#'))
 
   if (isInternalLink) {
-    return (
-      <NextLink passHref legacyBehavior href={href}>
-        <Link color={color[colorMode]} {...props} />
-      </NextLink>
-    )
+    return <Link as={NextLink} color={color[colorMode]} {...props} />
   }
 
   return <Link color={color[colorMode]} isExternal {...props} />

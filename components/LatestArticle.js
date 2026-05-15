@@ -16,13 +16,14 @@ export default function LatestArticle({ articles }) {
           <Heading fontFamily="Ubuntu" fontSize={{ base: 'xl', md: '2xl' }}>
             📰 Latest Article.
           </Heading>
-          <NextLink href="/projects" passHref legacyBehavior>
-            <Link>
-              <Text fontSize={{ base: 'sm', md: 'md' }}>
-                View all articles &rarr;
-              </Text>
-            </Link>
-          </NextLink>
+          <Link
+            as={NextLink}
+            href="/projects"
+            fontSize={{ base: 'sm', md: 'md' }}
+            _hover={{ textDecoration: 'none' }}
+          >
+            View all articles &rarr;
+          </Link>
         </Flex>
       </SlideUpWhenVisible>
       <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={{ base: 2, md: 4 }}>
@@ -77,5 +78,5 @@ export default function LatestArticle({ articles }) {
         ))}
       </SimpleGrid>
     </Stack>
-  )
+  );
 }
