@@ -1,9 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef } from 'react'
 import {
   Button,
   Flex,
   Box,
-  Text,
   Slide,
   useDisclosure,
   Drawer,
@@ -14,19 +13,12 @@ import {
   DrawerBody,
   Stack,
   Icon,
-  useBreakpointValue,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import styled from '@emotion/styled'
 import { AiOutlineMenu } from 'react-icons/ai'
 
 export default function Navbar({ enableTransition }) {
-  const [mounted, setMounted] = useState(false)
-  const isLargerThan768 = useBreakpointValue({ base: false, md: true })
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
   const { isOpen, onOpen, onClose } = useDisclosure()
   const firstField = useRef()
   const Bracket = styled.span`
@@ -76,7 +68,7 @@ export default function Navbar({ enableTransition }) {
             ? { enter: { duration: 0.5, delay: 0.01 } }
             : { enter: { duration: 0, delay: 0 } }
         }
-        in={mounted}
+        in={true}
       >
         <Flex
           as="nav"
@@ -101,21 +93,25 @@ export default function Navbar({ enableTransition }) {
               <Bracket>&#123;</Bracket>E<Bracket>&#125;</Bracket>
             </Box>
           </NextLink>
-          {mounted && isLargerThan768 ? (
-            <Box mr={7} color="displayColor">
-              <Button as={NextLink} href="/" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
-                Home
-              </Button>
-              <Button as={NextLink} href="/projects" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
-                Projects
-              </Button>
-              <Button as={NextLink} href="/blog" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
-                Blog
-              </Button>
-            </Box>
-          ) : (
-            <Icon as={AiOutlineMenu} w={7} h={7} onClick={onOpen} />
-          )}
+          <Box mr={7} color="displayColor" display={{ base: 'none', md: 'block' }}>
+            <Button as={NextLink} href="/" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
+              Home
+            </Button>
+            <Button as={NextLink} href="/projects" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
+              Projects
+            </Button>
+            <Button as={NextLink} href="/blog" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
+              Blog
+            </Button>
+          </Box>
+          <Icon
+            as={AiOutlineMenu}
+            w={7}
+            h={7}
+            onClick={onOpen}
+            cursor="pointer"
+            display={{ base: 'block', md: 'none' }}
+          />
         </Flex>
       </Slide>
       <NavbarDrawer />
