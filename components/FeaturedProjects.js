@@ -29,7 +29,7 @@ export default function FeaturedProjects() {
               >
                 All Creative Works.
               </Heading>
-              <NextLink passHref href="/projects">
+              <NextLink passHref legacyBehavior href="/projects">
                 <Link>
                   <Text
                     _hover={{ color: 'button2' }}
@@ -46,7 +46,7 @@ export default function FeaturedProjects() {
             <Text color="textSecondary" fontSize={{ base: 'md', md: 'xl' }}>
               Here's some of my projects that I have worked on.
             </Text>
-            <NextLink href="/projects">
+            <NextLink href="/projects" passHref legacyBehavior>
               <Link>
                 <Text
                   display={{ base: 'none', md: 'block' }}

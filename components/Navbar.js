@@ -50,17 +50,17 @@ export default function Navbar({ enableTransition }) {
 
           <DrawerBody>
             <Stack spacing="24px">
-              <NextLink passHref href="/">
+              <NextLink passHref legacyBehavior href="/">
                 <Button as="a" fontSize="16px" variant="ghost">
                   Home
                 </Button>
               </NextLink>
-              <NextLink passHref href="/projects">
+              <NextLink passHref legacyBehavior href="/projects">
                 <Button as="a" fontSize="16px" variant="ghost">
                   Projects
                 </Button>
               </NextLink>
-              <NextLink passHref href="/blog">
+              <NextLink passHref legacyBehavior href="/blog">
                 <Button as="a" fontSize="16px" variant="ghost">
                   Blog
                 </Button>
@@ -97,7 +97,7 @@ export default function Navbar({ enableTransition }) {
           bg="black"
           borderBottom="0.5px solid #1e2029"
         >
-          <NextLink passHref href="/">
+          <NextLink passHref legacyBehavior href="/">
             <Text
               color="displayColor"
               fontSize="32px"
@@ -109,17 +109,17 @@ export default function Navbar({ enableTransition }) {
           </NextLink>
           {mounted && isLargerThan768 ? (
             <Box mr={7} color="displayColor">
-              <NextLink passHref href="/">
+              <NextLink passHref legacyBehavior href="/">
                 <Button as="a" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
                   Home
                 </Button>
               </NextLink>
-              <NextLink passHref href="/projects">
+              <NextLink passHref legacyBehavior href="/projects">
                 <Button as="a" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
                   Projects
                 </Button>
               </NextLink>
-              <NextLink passHref href="/blog">
+              <NextLink passHref legacyBehavior href="/blog">
                 <Button as="a" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
                   Blog
                 </Button>

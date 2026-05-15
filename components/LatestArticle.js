@@ -16,7 +16,7 @@ export default function LatestArticle({ articles }) {
           <Heading fontFamily="Ubuntu" fontSize={{ base: 'xl', md: '2xl' }}>
             📰 Latest Article.
           </Heading>
-          <NextLink href="/projects">
+          <NextLink href="/projects" passHref legacyBehavior>
             <Link>
               <Text fontSize={{ base: 'sm', md: 'md' }}>
                 View all articles &rarr;
