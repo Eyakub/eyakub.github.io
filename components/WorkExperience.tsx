@@ -11,7 +11,6 @@ import {
   Button,
   List,
   ListItem,
-  useBreakpointValue,
 } from '@chakra-ui/react';
 import SlideUpWhenVisible from '../hook/SlideUpWhenVisible';
 
@@ -42,6 +41,12 @@ function parseMonth(value: string): Date | null {
   return new Date(year, month, 1);
 }
 
+function yearOf(value: string): string {
+  if (!value || value.toLowerCase() === 'present') return new Date().getFullYear().toString();
+  const m = value.match(/\d{4}/);
+  return m ? m[0] : '';
+}
+
 function tenure(start: string, end?: string): string {
   const s = parseMonth(start);
   const e = end && end.toLowerCase() !== 'present' ? parseMonth(end) : new Date();
@@ -62,13 +67,13 @@ const WorkExperience: React.FC = () => {
   const toggle = (i: number) => setExpanded((s) => ({ ...s, [i]: !s[i] }));
 
   return (
-    <Stack spacing={10} w="full" py={16}>
+    <Stack spacing={12} w="full" py={16}>
       <Stack spacing={3} textAlign="center">
         <Text
           color="button1"
           fontSize="sm"
           fontWeight="600"
-          letterSpacing="0.2em"
+          letterSpacing="0.25em"
           textTransform="uppercase"
         >
           Career
@@ -85,54 +90,82 @@ const WorkExperience: React.FC = () => {
         </Text>
       </Stack>
 
-      {/* Timeline */}
-      <Box
-        position="relative"
-        maxW="6xl"
-        mx="auto"
-        w="full"
-        px={{ base: 4, md: 6 }}
-      >
-        {/* Central rail (desktop) / Left rail (mobile) */}
+      <Box position="relative" maxW="5xl" mx="auto" w="full" px={{ base: 4, md: 6 }}>
+        {/* Vertical rail */}
         <Box
           aria-hidden
           position="absolute"
-          top={1}
-          bottom={1}
-          left={{ base: '20px', md: '50%' }}
-          transform={{ base: 'none', md: 'translateX(-50%)' }}
+          top={2}
+          bottom={2}
+          left={{ base: '24px', md: '170px' }}
           width="2px"
-          bgGradient="linear(to-b, #3CCF91 0%, #1f2229 92%, transparent 100%)"
-          opacity={0.65}
+          bgGradient="linear(to-b, #3CCF91 0%, #2a2e36 70%, transparent 100%)"
+          opacity={0.55}
         />
 
-        <Stack spacing={{ base: 8, md: 14 }}>
+        <Stack spacing={{ base: 10, md: 14 }}>
           {workExperienceData.map((exp: WorkExperienceItem, index: number) => {
             const isCurrent = !exp.endDate || exp.endDate.toLowerCase() === 'present';
+            const startY = yearOf(exp.startDate);
+            const endY = isCurrent ? 'Now' : yearOf(exp.endDate || '');
             const dur = tenure(exp.startDate, exp.endDate);
             const isExpanded = !!expanded[index];
             const visible = isExpanded
               ? exp.responsibilities
               : exp.responsibilities.slice(0, RESPONSIBILITIES_PREVIEW);
             const overflow = exp.responsibilities.length - RESPONSIBILITIES_PREVIEW;
-            const isLeft = index % 2 === 0;
 
             return (
               <SlideUpWhenVisible threshold={0.1} key={index}>
-                <Flex
-                  position="relative"
-                  direction={{ base: 'row', md: isLeft ? 'row' : 'row-reverse' }}
-                  align="flex-start"
-                >
-                  {/* Timeline node */}
+                <Flex position="relative" align="flex-start" gap={{ base: 4, md: 8 }}>
+                  {/* Left: date column */}
+                  <Box
+                    w={{ base: '0', md: '150px' }}
+                    flexShrink={0}
+                    display={{ base: 'none', md: 'block' }}
+                    pt={2}
+                    textAlign="right"
+                    pr={4}
+                  >
+                    <Text
+                      color={isCurrent ? 'button1' : 'displayColor'}
+                      fontFamily="Ubuntu"
+                      fontSize="4xl"
+                      fontWeight="700"
+                      lineHeight="1"
+                    >
+                      {endY === 'Now' ? startY : endY}
+                    </Text>
+                    <Text
+                      color="textSecondary"
+                      fontSize="xs"
+                      letterSpacing="0.18em"
+                      textTransform="uppercase"
+                      mt={2}
+                      fontWeight="500"
+                    >
+                      {startY} – {endY}
+                    </Text>
+                    {dur && (
+                      <Text
+                        color="gray.500"
+                        fontSize="xs"
+                        mt={1}
+                        fontWeight="500"
+                      >
+                        {dur}
+                      </Text>
+                    )}
+                  </Box>
+
+                  {/* Center: timeline node */}
                   <Box
                     position="absolute"
-                    left={{ base: '14px', md: '50%' }}
-                    top="22px"
-                    transform={{ base: 'none', md: 'translateX(-50%)' }}
-                    w={{ base: '14px', md: '18px' }}
-                    h={{ base: '14px', md: '18px' }}
-                    bg={isCurrent ? 'button1' : '#1f2227'}
+                    left={{ base: '17px', md: '163px' }}
+                    top="14px"
+                    w={{ base: '16px', md: '18px' }}
+                    h={{ base: '16px', md: '18px' }}
+                    bg={isCurrent ? 'button1' : '#0e0f12'}
                     border="2px solid"
                     borderColor={isCurrent ? 'button1' : '#3a3f4a'}
                     borderRadius="full"
@@ -141,15 +174,11 @@ const WorkExperience: React.FC = () => {
                     aria-hidden
                   />
 
-                  {/* Spacer for the opposite side (desktop only) */}
-                  <Box display={{ base: 'none', md: 'block' }} w="50%" />
-
-                  {/* Card */}
+                  {/* Right: content card */}
                   <Box
-                    w={{ base: 'calc(100% - 44px)', md: '50%' }}
-                    ml={{ base: '44px', md: 0 }}
-                    pl={{ base: 0, md: isLeft ? 0 : 10 }}
-                    pr={{ base: 0, md: isLeft ? 10 : 0 }}
+                    flex="1"
+                    pl={{ base: '40px', md: '24px' }}
+                    minW={0}
                   >
                     <Box
                       bg="#0e0f12"
@@ -158,27 +187,37 @@ const WorkExperience: React.FC = () => {
                       rounded="lg"
                       p={{ base: 5, md: 6 }}
                       color="gray.200"
-                      position="relative"
-                      transition="border-color 0.2s ease"
+                      transition="border-color 0.2s ease, transform 0.2s ease"
                       _hover={{
                         borderColor: isCurrent ? 'button1' : '#2a2e36',
-                      }}
-                      _before={{
-                        content: '""',
-                        display: { base: 'none', md: 'block' },
-                        position: 'absolute',
-                        top: '24px',
-                        [isLeft ? 'right' : 'left']: '-8px',
-                        w: '14px',
-                        h: '14px',
-                        bg: '#0e0f12',
-                        borderTop: '1px solid',
-                        borderRight: '1px solid',
-                        borderColor: isCurrent ? 'rgba(60,207,145,0.35)' : '#1c1f25',
-                        transform: isLeft ? 'rotate(45deg)' : 'rotate(-135deg)',
+                        transform: 'translateY(-2px)',
                       }}
                     >
-                      {/* Header row */}
+                      {/* Mobile-only date strip */}
+                      <HStack
+                        display={{ base: 'flex', md: 'none' }}
+                        mb={3}
+                        spacing={2}
+                        fontSize="xs"
+                        color="textSecondary"
+                        fontWeight="500"
+                      >
+                        <Text
+                          color={isCurrent ? 'button1' : 'displayColor'}
+                          fontWeight="700"
+                          fontSize="sm"
+                        >
+                          {startY} – {endY}
+                        </Text>
+                        {dur && (
+                          <>
+                            <Text opacity={0.5}>·</Text>
+                            <Text>{dur}</Text>
+                          </>
+                        )}
+                      </HStack>
+
+                      {/* Header */}
                       <Stack
                         direction={{ base: 'column', sm: 'row' }}
                         align={{ base: 'flex-start', sm: 'center' }}
@@ -186,25 +225,27 @@ const WorkExperience: React.FC = () => {
                         spacing={4}
                         mb={3}
                       >
-                        <HStack spacing={4} align="center">
+                        <HStack spacing={4} align="center" minW={0}>
                           {exp.logoUrl && (
                             <Image
                               src={exp.logoUrl}
                               alt={`${exp.company} logo`}
-                              boxSize={{ base: '40px', md: '48px' }}
+                              boxSize={{ base: '44px', md: '52px' }}
                               borderRadius="md"
                               objectFit="contain"
                               bg="rgba(255,255,255,0.04)"
                               p="6px"
+                              flexShrink={0}
                             />
                           )}
-                          <Stack spacing={0.5}>
+                          <Stack spacing={0.5} minW={0}>
                             <Text
                               color="displayColor"
                               fontFamily="Ubuntu"
                               fontSize={{ base: 'md', md: 'lg' }}
                               fontWeight="700"
                               lineHeight="1.2"
+                              noOfLines={2}
                             >
                               {exp.company}
                             </Text>
@@ -253,14 +294,6 @@ const WorkExperience: React.FC = () => {
                         <Text fontWeight="500">
                           {exp.startDate} – {exp.endDate || 'Present'}
                         </Text>
-                        {dur && (
-                          <>
-                            <Text opacity={0.5}>·</Text>
-                            <Text bg="#1c1f25" px={2} py={0.5} rounded="full" color="gray.300">
-                              {dur}
-                            </Text>
-                          </>
-                        )}
                         <Text opacity={0.5}>·</Text>
                         <Text>{exp.location}</Text>
                       </HStack>
@@ -272,7 +305,7 @@ const WorkExperience: React.FC = () => {
                             key={i}
                             fontSize="sm"
                             color="gray.300"
-                            lineHeight="1.65"
+                            lineHeight="1.7"
                             sx={{ '::marker': { color: '#3CCF91' } }}
                           >
                             {r}
