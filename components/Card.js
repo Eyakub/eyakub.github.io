@@ -133,13 +133,11 @@ export default function Cards({ imageURL, liveUrl, title, slug, desc, tag = [] }
             <Image
               width={800}
               height={400}
-              minH="270px"
-              borderRadius="10px 10px 0px 0px"
-              transition="0.3s"
-              objectFit="cover"
               style={{
+                minHeight: '270px',
                 borderRadius: '10px 10px 0px 0px',
                 objectFit: 'cover',
+                transition: '0.3s',
               }}
               alt={title}
               src={imageURL}
