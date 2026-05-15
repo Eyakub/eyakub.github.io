@@ -2,7 +2,7 @@
 
 import { MartyrData, Reference } from '../../types';
 import { ExternalLink } from 'lucide-react';
-import { FaFacebook, FaYoutube, FaNewspaper } from 'react-icons/fa';
+import { FaFacebook, FaYoutube, FaNewspaper, FaImage } from 'react-icons/fa';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { SectionHeading } from './ui/Ornament';
 
@@ -31,6 +31,12 @@ const typeMeta: Record<
     label: 'News',
     accent: 'text-bd-green',
     chipBg: 'bg-bd-green/10 text-bd-green ring-bd-green/30',
+  },
+  image: {
+    Icon: FaImage,
+    label: 'Image',
+    accent: 'text-ink-soft',
+    chipBg: 'bg-ink/10 text-ink-soft ring-ink/30',
   },
 };
 
