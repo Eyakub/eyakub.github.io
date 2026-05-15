@@ -146,14 +146,14 @@ export default function Cards({ imageURL, liveUrl, title, slug, desc, tag = [] }
             />
           </Center>
           <Stack px={4} py={2}>
-            <Stack alignItems="center" justifyContent="space-between" isInline>
+            <Stack alignItems="center" justifyContent="space-between" direction="row">
               <Text color="displayColor" fontFamily="Ubuntu" fontSize="2xl">
                 {title}
               </Text>
               <Stack
                 alignItems="center"
                 justifyContent="flex-end"
-                isInline
+                direction="row"
                 spacing={4}
               >
                 {liveUrl && liveUrl.trim() !== '' && (

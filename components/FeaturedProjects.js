@@ -18,7 +18,7 @@ export default function FeaturedProjects() {
         <SlideUpWhenVisible threshold={0.1}>
           <Stack spacing={1}>
             <Stack
-              isInline
+              direction="row"
               alignItems="center"
               justifyContent="space-between"
             >

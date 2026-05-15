@@ -93,10 +93,11 @@ export default function Introduction() {
         transition={{ enter: { duration: 0.4, delay: 0.9 } }}
         in={true}
       >
-        <Text color="textSecondary" fontSize="display3">
-          {introductionData[0]?.fields?.emoji} {introductionData[0]?.fields?.description}
-          <br />
-          <Stack isInline spacing={1}>
+        <Box color="textSecondary" fontSize="display3">
+          <Text as="span">
+            {introductionData[0]?.fields?.emoji} {introductionData[0]?.fields?.description}
+          </Text>
+          <Stack direction="row" spacing={1} mt={1}>
             <Box>{introductionData[1]?.fields?.emoji}</Box>
             <Box>
               {introductionData[1]?.fields?.description}{' '}
@@ -115,14 +116,14 @@ export default function Introduction() {
               )}
             </Box>
           </Stack>
-        </Text>
+        </Box>
       </SlideFade>
       <SlideFade
         direction="top"
         transition={{ enter: { duration: 0.4, delay: 1.0 } }}
         in={true}
       >
-        <Stack isInline spacing={4}>
+        <Stack direction="row" spacing={4}>
           <Link href="https://github.com/eyakub" isExternal>
             <Button
               pos="static"

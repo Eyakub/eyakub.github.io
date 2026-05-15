@@ -37,7 +37,7 @@ export default function ContactMe() {
       </SlideUpWhenVisible>
 
       <SlideUpWhenVisible>
-        <Stack isInline spacing={4}>
+        <Stack direction="row" spacing={4}>
           <Link href="https://linkedin.com/in/eyakub-sorkar" isExternal>
             <Button
               pos="static"

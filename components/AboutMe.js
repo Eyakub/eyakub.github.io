@@ -50,7 +50,7 @@ export default function AboutMe() {
           <Heading fontFamily="Ubuntu" fontSize="2xl" color="white">
             ⚡ About Me
           </Heading>
-          <Text
+          <Box
             color="textSecondary"
             fontSize={{ base: '14px', md: '16px' }}
             whiteSpace="pre-line"
@@ -72,7 +72,7 @@ export default function AboutMe() {
             />.
             <br /><br />
             When I'm not coding, I enjoy playing games with friends, catching up on Netflix shows, or hangout
-          </Text>
+          </Box>
         </Stack>
       </SlideUpWhenVisible>
       <SlideUpWhenVisible>
