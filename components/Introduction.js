@@ -106,7 +106,7 @@ export default function Introduction() {
       {/* Supporting paragraph */}
       <SlideFade direction="top" transition={{ enter: { duration: 0.4, delay: 0.9 } }} in={true}>
         <Text color="textSecondary" fontSize="display3" lineHeight="1.7" maxW="58ch">
-          Strong foundation in Computer Science, committed to continuous learning — currently shipping AI features at{' '}
+          Strong foundation in Computer Science, committed to continuous learning — currently building full-stack systems — backends, data pipelines, and AI features — at{' '}
           <Link
             href="https://sdsmanager.com/"
             isExternal
