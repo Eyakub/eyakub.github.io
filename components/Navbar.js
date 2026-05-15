@@ -83,7 +83,6 @@ export default function Navbar({ enableTransition }) {
             : { enter: { duration: 0, delay: 0 } }
         }
         in={mounted}
-        reverse
       >
         <Flex
           as="nav"
