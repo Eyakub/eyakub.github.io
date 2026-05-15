@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.martyr-page {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: #1A1612;
+  background-color: #F5F1E8;
+  background-image:
+    radial-gradient(rgba(26, 22, 18, 0.04) 1px, transparent 1px),
+    radial-gradient(rgba(26, 22, 18, 0.03) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 1px 1px;
+}
+.martyr-page :lang(bn),
+.martyr-page [lang='bn'],
+.martyr-page .font-bn {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+}
+.martyr-page .font-bn-serif {
+  font-family: 'Noto Serif Bengali', 'Hind Siliguri', serif;
+}
+.martyr-page .display {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.martyr-page .flag-stripe {
+  background: linear-gradient(90deg, #006A4E 0%, #006A4E 50%, #C8102E 50%, #C8102E 100%);
+}
+
+/* Editorial drop cap */
+.martyr-page .has-dropcap > p:first-of-type::first-letter {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  float: left;
+  font-size: 5.5rem;
+  line-height: 0.85;
+  font-weight: 700;
+  margin: 0.35rem 0.65rem 0 0;
+  color: #006A4E;
+}
+
+.martyr-page .pull-quote {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.martyr-page .pull-quote.bn {
+  font-family: 'Noto Serif Bengali', 'Hind Siliguri', serif;
+  font-style: normal;
+}
+
+/* Archival stamp look */
+.martyr-page .archival-stamp {
+  border: 1.5px solid currentColor;
+  padding: 0.35rem 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: inline-block;
+  transform: rotate(-1.5deg);
+}
+
+@keyframes martyr-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.martyr-page .fade-up { animation: martyr-fade-up 600ms ease-out both; }
+
+@keyframes candle-flicker {
+  0%, 100% { transform: scaleY(1) translateY(0); opacity: 1; }
+  50% { transform: scaleY(0.94) translateY(0.5px); opacity: 0.92; }
+}
+.martyr-page .candle-flame {
+  animation: candle-flicker 1.6s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+/* Masonry-ish gallery spans */
+.martyr-page .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.75rem;
+  grid-auto-rows: 8rem;
+  grid-auto-flow: dense;
+}
+@media (min-width: 768px) {
+  .martyr-page .gallery-grid { gap: 1rem; grid-auto-rows: 10rem; }
+}
