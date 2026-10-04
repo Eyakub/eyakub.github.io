@@ -35,7 +35,7 @@ export default function Hub({ openSlugs }: { openSlugs: string[] }) {
         </Link>
       </section>
 
-      <section aria-labelledby="map-h">
+      <section className="map-sec" aria-labelledby="map-h">
         <h2 id="map-h" className="sr-only">
           {ui('mapHeading')}
         </h2>

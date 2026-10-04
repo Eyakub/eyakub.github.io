@@ -46,7 +46,7 @@ html[lang="bn"] .learn-root{font-family:var(--f-bn);line-height:1.72}
 .learn-root .brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-stretch:87.5%;font-size:var(--t-lg);letter-spacing:-.005em}
 .learn-root .brand svg{width:34px;height:18px;color:var(--ink)}
 .learn-root .seg{display:inline-flex;align-items:center;gap:2px;padding:3px;border:1px solid var(--rule);border-radius:var(--r-ctl);background:var(--surface)}
-.learn-root .seg button{border:0;background:transparent;border-radius:var(--r-ctl);min-height:40px;min-width:48px;padding:0 14px;font-size:var(--t-sm);font-weight:600;color:var(--ink-2);transition:background .18s ease,color .18s ease}
+.learn-root .seg button{border:0;background:transparent;border-radius:var(--r-ctl);min-height:44px;min-width:48px;padding:0 14px;font-size:var(--t-sm);font-weight:600;color:var(--ink-2);transition:background .18s ease,color .18s ease}
 .learn-root .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
 .learn-root .seg button:not([aria-pressed="true"]):hover{color:var(--ink)}
 .learn-root .lang button[lang="bn"]{font-family:var(--f-bn)}
@@ -245,7 +245,7 @@ html[lang="bn"] .learn-root .flow-svg text,html[lang="bn"] .learn-root .network-
 .learn-root .cheat pre .c{color:var(--code-dim)}
 .learn-root .cheat .row{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .learn-root .cheat .row p{margin:0;font-size:var(--t-sm);color:var(--ink-2)}
-.learn-root .copy{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:var(--r-ctl);border:1px solid var(--rule);background:var(--surface);font-size:var(--t-xs);font-weight:650}
+.learn-root .copy{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:var(--r-ctl);border:1px solid var(--rule);background:var(--surface);font-size:var(--t-xs);font-weight:650}
 .learn-root .copy svg{width:16px;height:16px}
 
 .learn-root .done-row{padding-block:40px 0}
@@ -256,8 +256,8 @@ html[lang="bn"] .learn-root .flow-svg text,html[lang="bn"] .learn-root .network-
 
 .learn-root .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);max-width:min(92vw,520px);background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:14px;font-size:var(--t-sm);font-weight:550;z-index:50;box-shadow:0 10px 30px color-mix(in srgb,var(--ink) 25%,transparent)}
 
-@media (max-width:640px){
-  .learn-root .map-card{display:none}
+@media (max-width:639px){
+  .learn-root .map-sec{display:none}
   .learn-root .line-key,.learn-root .preview-note{margin-inline:0}
   .learn-root .bar{padding-block:12px}
   .learn-root .brand span{font-size:var(--t-md)}
@@ -275,3 +275,14 @@ html[lang="bn"] .learn-root .flow-svg text,html[lang="bn"] .learn-root .network-
 .learn-root .network-svg .walk{fill:none;stroke:var(--ink-3);stroke-width:3;stroke-dasharray:2 6;stroke-linecap:round}
 body:has(.learn-root){background:#F2F4F8}
 @media (prefers-color-scheme: dark){body:has(.learn-root){background:#0C121E}}
+
+/* The portfolio's global selection and scrollbar rules (dark, tuned for the other pages) are unreadable on /learn. */
+.learn-root::selection,.learn-root ::selection{background:color-mix(in srgb,var(--focus) 30%,transparent);color:var(--ink)}
+html:has(.learn-root){scrollbar-color:#9AA4B8 #E4E8EF}
+html:has(.learn-root)::-webkit-scrollbar{width:12px;background:#E4E8EF}
+html:has(.learn-root)::-webkit-scrollbar-thumb{background:#9AA4B8;border-radius:8px;border:2px solid #E4E8EF}
+@media (prefers-color-scheme: dark){
+  html:has(.learn-root){scrollbar-color:#56627D #131B2B}
+  html:has(.learn-root)::-webkit-scrollbar{background:#131B2B}
+  html:has(.learn-root)::-webkit-scrollbar-thumb{background:#56627D;border-color:#131B2B}
+}

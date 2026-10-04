@@ -54,7 +54,8 @@ export const LINES: Line[] = [
   { id: 'concurrency', color: '--l-concurrency', name: 'lineConcurrency', pts: [[120, 490], [870, 490]], stops: ['concurrency-vs-parallelism', 'processes-vs-threads', 'python-gil', 'multiprocessing-pools', 'asyncio-event-loop', 'race-conditions-locks'] },
 ]
 
-export const WALKWAYS: [string, string][] = [
-  ['multiprocessing-pools', 'celery-redis'],
-  ['asyncio-event-loop', 'fastapi-lifecycle'],
+// Optional `via` points elbow a walkway so it never passes through an unrelated station or label.
+export const WALKWAYS: { from: string; to: string; via?: Pt[] }[] = [
+  { from: 'multiprocessing-pools', to: 'celery-redis' },
+  { from: 'asyncio-event-loop', to: 'fastapi-lifecycle', via: [[720, 450], [540, 450], [540, 110]] },
 ]

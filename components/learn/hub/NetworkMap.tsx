@@ -23,11 +23,11 @@ export default function NetworkMap({ openSlugs, learned, onStation }: Props) {
     <>
       <div className="map-card">
         <svg className="network-svg" viewBox="40 58 920 488" role="group" aria-labelledby="map-h">
-          {WALKWAYS.map(([a, b]) => (
+          {WALKWAYS.map(({ from, to, via = [] }) => (
             <path
-              key={`${a}-${b}`}
+              key={`${from}-${to}`}
               className="walk"
-              d={`M${STATIONS[a].x} ${STATIONS[a].y}L${STATIONS[b].x} ${STATIONS[b].y}`}
+              d={'M' + [[STATIONS[from].x, STATIONS[from].y], ...via, [STATIONS[to].x, STATIONS[to].y]].map((p) => p.join(' ')).join('L')}
             />
           ))}
           {LINES.map((l) => (
