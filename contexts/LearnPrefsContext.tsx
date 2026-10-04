@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useState, type ReactNode } from 'react'
 import { tr, type L10n, type Lang } from '../lib/learn/l10n'
 import { DEFAULT_PREFS, KEYS, parseStored, type Mode, type Prefs } from '../lib/learn/prefs'
 import { UI, type UiKey } from '../data/learn/ui'
@@ -14,6 +14,10 @@ interface LearnPrefsValue {
   ui: (k: UiKey) => string
 }
 
+// Last prefs seen this session. Client-side navigation remounts the provider; seeding from here
+// avoids a flash of English. First load still starts from DEFAULT_PREFS so hydration matches.
+let cachedPrefs: Prefs | null = null
+
 const LearnPrefsContext = createContext<LearnPrefsValue | null>(null)
 
 function write(key: string, value: unknown): void {
@@ -25,39 +29,44 @@ function write(key: string, value: unknown): void {
 }
 
 export function LearnPrefsProvider({ children }: { children: ReactNode }) {
-  const [prefs, setPrefs] = useState<Prefs>(DEFAULT_PREFS)
+  const [prefs, setPrefs] = useState<Prefs>(() => cachedPrefs ?? DEFAULT_PREFS)
 
   useEffect(() => {
     try {
-      setPrefs(
-        parseStored({
-          lang: localStorage.getItem(KEYS.lang),
-          mode: localStorage.getItem(KEYS.mode),
-          learned: localStorage.getItem(KEYS.learned),
-        }),
-      )
+      cachedPrefs = parseStored({
+        lang: localStorage.getItem(KEYS.lang),
+        mode: localStorage.getItem(KEYS.mode),
+        learned: localStorage.getItem(KEYS.learned),
+      })
     } catch {
-      setPrefs(DEFAULT_PREFS)
+      cachedPrefs = DEFAULT_PREFS
     }
+    setPrefs(cachedPrefs)
   }, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.lang = prefs.lang
   }, [prefs.lang])
 
+  useLayoutEffect(() => {
+    return () => {
+      document.documentElement.lang = 'en'
+    }
+  }, [])
+
   const setLang = useCallback((lang: Lang) => {
-    setPrefs((p) => ({ ...p, lang }))
+    setPrefs((p) => (cachedPrefs = { ...p, lang }))
     write(KEYS.lang, lang)
   }, [])
   const setMode = useCallback((mode: Mode) => {
-    setPrefs((p) => ({ ...p, mode }))
+    setPrefs((p) => (cachedPrefs = { ...p, mode }))
     write(KEYS.mode, mode)
   }, [])
   const toggleLearned = useCallback((slug: string) => {
     setPrefs((p) => {
       const learned = p.learned.includes(slug) ? p.learned.filter((s) => s !== slug) : [...p.learned, slug]
       write(KEYS.learned, learned)
-      return { ...p, learned }
+      return (cachedPrefs = { ...p, learned })
     })
   }, [])
 

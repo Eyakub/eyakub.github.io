@@ -111,6 +111,61 @@ const checks = [
       assert(w <= 390, `${url} scrollWidth ${w} > 390`)
     }
   }],
+  ['hub-map', async () => {
+    const { page, context, problems } = await open('/learn')
+    await page.waitForSelector('.network-svg .st')
+    const count = await page.locator('.network-svg .st').count()
+    await shot(page, 'hub-map')
+    await page.locator('.network-svg .st[data-id="python-gil"]').click()
+    await page.waitForSelector('.toast')
+    const toast = await page.textContent('.toast')
+    await page.locator('.network-svg .st[data-id="celery-redis"]').click()
+    await page.waitForURL('**/learn/celery-redis')
+    await page.waitForLoadState('networkidle')
+    await context.close()
+    assert(count === 20, `expected 20 stations, got ${count}`)
+    assert(toast?.includes('Phase 2'), `toast missing Phase 2: ${toast}`)
+    noProblems(problems)
+  }],
+  ['hub-strips-mobile', async () => {
+    const { page, context } = await open('/learn', { width: 390, height: 844 })
+    const mapVisible = await page.locator('.network-svg').isVisible().catch(() => false)
+    const strips = await page.locator('.strip').count()
+    await shot(page, 'hub-strips-mobile')
+    await context.close()
+    assert(!mapVisible, 'network map visible on mobile')
+    assert(strips === 5, `expected 5 strips, got ${strips}`)
+  }],
+  ['navbar-learn', async () => {
+    const { page, context } = await open('/')
+    const hrefs = await page.locator('a', { hasText: /^Learn$/ }).evaluateAll((els) => els.map((e) => e.getAttribute('href')))
+    await context.close()
+    assert(hrefs.includes('/learn'), `no Learn link to /learn, got ${JSON.stringify(hrefs)}`)
+  }],
+  ['lang-client-nav', async () => {
+    const { page, context } = await open('/learn')
+    await page.getByRole('button', { name: 'বাংলা' }).click()
+    await page.locator('a.btn.primary').click()
+    await page.waitForURL('**/learn/celery-redis')
+    const state = await page.evaluate(() => ({
+      lang: document.documentElement.lang,
+      lede: document.querySelector('p.lede')?.textContent ?? '',
+    }))
+    await context.close()
+    assert(state.lang === 'bn', `lang flashed back to ${state.lang}`)
+    assert(/[ঀ-৿]/.test(state.lede), `lede not Bengali: ${state.lede}`)
+  }],
+  ['lang-reset-on-leave', async () => {
+    const { page, context } = await open('/learn/celery-redis')
+    await page.getByRole('button', { name: 'বাংলা' }).click()
+    await page.locator('footer.foot a').click()
+    await page.waitForURL((u) => u.pathname === '/')
+    // URL flips on pushState, a tick before the route commits and the provider unmounts
+    await page.waitForSelector('.learn-root', { state: 'detached' })
+    const lang = await page.evaluate(() => document.documentElement.lang)
+    await context.close()
+    assert(lang === 'en', `lang on / is ${lang}`)
+  }],
   ['existing-pages', async () => {
     for (const url of ['/', '/projects', '/eyasir']) {
       const { context, problems } = await open(url)

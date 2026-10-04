@@ -1,8 +1,27 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useLearnPrefs } from '../../../contexts/LearnPrefsContext'
+import { STATIONS } from '../../../data/learn/network'
+import type { UiKey } from '../../../data/learn/ui'
+import { fmt } from '../../../lib/learn/l10n'
+import { useToast } from '../shell/Toast'
+import LineStrips from './LineStrips'
+import NetworkMap from './NetworkMap'
 
-export default function Hub(_props: { openSlugs: string[] }) {
-  const { ui } = useLearnPrefs()
+export default function Hub({ openSlugs }: { openSlugs: string[] }) {
+  const { ui, t, learned } = useLearnPrefs()
+  const router = useRouter()
+  const toast = useToast()
+
+  const onStation = (slug: string) => {
+    if (openSlugs.includes(slug)) {
+      router.push('/learn/' + slug)
+      return
+    }
+    const s = STATIONS[slug]
+    toast(fmt(ui('toastLater'), { name: t(s.name), phase: ui(('p' + s.phase) as UiKey) }))
+  }
+
   return (
     <main id="map-view">
       <section className="hero">
@@ -14,6 +33,18 @@ export default function Hub(_props: { openSlugs: string[] }) {
           </svg>
           <span>{ui('hubCta')}</span>
         </Link>
+      </section>
+
+      <section aria-labelledby="map-h">
+        <h2 id="map-h" className="sr-only">
+          {ui('mapHeading')}
+        </h2>
+        <NetworkMap openSlugs={openSlugs} learned={learned} onStation={onStation} />
+      </section>
+
+      <section className="strips" aria-labelledby="strips-h">
+        <h2 id="strips-h">{ui('allLines')}</h2>
+        <LineStrips openSlugs={openSlugs} learned={learned} onStation={onStation} />
       </section>
     </main>
   )

@@ -48,6 +48,9 @@ export default function Navbar({ enableTransition }) {
               <Button as={NextLink} href="/projects" fontSize="16px" variant="ghost">
                 Projects
               </Button>
+              <Button as={NextLink} href="/learn" fontSize="16px" variant="ghost">
+                Learn
+              </Button>
               <Button as={NextLink} href="/blog" fontSize="16px" variant="ghost">
                 Blog
               </Button>
@@ -98,6 +101,9 @@ export default function Navbar({ enableTransition }) {
             </Button>
             <Button as={NextLink} href="/projects" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
               Projects
+            </Button>
+            <Button as={NextLink} href="/learn" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
+              Learn
             </Button>
             <Button as={NextLink} href="/blog" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
               Blog

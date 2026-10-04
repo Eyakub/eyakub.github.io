@@ -13,6 +13,7 @@ export const UI = {
   mapHeading: { en: 'Network map of topics', bn: 'টপিকের নেটওয়ার্ক ম্যাপ' },
   allLines: { en: 'All lines', bn: 'সব লাইন' },
   open: { en: 'Open', bn: 'চালু' },
+  p1: { en: 'Phase 1', bn: 'ধাপ ১' },
   p2: { en: 'Phase 2', bn: 'ধাপ ২' },
   p3: { en: 'Phase 3', bn: 'ধাপ ৩' },
   learned: { en: 'Learned', bn: 'শেখা হয়েছে' },
