@@ -54,6 +54,8 @@ async function open(url, { width = 1280, height = 860, allow404 = false } = {}) 
   const problems = []
   page.on('pageerror', (e) => problems.push(`pageerror: ${e.message}`))
   page.on('requestfailed', (r) => {
+    // Next.js aborts in-flight _next/data prefetches on navigation; that is not a real failure.
+    if (r.failure()?.errorText?.includes('net::ERR_ABORTED')) return
     if (r.url().startsWith(ORIGIN)) problems.push(`requestfailed: ${r.url()} ${r.failure()?.errorText ?? ''}`)
   })
   page.on('response', (r) => {
@@ -67,6 +69,11 @@ async function open(url, { width = 1280, height = 860, allow404 = false } = {}) 
 const shot = (page, name) => page.screenshot({ path: path.join(SHOTS, `${name}.png`), fullPage: true })
 const assert = (cond, msg) => { if (!cond) throw new Error(msg) }
 const noProblems = (problems) => assert(problems.length === 0, problems.join('; '))
+
+const TOPIC_CASES = [
+  { slug: 'celery-redis', total: 10, altStop: 'Stop 5 of 8' },
+  { slug: 'fastapi-lifecycle', total: 11, altStop: 'Stop 7 of 10' },
+]
 
 const checks = [
   ['hub-loads', async () => {
@@ -103,7 +110,7 @@ const checks = [
     noProblems(problems)
   }],
   ['no-overflow', async () => {
-    for (const url of ['/learn', '/learn/celery-redis']) {
+    for (const url of ['/learn', ...TOPIC_CASES.map((t) => `/learn/${t.slug}`)]) {
       const { page, context } = await open(url, { width: 390, height: 844 })
       const w = await page.evaluate(() => document.documentElement.scrollWidth)
       await shot(page, `mobile${url.replace(/\//g, '-')}`)
@@ -175,20 +182,22 @@ const checks = [
     assert(lang === 'en', `lang on / is ${lang}`)
   }],
   ['player-step', async () => {
-    const { page, context, problems } = await open('/learn/celery-redis')
-    await page.waitForSelector('#next')
-    await page.click('#next'); await page.click('#next')
-    await page.waitForTimeout(1500)
-    const stop = await page.textContent('#stopno')
-    const vis = page.locator('.packet:not([hidden])')
-    const count = await vis.count()
-    const box = await vis.first().boundingBox()
-    await shot(page, 'player-desktop')
-    await context.close()
-    assert(stop === 'Stop 3 of 10', `stopno: ${stop}`)
-    assert(count === 1, `visible packets: ${count}`)
-    assert(box && box.width > 40, `packet width ${box?.width}`)
-    noProblems(problems)
+    for (const { slug, total } of TOPIC_CASES) {
+      const { page, context, problems } = await open(`/learn/${slug}`)
+      await page.waitForSelector('#next')
+      await page.click('#next'); await page.click('#next')
+      await page.waitForTimeout(1500)
+      const stop = await page.textContent('#stopno')
+      const vis = page.locator('.packet:not([hidden])')
+      const count = await vis.count()
+      const box = await vis.first().boundingBox()
+      await shot(page, slug === 'celery-redis' ? 'player-desktop' : `player-${slug.split('-')[0]}-desktop`)
+      await context.close()
+      assert(stop === `Stop 3 of ${total}`, `${slug} stopno: ${stop}`)
+      assert(count === 1, `${slug} visible packets: ${count}`)
+      assert(box && box.width > 40, `${slug} packet width ${box?.width}`)
+      noProblems(problems)
+    }
   }],
   ['player-rapid', async () => {
     const { page, context } = await open('/learn/celery-redis')
@@ -215,6 +224,13 @@ const checks = [
     const vb = await page.getAttribute('svg.flow-svg', 'viewBox')
     const packets = await page.locator('.packet:not([hidden])').count()
     await shot(page, 'player-mobile')
+    const fa = await context.newPage()
+    await fa.setViewportSize({ width: 390, height: 844 })
+    await fa.goto(ORIGIN + '/learn/fastapi-lifecycle', { waitUntil: 'networkidle' })
+    await fa.waitForSelector('#next')
+    await fa.click('#next'); await fa.click('#next')
+    await fa.waitForTimeout(1500)
+    await shot(fa, 'player-fastapi-mobile')
     await context.close()
     assert(before === after, `counter changed ${before} -> ${after}`)
     assert(vb?.startsWith('0 0 400'), `viewBox: ${vb}`)
@@ -232,16 +248,18 @@ const checks = [
     assert(/^স্টপ [০-৯]+ \/ ১০$/.test(stop ?? ''), `stopno: ${stop}`)
     assert(label?.trim() === 'থামান', `play label: ${label}`)
   }],
-  ['player-failure-route', async () => {
-    const { page, context } = await open('/learn/celery-redis')
-    await page.getByRole('button', { name: 'A job fails' }).click()
-    const stop = await page.textContent('#stopno')
-    await page.click('#next')
-    await page.waitForTimeout(300)
-    const errs = await page.locator('.edge.k-error').evaluateAll((els) => els.filter((e) => getComputedStyle(e).opacity !== '0' && e.classList.contains('active')).length)
-    await context.close()
-    assert(stop === 'Stop 5 of 8', `stopno: ${stop}`)
-    assert(errs >= 1, `no visible k-error edge: ${errs}`)
+  ['player-alt-route', async () => {
+    for (const { slug, altStop } of TOPIC_CASES) {
+      const { page, context } = await open(`/learn/${slug}`)
+      await page.getByRole('group', { name: 'Route' }).getByRole('button').nth(1).click()
+      const stop = await page.textContent('#stopno')
+      await page.click('#next')
+      await page.waitForTimeout(300)
+      const errs = await page.locator('.edge.k-error').evaluateAll((els) => els.filter((e) => getComputedStyle(e).opacity !== '0' && e.classList.contains('active')).length)
+      await context.close()
+      assert(stop === altStop, `${slug} stopno: ${stop}`)
+      assert(errs >= 1, `${slug} no visible k-error edge: ${errs}`)
+    }
   }],
   ['player-keyboard', async () => {
     const { page, context } = await open('/learn/celery-redis')
