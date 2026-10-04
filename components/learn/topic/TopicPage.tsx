@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useLearnPrefs } from '../../../contexts/LearnPrefsContext'
 import { LINES } from '../../../data/learn/network'
 import type { Topic } from '../../../data/learn/types'
+import FlowPlayer from '../player/FlowPlayer'
 
 export default function TopicPage({ topic }: { topic: Topic }) {
   const { t, ui } = useLearnPrefs()
@@ -24,6 +25,7 @@ export default function TopicPage({ topic }: { topic: Topic }) {
         <h1 className="display" id="topic-title">{t(topic.title)}</h1>
         <p className="lede">{t(topic.summary)}</p>
       </header>
+      <FlowPlayer key={topic.slug} topic={topic} />
     </main>
   )
 }

@@ -174,6 +174,105 @@ const checks = [
     await context.close()
     assert(lang === 'en', `lang on / is ${lang}`)
   }],
+  ['player-step', async () => {
+    const { page, context, problems } = await open('/learn/celery-redis')
+    await page.waitForSelector('#next')
+    await page.click('#next'); await page.click('#next')
+    await page.waitForTimeout(1500)
+    const stop = await page.textContent('#stopno')
+    const vis = page.locator('.packet:not([hidden])')
+    const count = await vis.count()
+    const box = await vis.first().boundingBox()
+    await shot(page, 'player-desktop')
+    await context.close()
+    assert(stop === 'Stop 3 of 10', `stopno: ${stop}`)
+    assert(count === 1, `visible packets: ${count}`)
+    assert(box && box.width > 40, `packet width ${box?.width}`)
+    noProblems(problems)
+  }],
+  ['player-rapid', async () => {
+    const { page, context } = await open('/learn/celery-redis')
+    await page.waitForSelector('#next')
+    for (let i = 0; i < 5; i++) await page.click('#next', { delay: 0 })
+    await page.waitForTimeout(1500)
+    const stop = await page.textContent('#stopno')
+    const packets = await page.locator('.packet:not([hidden])').count()
+    const comets = await page.locator('.comet:not([hidden])').count()
+    await context.close()
+    assert(stop === 'Stop 6 of 10', `stopno: ${stop}`)
+    assert(packets === 1, `visible packets: ${packets}`)
+    assert(comets === 0, `visible comets: ${comets}`)
+  }],
+  ['player-resize', async () => {
+    const { page, context } = await open('/learn/celery-redis')
+    await page.waitForSelector('#next')
+    await page.click('#next'); await page.click('#next')
+    await page.waitForTimeout(1500)
+    const before = await page.textContent('#stopno')
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.waitForTimeout(300)
+    const after = await page.textContent('#stopno')
+    const vb = await page.getAttribute('svg.flow-svg', 'viewBox')
+    const packets = await page.locator('.packet:not([hidden])').count()
+    await shot(page, 'player-mobile')
+    await context.close()
+    assert(before === after, `counter changed ${before} -> ${after}`)
+    assert(vb?.startsWith('0 0 400'), `viewBox: ${vb}`)
+    assert(packets === 1, `visible packets: ${packets}`)
+  }],
+  ['player-lang-during-play', async () => {
+    const { page, context } = await open('/learn/celery-redis')
+    await page.waitForSelector('#play')
+    await page.click('#play')
+    await page.getByRole('button', { name: 'বাংলা' }).click()
+    await page.waitForTimeout(4500)
+    const stop = await page.textContent('#stopno')
+    const label = await page.textContent('#play')
+    await context.close()
+    assert(/^স্টপ [০-৯]+ \/ ১০$/.test(stop ?? ''), `stopno: ${stop}`)
+    assert(label?.trim() === 'থামান', `play label: ${label}`)
+  }],
+  ['player-failure-route', async () => {
+    const { page, context } = await open('/learn/celery-redis')
+    await page.getByRole('button', { name: 'A job fails' }).click()
+    const stop = await page.textContent('#stopno')
+    await page.click('#next')
+    await page.waitForTimeout(300)
+    const errs = await page.locator('.edge.k-error').evaluateAll((els) => els.filter((e) => getComputedStyle(e).opacity !== '0' && e.classList.contains('active')).length)
+    await context.close()
+    assert(stop === 'Stop 5 of 8', `stopno: ${stop}`)
+    assert(errs >= 1, `no visible k-error edge: ${errs}`)
+  }],
+  ['player-keyboard', async () => {
+    const { page, context } = await open('/learn/celery-redis')
+    await page.waitForSelector('#next')
+    await page.focus('#next')
+    await page.keyboard.press('ArrowRight')
+    const stop = await page.textContent('#stopno')
+    await context.close()
+    assert(stop === 'Stop 2 of 10', `stopno: ${stop}`)
+  }],
+  ['player-mobile-order', async () => {
+    const { page, context } = await open('/learn/celery-redis', { width: 390, height: 844 })
+    await page.waitForSelector('.now')
+    const top = (sel) => page.evaluate((s) => document.querySelector(s).getBoundingClientRect().top + scrollY, sel)
+    const [n, s, c] = [await top('.now'), await top('.stage'), await top('.controls')]
+    await context.close()
+    assert(n < s && s < c, `order now=${n} stage=${s} controls=${c}`)
+  }],
+  ['reduced-motion', async () => {
+    const context = await browser.newContext({ viewport: { width: 1280, height: 860 }, reducedMotion: 'reduce' })
+    const page = await context.newPage()
+    await page.goto(ORIGIN + '/learn/celery-redis', { waitUntil: 'networkidle' })
+    await page.click('#next')
+    const vis = await page.locator('.packet:not([hidden])').count()
+    const a = await page.getAttribute('.packet:not([hidden])', 'transform')
+    await page.waitForTimeout(200)
+    const b = await page.getAttribute('.packet:not([hidden])', 'transform')
+    await context.close()
+    assert(vis === 1, `visible packets: ${vis}`)
+    assert(a && a === b, `packet moved: ${a} -> ${b}`)
+  }],
   ['existing-pages', async () => {
     for (const url of ['/', '/projects', '/eyasir']) {
       const { context, problems } = await open(url)
