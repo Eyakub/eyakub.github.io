@@ -279,8 +279,8 @@ export const processesVsThreads: Topic = {
             bn: 'অফিস B পুড়ে যায়। তার নোট শেষ, কিন্তু বাইরের কিছুতে আঁচ লাগে না।'
           },
           tech: {
-            en: 'A segfault, `os._exit` or the OOM killer ends the process, and the OS reclaims its memory. The parent sees a negative `exitcode`: the signal number.',
-            bn: 'segfault, `os._exit` বা OOM killer process শেষ করে, আর OS তার memory ফেরত নেয়। parent একটা ঋণাত্মক `exitcode` দেখে: signal নম্বর।'
+            en: 'A segfault or the OOM killer ends the process, and the OS reclaims its memory. A signal death shows in the parent as a negative `exitcode`: minus the signal number.',
+            bn: 'segfault বা OOM killer process শেষ করে, আর OS তার memory ফেরত নেয়। signal-এ মারা গেলে parent ঋণাত্মক `exitcode` দেখে: মাইনাস signal নম্বর।'
           }
         },
         {
@@ -522,7 +522,7 @@ export const processesVsThreads: Topic = {
     {
       q: {
         en: 'What does fork do to threads?',
-        bn: '`fork` থ্রেডগুলোর সাথে কী করে?'
+        bn: '`fork` thread-গুলোর সাথে কী করে?'
       },
       short: {
         en: 'Only the calling thread exists in the child.',
@@ -530,7 +530,7 @@ export const processesVsThreads: Topic = {
       },
       deep: {
         en: 'A lock held by another thread at fork time stays locked forever in the child, a classic deadlock. That is why Python warns about fork with threads, and 3.14 moved the default away from it.',
-        bn: 'fork-এর সময় অন্য thread যে lock ধরে ছিল, child-এ সেটা চিরকাল locked থাকে: ক্লাসিক deadlock। তাই Python থ্রেডসহ fork নিয়ে সতর্ক করে, আর 3.14 ডিফল্ট সরিয়ে নিয়েছে।'
+        bn: 'fork-এর সময় অন্য thread যে lock ধরে ছিল, child-এ সেটা চিরকাল locked থাকে: ক্লাসিক deadlock। তাই Python thread-সহ fork নিয়ে সতর্ক করে, আর 3.14 ডিফল্ট সরিয়ে নিয়েছে।'
       },
       redFlag: {
         en: '“Fork copies everything, including all threads.”',
