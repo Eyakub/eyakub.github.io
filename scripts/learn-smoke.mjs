@@ -48,7 +48,7 @@ function findChromium() {
 const browser = await chromium.launch({ executablePath: findChromium() })
 
 // Fresh context per check; collects page errors and same-origin request failures.
-async function open(url, { width = 1280, height = 860, allow404 = false } = {}) {
+async function open(url, { width = 1280, height = 860, allow404 = false, waitUntil = 'networkidle' } = {}) {
   const context = await browser.newContext({ viewport: { width, height } })
   const page = await context.newPage()
   const problems = []
@@ -63,7 +63,7 @@ async function open(url, { width = 1280, height = 860, allow404 = false } = {}) 
       problems.push(`HTTP ${r.status()}: ${r.url()}`)
     }
   })
-  const response = await page.goto(ORIGIN + url, { waitUntil: 'networkidle' })
+  const response = await page.goto(ORIGIN + url, { waitUntil })
   return { page, context, problems, response }
 }
 const shot = (page, name) => page.screenshot({ path: path.join(SHOTS, `${name}.png`), fullPage: true })
@@ -75,6 +75,8 @@ const TOPIC_CASES = [
   { slug: 'fastapi-lifecycle', total: 11, altStop: 'Stop 7 of 10' },
   { slug: 'git-basics', total: 9, altStop: 'Stop 9 of 12', altBtn: 2 },
 ]
+
+const STEP_MS = 1400 // long enough for the packet animation and its arrival callback to finish
 
 const checks = [
   ['hub-loads', async () => {
@@ -345,9 +347,28 @@ const checks = [
     assert(chip?.trim() === 'Learned', `chip ${chip}`)
     assert(/\bdone\b/.test(station ?? ''), `station class ${station}`)
   }],
+  ['all-steps-no-errors', async () => {
+    // The packet-arrival code runs in rAF callbacks, so a throw there only surfaces if every step is actually played out.
+    for (const { slug } of TOPIC_CASES) {
+      const { page, context, problems } = await open(`/learn/${slug}`)
+      const routeBtns = page.locator('.switch .seg').nth(1).locator('button')
+      const n = await routeBtns.count()
+      for (let r = 0; r < n; r++) {
+        await routeBtns.nth(r).click()
+        await page.waitForTimeout(STEP_MS)
+        while (!(await page.locator('#next').isDisabled())) {
+          await page.click('#next')
+          await page.waitForTimeout(STEP_MS)
+        }
+      }
+      await context.close()
+      noProblems(problems)
+    }
+  }],
   ['existing-pages', async () => {
     for (const url of ['/', '/projects', '/eyasir']) {
-      const { context, problems } = await open(url)
+      // These pages pull external assets, so networkidle never settles offline; same-origin failures are still collected.
+      const { context, problems } = await open(url, { waitUntil: 'load' })
       await context.close()
       assert(problems.length === 0, `${url}: ${problems.join('; ')}`)
     }
