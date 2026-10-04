@@ -1,0 +1,952 @@
+<title>Stop by Stop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wdth,wght@75..125,300..800&family=Anek+Latin:wdth,wght@75..125,300..800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a transit-map canvas leads every view; on wide screens the "now arriving" panel rides beside the map, reading sections follow in one ~68ch column */
+:root{
+  --paper:#F2F4F8; --surface:#FFFFFF; --ink:#131B2C; --ink-2:#435069; --ink-3:#66718A;
+  --rule:#D6DCE6; --track:#D9DEE7; --band:#131B2C; --band-fg:#F2F4F8;
+  --k-request:#1A5FC4; --k-request-on:#FFFFFF;
+  --k-queue:#CC6E00;   --k-queue-on:#1B1206;
+  --k-result:#0B7A4B;  --k-result-on:#FFFFFF;
+  --k-error:#C4302F;   --k-error-on:#FFFFFF;
+  --l-backend:#1A5FC4; --l-async:#CC6E00; --l-devops:#0B7A4B; --l-git:#7347B5;
+  --code-bg:#151E31; --code-fg:#E4EAF4; --code-dim:#8E9AB3;
+  --focus:#1A5FC4;
+  --f-ui:"Anek Latin","Anek Bangla",ui-sans-serif,system-ui,sans-serif;
+  --f-bn:"Anek Bangla","Anek Latin",ui-sans-serif,system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --t-xs:13px; --t-sm:15px; --t-md:17px; --t-lg:21px; --t-xl:27px; --t-2xl:34px;
+  --r-card:22px; --r-ctl:999px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C121E; --surface:#131B2B; --ink:#E8EDF6; --ink-2:#B1BBD0; --ink-3:#8792AA;
+    --rule:#26314A; --track:#29344D; --band:#E8EDF6; --band-fg:#0C121E;
+    --k-request:#6AA5F7; --k-request-on:#06101F;
+    --k-queue:#F3A54A;   --k-queue-on:#1B1206;
+    --k-result:#43C88E;  --k-result-on:#04140C;
+    --k-error:#F27474;   --k-error-on:#1E0606;
+    --l-backend:#6AA5F7; --l-async:#F3A54A; --l-devops:#43C88E; --l-git:#AE8CF2;
+    --code-bg:#080D17; --code-fg:#E4EAF4; --code-dim:#7D89A3;
+    --focus:#6AA5F7; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0C121E; --surface:#131B2B; --ink:#E8EDF6; --ink-2:#B1BBD0; --ink-3:#8792AA;
+  --rule:#26314A; --track:#29344D; --band:#E8EDF6; --band-fg:#0C121E;
+  --k-request:#6AA5F7; --k-request-on:#06101F;
+  --k-queue:#F3A54A;   --k-queue-on:#1B1206;
+  --k-result:#43C88E;  --k-result-on:#04140C;
+  --k-error:#F27474;   --k-error-on:#1E0606;
+  --l-backend:#6AA5F7; --l-async:#F3A54A; --l-devops:#43C88E; --l-git:#AE8CF2;
+  --code-bg:#080D17; --code-fg:#E4EAF4; --code-dim:#7D89A3;
+  --focus:#6AA5F7; color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:var(--t-md);line-height:1.55;-webkit-font-smoothing:antialiased}
+html[lang="bn"] body{font-family:var(--f-bn);line-height:1.72}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.shell{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:0 48px}
+
+/* top bar */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:18px;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper)}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-stretch:87.5%;font-size:var(--t-lg);letter-spacing:-.005em}
+.brand svg{width:34px;height:18px;color:var(--ink)}
+.seg{display:inline-flex;align-items:center;gap:2px;padding:3px;border:1px solid var(--rule);border-radius:var(--r-ctl);background:var(--surface)}
+.seg button{border:0;background:transparent;border-radius:var(--r-ctl);min-height:40px;min-width:48px;padding:0 14px;font-size:var(--t-sm);font-weight:600;color:var(--ink-2);transition:background .18s ease,color .18s ease}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.seg button:not([aria-pressed="true"]):hover{color:var(--ink)}
+.lang button[lang="bn"]{font-family:var(--f-bn)}
+
+/* shared type */
+h1,h2,h3{margin:0;text-wrap:balance}
+.display{font-weight:700;font-stretch:75%;letter-spacing:-.012em;line-height:.98}
+.lede{color:var(--ink-2);font-size:var(--t-lg);line-height:1.5;max-width:58ch;margin:0}
+html[lang="bn"] .lede{line-height:1.65}
+
+/* ---------- MAP VIEW ---------- */
+.hero{display:grid;gap:18px;padding-block:28px 28px}
+.hero h1{font-size:clamp(40px,7.4vw,74px);max-width:15ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:var(--r-ctl);font-weight:650;font-size:var(--t-md);text-decoration:none;border:1.5px solid var(--ink);background:transparent}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn svg{width:20px;height:20px}
+.hero .btn{justify-self:start}
+
+.map-card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-card);padding:10px 10px 4px;overflow:hidden}
+#network{display:block;width:100%;height:auto}
+#network .ln{fill:none;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+#network .st{cursor:pointer}
+#network .st .hit{fill:transparent;stroke:transparent;stroke-width:3}
+#network .st:focus{outline:none}
+#network .st:focus-visible .hit{stroke:var(--focus)}
+#network .st .dot{fill:var(--surface);stroke-width:5;transition:r .18s ease}
+#network .st:hover .dot{r:13}
+#network .st.soon .dot{fill:var(--paper);stroke:var(--ink-3)!important;stroke-width:2.5;stroke-dasharray:3.5 3}
+#network .st.x .dot{stroke:var(--ink)!important;stroke-width:4.5}
+#network .st.done .dot{fill:var(--st)}
+#network .st .chk{fill:none;stroke:var(--surface);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+#network text{fill:var(--ink);font-size:15.5px;font-weight:650;font-stretch:87.5%}
+#network .st.soon text{fill:var(--ink-3);font-weight:500}
+.line-key{display:flex;flex-wrap:wrap;gap:8px 22px;list-style:none;margin:14px 4px 0;padding:0;font-size:var(--t-sm);color:var(--ink-2)}
+.line-key li{display:inline-flex;align-items:center;gap:8px}
+.line-key i{width:22px;height:7px;border-radius:4px;background:var(--c)}
+.preview-note{font-size:var(--t-sm);color:var(--ink-3);margin:10px 4px 0;max-width:72ch}
+
+.strips{padding-block:36px 8px}
+.strips h2{font-size:var(--t-xl);font-weight:700;font-stretch:87.5%;margin-bottom:16px}
+.strip-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.strip{background:var(--surface);border:1px solid var(--rule);border-radius:18px;padding:18px 18px 10px;min-width:0}
+.strip h3{display:flex;align-items:center;gap:10px;font-size:var(--t-lg);font-weight:700;font-stretch:87.5%;margin-bottom:6px}
+.strip h3 i{width:26px;height:8px;border-radius:4px;background:var(--c)}
+.strip ol{list-style:none;margin:0;padding:0;position:relative}
+.strip ol::before{content:"";position:absolute;left:13px;top:22px;bottom:22px;width:6px;border-radius:3px;background:var(--c)}
+.strip li button{position:relative;display:grid;grid-template-columns:32px 1fr auto;align-items:center;gap:10px;width:100%;min-height:48px;padding:6px 0;border:0;background:transparent;text-align:left}
+.strip .sdot{justify-self:center;width:18px;height:18px;border-radius:50%;background:var(--surface);border:4px solid var(--c);position:relative;z-index:1}
+.strip .soon .sdot{border:2.5px dashed var(--ink-3);background:var(--paper)}
+.strip .x .sdot{border-color:var(--ink);width:22px;height:22px}
+.strip .sname{font-weight:600;line-height:1.25}
+.strip .soon .sname{color:var(--ink-3);font-weight:500}
+.strip .change{display:block;font-size:var(--t-xs);color:var(--ink-3);font-weight:500}
+.chip{font-size:var(--t-xs);font-weight:600;padding:3px 10px;border-radius:var(--r-ctl);white-space:nowrap}
+.chip.open{background:color-mix(in srgb,var(--c) 16%,var(--surface));color:var(--ink)}
+.chip.later{border:1px dashed var(--rule);color:var(--ink-3)}
+.chip.learned{background:var(--k-result);color:var(--k-result-on)}
+
+/* ---------- TOPIC VIEW ---------- */
+.crumb{padding-block:6px 0}
+.crumb a{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:var(--t-sm);font-weight:600;color:var(--ink-2);text-decoration:none}
+.crumb a:hover{color:var(--ink)}
+.crumb svg{width:18px;height:18px}
+.topic-head{display:grid;gap:14px;padding-block:6px 22px}
+.line-tag{display:inline-flex;align-items:center;gap:9px;margin:0;font-size:var(--t-sm);font-weight:600;color:var(--ink-2)}
+.line-tag i{width:14px;height:14px;border-radius:50%;border:4px solid var(--l-async);background:var(--surface)}
+.topic-head h1{font-size:clamp(40px,6.4vw,64px)}
+.switches{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;padding-top:4px}
+.switch{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.switch > span{font-size:var(--t-sm);color:var(--ink-3);font-weight:500}
+
+.player{display:grid;gap:18px;grid-template-columns:1fr}
+@media (min-width:980px){.player{grid-template-columns:minmax(0,1.62fr) minmax(320px,1fr);align-items:start}}
+.stage{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-card);padding:12px 12px 14px;min-width:0}
+@media (min-width:980px){.stage{position:sticky;top:calc(env(safe-area-inset-top,0px) + 84px)}}
+@media (max-width:979px){.player .ride{display:contents}.ride .now{order:1}.stage{order:2}.controls{order:3;position:sticky;bottom:0;z-index:5;background:var(--paper);padding-block:10px calc(10px + env(safe-area-inset-bottom,0px));margin-block:-10px}.stops{order:4}.now-body{padding:14px 16px 16px}.now-body h2{font-size:var(--t-lg)}}
+#flow{display:block;width:100%;height:auto;overflow:visible}
+#flow .track{fill:none;stroke:var(--track);stroke-width:16;stroke-linecap:round;stroke-linejoin:round}
+#flow .edge{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .3s ease,stroke-width .3s ease}
+#flow .edge.k-request{stroke:var(--k-request)}
+#flow .edge.k-queue{stroke:var(--k-queue);stroke-dasharray:11 7}
+#flow .edge.k-result{stroke:var(--k-result);stroke-dasharray:1 9}
+#flow .edge.k-result.active,#flow .edge.k-result.visited{stroke-width:6}
+#flow .edge.k-error{stroke:var(--k-error);stroke-dasharray:3 6}
+#flow .edge.visited{opacity:.42}
+#flow .edge.active{opacity:1;stroke-width:6}
+#flow .edge.k-request.active,#flow .edge.k-request.visited{marker-end:url(#ar-request)}
+#flow .edge.k-queue.active,#flow .edge.k-queue.visited{marker-end:url(#ar-queue)}
+#flow .edge.k-result.active,#flow .edge.k-result.visited{marker-end:url(#ar-result)}
+#flow .edge.k-error.active,#flow .edge.k-error.visited{marker-end:url(#ar-error)}
+#flow .node .halo{fill:var(--k,var(--k-request));opacity:0;transform-box:fill-box;transform-origin:center;transition:opacity .25s ease}
+#flow .node .disc{fill:var(--surface);stroke:var(--ink);stroke-width:3.5;transition:stroke .25s ease}
+#flow .node .ico{color:var(--ink)}
+#flow .node.on .disc{stroke:var(--k)}
+#flow .node.on .halo{opacity:.16}
+#flow .node.on .ico{color:var(--k)}
+#flow .node.working .halo{opacity:.22;animation:pulse 1.4s ease-in-out infinite}
+#flow .node.arrive .halo{animation:arrive .55s ease-out}
+#flow .node .nm{fill:var(--ink);font-size:17px;font-weight:650;font-stretch:87.5%}
+#flow .node .sb{fill:var(--ink-3);font-size:13px;font-weight:500}
+#flow .node.on .nm{font-weight:750}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+@keyframes arrive{0%{opacity:.45;transform:scale(.85)}100%{opacity:.16;transform:scale(1.12)}}
+#flow .packet rect{fill:var(--pk)}
+#flow .packet text{fill:var(--pk-on);font-size:13.5px;font-weight:650;dominant-baseline:central;text-anchor:middle}
+#flow .comet{fill:var(--pk)}
+html[lang="bn"] #flow text,html[lang="bn"] #network text{font-family:var(--f-bn)}
+
+.kind-key{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;margin:10px 6px 0;padding:0;font-size:var(--t-xs);color:var(--ink-2)}
+.kind-key li{display:inline-flex;align-items:center;gap:7px}
+.kind-key svg{width:30px;height:10px}
+
+.ride{display:grid;gap:14px;min-width:0}
+.now{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-card);overflow:hidden}
+.band{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--band);color:var(--band-fg);padding:10px 16px;font-size:var(--t-sm);font-weight:600;font-variant-numeric:tabular-nums}
+.pips{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.pips i{width:8px;height:8px;border-radius:50%;background:color-mix(in srgb,var(--band-fg) 32%,transparent)}
+.pips i.past{background:color-mix(in srgb,var(--band-fg) 70%,transparent)}
+.pips i.cur{background:var(--k,var(--k-request));box-shadow:0 0 0 2px var(--band-fg)}
+.now-body{padding:16px 18px 18px;display:grid;gap:10px}
+.now-body h2{font-size:var(--t-xl);font-weight:700;font-stretch:87.5%;line-height:1.12}
+.now-body p{margin:0}
+#step-simple{font-size:var(--t-md);color:var(--ink)}
+.tech{border-top:1px dashed var(--rule);padding-top:10px;display:grid;gap:4px}
+.tech-l{font-size:var(--t-xs);font-weight:650;color:var(--ink-3)}
+#step-tech-text{font-size:var(--t-sm);color:var(--ink-2)}
+#step-tech-text code,.read code{font-family:var(--f-code);font-size:.88em;background:color-mix(in srgb,var(--ink) 7%,transparent);padding:1px 5px;border-radius:5px;word-break:break-word}
+.next{font-size:var(--t-sm);color:var(--ink-3)}
+
+.controls{display:grid;grid-template-columns:52px 1fr 52px;gap:10px}
+.cbtn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:52px;border-radius:16px;border:1.5px solid var(--rule);background:var(--surface);font-weight:650;transition:transform .12s ease,border-color .18s ease}
+.cbtn:hover:not(:disabled){border-color:var(--ink)}
+.cbtn:active:not(:disabled){transform:scale(.97)}
+.cbtn:disabled{opacity:.4;cursor:not-allowed}
+.cbtn.play{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.cbtn svg{width:22px;height:22px}
+
+.stops{background:var(--surface);border:1px solid var(--rule);border-radius:18px}
+.stops summary{list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:50px;padding:0 16px;font-weight:650;cursor:pointer}
+.stops summary::-webkit-details-marker{display:none}
+.stops summary svg{width:18px;height:18px;transition:transform .2s ease}
+.stops[open] summary svg{transform:rotate(180deg)}
+.stops ol{list-style:none;margin:0;padding:0 8px 10px;position:relative}
+.stops ol::before{content:"";position:absolute;left:27px;top:20px;bottom:30px;width:4px;border-radius:2px;background:var(--track)}
+.stops li button{position:relative;display:grid;grid-template-columns:30px 1fr;align-items:center;gap:10px;width:100%;min-height:44px;padding:5px 8px;border:0;border-radius:12px;background:transparent;text-align:left;font-size:var(--t-sm);color:var(--ink-2)}
+.stops li button:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+.stops .pin{justify-self:center;width:14px;height:14px;border-radius:50%;border:3px solid var(--ink-3);background:var(--surface);z-index:1}
+.stops li.past .pin{background:var(--ink-3)}
+.stops li.cur .pin{width:18px;height:18px;border-color:var(--k);background:var(--k)}
+.stops li.cur button{color:var(--ink);font-weight:650}
+.stops .n{font-variant-numeric:tabular-nums;color:var(--ink-3);margin-right:6px}
+
+/* reading sections */
+.read{max-width:760px;padding-block:44px 0}
+.read > h2{display:flex;align-items:center;gap:12px;font-size:var(--t-2xl);font-weight:700;font-stretch:80%;line-height:1.05;margin-bottom:8px}
+.read > h2 i{flex:none;width:18px;height:18px;border-radius:50%;border:5px solid var(--l-async);background:var(--surface)}
+.read > p.intro{color:var(--ink-2);margin:0 0 18px;max-width:62ch}
+
+.twins{list-style:none;margin:0;padding:0;display:grid;gap:12px;grid-template-columns:1fr}
+@media (min-width:700px){.twins{grid-template-columns:1fr 1fr}}
+.twins li{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:start;padding:14px 16px;border:1px solid var(--rule);border-radius:16px;background:var(--surface)}
+.twins .ic{width:48px;height:48px;border-radius:50%;border:3px solid var(--ink);display:grid;place-items:center;color:var(--ink)}
+.twins .ic svg{width:22px;height:22px}
+.twins li.retry .ic{border-color:var(--k-error);color:var(--k-error)}
+.twins strong{display:block;font-size:var(--t-lg);font-weight:700;font-stretch:87.5%;line-height:1.2}
+.twins .is{display:block;font-size:var(--t-xs);color:var(--ink-3);font-weight:600;margin-bottom:4px}
+.twins p{margin:0;font-size:var(--t-sm);color:var(--ink-2)}
+
+.qa{display:grid;gap:10px}
+.qa details{border:1px solid var(--rule);border-radius:16px;background:var(--surface)}
+.qa summary{list-style:none;display:grid;grid-template-columns:1fr 24px;gap:14px;align-items:center;padding:16px 18px;cursor:pointer;font-weight:650;font-size:var(--t-md);line-height:1.35}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary svg{width:22px;height:22px;transition:transform .2s ease;color:var(--ink-3)}
+.qa details[open] summary svg{transform:rotate(45deg)}
+.qa .ans{padding:0 18px 18px;display:grid;gap:12px}
+.qa .lbl{display:block;font-size:var(--t-xs);font-weight:650;color:var(--ink-3);margin-bottom:2px}
+.qa .ans p{margin:0;max-width:64ch}
+.qa .short p{font-size:var(--t-md);color:var(--ink)}
+.qa .deep p{font-size:var(--t-sm);color:var(--ink-2)}
+.qa .flag{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--k-error) 9%,var(--surface))}
+.qa .flag svg{width:20px;height:20px;color:var(--k-error);margin-top:2px}
+.qa .flag .lbl{color:var(--k-error)}
+.qa .flag p{font-size:var(--t-sm);color:var(--ink)}
+
+.cheats{display:grid;gap:14px}
+.cheat{display:grid;gap:8px;min-width:0}
+.cheat pre{margin:0;background:var(--code-bg);color:var(--code-fg);border-radius:14px;padding:14px 16px;overflow-x:auto;font-family:var(--f-code);font-size:14px;line-height:1.6}
+.cheat pre .c{color:var(--code-dim)}
+.cheat .row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.cheat .row p{margin:0;font-size:var(--t-sm);color:var(--ink-2)}
+.copy{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:var(--r-ctl);border:1px solid var(--rule);background:var(--surface);font-size:var(--t-xs);font-weight:650}
+.copy svg{width:16px;height:16px}
+
+.done-row{padding-block:40px 0}
+#done-btn{gap:10px}
+#done-btn[aria-pressed="true"]{background:var(--k-result);border-color:var(--k-result);color:var(--k-result-on)}
+
+footer.foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);font-size:var(--t-sm);color:var(--ink-3)}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);max-width:min(92vw,520px);background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:14px;font-size:var(--t-sm);font-weight:550;z-index:50;box-shadow:0 10px 30px color-mix(in srgb,var(--ink) 25%,transparent)}
+
+@media (max-width:640px){
+  .map-card{display:none}
+  .line-key,.preview-note{margin-inline:0}
+  .bar{padding-block:12px}
+  .brand span{font-size:var(--t-md)}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+<div class="shell">
+  <header class="bar">
+    <a class="brand" href="#map">
+      <svg viewBox="0 0 34 18" aria-hidden="true"><path d="M4 9h26" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><circle cx="7" cy="9" r="5" fill="var(--surface)" stroke="currentColor" stroke-width="2.6"/><circle cx="27" cy="9" r="5" fill="var(--surface)" stroke="currentColor" stroke-width="2.6"/></svg>
+      <span>Stop by Stop</span>
+    </a>
+    <div class="seg lang" role="group" aria-label="Language">
+      <button id="lang-en" type="button" aria-pressed="true">EN</button>
+      <button id="lang-bn" type="button" lang="bn" aria-pressed="false">বাংলা</button>
+    </div>
+  </header>
+
+  <main id="map-view">
+    <section class="hero">
+      <h1 class="display" data-i18n="hubTitle"></h1>
+      <p class="lede" data-i18n="hubLede"></p>
+      <a class="btn primary" href="#celery">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>
+        <span data-i18n="hubCta"></span>
+      </a>
+    </section>
+
+    <section aria-labelledby="map-h">
+      <h2 id="map-h" class="sr-only" data-i18n="mapHeading"></h2>
+      <div class="map-card"><svg id="network" viewBox="40 58 920 368" role="group" aria-labelledby="map-h"></svg></div>
+      <ul class="line-key" id="line-key"></ul>
+      <p class="preview-note" data-i18n="previewNote"></p>
+    </section>
+
+    <section class="strips" aria-labelledby="strips-h">
+      <h2 id="strips-h" data-i18n="allLines"></h2>
+      <div class="strip-grid" id="strip-grid"></div>
+    </section>
+  </main>
+
+  <main id="topic-view" hidden>
+    <nav class="crumb" aria-label="Breadcrumb">
+      <a href="#map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg><span data-i18n="backToMap"></span></a>
+    </nav>
+    <header class="topic-head">
+      <p class="line-tag"><i></i><span data-i18n="lineAsync"></span></p>
+      <h1 class="display" id="topic-title"></h1>
+      <p class="lede" id="topic-summary"></p>
+      <div class="switches">
+        <div class="switch"><span id="mode-l" data-i18n="explainLabel"></span>
+          <div class="seg" role="group" aria-labelledby="mode-l">
+            <button type="button" data-mode="simple" data-i18n="modeSimple"></button>
+            <button type="button" data-mode="technical" data-i18n="modeTech"></button>
+          </div>
+        </div>
+        <div class="switch"><span id="route-l" data-i18n="routeLabel"></span>
+          <div class="seg" role="group" aria-labelledby="route-l">
+            <button type="button" data-route="main" data-i18n="routeMain"></button>
+            <button type="button" data-route="failure" data-i18n="routeFail"></button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="player" id="player" aria-labelledby="topic-title">
+      <div class="stage" id="stage">
+        <svg id="flow" role="img" aria-labelledby="step-title"></svg>
+        <ul class="kind-key" id="kind-key"></ul>
+      </div>
+      <div class="ride">
+        <div class="now">
+          <div class="band"><span id="stopno"></span><span class="pips" id="pips" aria-hidden="true"></span></div>
+          <div class="now-body" aria-live="polite">
+            <h2 id="step-title"></h2>
+            <p id="step-simple"></p>
+            <div class="tech" id="step-tech"><span class="tech-l" data-i18n="underHood"></span><p id="step-tech-text"></p></div>
+            <p class="next" id="step-next"></p>
+          </div>
+        </div>
+        <div class="controls">
+          <button type="button" class="cbtn" id="prev" data-i18n-aria="prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button type="button" class="cbtn play" id="play"><svg id="play-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"></svg><span id="play-label"></span></button>
+          <button type="button" class="cbtn" id="next" data-i18n-aria="next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <details class="stops" id="stops-d">
+          <summary><span data-i18n="allStops"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <ol id="stops"></ol>
+        </details>
+      </div>
+    </section>
+
+    <section class="read" aria-labelledby="an-h">
+      <h2 id="an-h"><i></i><span data-i18n="analogyH"></span></h2>
+      <p class="intro" data-i18n="analogyIntro"></p>
+      <ul class="twins" id="twins"></ul>
+    </section>
+
+    <section class="read" aria-labelledby="qa-h">
+      <h2 id="qa-h"><i></i><span data-i18n="qaH"></span></h2>
+      <p class="intro" data-i18n="qaIntro"></p>
+      <div class="qa" id="qa"></div>
+    </section>
+
+    <section class="read" aria-labelledby="ch-h">
+      <h2 id="ch-h"><i></i><span data-i18n="cheatH"></span></h2>
+      <p class="intro" data-i18n="cheatIntro"></p>
+      <div class="cheats" id="cheats"></div>
+    </section>
+
+    <section class="read done-row">
+      <button type="button" class="btn" id="done-btn" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span id="done-label"></span></button>
+    </section>
+  </main>
+
+  <footer class="foot"><span data-i18n="footer"></span></footer>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(() => {
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+};
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const S = { lang: store.get('sbs-lang', 'en'), mode: store.get('sbs-mode', 'simple'), route: 'main', step: 0, playing: false, done: store.get('sbs-done', []) };
+const BN = '০১২৩৪৫৬৭৮৯';
+const num = n => S.lang === 'bn' ? String(n).replace(/\d/g, d => BN[d]) : String(n);
+const tr = v => v == null ? '' : (typeof v === 'string' ? v : (v[S.lang] ?? v.en));
+const fmt = (s, o) => s.replace(/\{(\w+)\}/g, (_, k) => o[k]);
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const rich = s => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>');
+
+/* ---------------- copy ---------------- */
+const UI = {
+  hubTitle: { en: 'Watch real systems move data, one stop at a time.', bn: 'আসল সিস্টেমে ডেটা কীভাবে চলে, এক স্টপ এক স্টপ করে দেখুন।' },
+  hubLede: { en: 'Every topic is a metro line. Stations are the parts of a system, and the moving tag is the data riding between them. Press play and follow along. Made for interview prep, written so a first-timer can keep up.', bn: 'প্রতিটি টপিক একটি মেট্রো লাইন। স্টেশনগুলো সিস্টেমের এক-একটি অংশ, আর চলন্ত ট্যাগটি হলো ডেটা, যা এক স্টেশন থেকে আরেক স্টেশনে যায়। প্লে চাপুন, সাথে সাথে দেখুন। ইন্টারভিউ প্রস্তুতির জন্য বানানো, কিন্তু এমনভাবে লেখা যে একদম নতুনরাও বুঝবে।' },
+  hubCta: { en: 'Ride the Celery + Redis line', bn: 'Celery + Redis লাইনে চড়ুন' },
+  mapHeading: { en: 'Network map of topics', bn: 'টপিকের নেটওয়ার্ক ম্যাপ' },
+  previewNote: { en: 'Design preview. Only Celery + Redis is wired up here. FastAPI and Git ship with it in the first build; dashed stations open in later phases.', bn: 'ডিজাইন প্রিভিউ। এখানে শুধু Celery + Redis চালু। FastAPI আর Git প্রথম বিল্ডেই আসবে; ড্যাশ দেওয়া স্টেশনগুলো পরের ধাপগুলোতে।' },
+  allLines: { en: 'All lines', bn: 'সব লাইন' },
+  open: { en: 'Open', bn: 'চালু' }, p2: { en: 'Phase 2', bn: 'ধাপ ২' }, p3: { en: 'Phase 3', bn: 'ধাপ ৩' }, learned: { en: 'Learned', bn: 'শেখা হয়েছে' },
+  changeFor: { en: 'Change for the {line}', bn: 'এখানে বদলে {line}' },
+  lineBackend: { en: 'Backend line', bn: 'ব্যাকএন্ড লাইন' },
+  lineAsync: { en: 'Async & data line', bn: 'অ্যাসিঙ্ক ও ডেটা লাইন' },
+  lineDevops: { en: 'DevOps line', bn: 'ডেভঅপস লাইন' },
+  lineGit: { en: 'Git line', bn: 'গিট লাইন' },
+  backToMap: { en: 'Network map', bn: 'নেটওয়ার্ক ম্যাপ' },
+  explainLabel: { en: 'Explain it', bn: 'ব্যাখ্যা' },
+  modeSimple: { en: 'Simply', bn: 'সহজভাবে' }, modeTech: { en: 'Technically', bn: 'টেকনিক্যালি' },
+  routeLabel: { en: 'Route', bn: 'রুট' },
+  routeMain: { en: 'Everything works', bn: 'সব ঠিক থাকলে' }, routeFail: { en: 'A job fails', bn: 'কাজ ব্যর্থ হলে' },
+  stopOf: { en: 'Stop {n} of {total}', bn: 'স্টপ {n} / {total}' },
+  nextStop: { en: 'Next stop: {t}', bn: 'পরের স্টপ: {t}' },
+  endLine: { en: 'End of the line.', bn: 'এটাই লাইনের শেষ স্টপ।' },
+  underHood: { en: 'Under the hood', bn: 'ভেতরে যা ঘটে' },
+  prev: { en: 'Previous stop', bn: 'আগের স্টপ' }, next: { en: 'Next stop', bn: 'পরের স্টপ' },
+  play: { en: 'Play', bn: 'চালান' }, pause: { en: 'Pause', bn: 'থামান' }, again: { en: 'Ride again', bn: 'আবার চলুন' },
+  allStops: { en: 'All stops', bn: 'সব স্টপ' },
+  kRequest: { en: 'Request', bn: 'রিকোয়েস্ট' }, kQueue: { en: 'Queued message', bn: 'কিউ-এর মেসেজ' },
+  kResult: { en: 'Reply or result', bn: 'উত্তর বা ফলাফল' }, kError: { en: 'Failure or retry', bn: 'ব্যর্থতা বা রিট্রাই' },
+  analogyH: { en: 'The everyday version', bn: 'রোজকার উদাহরণে' },
+  analogyIntro: { en: 'A busy restaurant runs the same way. Every station has a twin in the kitchen.', bn: 'একটা ব্যস্ত রেস্টুরেন্টও ঠিক এভাবেই চলে। প্রতিটি স্টেশনের একটা জোড়া আছে রান্নাঘরে।' },
+  isThe: { en: 'is the {x}', bn: 'মানে {x}' },
+  qaH: { en: 'Interview questions', bn: 'ইন্টারভিউ প্রশ্ন' },
+  qaIntro: { en: 'Say the short answer first. Go deeper only if they ask.', bn: 'আগে ছোট উত্তরটা বলুন। ওরা জানতে চাইলে তবেই বিস্তারিত।' },
+  shortA: { en: 'Short answer', bn: 'ছোট উত্তর' }, deepA: { en: 'If they dig deeper', bn: 'আরও জানতে চাইলে' }, redFlag: { en: 'Answer that loses points', bn: 'যে উত্তরে নম্বর কাটে' },
+  cheatH: { en: 'Cheat-sheet', bn: 'চিট-শিট' },
+  cheatIntro: { en: 'Commands you will actually type.', bn: 'যেসব কমান্ড আসলেই টাইপ করবেন।' },
+  copy: { en: 'Copy', bn: 'কপি' }, copied: { en: 'Copied', bn: 'কপি হয়েছে' }, selected: { en: 'Selected, press Ctrl+C', bn: 'সিলেক্ট হয়েছে, Ctrl+C চাপুন' },
+  markDone: { en: 'Mark this line as learned', bn: 'এই লাইন শেখা হয়েছে' },
+  markedDone: { en: 'Learned. Tap to undo', bn: 'শেখা হয়েছে। বাতিল করতে চাপুন' },
+  toastFirst: { en: '{name} ships in the first build. This preview wires up Celery + Redis only.', bn: '{name} প্রথম বিল্ডেই আসবে। এই প্রিভিউতে শুধু Celery + Redis চালু।' },
+  toastLater: { en: '{name} opens in {phase}.', bn: '{name} চালু হবে {phase}-এ।' },
+  footer: { en: 'Stop by Stop is a study companion by Eyakub. Design preview, not the final build.', bn: 'Stop by Stop, Eyakub-এর বানানো পড়াশোনার সঙ্গী। এটি ডিজাইন প্রিভিউ, চূড়ান্ত বিল্ড নয়।' },
+};
+
+/* ---------------- icons (24px grid, stroke) ---------------- */
+const ICON = {
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4.5 21v-.5A6.5 6.5 0 0 1 11 14h2a6.5 6.5 0 0 1 6.5 6.5v.5"/>',
+  server: '<rect x="3" y="3.5" width="18" height="7.5" rx="2"/><rect x="3" y="13" width="18" height="7.5" rx="2"/><path d="M7 7.25h.01M7 16.75h.01"/>',
+  queue: '<rect x="3" y="4" width="18" height="4.5" rx="1.5"/><rect x="3" y="10" width="18" height="4.5" rx="1.5"/><rect x="3" y="16" width="11" height="4.5" rx="1.5"/>',
+  worker: '<circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>',
+  store: '<ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.66 3.58 3 8 3s8-1.34 8-3v-13"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/>',
+  retry: '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>',
+};
+const icon = (k, attrs = '') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${attrs}>${ICON[k]}</svg>`;
+
+/* ---------------- network map ---------------- */
+const STN = {
+  http:    { x: 120, y: 110, lab: 'up',   st: 'p2',   line: 'backend', name: { en: 'HTTP journey', bn: 'HTTP-র যাত্রা' } },
+  rest:    { x: 300, y: 110, lab: 'up',   st: 'p3',   line: 'backend', name: { en: 'REST basics', bn: 'REST-এর মূল কথা' } },
+  fastapi: { x: 480, y: 110, lab: 'up',   st: 'open', line: 'backend', x2: true, name: { en: 'FastAPI lifecycle', bn: 'FastAPI-র জীবনচক্র' } },
+  auth:    { x: 660, y: 110, lab: 'up',   st: 'p3',   line: 'backend', name: { en: 'Auth: JWT & OAuth', bn: 'অথ: JWT ও OAuth' } },
+  celery:  { x: 610, y: 240, lab: 'down', st: 'open', line: 'async',   name: { en: 'Celery + Redis', bn: 'Celery + Redis' } },
+  redis:   { x: 760, y: 240, lab: 'down', st: 'p3',   line: 'async',   name: { en: 'Redis deep-dive', bn: 'Redis গভীরে' } },
+  db:      { x: 900, y: 240, lab: 'down', st: 'p3',   line: 'async',   name: { en: 'Databases', bn: 'ডেটাবেস' } },
+  git:     { x: 120, y: 240, lab: 'down', st: 'open', line: 'git',     name: { en: 'Git basics', bn: 'Git-এর শুরু' } },
+  prs:     { x: 300, y: 240, lab: 'down', st: 'p3',   line: 'git',     name: { en: 'Pull requests', bn: 'পুল রিকোয়েস্ট' } },
+  docker:  { x: 120, y: 370, lab: 'down', st: 'p2',   line: 'devops',  name: { en: 'Docker', bn: 'Docker' } },
+  compose: { x: 300, y: 370, lab: 'down', st: 'p2',   line: 'devops',  name: { en: 'Docker Compose', bn: 'Docker Compose' } },
+  cicd:    { x: 480, y: 370, lab: 'down', st: 'p2',   line: 'devops',  x2: true, name: { en: 'CI/CD', bn: 'CI/CD' } },
+  nginx:   { x: 660, y: 370, lab: 'down', st: 'p2',   line: 'devops',  name: { en: 'Nginx', bn: 'Nginx' } },
+  k8s:     { x: 840, y: 370, lab: 'down', st: 'p3',   line: 'devops',  name: { en: 'Kubernetes', bn: 'Kubernetes' } },
+};
+const LINES = [
+  { id: 'backend', c: '--l-backend', name: 'lineBackend', pts: [[120, 110], [660, 110]], stops: ['http', 'rest', 'fastapi', 'auth'] },
+  { id: 'async',   c: '--l-async',   name: 'lineAsync',   pts: [[480, 110], [610, 240], [900, 240]], stops: ['fastapi', 'celery', 'redis', 'db'] },
+  { id: 'devops',  c: '--l-devops',  name: 'lineDevops',  pts: [[120, 370], [840, 370]], stops: ['docker', 'compose', 'cicd', 'nginx', 'k8s'] },
+  { id: 'git',     c: '--l-git',     name: 'lineGit',     pts: [[120, 240], [350, 240], [480, 370]], stops: ['git', 'prs', 'cicd'] },
+];
+const lineOf = id => LINES.find(l => l.id === id);
+
+function renderMap() {
+  let h = '';
+  for (const l of LINES) h += `<polyline class="ln" points="${l.pts.map(p => p.join(',')).join(' ')}" style="stroke:var(${l.c})"/>`;
+  for (const [id, s] of Object.entries(STN)) {
+    const c = `var(${lineOf(s.line).c})`;
+    const done = S.done.includes(id);
+    const cls = ['st', s.st === 'open' ? 'open' : 'soon', s.x2 ? 'x' : '', done ? 'done' : ''].join(' ');
+    const r = s.x2 ? 13 : 10;
+    const ty = s.lab === 'up' ? s.y - 26 : s.y + 36;
+    const status = s.st === 'open' ? tr(UI.open) : tr(UI[s.st]);
+    h += `<g class="${cls}" data-id="${id}" tabindex="0" role="link" aria-label="${esc(tr(s.name))}, ${status}" style="--st:${c}">
+      <circle class="hit" cx="${s.x}" cy="${s.y}" r="24"/>
+      <circle class="dot" cx="${s.x}" cy="${s.y}" r="${r}" style="stroke:${c}"/>
+      ${done ? `<path class="chk" d="M${s.x - 5} ${s.y}l3.5 3.5 6.5-7"/>` : ''}
+      <text x="${s.x}" y="${ty}" text-anchor="middle">${esc(tr(s.name))}</text></g>`;
+  }
+  $('#network').innerHTML = h;
+  $('#line-key').innerHTML = LINES.map(l => `<li><i style="--c:var(${l.c})"></i>${esc(tr(UI[l.name]))}</li>`).join('');
+}
+
+function renderStrips() {
+  $('#strip-grid').innerHTML = LINES.map(l => {
+    const items = l.stops.map(id => {
+      const s = STN[id];
+      const done = S.done.includes(id);
+      const chip = done ? `<span class="chip learned">${tr(UI.learned)}</span>`
+        : s.st === 'open' ? `<span class="chip open">${tr(UI.open)}</span>` : `<span class="chip later">${tr(UI[s.st])}</span>`;
+      const other = LINES.find(o => o.id !== l.id && o.stops.includes(id));
+      const change = other ? `<span class="change">${esc(fmt(tr(UI.changeFor), { line: tr(UI[other.name]) }))}</span>` : '';
+      return `<li class="${s.st === 'open' ? 'open' : 'soon'} ${s.x2 ? 'x' : ''}"><button type="button" data-id="${id}">
+        <span class="sdot"></span><span><span class="sname">${esc(tr(s.name))}</span>${change}</span>${chip}</button></li>`;
+    }).join('');
+    return `<section class="strip" style="--c:var(${l.c})"><h3><i></i>${esc(tr(UI[l.name]))}</h3><ol>${items}</ol></section>`;
+  }).join('');
+}
+
+let toastT;
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.hidden = false;
+  clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 3800);
+}
+function goStation(id) {
+  if (id === 'celery') { location.hash = 'celery'; return; }
+  const s = STN[id];
+  toast(s.st === 'open' ? fmt(tr(UI.toastFirst), { name: tr(s.name) }) : fmt(tr(UI.toastLater), { name: tr(s.name), phase: tr(UI[s.st]) }));
+}
+
+/* ---------------- Celery + Redis topic ---------------- */
+const TOPIC = {
+  title: { en: 'Celery + Redis', bn: 'Celery + Redis' },
+  summary: { en: 'How a web app hands slow jobs to a background worker, so nobody sits watching a spinner.', bn: 'ওয়েব অ্যাপ কীভাবে ধীর কাজগুলো ব্যাকগ্রাউন্ড ওয়ার্কারের হাতে দিয়ে দেয়, যাতে কাউকে লোডিং দেখে বসে থাকতে না হয়।' },
+};
+const FLOW = {
+  view: { wide: [760, 400], narrow: [400, 530] },
+  nodes: {
+    user:   { icon: 'user',   name: { en: 'You', bn: 'আপনি' }, sub: { en: 'Browser', bn: 'ব্রাউজার' }, wide: [70, 200, 'down'], narrow: [200, 45, 'right'] },
+    api:    { icon: 'server', name: { en: 'FastAPI app', bn: 'FastAPI অ্যাপ' }, sub: { en: 'Takes requests', bn: 'রিকোয়েস্ট নেয়' }, wide: [250, 200, 'down'], narrow: [200, 170, 'right'] },
+    broker: { icon: 'queue',  name: { en: 'Redis queue', bn: 'Redis কিউ' }, sub: { en: 'The broker', bn: 'ব্রোকার' }, wide: [450, 90, 'up'], narrow: [80, 300, 'right'] },
+    worker: { icon: 'worker', name: { en: 'Celery worker', bn: 'Celery ওয়ার্কার' }, sub: { en: 'Does slow jobs', bn: 'ধীর কাজ করে' }, wide: [620, 200, 'right'], narrow: [200, 480, 'right'] },
+    result: { icon: 'store',  name: { en: 'Result store', bn: 'রেজাল্ট স্টোর' }, sub: { en: 'Redis again', bn: 'আবারও Redis' }, wide: [450, 310, 'down'], narrow: [300, 360, 'left'] },
+  },
+  corridors: {
+    'user-api':      { wide: [[70, 200], [250, 200]], narrow: [[200, 45], [200, 170]] },
+    'api-broker':    { wide: [[250, 200], [280, 200], [390, 90], [450, 90]], narrow: [[200, 170], [80, 290], [80, 300]] },
+    'broker-worker': { wide: [[450, 90], [510, 90], [620, 200]], narrow: [[80, 300], [80, 360], [200, 480]] },
+    'worker-result': { wide: [[620, 200], [510, 310], [450, 310]], narrow: [[200, 480], [300, 380], [300, 360]] },
+    'api-result':    { wide: [[250, 200], [280, 200], [390, 310], [450, 310]], narrow: [[200, 170], [300, 270], [300, 360]] },
+  },
+  edges: {
+    ua: { from: 'user', to: 'api', kind: 'request' },
+    au: { from: 'api', to: 'user', kind: 'result' },
+    ab: { from: 'api', to: 'broker', kind: 'queue' },
+    bw: { from: 'broker', to: 'worker', kind: 'queue' },
+    wb: { from: 'worker', to: 'broker', kind: 'error' },
+    wr: { from: 'worker', to: 'result', kind: 'result' },
+    ar: { from: 'api', to: 'result', kind: 'request' },
+    ra: { from: 'result', to: 'api', kind: 'result' },
+  },
+};
+const MAIN = [
+  { edge: 'ua', pk: 'POST /reports',
+    title: { en: 'You ask for a report', bn: 'আপনি একটা রিপোর্ট চাইলেন' },
+    simple: { en: 'You tap “Make my report”. Your request travels to the web app.', bn: 'আপনি “রিপোর্ট বানাও” বাটনে চাপ দিলেন। আপনার রিকোয়েস্ট ওয়েব অ্যাপের কাছে গেল।' },
+    tech: { en: 'An HTTP POST reaches a FastAPI route. Building the PDF takes about 30 s, far too long to keep this request open.', bn: 'একটা HTTP POST, FastAPI রুটে পৌঁছায়। PDF বানাতে প্রায় ৩০ সেকেন্ড লাগে, এতক্ষণ রিকোয়েস্ট খোলা রাখা যায় না।' } },
+  { edge: 'ab', pk: 'task message',
+    title: { en: 'The app writes a ticket', bn: 'অ্যাপ একটা টিকিট লেখে' },
+    simple: { en: 'The app does not do the slow work itself. It writes a small ticket that says what to do and drops it into a waiting line.', bn: 'অ্যাপ নিজে ধীর কাজটা করে না। কী করতে হবে তা একটা ছোট টিকিটে লিখে অপেক্ষার লাইনে রেখে দেয়।' },
+    tech: { en: '`generate_report.delay(user_id=42)` serializes the task name and arguments to JSON and pushes the message onto the `celery` list in Redis, the broker.', bn: '`generate_report.delay(user_id=42)` টাস্কের নাম আর আর্গুমেন্ট JSON-এ সিরিয়ালাইজ করে Redis-এর `celery` লিস্টে পুশ করে। এখানে Redis হলো ব্রোকার।' } },
+  { edge: 'au', pk: '202 + task id',
+    title: { en: 'You get an instant reply', bn: 'আপনি সাথে সাথে উত্তর পেলেন' },
+    simple: { en: 'The app answers right away: “Got it. Here is your ticket number.” You can keep using the page.', bn: 'অ্যাপ সাথে সাথে জানায়: “পেয়েছি, এই নিন আপনার টিকিট নম্বর।” আপনি পেজটা ব্যবহার করতে থাকতে পারেন।' },
+    tech: { en: 'The route returns `202 Accepted` with the task id. Response time stays in milliseconds no matter how slow the job is.', bn: 'রুট টাস্ক id-সহ `202 Accepted` ফেরত দেয়। কাজ যত ধীরই হোক, রেসপন্স আসে মিলিসেকেন্ডে।' } },
+  { edge: 'bw', pk: 'task message',
+    title: { en: 'A worker picks up the ticket', bn: 'একজন ওয়ার্কার টিকিটটা তুলে নেয়' },
+    simple: { en: 'A separate helper program, the Celery worker, keeps watching the line. It takes the next ticket.', bn: 'Celery ওয়ার্কার নামে আলাদা একটা প্রোগ্রাম সবসময় লাইনের দিকে নজর রাখে। সে পরের টিকিটটা তুলে নেয়।' },
+    tech: { en: 'The worker fetches with `BRPOP` and reserves up to 4 messages per process ahead of time (`worker_prefetch_multiplier`). Redis has no real acks, so Celery keeps an unacked copy and hands it out again after `visibility_timeout` (1 hour by default).', bn: 'ওয়ার্কার `BRPOP` দিয়ে মেসেজ আনে, আর প্রতি প্রসেসে আগেভাগে ৪টা পর্যন্ত মেসেজ রিজার্ভ করে রাখে (`worker_prefetch_multiplier`)। Redis-এ আসল ack নেই, তাই Celery একটা unacked কপি রাখে, আর `visibility_timeout` (ডিফল্ট ১ ঘণ্টা) পার হলে সেটা আবার বিলি করে।' } },
+  { node: 'worker', kind: 'queue',
+    title: { en: 'The worker does the slow job', bn: 'ওয়ার্কার ধীর কাজটা করে' },
+    simple: { en: 'The worker builds your report. It can take as long as it needs, and the web app stays free to serve other people.', bn: 'ওয়ার্কার আপনার রিপোর্ট বানায়। যত সময়ই লাগুক, ওয়েব অ্যাপ ততক্ষণ অন্যদের সেবা দিতে পারে।' },
+    tech: { en: 'The task runs in a prefork child process (one per CPU core by default). The message is acknowledged just before the task starts; `acks_late=True` moves that to after it finishes.', bn: 'টাস্ক চলে একটা prefork চাইল্ড প্রসেসে (ডিফল্টে প্রতি CPU কোরে একটা)। টাস্ক শুরুর ঠিক আগে মেসেজ acknowledge হয়; `acks_late=True` দিলে শেষ হওয়ার পরে হয়।' } },
+  { edge: 'wr', pk: 'SUCCESS + file url',
+    title: { en: 'The result is saved', bn: 'ফলাফল জমা হয়' },
+    simple: { en: 'When it is done, the worker puts the report link and a “done” mark in the results box.', bn: 'কাজ শেষে ওয়ার্কার রিপোর্টের লিংক আর “শেষ” চিহ্ন রেজাল্ট বক্সে রেখে দেয়।' },
+    tech: { en: 'State and return value are written to the result backend under `celery-task-meta-<id>`. They expire after `result_expires` (1 day by default).', bn: 'স্টেট আর রিটার্ন ভ্যালু রেজাল্ট ব্যাকএন্ডে `celery-task-meta-<id>` নামে লেখা হয়। `result_expires` (ডিফল্ট ১ দিন) পরে মুছে যায়।' } },
+  { edge: 'ua', pk: 'GET /tasks/{id}',
+    title: { en: 'Your page checks back', bn: 'আপনার পেজ আবার খোঁজ নেয়' },
+    simple: { en: 'Every few seconds your page asks: “Is ticket 42 ready yet?”', bn: 'কয়েক সেকেন্ড পরপর আপনার পেজ জিজ্ঞেস করে: “টিকিট ৪২ কি তৈরি?”' },
+    tech: { en: 'The client polls a status endpoint. WebSockets or server-sent events can push the update instead.', bn: 'ক্লায়েন্ট একটা স্ট্যাটাস এন্ডপয়েন্ট বারবার পোল করে। এর বদলে WebSocket বা server-sent events দিয়ে আপডেট পুশ করা যায়।' } },
+  { edge: 'ar', pk: 'lookup id',
+    title: { en: 'The app looks up your ticket', bn: 'অ্যাপ আপনার টিকিট খোঁজে' },
+    simple: { en: 'The app looks in the results box using your ticket number.', bn: 'অ্যাপ আপনার টিকিট নম্বর দিয়ে রেজাল্ট বক্সে খোঁজে।' },
+    tech: { en: '`AsyncResult(task_id).state` reads the backend. An unknown or expired id also comes back as `PENDING`, so `PENDING` does not prove the task exists. Never call `.get()` here; it blocks.', bn: '`AsyncResult(task_id).state` ব্যাকএন্ড পড়ে। অচেনা বা মেয়াদোত্তীর্ণ id-ও `PENDING` দেখায়, তাই `PENDING` মানেই টাস্ক আছে এমন নয়। এখানে কখনো `.get()` ডাকবেন না; এটা আটকে রাখে।' } },
+  { edge: 'ra', pk: 'SUCCESS',
+    title: { en: 'The answer comes back', bn: 'উত্তর ফিরে আসে' },
+    simple: { en: 'The box says: done, here is the link.', bn: 'বক্স জানায়: কাজ শেষ, এই যে লিংক।' },
+    tech: { en: 'The backend returns state `SUCCESS` and the task’s return value, deserialized from JSON.', bn: 'ব্যাকএন্ড `SUCCESS` স্টেট আর টাস্কের রিটার্ন ভ্যালু ফেরত দেয়, JSON থেকে ডিসিরিয়ালাইজ করে।' } },
+  { edge: 'au', pk: 'report link',
+    title: { en: 'You download the report', bn: 'আপনি রিপোর্ট ডাউনলোড করেন' },
+    simple: { en: 'Your page shows the download button. You never had to stare at a frozen screen.', bn: 'আপনার পেজে ডাউনলোড বাটন চলে আসে। একবারও আটকে থাকা স্ক্রিনের দিকে তাকিয়ে থাকতে হয়নি।' },
+    tech: { en: 'The status endpoint returns 200 with the result. The API spent only milliseconds on this user the whole time.', bn: 'স্ট্যাটাস এন্ডপয়েন্ট ফলাফলসহ 200 ফেরত দেয়। পুরো সময়ে API এই ইউজারের পেছনে খরচ করেছে মাত্র কয়েক মিলিসেকেন্ড।' } },
+];
+const FAIL = [
+  { node: 'worker', kind: 'error',
+    title: { en: 'The job crashes', bn: 'কাজটা মাঝপথে ব্যর্থ হয়' },
+    simple: { en: 'Halfway through, the file storage does not answer. The worker hits an error.', bn: 'মাঝপথে ফাইল স্টোরেজ সাড়া দেয় না। ওয়ার্কার একটা এররে পড়ে।' },
+    tech: { en: 'The task raises `TimeoutError`. It is declared with `autoretry_for=(TimeoutError,)`, so Celery schedules another attempt instead of giving up.', bn: 'টাস্ক `TimeoutError` তোলে। টাস্কে `autoretry_for=(TimeoutError,)` দেওয়া আছে, তাই Celery হাল না ছেড়ে আবার চেষ্টার ব্যবস্থা করে।' } },
+  { edge: 'wb', pk: 'retry in 60 s',
+    title: { en: 'The ticket goes back in line', bn: 'টিকিট আবার লাইনে ফেরে' },
+    simple: { en: 'The worker puts the ticket back with a note: “try again in a minute”.', bn: 'ওয়ার্কার টিকিটটা একটা নোটসহ ফেরত রাখে: “এক মিনিট পরে আবার চেষ্টা করো”।' },
+    tech: { en: 'A retry publishes the task again with an ETA and `retries=1`, and the state becomes `RETRY`. After `max_retries` (3 by default) it stops with `FAILURE`.', bn: 'রিট্রাই টাস্কটাকে ETA আর `retries=1` দিয়ে আবার পাবলিশ করে, স্টেট হয় `RETRY`। `max_retries` (ডিফল্ট ৩) পার হলে থামে, স্টেট হয় `FAILURE`।' } },
+  { edge: 'bw', pk: 'task message, try 2',
+    title: { en: 'Second try', bn: 'দ্বিতীয় চেষ্টা' },
+    simple: { en: 'A minute later a worker picks the ticket up again.', bn: 'এক মিনিট পরে একজন ওয়ার্কার টিকিটটা আবার তুলে নেয়।' },
+    tech: { en: 'Workers fetch ETA tasks early and hold them in memory until due. A countdown longer than `visibility_timeout` gets the task delivered twice, which is why tasks must be idempotent.', bn: 'ওয়ার্কাররা ETA টাস্ক আগেই এনে মেমরিতে রেখে দেয়, সময় হলে চালায়। countdown যদি `visibility_timeout`-এর চেয়ে লম্বা হয়, টাস্কটা দুবার ডেলিভার হয়; এজন্যই টাস্ক idempotent হতে হবে।' } },
+  { edge: 'wr', pk: 'SUCCESS',
+    title: { en: 'This time it works', bn: 'এবার কাজ হয়ে যায়' },
+    simple: { en: 'The storage answers, the report is built, and the result is saved. From here, checking back works exactly like before.', bn: 'এবার স্টোরেজ সাড়া দেয়, রিপোর্ট তৈরি হয়, ফলাফল জমা হয়। এরপর খোঁজ নেওয়ার ধাপগুলো আগের মতোই।' },
+    tech: { en: 'The client saw `RETRY` for about a minute, then `SUCCESS`. It never had to handle the crash itself.', bn: 'ক্লায়েন্ট প্রায় এক মিনিট `RETRY` দেখেছে, তারপর `SUCCESS`। ক্র্যাশটা তাকে নিজে সামলাতে হয়নি।' } },
+];
+const ROUTES = { main: MAIN, failure: [...MAIN.slice(0, 4), ...FAIL] };
+
+const TWINS = [
+  { icon: 'user', node: 'user', name: { en: 'The customer', bn: 'কাস্টমার' }, d: { en: 'Orders food, then chats with friends instead of standing at the kitchen door.', bn: 'খাবার অর্ডার দিয়ে বন্ধুদের সাথে গল্প করেন, রান্নাঘরের দরজায় দাঁড়িয়ে থাকেন না।' } },
+  { icon: 'server', node: 'api', name: { en: 'The waiter', bn: 'ওয়েটার' }, d: { en: 'Takes the order, hands you a token, and never cooks.', bn: 'অর্ডার নেন, টোকেন দেন, নিজে কখনো রান্না করেন না।' } },
+  { icon: 'queue', node: 'broker', name: { en: 'The order rail', bn: 'অর্ডার রেল' }, d: { en: 'Tickets clip onto the rail and wait their turn.', bn: 'টিকিটগুলো রেলে ঝোলানো থাকে, পালা আসার অপেক্ষায়।' } },
+  { icon: 'worker', node: 'worker', name: { en: 'The cook', bn: 'রাঁধুনি' }, d: { en: 'Takes the next ticket and cooks. On a busy night you hire more cooks, not more waiters.', bn: 'পরের টিকিট নিয়ে রান্না করেন। ভিড়ের রাতে আরও রাঁধুনি রাখেন, ওয়েটার নয়।' } },
+  { icon: 'store', node: 'result', name: { en: 'The pickup counter', bn: 'পিকআপ কাউন্টার' }, d: { en: 'Finished dishes wait here under your token number.', bn: 'তৈরি খাবার এখানে আপনার টোকেন নম্বরে অপেক্ষা করে।' } },
+  { icon: 'retry', node: null, cls: 'retry', name: { en: 'A burnt dish', bn: 'পুড়ে যাওয়া খাবার' }, is: { en: 'is a retry', bn: 'মানে রিট্রাই' }, d: { en: 'The cook clips the ticket back on the rail and makes it again.', bn: 'রাঁধুনি টিকিটটা আবার রেলে ঝুলিয়ে দেন, আবার রান্না করেন।' } },
+];
+
+const QA = [
+  { q: { en: 'Why not do the slow work inside the API request?', bn: 'API রিকোয়েস্টের ভেতরেই ধীর কাজটা করলে সমস্যা কী?' },
+    s: { en: 'It holds the request open and ties up a server worker, so a few slow jobs can stall everyone. Celery moves the work out and the API replies in milliseconds.', bn: 'রিকোয়েস্ট খোলা থাকে, সার্ভারের একটা ওয়ার্কারও আটকে যায়; কয়েকটা ধীর কাজেই সবার জন্য সাইট আটকে যেতে পারে। Celery কাজটা বাইরে সরিয়ে দেয়, API মিলিসেকেন্ডে উত্তর দেয়।' },
+    d: { en: 'Web servers have a limited number of workers. A 30-second PDF holds one for 30 seconds, and a proxy may time out before it finishes. A queue also gives you retries and lets you scale workers separately from web servers.', bn: 'ওয়েব সার্ভারের ওয়ার্কার সীমিত। ৩০ সেকেন্ডের একটা PDF পুরো ৩০ সেকেন্ড একটা ওয়ার্কার আটকে রাখে, আর প্রক্সি হয়তো তার আগেই টাইমআউট দেয়। কিউ থাকলে রিট্রাই পাওয়া যায়, আর ওয়েব সার্ভার থেকে আলাদা করে ওয়ার্কার বাড়ানো যায়।' },
+    r: { en: '“Celery makes the code run faster.” It runs the same code, just somewhere else.', bn: '“Celery কোড দ্রুত চালায়।” একই কোড চলে, শুধু অন্য জায়গায়।' } },
+  { q: { en: 'What is the difference between the broker and the result backend?', bn: 'ব্রোকার আর রেজাল্ট ব্যাকএন্ডের পার্থক্য কী?' },
+    s: { en: 'The broker carries task messages to workers. The result backend stores what happened afterwards. Redis can do both, but they are separate jobs.', bn: 'ব্রোকার টাস্কের মেসেজ ওয়ার্কারের কাছে পৌঁছায়। রেজাল্ট ব্যাকএন্ড পরে কী হলো তা জমা রাখে। Redis দুটোই করতে পারে, কিন্তু কাজ দুটো আলাদা।' },
+    d: { en: 'They are configured separately (`broker_url`, `result_backend`). Many teams pick RabbitMQ as the broker for native acks and keep Redis for results. If Redis also serves as your cache, use a separate instance or DB so cache eviction can never delete queued tasks. If nothing reads results, set `ignore_result=True`.', bn: 'দুটো আলাদাভাবে কনফিগার হয় (`broker_url`, `result_backend`)। অনেকে আসল ack-এর জন্য RabbitMQ-কে ব্রোকার আর Redis-কে রেজাল্টের জন্য রাখে। Redis যদি ক্যাশ হিসেবেও চলে, আলাদা ইনস্ট্যান্স বা DB দিন, যাতে ক্যাশ eviction কখনো কিউ-এর টাস্ক মুছে না ফেলে। ফলাফল কেউ না পড়লে `ignore_result=True` দিন।' },
+    r: { en: '“They are the same thing, both are just Redis.”', bn: '“দুটো একই জিনিস, দুটোই তো Redis।”' } },
+  { q: { en: 'A worker crashes halfway through a task. What happens?', bn: 'কাজের মাঝখানে ওয়ার্কার ক্র্যাশ করলে কী হয়?' },
+    s: { en: 'With default settings the message was already acknowledged, so the task is lost. Set `acks_late=True` and `task_reject_on_worker_lost=True` and it is delivered again.', bn: 'ডিফল্ট সেটিংসে মেসেজ আগেই acknowledge হয়ে গেছে, তাই টাস্কটা হারিয়ে যায়। `acks_late=True` আর `task_reject_on_worker_lost=True` দিলে আবার ডেলিভার হয়।' },
+    d: { en: '`acks_late` alone is not enough: a worker that dies abruptly still acks on exit unless `task_reject_on_worker_lost` is on. Together they swap “maybe lost” for “maybe runs twice”, so tasks must be idempotent. On Redis, keep `visibility_timeout` longer than your slowest task or a second worker gets the same task.', bn: 'শুধু `acks_late` যথেষ্ট নয়: `task_reject_on_worker_lost` বন্ধ থাকলে হঠাৎ মারা যাওয়া ওয়ার্কারও বের হওয়ার সময় ack করে দেয়। দুটো একসাথে “হয়তো হারাবে”-র বদলে “হয়তো দুবার চলবে” দেয়, তাই টাস্ক idempotent হতে হবে। Redis-এ `visibility_timeout` সবচেয়ে ধীর টাস্কের চেয়ে বেশি রাখুন, নইলে দ্বিতীয় ওয়ার্কার একই টাস্ক পেয়ে যাবে।' },
+    r: { en: '“`acks_late` gives exactly-once delivery.” It gives at-least-once.', bn: '“`acks_late` দিলে ঠিক একবার ডেলিভারি হয়।” আসলে হয় অন্তত একবার।' } },
+  { q: { en: 'Why should tasks be idempotent?', bn: 'টাস্ক idempotent হওয়া কেন জরুরি?' },
+    s: { en: 'A task can run more than once because of retries or redelivery, so running it twice must end the same way as running it once.', bn: 'রিট্রাই বা রিডেলিভারির কারণে একই টাস্ক একাধিকবার চলতে পারে, তাই দুবার চললেও ফল একবার চলার মতোই হতে হবে।' },
+    d: { en: 'Charging a card twice or sending the same email twice is the classic bug. Guard it with a unique key: record “payment 42 done” and skip if it is already there, or pass the payment provider’s idempotency key.', bn: 'কার্ড থেকে দুবার টাকা কাটা বা একই ইমেইল দুবার যাওয়া হলো ক্লাসিক বাগ। একটা ইউনিক কী দিয়ে আটকান: “payment 42 done” লিখে রাখুন, আগে থেকে থাকলে বাদ দিন, বা পেমেন্ট প্রোভাইডারের idempotency key পাঠান।' },
+    r: { en: '“Each task runs exactly once.”', bn: '“প্রতিটি টাস্ক ঠিক একবারই চলে।”' } },
+  { q: { en: 'What should you pass to .delay()?', bn: '.delay()-তে কী পাঠানো উচিত?' },
+    s: { en: 'Small, JSON-friendly values such as IDs. Let the task load fresh data itself.', bn: 'ছোট, JSON-বান্ধব মান, যেমন id। টাস্ক নিজেই নতুন করে ডেটা লোড করুক।' },
+    d: { en: 'Arguments are serialized into the message (JSON by default since Celery 4). An ORM object will not serialize, bloats the queue, and is stale by the time the worker runs. Pass `user_id=42` and query inside the task. Pickle is unsafe: anyone who can write to the broker can run code on your workers.', bn: 'আর্গুমেন্ট মেসেজের ভেতরে সিরিয়ালাইজ হয় (Celery 4 থেকে ডিফল্ট JSON)। ORM অবজেক্ট সিরিয়ালাইজ হবে না, কিউ ভারী করবে, আর ওয়ার্কার চালানোর সময় তা পুরনো হয়ে যাবে। `user_id=42` পাঠান, টাস্কের ভেতরে কোয়েরি করুন। pickle অনিরাপদ: ব্রোকারে লিখতে পারলেই যে কেউ আপনার ওয়ার্কারে কোড চালাতে পারবে।' },
+    r: { en: '“Pass the user object and switch the serializer to pickle.”', bn: '“পুরো user অবজেক্ট পাঠান, আর serializer pickle করে দিন।”' } },
+];
+
+const CHEATS = [
+  { code: 'celery -A app worker --loglevel=INFO', d: { en: 'Start a worker that reads the default queue.', bn: 'ডিফল্ট কিউ পড়া একটা ওয়ার্কার চালু করুন।' } },
+  { code: 'celery -A app worker -Q reports --concurrency=4', d: { en: 'Four processes that only take jobs from the “reports” queue.', bn: 'চারটি প্রসেস, শুধু “reports” কিউ থেকে কাজ নেয়।' } },
+  { code: 'celery -A app beat', d: { en: 'The scheduler for periodic tasks. Run exactly one.', bn: 'পিরিয়ডিক টাস্কের শিডিউলার। ঠিক একটাই চালাবেন।' } },
+  { code: 'celery -A app inspect active', d: { en: 'See what every worker is running right now.', bn: 'এই মুহূর্তে প্রতিটি ওয়ার্কার কী চালাচ্ছে দেখুন।' } },
+  { code: 'redis-cli LLEN celery', d: { en: 'How many tasks are waiting in the default queue.', bn: 'ডিফল্ট কিউতে কতগুলো টাস্ক অপেক্ষা করছে।' } },
+  { code: `@app.task(bind=True, autoretry_for=(TimeoutError,),
+          retry_backoff=True, max_retries=5, acks_late=True)
+def generate_report(self, user_id: int) -> str:
+    ...
+
+result = generate_report.delay(user_id=42)
+AsyncResult(result.id).state   # PENDING → SUCCESS`, d: { en: 'Define a retrying task, queue it, check its state.', bn: 'রিট্রাই-সহ টাস্ক বানান, কিউতে দিন, স্টেট দেখুন।' } },
+];
+
+/* ---------------- geometry ---------------- */
+const BIDIR = new Set();
+(() => {
+  const seen = {};
+  for (const e of Object.values(FLOW.edges)) {
+    const k = FLOW.corridors[`${e.from}-${e.to}`] ? `${e.from}-${e.to}` : `${e.to}-${e.from}`;
+    const dir = k === `${e.from}-${e.to}` ? 'f' : 'r';
+    (seen[k] ??= new Set()).add(dir);
+    if (seen[k].size === 2) BIDIR.add(k);
+  }
+})();
+function offsetPolyline(pts, d) {
+  if (!d) return pts;
+  const segs = [];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const [x1, y1] = pts[i], [x2, y2] = pts[i + 1];
+    const L = Math.hypot(x2 - x1, y2 - y1), nx = -(y2 - y1) / L, ny = (x2 - x1) / L;
+    segs.push([[x1 + nx * d, y1 + ny * d], [x2 + nx * d, y2 + ny * d]]);
+  }
+  const out = [segs[0][0]];
+  for (let i = 0; i < segs.length - 1; i++) {
+    const [[ax, ay], [bx, by]] = segs[i], [[cx, cy], [dx, dy]] = segs[i + 1];
+    const den = (ax - bx) * (cy - dy) - (ay - by) * (cx - dx);
+    if (Math.abs(den) < 1e-6) { out.push(segs[i][1]); continue; }
+    const t = ((ax - cx) * (cy - dy) - (ay - cy) * (cx - dx)) / den;
+    out.push([ax + t * (bx - ax), ay + t * (by - ay)]);
+  }
+  out.push(segs[segs.length - 1][1]);
+  return out;
+}
+function trimStart(pts, dist) {
+  pts = pts.map(p => p.slice());
+  while (pts.length > 2) {
+    const L = Math.hypot(pts[1][0] - pts[0][0], pts[1][1] - pts[0][1]);
+    if (L > dist) break;
+    dist -= L; pts.shift();
+  }
+  const [a, b] = pts, L = Math.hypot(b[0] - a[0], b[1] - a[1]), t = Math.min(dist / L, 0.9);
+  pts[0] = [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+  return pts;
+}
+const trimEnd = (pts, dist) => trimStart(pts.slice().reverse(), dist).reverse();
+const pathD = pts => 'M' + pts.map(p => p.map(v => +v.toFixed(1)).join(' ')).join('L');
+function edgePoints(e, lk) {
+  const fk = `${e.from}-${e.to}`, rk = `${e.to}-${e.from}`;
+  const key = FLOW.corridors[fk] ? fk : rk;
+  let pts = FLOW.corridors[key][lk].map(p => p.slice());
+  if (key === rk) pts.reverse();
+  pts = offsetPolyline(pts, BIDIR.has(key) ? 7.5 : 0);
+  return trimEnd(trimStart(pts, 28), 33);
+}
+
+/* ---------------- diagram render ---------------- */
+let LK = null;
+const layoutKey = () => $('#stage').clientWidth >= 600 ? 'wide' : 'narrow';
+function nodeLabel(x, y, side, nm, sb) {
+  const P = {
+    down: [x, y + 46, x, y + 63, 'middle'], up: [x, y - 50, x, y - 33, 'middle'],
+    right: [x + 36, y - 3, x + 36, y + 15, 'start'], left: [x - 36, y - 3, x - 36, y + 15, 'end'],
+  }[side];
+  return `<text class="nm" x="${P[0]}" y="${P[1]}" text-anchor="${P[4]}">${esc(nm)}</text><text class="sb" x="${P[2]}" y="${P[3]}" text-anchor="${P[4]}">${esc(sb)}</text>`;
+}
+function renderDiagram() {
+  LK = layoutKey();
+  const [w, h] = FLOW.view[LK];
+  const svg = $('#flow');
+  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  let o = '<defs>' + ['request', 'queue', 'result', 'error'].map(k =>
+    `<marker id="ar-${k}" viewBox="0 0 10 10" refX="6" refY="5" markerUnits="userSpaceOnUse" markerWidth="15" markerHeight="15" orient="auto"><path d="M0 0L10 5L0 10Z" style="fill:var(--k-${k})"/></marker>`).join('') + '</defs>';
+  for (const c of Object.values(FLOW.corridors)) o += `<path class="track" d="${pathD(c[LK])}"/>`;
+  for (const [id, e] of Object.entries(FLOW.edges)) o += `<path id="edge-${id}" class="edge k-${e.kind}" d="${pathD(edgePoints(e, LK))}"/>`;
+  o += `<circle class="comet" id="comet" r="6.5" hidden/>`;
+  for (const [id, n] of Object.entries(FLOW.nodes)) {
+    const [x, y, side] = n[LK];
+    o += `<g class="node" data-id="${id}">
+      <circle class="halo" cx="${x}" cy="${y}" r="36"/>
+      <circle class="disc" cx="${x}" cy="${y}" r="25"/>
+      <g class="ico" transform="translate(${x - 12} ${y - 12})"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[n.icon]}</g></g>
+      ${nodeLabel(x, y, side, tr(n.name), tr(n.sub))}</g>`;
+  }
+  o += `<g class="packet" id="packet" hidden><rect y="-14" height="28" rx="14"/><text x="0" y="0"></text></g>`;
+  svg.innerHTML = o;
+  updateStep(false);
+}
+
+/* ---------------- step engine ---------------- */
+let raf = null, playT = null, arriveT = null;
+const steps = () => ROUTES[S.route];
+const kindOf = st => st.kind || FLOW.edges[st.edge].kind;
+const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+function runPacket(st, animate) {
+  cancelAnimationFrame(raf);
+  const pk = $('#packet'), comet = $('#comet');
+  comet.setAttribute('hidden', '');
+  if (!st.edge) { pk.setAttribute('hidden', ''); return; }
+  const k = kindOf(st), path = $('#edge-' + st.edge), L = path.getTotalLength();
+  pk.style.setProperty('--pk', `var(--k-${k})`); pk.style.setProperty('--pk-on', `var(--k-${k}-on)`);
+  comet.style.setProperty('--pk', `var(--k-${k})`);
+  const text = pk.querySelector('text'); text.textContent = st.pk;
+  pk.removeAttribute('hidden');
+  const tw = text.getComputedTextLength() + 26, rect = pk.querySelector('rect');
+  rect.setAttribute('width', tw); rect.setAttribute('x', -tw / 2);
+  const at = t => path.getPointAtLength(L * t);
+  const place = (el, t) => { const p = at(t); el.setAttribute('transform', `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`); };
+  const REST = 0.5;
+  if (!animate || reduceMotion.matches) { place(pk, REST); pk.style.opacity = 1; return; }
+  const t0 = performance.now(), D1 = 750, D2 = 520;
+  const tick = now => {
+    const el = now - t0;
+    if (el < D1) {
+      const t = ease(el / D1);
+      place(pk, 0.04 + (REST - 0.04) * t); pk.style.opacity = Math.min(1, el / 200);
+    } else {
+      place(pk, REST); pk.style.opacity = 1;
+      const t = Math.min((el - D1) / D2, 1);
+      comet.removeAttribute('hidden');
+      const p = at(REST + (1 - REST) * ease(t));
+      comet.setAttribute('cx', p.x); comet.setAttribute('cy', p.y);
+      if (t >= 1) { comet.setAttribute('hidden', ''); arrive(FLOW.edges[st.edge].to); return; }
+    }
+    raf = requestAnimationFrame(tick);
+  };
+  raf = requestAnimationFrame(tick);
+}
+function arrive(id) {
+  const g = $(`#flow .node[data-id="${id}"]`); if (!g) return;
+  g.classList.remove('arrive'); void g.getBoundingClientRect(); g.classList.add('arrive');
+  clearTimeout(arriveT); arriveT = setTimeout(() => g.classList.remove('arrive'), 600);
+}
+
+function updateStep(animate = true) {
+  const list = steps(), st = list[S.step], k = kindOf(st);
+  const passed = new Set(list.slice(0, S.step).map(s => s.edge).filter(Boolean));
+  $$('#flow .edge').forEach(el => {
+    const id = el.id.slice(5);
+    el.classList.toggle('active', st.edge === id);
+    el.classList.toggle('visited', st.edge !== id && passed.has(id));
+  });
+  const focus = st.edge ? [FLOW.edges[st.edge].from, FLOW.edges[st.edge].to] : [st.node];
+  $$('#flow .node').forEach(g => {
+    const on = focus.includes(g.dataset.id);
+    g.classList.toggle('on', on);
+    g.classList.toggle('working', !st.edge && st.node === g.dataset.id);
+    g.style.setProperty('--k', `var(--k-${k})`);
+  });
+  runPacket(st, animate);
+
+  $('.now').style.setProperty('--k', `var(--k-${k})`);
+  $('#stopno').textContent = fmt(tr(UI.stopOf), { n: num(S.step + 1), total: num(list.length) });
+  $('#pips').innerHTML = list.map((_, i) => `<i class="${i < S.step ? 'past' : i === S.step ? 'cur' : ''}"></i>`).join('');
+  $('#step-title').textContent = tr(st.title);
+  $('#step-simple').innerHTML = rich(tr(st.simple));
+  $('#step-tech-text').innerHTML = rich(tr(st.tech));
+  $('#step-tech').hidden = S.mode !== 'technical';
+  const nx = list[S.step + 1];
+  $('#step-next').textContent = nx ? fmt(tr(UI.nextStop), { t: tr(nx.title) }) : tr(UI.endLine);
+  $$('#stops li').forEach((li, i) => { li.className = i < S.step ? 'past' : i === S.step ? 'cur' : ''; li.style.setProperty('--k', `var(--k-${k})`); });
+  $('#prev').disabled = S.step === 0;
+  $('#next').disabled = S.step === list.length - 1;
+  syncPlay();
+}
+function renderStops() {
+  $('#stops').innerHTML = steps().map((s, i) => `<li><button type="button" data-i="${i}"><span class="pin"></span><span><span class="n">${num(i + 1)}</span>${esc(tr(s.title))}</span></button></li>`).join('');
+}
+function syncPlay() {
+  const end = S.step === steps().length - 1;
+  $('#play-ico').innerHTML = S.playing ? '<rect x="6" y="5" width="4.2" height="14" rx="1.2"/><rect x="13.8" y="5" width="4.2" height="14" rx="1.2"/>'
+    : end ? '<path d="M12 5a7 7 0 1 1-6.6 4.7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M4 4v5.5h5.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>'
+    : '<path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/>';
+  $('#play-label').textContent = tr(S.playing ? UI.pause : end ? UI.again : UI.play);
+}
+function go(i, animate = true) {
+  S.step = Math.max(0, Math.min(steps().length - 1, i));
+  updateStep(animate);
+}
+function schedule() {
+  clearTimeout(playT);
+  playT = setTimeout(() => {
+    if (!S.playing) return;
+    if (S.step < steps().length - 1) { go(S.step + 1); schedule(); }
+    else { S.playing = false; syncPlay(); }
+  }, S.mode === 'technical' ? 6500 : 4300);
+}
+function play() {
+  if (S.step === steps().length - 1) go(0);
+  else go(S.step);
+  S.playing = true; syncPlay(); schedule();
+}
+function pause() { S.playing = false; clearTimeout(playT); syncPlay(); }
+
+/* ---------------- topic static sections ---------------- */
+function renderTopic() {
+  $('#topic-title').textContent = tr(TOPIC.title);
+  $('#topic-summary').textContent = tr(TOPIC.summary);
+  $('#kind-key').innerHTML = [['request', 'kRequest', ''], ['queue', 'kQueue', '7 4'], ['result', 'kResult', '1 5'], ['error', 'kError', '2 4']].map(([k, label, dash]) =>
+    `<li><svg viewBox="0 0 30 10" aria-hidden="true"><path d="M2 5H28" stroke="var(--k-${k})" stroke-width="${k === 'result' ? 4.5 : 3.5}" stroke-linecap="round" ${dash ? `stroke-dasharray="${dash}"` : ''}/></svg>${esc(tr(UI[label]))}</li>`).join('');
+  $('#twins').innerHTML = TWINS.map(t => {
+    const is = t.is ? tr(t.is) : fmt(tr(UI.isThe), { x: tr(FLOW.nodes[t.node].name) });
+    return `<li class="${t.cls || ''}"><span class="ic">${icon(t.icon)}</span><div><strong>${esc(tr(t.name))}</strong><span class="is">${esc(is)}</span><p>${esc(tr(t.d))}</p></div></li>`;
+  }).join('');
+  const flag = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg>';
+  const plus = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+  $('#qa').innerHTML = QA.map((x, i) => `<details${i === 0 ? ' open' : ''}><summary><span>${rich(tr(x.q))}</span>${plus}</summary><div class="ans">
+    <div class="short"><span class="lbl">${tr(UI.shortA)}</span><p>${rich(tr(x.s))}</p></div>
+    <div class="deep"><span class="lbl">${tr(UI.deepA)}</span><p>${rich(tr(x.d))}</p></div>
+    <div class="flag">${flag}<div><span class="lbl">${tr(UI.redFlag)}</span><p>${rich(tr(x.r))}</p></div></div></div></details>`).join('');
+  const copyIco = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>';
+  $('#cheats').innerHTML = CHEATS.map((c, i) => `<div class="cheat"><pre id="code-${i}"><code>${esc(c.code).replace(/(#.*)$/gm, '<span class="c">$1</span>')}</code></pre>
+    <div class="row"><p>${esc(tr(c.d))}</p><button type="button" class="copy" data-i="${i}">${copyIco}<span>${tr(UI.copy)}</span></button></div></div>`).join('');
+  syncDone();
+}
+function syncDone() {
+  const on = S.done.includes('celery');
+  $('#done-btn').setAttribute('aria-pressed', on);
+  $('#done-label').textContent = tr(on ? UI.markedDone : UI.markDone);
+}
+
+/* ---------------- global i18n + views ---------------- */
+function applyLang() {
+  document.documentElement.lang = S.lang;
+  $('#lang-en').setAttribute('aria-pressed', S.lang === 'en');
+  $('#lang-bn').setAttribute('aria-pressed', S.lang === 'bn');
+  $$('[data-i18n]').forEach(el => { el.textContent = tr(UI[el.dataset.i18n]); });
+  $$('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', tr(UI[el.dataset.i18nAria])));
+  renderMap(); renderStrips(); renderTopic(); renderStops();
+  if (!$('#topic-view').hidden) renderDiagram();
+}
+function syncSegs() {
+  $$('[data-mode]').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === S.mode));
+  $$('[data-route]').forEach(b => b.setAttribute('aria-pressed', b.dataset.route === S.route));
+}
+function route() {
+  const topic = location.hash === '#celery';
+  $('#map-view').hidden = topic;
+  $('#topic-view').hidden = !topic;
+  pause();
+  if (topic) { renderDiagram(); $('#stops-d').open = matchMedia('(min-width: 980px)').matches; }
+  window.scrollTo(0, 0);
+}
+
+/* ---------------- events ---------------- */
+$('#lang-en').addEventListener('click', () => { S.lang = 'en'; store.set('sbs-lang', 'en'); applyLang(); });
+$('#lang-bn').addEventListener('click', () => { S.lang = 'bn'; store.set('sbs-lang', 'bn'); applyLang(); });
+$('#network').addEventListener('click', e => { const g = e.target.closest('.st'); if (g) goStation(g.dataset.id); });
+$('#network').addEventListener('keydown', e => { const g = e.target.closest('.st'); if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); goStation(g.dataset.id); } });
+$('#strip-grid').addEventListener('click', e => { const b = e.target.closest('button[data-id]'); if (b) goStation(b.dataset.id); });
+$$('[data-mode]').forEach(b => b.addEventListener('click', () => { S.mode = b.dataset.mode; store.set('sbs-mode', S.mode); syncSegs(); updateStep(false); if (S.playing) schedule(); }));
+$$('[data-route]').forEach(b => b.addEventListener('click', () => {
+  if (S.route === b.dataset.route) return;
+  S.route = b.dataset.route; syncSegs(); pause(); renderStops();
+  go(S.route === 'failure' ? 4 : 0);
+}));
+$('#prev').addEventListener('click', () => { pause(); go(S.step - 1); });
+$('#next').addEventListener('click', () => { pause(); go(S.step + 1); });
+$('#play').addEventListener('click', () => S.playing ? pause() : play());
+$('#stops').addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (b) { pause(); go(+b.dataset.i); } });
+$('#player').addEventListener('keydown', e => {
+  if (e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
+  if (e.key === 'ArrowRight') { pause(); go(S.step + 1); }
+  if (e.key === 'ArrowLeft') { pause(); go(S.step - 1); }
+});
+$('#cheats').addEventListener('click', e => {
+  const b = e.target.closest('.copy'); if (!b) return;
+  const i = +b.dataset.i, label = b.querySelector('span');
+  const done = msg => { label.textContent = msg; setTimeout(() => { label.textContent = tr(UI.copy); }, 1600); };
+  const select = () => { const r = document.createRange(); r.selectNodeContents($('#code-' + i)); const s = getSelection(); s.removeAllRanges(); s.addRange(r); done(tr(UI.selected)); };
+  try { navigator.clipboard.writeText(CHEATS[i].code).then(() => done(tr(UI.copied)), select); } catch (err) { select(); }
+});
+$('#done-btn').addEventListener('click', () => {
+  S.done = S.done.includes('celery') ? S.done.filter(x => x !== 'celery') : [...S.done, 'celery'];
+  store.set('sbs-done', S.done); syncDone(); renderMap(); renderStrips();
+});
+new ResizeObserver(() => { if (!$('#topic-view').hidden && layoutKey() !== LK) renderDiagram(); }).observe($('#stage'));
+addEventListener('hashchange', route);
+
+syncSegs(); applyLang(); route();
+})();
+</script>
