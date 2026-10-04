@@ -111,7 +111,11 @@ export const gitBasics: Topic = {
       {
         id: 'commit',
         moves: [ { edge: 'commit', label: 'git commit' } ],
-        state: { repo: { en: 'HEAD → main → a1b2c3', bn: 'HEAD → main → a1b2c3' } },
+        state: {
+          repo: { en: 'HEAD → main → a1b2c3', bn: 'HEAD → main → a1b2c3' },
+          idx: { en: 'Nothing staged', bn: 'কিছু স্টেজ করা নেই' },
+          wd: { en: 'No changes', bn: 'কোনো পরিবর্তন নেই' }
+        },
         title: { en: 'You commit', bn: 'আপনি commit করেন' },
         simple: {
           en: 'You seal the box and label it. It is now a permanent snapshot in your local history.',
@@ -153,13 +157,27 @@ export const gitBasics: Topic = {
         }
       },
       {
+        id: 'you-commit',
+        work: { node: 'repo', kind: 'request' },
+        state: { repo: { en: 'HEAD → main → d4e5f6', bn: 'HEAD → main → d4e5f6' } },
+        title: { en: 'You keep working', bn: 'আপনি কাজ চালিয়ে যান' },
+        simple: {
+          en: 'You make another commit on your laptop. GitHub does not have it yet.',
+          bn: 'আপনি ল্যাপটপে আরেকটা commit করেন। GitHub-এর কাছে সেটা এখনো নেই।'
+        },
+        tech: {
+          en: 'Your local `main` moves to `d4e5f6`, one commit ahead of `origin/main` (`a1b2c3`). Nothing is pushed, so the remote and your bookmark do not change.',
+          bn: 'আপনার লোকাল `main` সরে `d4e5f6`-এ যায়, `origin/main` (`a1b2c3`) থেকে এক commit এগিয়ে। কিছু push হয়নি, তাই remote আর আপনার বুকমার্ক বদলায় না।'
+        }
+      },
+      {
         id: 'teammate',
         work: { node: 'remote', kind: 'queue' },
         state: { remote: { en: 'main → 77d4e1', bn: 'main → 77d4e1' } },
         title: { en: 'A teammate pushes', bn: 'সহকর্মী push করেন' },
         simple: {
-          en: 'A teammate pushed new work to GitHub while you carried on with your own. Your copy has not heard about it yet.',
-          bn: 'আপনি নিজের কাজ চালিয়ে যাওয়ার সময় এক সহকর্মী GitHub-এ নতুন কাজ push করেছেন। আপনার কপি এখনো তা জানে না।'
+          en: 'A teammate pushed new work to GitHub. Your copy has not heard about it yet.',
+          bn: 'এক সহকর্মী GitHub-এ নতুন কাজ push করেছেন। আপনার কপি এখনো তা জানে না।'
         },
         tech: {
           en: 'The remote `main` moved to `77d4e1`. Your `origin/main` is only a local bookmark, updated on fetch, pull or push, so it stays stale until you ask.',
@@ -186,12 +204,12 @@ export const gitBasics: Topic = {
         state: { repo: { en: 'HEAD → main → 5c6d7e', bn: 'HEAD → main → 5c6d7e' } },
         title: { en: 'You merge it in', bn: 'আপনি merge করে নেন' },
         simple: {
-          en: 'You combine their work with yours. Because you both added new work, Git joins the two lines of history.',
-          bn: 'আপনি তাদের কাজ নিজের কাজের সাথে মেলান। দুজনেই নতুন কাজ করেছেন বলে Git ইতিহাসের দুটো ধারা জোড়া লাগায়।'
+          en: 'You combine their work with yours. You each added new work, so Git joins the two lines of history.',
+          bn: 'আপনি তাদের কাজ নিজের কাজের সাথে মেলান। দুজনেই নতুন কাজ করেছেন, তাই Git ইতিহাসের দুটো ধারা জোড়া লাগায়।'
         },
         tech: {
-          en: 'When both sides have new commits, Git creates a merge commit with two parents, here `5c6d7e`. With no divergence, it only fast-forwards the branch pointer.',
-          bn: 'দুই দিকেই নতুন commit থাকলে Git দুই parent-সহ একটা merge commit বানায়, এখানে `5c6d7e`। divergence না থাকলে শুধু ব্রাঞ্চ পয়েন্টার fast-forward হয়।'
+          en: 'Both sides have new commits, so Git creates a merge commit with two parents: yours `d4e5f6` and theirs `77d4e1`. This is `5c6d7e`. With no divergence, it would only fast-forward.',
+          bn: 'দুই দিকেই নতুন commit আছে, তাই Git দুই parent-সহ একটা merge commit বানায়: আপনার `d4e5f6` আর তাদের `77d4e1`। এটাই `5c6d7e`। divergence না থাকলে শুধু fast-forward হতো।'
         }
       }
     ]
@@ -222,14 +240,14 @@ export const gitBasics: Topic = {
             repo: { en: 'HEAD → main → 5c6d7e', bn: 'HEAD → main → 5c6d7e' },
             rtrack: { en: 'Last seen: 77d4e1', bn: 'শেষ দেখা: 77d4e1' }
           },
-          title: { en: 'Both copies are caught up', bn: 'দুটো কপিই এখন হালনাগাদ' },
+          title: { en: 'You are caught up with GitHub', bn: 'আপনি GitHub-এর সাথে হালনাগাদ' },
           simple: {
             en: 'You now have their work and yours together, and your note of GitHub is up to date.',
             bn: 'এখন আপনার কাছে তাদের আর আপনার কাজ একসাথে আছে, আর GitHub নিয়ে আপনার নোটও হালনাগাদ।'
           },
           tech: {
-            en: 'The merge commit `5c6d7e` is on `main`, and `origin/main` now points at `77d4e1`. Fetching first and inspecting with `git log main..origin/main` gives you more control.',
-            bn: 'merge commit `5c6d7e` এখন `main`-এ, আর `origin/main` এখন `77d4e1`-এ। আগে fetch করে `git log main..origin/main` দিয়ে দেখে নিলে নিয়ন্ত্রণ বেশি থাকে।'
+            en: 'Merge commit `5c6d7e` (parents `d4e5f6`, `77d4e1`) is on `main`; `origin/main` is `77d4e1`. GitHub lacks `5c6d7e` until you push. Fetching first and inspecting with `git log main..origin/main` gives you more control.',
+            bn: 'merge commit `5c6d7e` (parent `d4e5f6`, `77d4e1`) এখন `main`-এ, আর `origin/main` `77d4e1`-এ। push না করা পর্যন্ত GitHub-এ `5c6d7e` নেই। আগে fetch করে `git log main..origin/main` দিয়ে দেখে নিলে নিয়ন্ত্রণ বেশি থাকে।'
           }
         }
       ]
@@ -255,6 +273,7 @@ export const gitBasics: Topic = {
         {
           id: 'markers',
           moves: [ { edge: 'conflict', label: '<<<<<<< ======= >>>>>>>' } ],
+          state: { wd: { en: 'app.py: conflict', bn: 'app.py: কনফ্লিক্ট' } },
           title: { en: 'Git marks the clash in your file', bn: 'Git ফাইলে কনফ্লিক্ট চিহ্নিত করে' },
           simple: {
             en: 'Git writes both versions into the file, with marker lines around them. Now it is your job to choose.',
@@ -268,6 +287,10 @@ export const gitBasics: Topic = {
         {
           id: 'resolve',
           moves: [ { edge: 'add', label: 'git add app.py' } ],
+          state: {
+            wd: { en: 'app.py resolved', bn: 'app.py ঠিক করা হয়েছে' },
+            idx: { en: 'app.py staged', bn: 'app.py স্টেজ করা' }
+          },
           title: { en: 'You resolve and stage', bn: 'আপনি ঠিক করে স্টেজ করেন' },
           simple: {
             en: 'After fixing the file by hand, you stage it. That tells Git the clash is settled.',
@@ -281,7 +304,11 @@ export const gitBasics: Topic = {
         {
           id: 'finish',
           moves: [ { edge: 'commit', label: 'git commit' } ],
-          state: { repo: { en: 'HEAD → main → 8b9c0d', bn: 'HEAD → main → 8b9c0d' } },
+          state: {
+            repo: { en: 'HEAD → main → 8b9c0d', bn: 'HEAD → main → 8b9c0d' },
+            idx: { en: 'Nothing staged', bn: 'কিছু স্টেজ করা নেই' },
+            wd: { en: 'No changes', bn: 'কোনো পরিবর্তন নেই' }
+          },
           title: { en: 'You finish the merge', bn: 'আপনি merge শেষ করেন' },
           simple: {
             en: 'You commit, and the merge is done. History now holds both versions of the story.',

@@ -73,7 +73,7 @@ const noProblems = (problems) => assert(problems.length === 0, problems.join('; 
 const TOPIC_CASES = [
   { slug: 'celery-redis', total: 10, altStop: 'Stop 5 of 8' },
   { slug: 'fastapi-lifecycle', total: 11, altStop: 'Stop 7 of 10' },
-  { slug: 'git-basics', total: 8, altStop: 'Stop 8 of 11', altBtn: 2 },
+  { slug: 'git-basics', total: 9, altStop: 'Stop 9 of 12', altBtn: 2 },
 ]
 
 const checks = [
@@ -208,7 +208,7 @@ const checks = [
     const stop = await page.textContent('#stopno')
     const sb = await page.locator('.flow-svg .node[data-id="repo"] .sb').textContent()
     await context.close()
-    assert(stop === 'Stop 3 of 8', `stopno: ${stop}`)
+    assert(stop === 'Stop 3 of 9', `stopno: ${stop}`)
     assert(sb?.includes('a1b2c3'), `repo sub: ${sb}`)
     noProblems(problems)
   }],
