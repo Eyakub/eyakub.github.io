@@ -15,7 +15,7 @@ export default function PlayerControls({ playing, atStart, atEnd, onPrev, onPlay
   const { ui } = useLearnPrefs()
   return (
     <div className="controls">
-      <button type="button" className="cbtn" id="prev" aria-label={ui('prev')} disabled={atStart} onClick={onPrev}>
+      <button type="button" className="cbtn" id="prev" aria-label={ui('prev')} aria-disabled={atStart || undefined} onClick={atStart ? undefined : onPrev}>
         <svg viewBox="0 0 24 24" {...stroke} aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
       </button>
       <button type="button" className="cbtn play" id="play" onClick={onPlay}>
@@ -36,7 +36,7 @@ export default function PlayerControls({ playing, atStart, atEnd, onPrev, onPlay
         </svg>
         <span id="play-label">{ui(playing ? 'pause' : atEnd ? 'again' : 'play')}</span>
       </button>
-      <button type="button" className="cbtn" id="next" aria-label={ui('next')} disabled={atEnd} onClick={onNext}>
+      <button type="button" className="cbtn" id="next" aria-label={ui('next')} aria-disabled={atEnd || undefined} onClick={atEnd ? undefined : onNext}>
         <svg viewBox="0 0 24 24" {...stroke} aria-hidden="true"><path d="M9 18l6-6-6-6" /></svg>
       </button>
     </div>

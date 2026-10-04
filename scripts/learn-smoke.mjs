@@ -285,6 +285,50 @@ const checks = [
     await context.close()
     assert(stop === 'Stop 2 of 10', `stopno: ${stop}`)
   }],
+  ['keyboard-ends', async () => {
+    for (const { slug } of TOPIC_CASES) {
+      const { page, context } = await open(`/learn/${slug}`)
+      await page.waitForSelector('#next')
+      await page.focus('#next')
+      const total = Number((await page.textContent('#stopno')).match(/of (\d+)/)[1])
+      for (let i = 1; i < total; i++) await page.keyboard.press('ArrowRight')
+      const inside = await page.evaluate(() => !!document.activeElement?.closest('#player'))
+      const atLast = await page.textContent('#stopno')
+      await page.keyboard.press('ArrowLeft')
+      const back = await page.textContent('#stopno')
+      await context.close()
+      assert(atLast === `Stop ${total} of ${total}`, `${slug} did not reach last stop: ${atLast}`)
+      assert(inside, `${slug} focus left the player at the last stop`)
+      assert(back === `Stop ${total - 1} of ${total}`, `${slug} ArrowLeft after end: ${back}`)
+    }
+  }],
+  ['mobile-fits', async () => {
+    for (const { slug } of TOPIC_CASES) {
+      for (const lang of ['en', 'bn']) {
+        const { page, context } = await open(`/learn/${slug}`, { width: 390, height: 844 })
+        if (lang === 'bn') {
+          await page.getByRole('button', { name: 'বাংলা' }).click()
+          await page.waitForFunction(() => document.documentElement.lang === 'bn')
+        }
+        await page.waitForSelector('#next')
+        const total = Number((await page.textContent('#stopno')).match(/(\d+)\D*$/)?.[1] ?? 0) || (await page.locator('.pips i').count())
+        const bad = []
+        for (let i = 0; i < total; i++) {
+          await page.evaluate(() => document.querySelector('.now').scrollIntoView({ block: 'start', behavior: 'instant' }))
+          await page.waitForTimeout(450)
+          const m = await page.evaluate(() => ({
+            nowTop: document.querySelector('.now').getBoundingClientRect().top,
+            stageBottom: document.querySelector('.stage .flow-svg').getBoundingClientRect().bottom,
+            ctrlTop: document.querySelector('.controls').getBoundingClientRect().top,
+          }))
+          if (m.stageBottom > m.ctrlTop + 0.5 || m.nowTop < -0.5) bad.push(`stop ${i + 1}: ${JSON.stringify(m)}`)
+          if (i < total - 1) await page.click('#next')
+        }
+        await context.close()
+        assert(bad.length === 0, `${slug} ${lang}: ${bad.slice(0, 3).join(' | ')} (${bad.length} bad)`)
+      }
+    }
+  }],
   ['player-mobile-order', async () => {
     const { page, context } = await open('/learn/celery-redis', { width: 390, height: 844 })
     await page.waitForSelector('.now')
@@ -356,7 +400,7 @@ const checks = [
       for (let r = 0; r < n; r++) {
         await routeBtns.nth(r).click()
         await page.waitForTimeout(STEP_MS)
-        while (!(await page.locator('#next').isDisabled())) {
+        while ((await page.getAttribute('#next', 'aria-disabled')) !== 'true') {
           await page.click('#next')
           await page.waitForTimeout(STEP_MS)
         }
@@ -376,7 +420,9 @@ const checks = [
 ]
 
 let failed = 0
+const only = process.env.SMOKE_ONLY?.split(',')
 for (const [name, fn] of checks) {
+  if (only && !only.includes(name)) continue
   try {
     await fn()
     console.log(`PASS ${name}`)

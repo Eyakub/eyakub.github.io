@@ -40,6 +40,7 @@ export default function FlowPlayer({ topic }: { topic: Topic }) {
 
   const onKeyDown = (e: KeyboardEvent) => {
     if ((e.target as HTMLElement).closest('button') && (e.key === ' ' || e.key === 'Enter')) return
+    if (e.altKey || e.metaKey || e.ctrlKey || e.repeat) return
     if (e.key === 'ArrowRight') dispatch({ type: 'next' })
     if (e.key === 'ArrowLeft') dispatch({ type: 'prev' })
   }
