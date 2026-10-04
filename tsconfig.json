@@ -23,9 +23,16 @@
     "next-env.d.ts",
     "./components/**/*.js",
     "./pages/**/*.js",
-    "pages/eyasir.tsx"
+    "pages/eyasir.tsx",
+    "pages/learn/**/*.tsx",
+    "components/learn/**/*.ts",
+    "components/learn/**/*.tsx",
+    "contexts/LearnPrefsContext.tsx",
+    "data/learn/**/*.ts",
+    "lib/learn/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*.test.ts"
   ]
 }

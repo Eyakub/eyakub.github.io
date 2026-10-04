@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "strict": true, "noEmit": true, "incremental": false },
+  "include": [
+    "next-env.d.ts",
+    "pages/learn/**/*.tsx",
+    "components/learn/**/*.ts",
+    "components/learn/**/*.tsx",
+    "contexts/LearnPrefsContext.tsx",
+    "data/learn/**/*.ts",
+    "lib/learn/**/*.ts"
+  ],
+  "exclude": ["node_modules", "**/*.test.ts"]
+}

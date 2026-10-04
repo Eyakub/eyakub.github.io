@@ -8,7 +8,10 @@
     "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "npm run build && gh-pages -d out --nojekyll"
+    "deploy": "npm run build && gh-pages -d out --nojekyll",
+    "test": "vitest run",
+    "typecheck:learn": "tsc -p tsconfig.learn.json",
+    "smoke:learn": "node scripts/learn-smoke.mjs"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.2.4",
@@ -55,8 +58,11 @@
     "@typescript-eslint/parser": "^8.59.3",
     "autoprefixer": "^10.5.0",
     "eslint-plugin-chakra-ui": "^0.11.0",
+    "playwright-core": "^1.63.0",
     "postcss": "^8.5.14",
     "tailwindcss": "^3.4.19",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "vite": "^8.3.2",
+    "vitest": "^5.0.3"
   }
 }
