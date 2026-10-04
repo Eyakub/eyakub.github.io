@@ -75,6 +75,7 @@ const TOPIC_CASES = [
   { slug: 'fastapi-lifecycle', total: 11, altStop: 'Stop 7 of 10' },
   { slug: 'git-basics', total: 9, altStop: 'Stop 9 of 12', altBtn: 2 },
   { slug: 'concurrency-vs-parallelism', total: 9, altStop: 'Stop 7 of 10' },
+  { slug: 'processes-vs-threads', total: 10, altStop: 'Stop 4 of 5', altBtn: 2 },
 ]
 
 const STEP_MS = 1400 // long enough for the packet animation and its arrival callback to finish
