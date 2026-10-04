@@ -52,7 +52,7 @@ export const concurrencyVsParallelism: Topic = {
       id: 'cpu',
       label: { en: 'One machine, two cores', bn: 'একটা মেশিন, দুটো core' },
       wide: [ 200, 120, 400, 270 ],
-      narrow: [ 160, 100, 120, 280 ]
+      narrow: [ 160, 82, 105, 298 ]
     }
   ],
   corridors: {
@@ -74,7 +74,7 @@ export const concurrencyVsParallelism: Topic = {
     },
     'core2-done': {
       wide: [ [ 400, 320 ], [ 570, 320 ], [ 645, 245 ], [ 720, 245 ] ],
-      narrow: [ [ 215, 300 ], [ 235, 300 ], [ 310, 375 ] ]
+      narrow: [ [ 215, 300 ], [ 310, 300 ], [ 310, 375 ] ]
     }
   },
   edges: {
@@ -135,7 +135,7 @@ export const concurrencyVsParallelism: Topic = {
       },
       {
         id: 'a-resumes',
-        moves: [ { edge: 'wait-core1', label: 'A ready' } ],
+        moves: [ { edge: 'wait-core1', label: 'ready' } ],
         state: {
           core1: { en: 'Resumes A', bn: 'A ধরে' },
           wait: { en: 'Empty', bn: 'ফাঁকা' }
@@ -245,6 +245,7 @@ export const concurrencyVsParallelism: Topic = {
           id: 't-start',
           moves: [ { edge: 'queue-core1', label: 'T1' }, { edge: 'queue-core2', label: 'T2' } ],
           state: {
+            done: { en: '2 so far', bn: '২টা আছে' },
             core1: { en: 'T1 running', bn: 'T1 চলছে' },
             core2: { en: 'T2 running?', bn: 'T2 চলছে?' }
           },
@@ -269,7 +270,7 @@ export const concurrencyVsParallelism: Topic = {
           },
           tech: {
             en: 'The GIL lets one thread execute bytecode at a time, so core 2 idles. For CPU work, the docs point to `multiprocessing` or `ProcessPoolExecutor`.',
-            bn: 'GIL একসময়ে একটা thread-কেই bytecode চালাতে দেয়, তাই core 2 বসে থাকে। CPU-র কাজে ডকস `multiprocessing` বা `ProcessPoolExecutor` বলে।'
+            bn: 'GIL একসময়ে একটা thread-কেই bytecode চালাতে দেয়, তাই core ২ বসে থাকে। CPU-র কাজে ডকস `multiprocessing` বা `ProcessPoolExecutor` বলে।'
           }
         },
         {
@@ -313,7 +314,10 @@ export const concurrencyVsParallelism: Topic = {
         {
           id: 'many-wait',
           work: { node: 'wait', kind: 'queue' },
-          state: { wait: { en: '1000 waiting', bn: '১০০০টা অপেক্ষায়' } },
+          state: {
+            wait: { en: '1000 waiting', bn: '১০০০টা অপেক্ষায়' },
+            core1: { en: 'Free', bn: 'ফাঁকা' }
+          },
           title: { en: 'A thousand dishes baking', bn: 'হাজারটা পদ বেক হচ্ছে' },
           simple: {
             en: 'A thousand dishes can be baking at once, and the cook is still free to work.',
@@ -434,7 +438,7 @@ export const concurrencyVsParallelism: Topic = {
       },
       deep: {
         en: 'The OS schedules threads on a core in preemptive time slices. asyncio switches cooperatively at `await`. Several tasks progress, but never two instruction streams at once.',
-        bn: 'OS preemptive time slice-এ thread-কে core-এ schedule করে। asyncio `await`-এ সহযোগিতামূলকভাবে বদলায়। কয়েকটা task এগোয়, কিন্তু একসাথে দুটো instruction stream চলে না।'
+        bn: 'OS preemptive time slice-এ thread-কে core-এ schedule করে। asyncio `await`-এ নিজে থেকে ছেড়ে দিয়ে বদলায়। কয়েকটা task এগোয়, কিন্তু একসাথে দুটো instruction stream চলে না।'
       },
       redFlag: {
         en: '“No, you need multiple cores.”',
