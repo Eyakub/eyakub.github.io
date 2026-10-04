@@ -145,15 +145,23 @@ const checks = [
   ['lang-client-nav', async () => {
     const { page, context } = await open('/learn')
     await page.getByRole('button', { name: 'বাংলা' }).click()
+    // Record every lang value and the topic lede at the moment #topic-view first mounts (before paint).
+    await page.evaluate(() => {
+      const w = window
+      w.__langs = [document.documentElement.lang]
+      w.__firstLede = null
+      new MutationObserver(() => w.__langs.push(document.documentElement.lang)).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] })
+      new MutationObserver(() => {
+        const lede = document.querySelector('#topic-view p.lede')
+        if (lede && w.__firstLede === null) w.__firstLede = lede.textContent ?? ''
+      }).observe(document.body, { childList: true, subtree: true })
+    })
     await page.locator('a.btn.primary').click()
-    await page.waitForURL('**/learn/celery-redis')
-    const state = await page.evaluate(() => ({
-      lang: document.documentElement.lang,
-      lede: document.querySelector('p.lede')?.textContent ?? '',
-    }))
+    await page.waitForSelector('#topic-view')
+    const state = await page.evaluate(() => ({ langs: window.__langs, firstLede: window.__firstLede }))
     await context.close()
-    assert(state.lang === 'bn', `lang flashed back to ${state.lang}`)
-    assert(/[ঀ-৿]/.test(state.lede), `lede not Bengali: ${state.lede}`)
+    assert(!state.langs.includes('en'), `lang flashed to en during navigation: ${state.langs.join(',')}`)
+    assert(/[ঀ-৿]/.test(state.firstLede ?? ''), `topic lede not Bengali on first mount: ${state.firstLede}`)
   }],
   ['lang-reset-on-leave', async () => {
     const { page, context } = await open('/learn/celery-redis')
