@@ -62,6 +62,18 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
     expect(t.cheats.length).toBeGreaterThanOrEqual(5)
     expect(t.sources.length).toBeGreaterThanOrEqual(1)
   })
+  it('a twin with no node says what it is', () => {
+    for (const tw of t.analogy.twins) if (tw.node === null) expect(tw.is, tw.name.en).toBeTruthy()
+  })
+  it('every string has balanced backticks', () => {
+    for (const l of collectL10n(t)) {
+      expect(l.en.split('`').length % 2, l.en).toBe(1)
+      expect(l.bn.split('`').length % 2, l.bn).toBe(1)
+    }
+  })
+  it('every move step carries exactly one move (Phase 1)', () => {
+    for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) if (s.moves) expect(s.moves.length, s.id).toBe(1)
+  })
   it('has a station on the map', () => {
     expect(STATIONS[t.slug]).toBeTruthy()
   })
