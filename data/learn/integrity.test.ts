@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { TOPICS } from './index'
 import { STATIONS, LINES } from './network'
 import type { L10n, Topic } from './types'
+import { bidirectionalCorridors, edgePoints, pointAt } from '../../components/learn/player/geometry'
+import { workNodes } from '../../components/learn/player/flow'
 
 const words = (s: string) => s.replace(/`[^`]*`/g, 'x').trim().split(/\s+/).length
 function collectL10n(v: unknown, out: L10n[] = []): L10n[] {
@@ -25,7 +27,7 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
     for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) {
       expect(Boolean(s.moves) !== Boolean(s.work), s.id).toBe(true)
       s.moves?.forEach((m) => expect(t.edges[m.edge], `${s.id}:${m.edge}`).toBeTruthy())
-      if (s.work) expect(t.nodes[s.work.node], s.id).toBeTruthy()
+      workNodes(s).forEach((n) => expect(t.nodes[n], `${s.id} work ${n}`).toBeTruthy())
       Object.keys(s.state ?? {}).forEach((n) => expect(t.nodes[n], `${s.id} state ${n}`).toBeTruthy())
       expect(words(s.simple.en), `${s.id} simple`).toBeLessThanOrEqual(30)
       expect(words(s.tech.en), `${s.id} tech`).toBeLessThanOrEqual(45)
@@ -71,8 +73,25 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
       expect(l.bn.split('`').length % 2, l.bn).toBe(1)
     }
   })
-  it('every move step carries exactly one move (Phase 1)', () => {
-    for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) if (s.moves) expect(s.moves.length, s.id).toBe(1)
+  it('parallel moves use distinct edges and their packets never overlap', () => {
+    const pillW = (label: string) => label.length * 7.6 + 26
+    const bidir = bidirectionalCorridors(t)
+    for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) {
+      if (!s.moves || s.moves.length < 2) continue
+      expect(s.moves.length, s.id).toBeLessThanOrEqual(3)
+      expect(new Set(s.moves.map((m) => m.edge)).size, s.id).toBe(s.moves.length)
+      for (const lk of ['wide', 'narrow'] as const) {
+        const r = t.nodeR?.[lk] ?? 25
+        const box = s.moves.map((m) => ({ c: pointAt(edgePoints(t, m.edge, lk, bidir, r), 0.5), w: pillW(m.label) }))
+        for (let i = 0; i < box.length; i++) for (let j = i + 1; j < box.length; j++) {
+          const apart = Math.abs(box[i].c[0] - box[j].c[0]) >= (box[i].w + box[j].w) / 2 + 4 || Math.abs(box[i].c[1] - box[j].c[1]) >= 32
+          expect(apart, `${s.id} ${lk}: "${s.moves[i].label}" overlaps "${s.moves[j].label}"`).toBe(true)
+        }
+      }
+    }
+  })
+  it('packet labels stay short', () => {
+    for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) s.moves?.forEach((m) => expect(m.label.length, `${s.id}: ${m.label}`).toBeLessThanOrEqual(24))
   })
   it('has a station on the map', () => {
     expect(STATIONS[t.slug]).toBeTruthy()

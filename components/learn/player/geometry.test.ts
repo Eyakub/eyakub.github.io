@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import type { Topic } from '../../../data/learn/types'
-import { offsetPolyline, trimStart, trimEnd, corridorFor, bidirectionalCorridors, edgePoints, pathD } from './geometry'
+import { offsetPolyline, trimStart, trimEnd, corridorFor, bidirectionalCorridors, edgePoints, pathD, pointAt } from './geometry'
 
 const L = { en: 'x', bn: 'x' }
 const node = (x: number, y: number) => ({ icon: 'user' as const, name: L, sub: L, wide: [x, y, 'down'] as [number, number, 'down'], narrow: [x, y, 'down'] as [number, number, 'down'] })
@@ -56,5 +56,16 @@ describe('corridors', () => {
 describe('pathD', () => {
   it('formats points to one decimal', () => {
     expect(pathD([[0, 0], [10.04, 5.56]])).toBe('M0 0L10 5.6')
+  })
+})
+
+describe('pointAt', () => {
+  it('walks the polyline by length', () => {
+    expect(pointAt([[0, 0], [100, 0], [100, 100]], 0.5)).toEqual([100, 0])
+    expect(pointAt([[0, 0], [100, 0], [100, 100]], 0.75)).toEqual([100, 50])
+  })
+  it('clamps to the ends', () => {
+    expect(pointAt([[0, 0], [10, 0]], 0)).toEqual([0, 0])
+    expect(pointAt([[0, 0], [10, 0]], 1)).toEqual([10, 0])
   })
 })

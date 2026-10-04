@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import type { Step, Topic } from '../../../data/learn/types'
-import { buildRoutes, firstAltIndex, stepKind, focusNodes, visitedEdges, nodeSubAt, dwellMs } from './flow'
+import { buildRoutes, firstAltIndex, stepKind, focusNodes, visitedEdges, nodeSubAt, dwellMs, workNodes } from './flow'
 
 const L = (s: string) => ({ en: s, bn: s })
 const st = (id: string, extra: Partial<Step>): Step => ({ id, title: L(id), simple: L(id), tech: L(id), ...extra })
@@ -43,5 +43,35 @@ describe('step helpers', () => {
   it('dwell is longer in technical mode', () => {
     expect(dwellMs('simple')).toBe(4300)
     expect(dwellMs('technical')).toBe(6500)
+  })
+})
+
+describe('parallel steps', () => {
+  const par = {
+    nodes: { a: { sub: L('a') }, b: { sub: L('b') }, c: { sub: L('c') }, d: { sub: L('d') } },
+    edges: { ab: { from: 'a', to: 'b', kind: 'request' }, cd: { from: 'c', to: 'd', kind: 'result' } },
+    main: {
+      label: L('main'),
+      steps: [
+        st('p1', { moves: [{ edge: 'ab', label: 'x' }, { edge: 'cd', label: 'y' }] }),
+        st('p2', { work: { node: ['b', 'd'], kind: 'result' } }),
+      ],
+    },
+    alts: [],
+  } as unknown as Topic
+  const steps = par.main.steps
+  it('work names one node or several', () => {
+    expect(workNodes(steps[1])).toEqual(['b', 'd'])
+    expect(workNodes(st('w', { work: { node: 'a', kind: 'error' } }))).toEqual(['a'])
+    expect(workNodes(steps[0])).toEqual([])
+  })
+  it('focus covers both ends of every parallel move', () => {
+    expect(focusNodes(par, steps[0])).toEqual(['a', 'b', 'c', 'd'])
+  })
+  it('focus covers every working node', () => {
+    expect(focusNodes(par, steps[1])).toEqual(['b', 'd'])
+  })
+  it('visited edges include every edge of a parallel step', () => {
+    expect([...visitedEdges(steps, 1)]).toEqual(['ab', 'cd'])
   })
 })

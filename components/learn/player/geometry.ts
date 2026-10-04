@@ -74,3 +74,16 @@ export function edgePoints(topic: Topic, edgeId: string, layout: LayoutKey, bidi
   pts = offsetPolyline(pts, bidir.has(key) ? TRACK_OFFSET : 0)
   return trimEnd(trimStart(pts, nodeR + TRIM_START - 25), nodeR + TRIM_END - 25)
 }
+
+export function pointAt(pts: Pt[], t: number): Pt {
+  const lens = pts.slice(1).map((p, i) => Math.hypot(p[0] - pts[i][0], p[1] - pts[i][1]))
+  let d = lens.reduce((a, b) => a + b, 0) * t
+  for (let i = 0; i < lens.length; i++) {
+    if (d <= lens[i]) {
+      const k = lens[i] ? d / lens[i] : 0
+      return [pts[i][0] + (pts[i + 1][0] - pts[i][0]) * k, pts[i][1] + (pts[i + 1][1] - pts[i][1]) * k]
+    }
+    d -= lens[i]
+  }
+  return pts[pts.length - 1]
+}

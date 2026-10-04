@@ -11,7 +11,8 @@
     "deploy": "npm run build && gh-pages -d out --nojekyll",
     "test": "vitest run",
     "typecheck:learn": "tsc -p tsconfig.learn.json",
-    "smoke:learn": "node scripts/learn-smoke.mjs"
+    "smoke:learn": "node scripts/learn-smoke.mjs",
+    "shots:learn": "SMOKE_ONLY=step-shots LEARN_SHOTS=all node scripts/learn-smoke.mjs"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.2.4",

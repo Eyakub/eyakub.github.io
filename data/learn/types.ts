@@ -5,7 +5,7 @@ export type Kind = 'request' | 'queue' | 'result' | 'error'
 export type Side = 'up' | 'down' | 'left' | 'right'
 export type Pt = [number, number]
 export type LayoutKey = 'wide' | 'narrow'
-export type IconName = 'user' | 'server' | 'queue' | 'worker' | 'store' | 'retry' | 'shield' | 'route' | 'check' | 'code' | 'folder' | 'box' | 'archive' | 'cloud' | 'bookmark' | 'mail' | 'power'
+export type IconName = 'user' | 'server' | 'queue' | 'worker' | 'store' | 'retry' | 'shield' | 'route' | 'check' | 'code' | 'folder' | 'box' | 'archive' | 'cloud' | 'bookmark' | 'mail' | 'power' | 'cpu' | 'thread' | 'lock' | 'memory' | 'loop' | 'hourglass' | 'pipe' | 'task' | 'alert'
 export type LineId = 'backend' | 'async' | 'devops' | 'git' | 'concurrency'
 
 export interface FlowNode {
@@ -21,7 +21,7 @@ export interface Move { edge: string; label: string }
 export interface Step {
   id: string
   moves?: Move[]
-  work?: { node: string; kind: Kind }
+  work?: { node: string | string[]; kind: Kind }
   state?: Record<string, L10n>
   title: L10n
   simple: L10n

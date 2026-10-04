@@ -48,8 +48,8 @@ function findChromium() {
 const browser = await chromium.launch({ executablePath: findChromium() })
 
 // Fresh context per check; collects page errors and same-origin request failures.
-async function open(url, { width = 1280, height = 860, allow404 = false, waitUntil = 'networkidle' } = {}) {
-  const context = await browser.newContext({ viewport: { width, height } })
+async function open(url, { width = 1280, height = 860, allow404 = false, waitUntil = 'networkidle', reducedMotion } = {}) {
+  const context = await browser.newContext({ viewport: { width, height }, ...(reducedMotion ? { reducedMotion } : {}) })
   const page = await context.newPage()
   const problems = []
   page.on('pageerror', (e) => problems.push(`pageerror: ${e.message}`))
@@ -126,7 +126,7 @@ const checks = [
     await page.waitForSelector('.network-svg .st')
     const count = await page.locator('.network-svg .st').count()
     await shot(page, 'hub-map')
-    await page.locator('.network-svg .st[data-id="python-gil"]').click()
+    await page.locator('.network-svg .st[data-id="docker"]').click()
     await page.waitForSelector('.toast')
     const toast = await page.textContent('.toast')
     await page.locator('.network-svg .st[data-id="celery-redis"]').click()
@@ -134,7 +134,7 @@ const checks = [
     await page.waitForLoadState('networkidle')
     await context.close()
     assert(count === 20, `expected 20 stations, got ${count}`)
-    assert(toast?.includes('Phase 2'), `toast missing Phase 2: ${toast}`)
+    assert(toast?.includes('Phase 3'), `toast missing Phase 3: ${toast}`)
     noProblems(problems)
   }],
   ['hub-strips-mobile', async () => {
@@ -271,9 +271,10 @@ const checks = [
       await page.click('#next')
       await page.waitForTimeout(300)
       const errs = await page.locator('.edge.k-error').evaluateAll((els) => els.filter((e) => getComputedStyle(e).opacity !== '0' && e.classList.contains('active')).length)
+      const errWork = await page.locator('.node.working').evaluateAll((els) => els.filter((e) => (e.getAttribute('style') ?? '').includes('--k-error')).length)
       await context.close()
       assert(stop === altStop, `${slug} stopno: ${stop}`)
-      assert(errs >= 1, `${slug} no visible k-error edge: ${errs}`)
+      assert(errs >= 1 || errWork >= 1, `${slug} no visible error edge or error-working node`)
     }
   }],
   ['player-keyboard', async () => {
@@ -350,6 +351,18 @@ const checks = [
     assert(vis === 1, `visible packets: ${vis}`)
     assert(a && a === b, `packet moved: ${a} -> ${b}`)
   }],
+  ['packet-colour', async () => {
+    const { page, context } = await open('/learn/celery-redis', { reducedMotion: 'reduce' })
+    await page.waitForSelector('.packet:not([hidden]) rect')
+    const { fill, want } = await page.evaluate(() => {
+      const norm = (c) => { const el = document.createElement('i'); el.style.color = c; document.body.appendChild(el); const v = getComputedStyle(el).color; el.remove(); return v }
+      const fill = getComputedStyle(document.querySelector('.packet rect')).fill
+      const want = getComputedStyle(document.querySelector('.learn-root')).getPropertyValue('--k-request').trim()
+      return { fill: norm(fill), want: norm(want) }
+    })
+    await context.close()
+    assert(fill === want, `packet fill ${fill} != --k-request ${want}`)
+  }],
   ['sections', async () => {
     const { page, context, problems } = await open('/learn/celery-redis')
     await page.waitForSelector('.twins li', { timeout: 2000 })
@@ -418,6 +431,37 @@ const checks = [
     }
   }],
 ]
+
+if (process.env.LEARN_SHOTS) {
+  checks.push(['step-shots', async () => {
+    const env = process.env.LEARN_SHOTS
+    const slugs = env === 'all' ? TOPIC_CASES.map((c) => c.slug) : env.split(',').map((s) => s.trim()).filter(Boolean)
+    const viewports = [{ name: 'wide', width: 1280, height: 860 }, { name: 'narrow', width: 390, height: 844 }]
+    for (const slug of slugs) {
+      const dir = path.join(SHOTS, 'shots', slug)
+      fs.mkdirSync(dir, { recursive: true })
+      for (const vp of viewports) {
+        const { page, context, problems } = await open(`/learn/${slug}`, { width: vp.width, height: vp.height, reducedMotion: 'reduce' })
+        await page.waitForSelector('#next')
+        // The sticky control bar covers the lower diagram on phones, so hide it for the capture only.
+        await page.addStyleTag({ content: '.controls { opacity: 0 !important }' })
+        const n = await page.locator('.switch .seg').nth(1).locator('button').count()
+        for (let r = 0; r < n; r++) {
+          await page.locator('.switch .seg').nth(1).locator('button').nth(r).click()
+          await page.waitForTimeout(120)
+          for (let i = 0; ; i++) {
+            await page.locator('.flow-svg').screenshot({ path: path.join(dir, `${vp.name}-${r}-${String(i + 1).padStart(2, '0')}.png`) })
+            if ((await page.getAttribute('#next', 'aria-disabled')) === 'true') break
+            await page.click('#next')
+            await page.waitForTimeout(120)
+          }
+        }
+        await context.close()
+        noProblems(problems)
+      }
+    }
+  }])
+}
 
 let failed = 0
 const only = process.env.SMOKE_ONLY?.split(',')

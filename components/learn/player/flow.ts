@@ -20,8 +20,10 @@ export function firstAltIndex(topic: Topic, routeId: string): number {
 export const stepKind = (topic: Topic, step: Step): Kind =>
   step.work ? step.work.kind : topic.edges[step.moves![0].edge].kind
 
+export const workNodes = (step: Step): string[] => (step.work ? ([] as string[]).concat(step.work.node) : [])
+
 export function focusNodes(topic: Topic, step: Step): string[] {
-  if (step.work) return [step.work.node]
+  if (step.work) return workNodes(step)
   const ids = step.moves!.flatMap((m) => [topic.edges[m.edge].from, topic.edges[m.edge].to])
   return [...new Set(ids)]
 }

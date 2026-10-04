@@ -2,7 +2,7 @@ import { useLayoutEffect, useMemo, useRef, type CSSProperties } from 'react'
 import { useLearnPrefs } from '../../../contexts/LearnPrefsContext'
 import { ICON } from '../../../data/learn/icons'
 import type { Kind, LayoutKey, Side, Step, Topic } from '../../../data/learn/types'
-import { focusNodes, nodeSubAt, stepKind, visitedEdges } from './flow'
+import { focusNodes, nodeSubAt, stepKind, visitedEdges, workNodes } from './flow'
 import { bidirectionalCorridors, edgePoints, pathD } from './geometry'
 
 interface Props { topic: Topic; layout: LayoutKey; steps: Step[]; index: number; animate: boolean }
@@ -32,6 +32,7 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
   const kind = stepKind(topic, step)
   const moves = step.moves ?? []
   const focus = focusNodes(topic, step)
+  const working = new Set(workNodes(step))
   const passed = visitedEdges(steps, index)
   const activeEdges = new Set(moves.map((m) => m.edge))
   const [w, h] = topic.view[layout]
@@ -68,7 +69,7 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
 
     let raf = 0
     let arriveTimer: ReturnType<typeof setTimeout> | undefined
-    let arrived: SVGGElement | null = null
+    let arrived: SVGGElement[] = []
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (!animate || reduce) {
       packets.forEach((pk, i) => {
@@ -102,15 +103,10 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
           })
           if (t >= 1) {
             comets.forEach((c) => c?.setAttribute('hidden', ''))
-            const dest = geo.find(Boolean)?.to
-            const g = dest ? nodeRefs.current[dest] : null
-            if (g) {
-              arrived = g
-              g.classList.remove('arrive')
-              void g.getBoundingClientRect()
-              g.classList.add('arrive')
-              arriveTimer = setTimeout(() => g.classList.remove('arrive'), 600)
-            }
+            const dests = [...new Set(geo.flatMap((g) => (g ? [g.to] : [])))]
+            arrived = dests.flatMap((d) => { const g = nodeRefs.current[d]; return g ? [g] : [] })
+            arrived.forEach((g) => { g.classList.remove('arrive'); void g.getBoundingClientRect(); g.classList.add('arrive') })
+            if (arrived.length) arriveTimer = setTimeout(() => arrived.forEach((g) => g.classList.remove('arrive')), 600)
             return
           }
         }
@@ -121,12 +117,12 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
     return () => {
       cancelAnimationFrame(raf)
       clearTimeout(arriveTimer)
-      arrived?.classList.remove('arrive')
+      arrived.forEach((g) => g.classList.remove('arrive'))
       comets.forEach((c) => c?.setAttribute('hidden', ''))
     }
   }, [index, steps, layout]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const pkStyle = { '--pk': `var(--k-${kind})`, '--pk-on': `var(--k-${kind}-on)` } as CSSProperties
+  const kindStyle = (k: Kind) => ({ '--pk': `var(--k-${k})`, '--pk-on': `var(--k-${k}-on)` } as CSSProperties)
 
   return (
     <svg className="flow-svg" id="flow" viewBox={`0 0 ${w} ${h}`} role="img" aria-labelledby="step-title">
@@ -157,12 +153,12 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
         />
       ))}
       {moves.map((m, i) => (
-        <circle key={`c${i}`} ref={(el) => { cometRefs.current[i] = el }} className="comet" r="6.5" {...HIDDEN} style={pkStyle} />
+        <circle key={`c${i}`} ref={(el) => { cometRefs.current[i] = el }} className="comet" r="6.5" {...HIDDEN} style={kindStyle(topic.edges[m.edge].kind)} />
       ))}
       {Object.entries(topic.nodes).map(([id, n]) => {
         const [x, y, side] = n[layout]
         const lp = labelPos(x, y, side, r)
-        const cls = ['node', focus.includes(id) ? 'on' : '', step.work?.node === id ? 'working' : ''].filter(Boolean).join(' ')
+        const cls = ['node', focus.includes(id) ? 'on' : '', working.has(id) ? 'working' : ''].filter(Boolean).join(' ')
         return (
           <g key={id} ref={(el) => { nodeRefs.current[id] = el }} className={cls} data-id={id} style={{ '--k': `var(--k-${kind})` } as CSSProperties}>
             <circle className="halo" cx={x} cy={y} r={r * 1.44} />
@@ -176,7 +172,7 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
         )
       })}
       {moves.map((m, i) => (
-        <g key={`p${i}`} ref={(el) => { packetRefs.current[i] = el }} className="packet" {...HIDDEN} style={pkStyle}>
+        <g key={`p${i}`} ref={(el) => { packetRefs.current[i] = el }} className="packet" {...HIDDEN} style={kindStyle(topic.edges[m.edge].kind)}>
           <rect y="-14" height="28" rx="14" />
           <text x="0" y="0" />
         </g>
