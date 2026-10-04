@@ -484,6 +484,12 @@ git commit -m "feat(learn): add <title> topic"
     - `ext-reenables`: work `interp`, error; state `gil` "Re-enabled";
     - `still-lock`: work `['t1', 't2']`, queue; state "Still need Lock".
     - Version facts must match research §0: 3.13 experimental, 3.14 supported but optional, the GIL build is still the default.
+- **Extra smoke work for this task (ruling from the Task 1 review):** extend the `packet-colour` check in `scripts/learn-smoke.mjs`. After its celery assertion:
+  - open `/learn/python-gil` with `reducedMotion: 'reduce'` and click `#next` 6 times to reach `io-release` (stop 7);
+  - assert there are exactly two `.packet` elements;
+  - assert their `rect` fills resolve to `--k-queue` (the `t2→io` packet) and `--k-result` (the `gil→t1` packet) respectively, using the same colour normalisation as the existing check;
+  - this is the one mixed-kind parallel step that would catch a regression to one shared packet colour.
+  - Add `scripts/learn-smoke.mjs` to the commit (it already is, via `TOPIC_CASES`).
 
 ---
 
