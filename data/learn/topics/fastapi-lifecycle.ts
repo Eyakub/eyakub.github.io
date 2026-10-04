@@ -158,8 +158,8 @@ export const fastapiLifecycle: Topic = {
         moves: [ { edge: 'sm', label: 'request' } ],
         title: { en: 'Your checkpoints', bn: 'আপনার চেকপয়েন্ট' },
         simple: {
-          en: 'The request passes your checkpoints, such as the CORS check, a login check or a timer. They run in the order you set up.',
-          bn: 'রিকোয়েস্ট আপনার চেকপয়েন্টগুলো পার হয়, যেমন CORS চেক, লগইন চেক বা টাইমার। এগুলো আপনার সাজানো ক্রমে চলে।'
+          en: 'The request passes your checkpoints: a check that this site may call the API, a login check, a timer. They stack like layers; the last one added is met first.',
+          bn: 'রিকোয়েস্ট আপনার চেকপয়েন্টগুলো পার হয়, যেমন এই ওয়েবসাইট API ডাকতে পারবে কি না তার চেক, লগইন চেক বা টাইমার। এগুলো স্তরে স্তরে সাজানো; সবশেষে যোগ করাটাই রিকোয়েস্ট আগে পায়।'
         },
         tech: {
           en: 'With `add_middleware`, the last one added is the outermost, so it runs first on the way in. The request goes top to bottom, and the response goes back bottom to top.',
@@ -372,8 +372,8 @@ export const fastapiLifecycle: Topic = {
             bn: 'ক্লায়েন্ট শুধু একটা সাদামাটা “Internal Server Error” পায়। চেকপয়েন্টগুলো রিপ্লাইটা দেখেইনি, তাই কিছু জুড়তে পারেনি।'
           },
           tech: {
-            en: 'CORS never ran, so the 500 has no CORS headers. The browser reports a CORS error that hides the real 500. Check the server logs, not the browser console.',
-            bn: 'CORS চলেইনি, তাই 500-তে CORS হেডার নেই। ব্রাউজার একটা CORS এরর দেখায়, যা আসল 500-কে আড়াল করে। ব্রাউজার কনসোল নয়, সার্ভার লগ দেখুন।'
+            en: 'CORSMiddleware sees an exception, not a response, so it never adds its headers to the 500. The browser then reports a CORS error that hides the real 500. Check the server logs.',
+            bn: 'CORSMiddleware রেসপন্স নয়, একটা exception দেখে, তাই 500-তে নিজের হেডার জুড়তে পারে না। ব্রাউজার তখন একটা CORS এরর দেখায়, যা আসল 500-কে আড়াল করে। সার্ভার লগ দেখুন।'
           }
         }
       ]
@@ -516,6 +516,15 @@ export const fastapiLifecycle: Topic = {
         d: {
           en: 'Receives a clean, checked order and cooks the dish.',
           bn: 'যাচাই করা পরিষ্কার অর্ডার হাতে পান আর খাবারটা রান্না করেন।'
+        }
+      },
+      {
+        icon: 'mail',
+        node: 'bg',
+        name: { en: 'The dishwasher', bn: 'বাসন ধোয়ার লোক' },
+        d: {
+          en: 'Washes the dishes after you have already been served and left happy. It never makes you wait.',
+          bn: 'আপনাকে খাবার দিয়ে খুশি করে বিদায় দেওয়ার পরে বাসন ধোন। আপনাকে কখনো অপেক্ষা করান না।'
         }
       },
       {
