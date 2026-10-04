@@ -273,6 +273,45 @@ const checks = [
     assert(vis === 1, `visible packets: ${vis}`)
     assert(a && a === b, `packet moved: ${a} -> ${b}`)
   }],
+  ['sections', async () => {
+    const { page, context, problems } = await open('/learn/celery-redis')
+    await page.waitForSelector('.twins li', { timeout: 2000 })
+    const twins = await page.locator('.twins li').count()
+    const qa = await page.locator('.qa details').count()
+    const firstOpen = await page.locator('.qa details').first().evaluate((d) => d.open)
+    const cheats = await page.locator('.cheat').count()
+    const hrefs = await page.locator('.sources a').evaluateAll((els) => els.map((e) => e.getAttribute('href')))
+    await page.locator('.done-row').scrollIntoViewIfNeeded()
+    await shot(page, 'topic-sections')
+    await context.close()
+    assert(twins === 6, `twins ${twins}`)
+    assert(qa === 5 && firstOpen, `qa ${qa}, first open ${firstOpen}`)
+    assert(cheats === 6, `cheats ${cheats}`)
+    assert(hrefs.length >= 1 && hrefs.every((h) => h?.startsWith('https://')), `sources ${JSON.stringify(hrefs)}`)
+    noProblems(problems)
+  }],
+  ['copy-button', async () => {
+    const { page, context } = await open('/learn/celery-redis')
+    await page.waitForSelector('.copy', { timeout: 2000 })
+    await page.locator('.copy').first().click()
+    await page.waitForFunction(() => /^(Copied|Selected, press Ctrl\+C)$/.test(document.querySelector('.copy span')?.textContent ?? ''), null, { timeout: 500 })
+    await context.close()
+  }],
+  ['learned-flow', async () => {
+    const { page, context } = await open('/learn/celery-redis')
+    await page.waitForSelector('.done-btn', { timeout: 2000 })
+    await page.click('.done-btn')
+    const pressed = await page.getAttribute('.done-btn', 'aria-pressed')
+    await page.locator('.crumb a').click()
+    await page.waitForURL((u) => u.pathname === '/learn' || u.pathname === '/learn/')
+    await page.waitForSelector('.network-svg .st[data-id="celery-redis"]')
+    const station = await page.getAttribute('.network-svg .st[data-id="celery-redis"]', 'class')
+    const chip = await page.locator('.strip .chip.learned').first().textContent()
+    await context.close()
+    assert(pressed === 'true', `aria-pressed ${pressed}`)
+    assert(chip?.trim() === 'Learned', `chip ${chip}`)
+    assert(/\bdone\b/.test(station ?? ''), `station class ${station}`)
+  }],
   ['existing-pages', async () => {
     for (const url of ['/', '/projects', '/eyasir']) {
       const { context, problems } = await open(url)
