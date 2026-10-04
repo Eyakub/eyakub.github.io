@@ -69,3 +69,4 @@ out/
 pages/projects/[slug].js
 **/[slug].js
 .qodo
+.smoke/
