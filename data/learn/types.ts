@@ -38,6 +38,7 @@ export interface Topic {
   title: L10n
   summary: L10n
   view: Record<LayoutKey, [number, number]>
+  nodeR?: Partial<Record<LayoutKey, number>>
   nodes: Record<string, FlowNode>
   groups?: Group[]
   corridors: Record<string, Corridor>

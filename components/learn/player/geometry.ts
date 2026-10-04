@@ -66,11 +66,11 @@ export const trimEnd = (pts: Pt[], dist: number): Pt[] => trimStart([...pts].rev
 export const pathD = (pts: Pt[]): string =>
   'M' + pts.map((p) => p.map((v) => +v.toFixed(1)).join(' ')).join('L')
 
-export function edgePoints(topic: Topic, edgeId: string, layout: LayoutKey, bidir: Set<string>): Pt[] {
+export function edgePoints(topic: Topic, edgeId: string, layout: LayoutKey, bidir: Set<string>, nodeR = 25): Pt[] {
   const e = topic.edges[edgeId]
   const { key, reversed } = corridorFor(topic, e.from, e.to)
   let pts = topic.corridors[key][layout].map((p) => [p[0], p[1]] as Pt)
   if (reversed) pts.reverse()
   pts = offsetPolyline(pts, bidir.has(key) ? TRACK_OFFSET : 0)
-  return trimEnd(trimStart(pts, TRIM_START), TRIM_END)
+  return trimEnd(trimStart(pts, nodeR + TRIM_START - 25), nodeR + TRIM_END - 25)
 }

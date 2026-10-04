@@ -11,16 +11,17 @@ const KINDS: Kind[] = ['request', 'queue', 'result', 'error']
 // SVG prop types omit `hidden`, but the attribute is valid and is toggled via setAttribute at runtime.
 const HIDDEN = { hidden: true } as Record<string, unknown>
 const REST = 0.5
+const NODE_R = 25
 const D1 = 750
 const D2 = 520
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
-function labelPos(x: number, y: number, side: Side) {
+function labelPos(x: number, y: number, side: Side, r: number) {
   return {
-    down: { nx: x, ny: y + 46, sy: y + 63, a: 'middle' },
-    up: { nx: x, ny: y - 50, sy: y - 33, a: 'middle' },
-    right: { nx: x + 36, ny: y - 3, sy: y + 15, a: 'start' },
-    left: { nx: x - 36, ny: y - 3, sy: y + 15, a: 'end' },
+    down: { nx: x, ny: y + r + 21, sy: y + r + 38, a: 'middle' },
+    up: { nx: x, ny: y - r - 25, sy: y - r - 8, a: 'middle' },
+    right: { nx: x + r + 11, ny: y - 3, sy: y + 15, a: 'start' },
+    left: { nx: x - r - 11, ny: y - 3, sy: y + 15, a: 'end' },
   }[side] as { nx: number; ny: number; sy: number; a: 'start' | 'middle' | 'end' }
 }
 
@@ -34,6 +35,7 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
   const passed = visitedEdges(steps, index)
   const activeEdges = new Set(moves.map((m) => m.edge))
   const [w, h] = topic.view[layout]
+  const r = topic.nodeR?.[layout] ?? NODE_R
 
   const edgeRefs = useRef<Record<string, SVGPathElement | null>>({})
   const nodeRefs = useRef<Record<string, SVGGElement | null>>({})
@@ -140,7 +142,8 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
         return (
           <g key={g.id} className="group">
             <rect x={gx} y={gy} width={gw} height={gh} rx="16" />
-            <text x={gx + 14} y={gy - 8}>{t(g.label)}</text>
+            {/* Narrow: the spine runs down the left of the group, so the label sits at its right end. */}
+            <text x={layout === 'narrow' ? gx + gw - 12 : gx + 14} y={gy - 8} textAnchor={layout === 'narrow' ? 'end' : 'start'}>{t(g.label)}</text>
           </g>
         )
       })}
@@ -150,7 +153,7 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
           key={id}
           ref={(el) => { edgeRefs.current[id] = el }}
           className={`edge k-${e.kind}${activeEdges.has(id) ? ' active' : passed.has(id) ? ' visited' : ''}`}
-          d={pathD(edgePoints(topic, id, layout, bidir))}
+          d={pathD(edgePoints(topic, id, layout, bidir, r))}
         />
       ))}
       {moves.map((m, i) => (
@@ -158,13 +161,13 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
       ))}
       {Object.entries(topic.nodes).map(([id, n]) => {
         const [x, y, side] = n[layout]
-        const lp = labelPos(x, y, side)
+        const lp = labelPos(x, y, side, r)
         const cls = ['node', focus.includes(id) ? 'on' : '', step.work?.node === id ? 'working' : ''].filter(Boolean).join(' ')
         return (
           <g key={id} ref={(el) => { nodeRefs.current[id] = el }} className={cls} data-id={id} style={{ '--k': `var(--k-${kind})` } as CSSProperties}>
-            <circle className="halo" cx={x} cy={y} r="36" />
-            <circle className="disc" cx={x} cy={y} r="25" />
-            <g className="ico" transform={`translate(${x - 12} ${y - 12})`}>
+            <circle className="halo" cx={x} cy={y} r={r * 1.44} />
+            <circle className="disc" cx={x} cy={y} r={r} />
+            <g className="ico" transform={`translate(${x - 12 * (r / NODE_R)} ${y - 12 * (r / NODE_R)}) scale(${r / NODE_R})`}>
               <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: ICON[n.icon] }} />
             </g>
             <text className="nm" x={lp.nx} y={lp.ny} textAnchor={lp.a}>{t(n.name)}</text>

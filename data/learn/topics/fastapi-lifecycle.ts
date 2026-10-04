@@ -9,100 +9,101 @@ export const fastapiLifecycle: Topic = {
     en: 'Every layer a request passes on its way into your function, and back out again as a response.',
     bn: 'একটা রিকোয়েস্ট আপনার ফাংশনে পৌঁছাতে আর রেসপন্স হয়ে ফিরে আসতে কোন কোন স্তর পার হয়, তার পুরো গল্প।'
   },
-  view: { wide: [ 1000, 360 ], narrow: [ 400, 740 ] },
+  view: { wide: [ 900, 360 ], narrow: [ 400, 572 ] },
+  nodeR: { narrow: 20 },
   nodes: {
     client: {
       icon: 'user',
       name: { en: 'Client', bn: 'ক্লায়েন্ট' },
       sub: { en: 'Browser or app', bn: 'ব্রাউজার বা অ্যাপ' },
       wide: [ 60, 150, 'up' ],
-      narrow: [ 150, 40, 'right' ]
+      narrow: [ 150, 36, 'right' ]
     },
     uvicorn: {
       icon: 'power',
       name: { en: 'Uvicorn', bn: 'Uvicorn' },
       sub: { en: 'ASGI server', bn: 'ASGI সার্ভার' },
-      wide: [ 175, 150, 'down' ],
-      narrow: [ 150, 120, 'right' ]
+      wide: [ 164, 150, 'down' ],
+      narrow: [ 150, 100, 'right' ]
     },
     sem: {
       icon: 'shield',
       name: { en: 'ServerErrorMiddleware', bn: 'ServerErrorMiddleware' },
       sub: { en: 'Safety net', bn: 'সেফটি নেট' },
-      wide: [ 290, 150, 'up' ],
-      narrow: [ 150, 200, 'right' ]
+      wide: [ 267, 150, 'up' ],
+      narrow: [ 150, 164, 'right' ]
     },
     mw: {
       icon: 'route',
       name: { en: 'Your middleware', bn: 'আপনার middleware' },
       sub: { en: 'CORS, auth, timing', bn: 'CORS, auth, টাইমিং' },
-      wide: [ 405, 150, 'down' ],
-      narrow: [ 150, 280, 'right' ]
+      wide: [ 370, 150, 'down' ],
+      narrow: [ 150, 228, 'right' ]
     },
     exm: {
       icon: 'shield',
       name: { en: 'ExceptionMiddleware', bn: 'ExceptionMiddleware' },
       sub: { en: 'Errors to replies', bn: 'এরর থেকে রিপ্লাই' },
-      wide: [ 520, 150, 'up' ],
-      narrow: [ 150, 360, 'right' ]
+      wide: [ 474, 150, 'up' ],
+      narrow: [ 150, 292, 'right' ]
     },
     router: {
       icon: 'route',
       name: { en: 'Router', bn: 'Router' },
       sub: { en: 'Picks the function', bn: 'ফাংশন বেছে নেয়' },
-      wide: [ 635, 150, 'down' ],
-      narrow: [ 150, 440, 'right' ]
+      wide: [ 578, 150, 'down' ],
+      narrow: [ 150, 356, 'right' ]
     },
     deps: {
       icon: 'check',
       name: { en: 'Dependencies', bn: 'Dependencies' },
       sub: { en: 'Inputs + validation', bn: 'ইনপুট + ভ্যালিডেশন' },
-      wide: [ 750, 150, 'up' ],
-      narrow: [ 150, 520, 'right' ]
+      wide: [ 681, 150, 'up' ],
+      narrow: [ 150, 420, 'right' ]
     },
     op: {
       icon: 'code',
       name: { en: 'Your function', bn: 'আপনার ফাংশন' },
       sub: { en: 'def or async def', bn: 'def বা async def' },
-      wide: [ 865, 150, 'up' ],
-      narrow: [ 150, 600, 'right' ]
+      wide: [ 784, 150, 'up' ],
+      narrow: [ 150, 484, 'right' ]
     },
     bg: {
       icon: 'mail',
       name: { en: 'BackgroundTasks', bn: 'BackgroundTasks' },
       sub: { en: 'After the reply', bn: 'রিপ্লাইয়ের পরে' },
-      wide: [ 955, 240, 'left' ],
-      narrow: [ 150, 690, 'right' ]
+      wide: [ 866, 240, 'left' ],
+      narrow: [ 150, 548, 'right' ]
     }
   },
   groups: [
     {
       id: 'stack',
       label: { en: 'Middleware stack', bn: 'মিডলওয়্যার স্ট্যাক' },
-      wide: [ 205, 78, 400, 150 ],
-      narrow: [ 100, 165, 290, 230 ]
+      wide: [ 190, 78, 360, 150 ],
+      narrow: [ 112, 130, 280, 196 ]
     }
   ],
   corridors: {
-    'client-uvicorn': { wide: [ [ 60, 150 ], [ 175, 150 ] ], narrow: [ [ 150, 40 ], [ 150, 120 ] ] },
-    'uvicorn-sem': { wide: [ [ 175, 150 ], [ 290, 150 ] ], narrow: [ [ 150, 120 ], [ 150, 200 ] ] },
-    'sem-mw': { wide: [ [ 290, 150 ], [ 405, 150 ] ], narrow: [ [ 150, 200 ], [ 150, 280 ] ] },
-    'mw-exm': { wide: [ [ 405, 150 ], [ 520, 150 ] ], narrow: [ [ 150, 280 ], [ 150, 360 ] ] },
-    'exm-router': { wide: [ [ 520, 150 ], [ 635, 150 ] ], narrow: [ [ 150, 360 ], [ 150, 440 ] ] },
-    'router-deps': { wide: [ [ 635, 150 ], [ 750, 150 ] ], narrow: [ [ 150, 440 ], [ 150, 520 ] ] },
-    'deps-op': { wide: [ [ 750, 150 ], [ 865, 150 ] ], narrow: [ [ 150, 520 ], [ 150, 600 ] ] },
-    'op-bg': { wide: [ [ 865, 150 ], [ 955, 240 ] ], narrow: [ [ 150, 600 ], [ 150, 690 ] ] },
+    'client-uvicorn': { wide: [ [ 60, 150 ], [ 164, 150 ] ], narrow: [ [ 150, 36 ], [ 150, 100 ] ] },
+    'uvicorn-sem': { wide: [ [ 164, 150 ], [ 267, 150 ] ], narrow: [ [ 150, 100 ], [ 150, 164 ] ] },
+    'sem-mw': { wide: [ [ 267, 150 ], [ 370, 150 ] ], narrow: [ [ 150, 164 ], [ 150, 228 ] ] },
+    'mw-exm': { wide: [ [ 370, 150 ], [ 474, 150 ] ], narrow: [ [ 150, 228 ], [ 150, 292 ] ] },
+    'exm-router': { wide: [ [ 474, 150 ], [ 578, 150 ] ], narrow: [ [ 150, 292 ], [ 150, 356 ] ] },
+    'router-deps': { wide: [ [ 578, 150 ], [ 681, 150 ] ], narrow: [ [ 150, 356 ], [ 150, 420 ] ] },
+    'deps-op': { wide: [ [ 681, 150 ], [ 784, 150 ] ], narrow: [ [ 150, 420 ], [ 150, 484 ] ] },
+    'op-bg': { wide: [ [ 784, 150 ], [ 866, 240 ] ], narrow: [ [ 150, 484 ], [ 150, 548 ] ] },
     'exm-deps': {
-      wide: [ [ 520, 150 ], [ 520, 250 ], [ 750, 250 ], [ 750, 150 ] ],
-      narrow: [ [ 150, 360 ], [ 60, 360 ], [ 60, 520 ], [ 150, 520 ] ]
+      wide: [ [ 474, 150 ], [ 474, 250 ], [ 681, 250 ], [ 681, 150 ] ],
+      narrow: [ [ 150, 292 ], [ 94, 292 ], [ 94, 420 ], [ 150, 420 ] ]
     },
     'sem-op': {
-      wide: [ [ 290, 150 ], [ 290, 330 ], [ 865, 330 ], [ 865, 150 ] ],
-      narrow: [ [ 150, 200 ], [ 90, 200 ], [ 90, 575 ], [ 150, 575 ] ]
+      wide: [ [ 267, 150 ], [ 267, 330 ], [ 784, 330 ], [ 784, 150 ] ],
+      narrow: [ [ 150, 164 ], [ 62, 164 ], [ 62, 470 ], [ 150, 470 ] ]
     },
     'uvicorn-op': {
-      wide: [ [ 175, 150 ], [ 175, 50 ], [ 960, 50 ], [ 960, 150 ], [ 865, 150 ] ],
-      narrow: [ [ 150, 120 ], [ 30, 120 ], [ 30, 600 ], [ 150, 600 ] ]
+      wide: [ [ 164, 150 ], [ 164, 50 ], [ 870, 50 ], [ 870, 150 ], [ 784, 150 ] ],
+      narrow: [ [ 150, 100 ], [ 30, 100 ], [ 30, 484 ], [ 150, 484 ] ]
     }
   },
   edges: {

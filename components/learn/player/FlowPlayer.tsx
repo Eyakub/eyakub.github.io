@@ -45,6 +45,15 @@ export default function FlowPlayer({ topic }: { topic: Topic }) {
     if (e.key === 'ArrowLeft') dispatch({ type: 'prev' })
   }
 
+  const onPlay = () => {
+    if (state.playing) return dispatch({ type: 'pause' })
+    dispatch({ type: 'play' })
+    if (window.matchMedia('(max-width: 979px)').matches) {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      document.querySelector('.learn-root .now')?.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' })
+    }
+  }
+
   const routeOptions = [
     { value: 'main', label: t(topic.main.label) },
     ...topic.alts.map((a) => ({ value: a.id, label: t(a.label) })),
@@ -80,7 +89,7 @@ export default function FlowPlayer({ topic }: { topic: Topic }) {
             atEnd={atEnd}
             onPrev={() => dispatch({ type: 'prev' })}
             onNext={() => dispatch({ type: 'next' })}
-            onPlay={() => dispatch({ type: state.playing ? 'pause' : 'play' })}
+            onPlay={onPlay}
           />
           <StopList steps={steps} index={state.step} kind={kind} onGo={(i) => dispatch({ type: 'go', index: i })} />
         </div>
