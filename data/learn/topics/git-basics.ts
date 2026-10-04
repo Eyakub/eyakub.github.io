@@ -260,10 +260,10 @@ export const gitBasics: Topic = {
         {
           id: 'clash',
           work: { node: 'repo', kind: 'error' },
-          title: { en: 'Both sides changed the same lines', bn: 'দুই পক্ষই একই লাইন বদলেছে' },
+          title: { en: 'You merge, but both sides changed the same lines', bn: 'আপনি merge করেন, কিন্তু দুই পক্ষই একই লাইন বদলেছে' },
           simple: {
-            en: 'You and your teammate edited the very same lines of app.py. Git cannot guess whose version is right, so it stops.',
-            bn: 'আপনি আর সহকর্মী app.py-র ঠিক একই লাইনগুলো বদলেছেন। কার ভার্সন ঠিক Git আন্দাজ করতে পারে না, তাই থেমে যায়।'
+            en: 'You run `git merge origin/main`, but you and your teammate edited the very same lines of app.py. Git cannot guess whose version is right, so it stops.',
+            bn: 'আপনি `git merge origin/main` চালান, কিন্তু আপনি আর সহকর্মী app.py-র ঠিক একই লাইন বদলেছেন। কার ভার্সন ঠিক Git আন্দাজ করতে পারে না, তাই থেমে যায়।'
           },
           tech: {
             en: 'Git can merge changes to different lines on its own. When both sides changed the same lines, the merge pauses with the conflicting files marked as unmerged.',
@@ -329,7 +329,10 @@ export const gitBasics: Topic = {
         {
           id: 'checkout-sha',
           work: { node: 'repo', kind: 'error' },
-          state: { repo: { en: 'HEAD → 9f8e7d (no branch)', bn: 'HEAD → 9f8e7d (কোনো ব্রাঞ্চ নেই)' } },
+          state: {
+            repo: { en: 'HEAD → 9f8e7d (no branch)', bn: 'HEAD → 9f8e7d (কোনো ব্রাঞ্চ নেই)' },
+            idx: { en: 'fix.py staged', bn: 'fix.py স্টেজ করা' }
+          },
           title: { en: 'You check out an old snapshot', bn: 'আপনি পুরোনো একটা স্ন্যাপশটে যান' },
           simple: {
             en: 'You jump back to an old snapshot by its ID. The “you are here” marker now sits on no branch at all.',
@@ -343,11 +346,14 @@ export const gitBasics: Topic = {
         {
           id: 'orphan-commit',
           moves: [ { edge: 'commit', label: 'git commit' } ],
-          state: { repo: { en: 'HEAD → e3f4a5 (no branch)', bn: 'HEAD → e3f4a5 (কোনো ব্রাঞ্চ নেই)' } },
+          state: {
+            repo: { en: 'HEAD → e3f4a5 (no branch)', bn: 'HEAD → e3f4a5 (কোনো ব্রাঞ্চ নেই)' },
+            idx: { en: 'Nothing staged', bn: 'কিছু স্টেজ করা নেই' }
+          },
           title: { en: 'A commit that belongs to no branch', bn: 'কোনো ব্রাঞ্চের নয় এমন commit' },
           simple: {
-            en: 'Careful: this new commit is on no branch. Leave without saving it, and it becomes very hard to find again.',
-            bn: 'সাবধান: এই নতুন commit কোনো ব্রাঞ্চে নেই। সেভ না করে চলে গেলে এটা আবার খুঁজে পাওয়া খুব কঠিন হয়ে যায়।'
+            en: 'You edit and stage a fix, then commit. Careful: this commit is on no branch. Leave without saving it and it is very hard to find again.',
+            bn: 'আপনি একটা ফিক্স এডিট করে স্টেজ করে commit করেন। সাবধান: এই commit কোনো ব্রাঞ্চে নেই। সেভ না করে চলে গেলে এটা আবার খুঁজে পাওয়া খুব কঠিন।'
           },
           tech: {
             en: 'With a detached HEAD, a commit moves only HEAD, no branch. Once you switch away, the commit is unreachable except through `git reflog`, and is eventually garbage collected.',

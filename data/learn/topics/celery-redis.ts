@@ -223,8 +223,8 @@ export const celeryRedis: Topic = {
             bn: 'মাঝপথে ফাইল স্টোরেজ সাড়া দেয় না। ওয়ার্কার একটা এররে পড়ে।'
           },
           tech: {
-            en: 'The task raises `TimeoutError`. It is declared with `autoretry_for=(TimeoutError,)`, so Celery schedules another attempt instead of giving up.',
-            bn: 'টাস্ক `TimeoutError` তোলে। টাস্কে `autoretry_for=(TimeoutError,)` দেওয়া আছে, তাই Celery হাল না ছেড়ে আবার চেষ্টার ব্যবস্থা করে।'
+            en: 'The task raises `TimeoutError`. It is declared with `autoretry_for=(TimeoutError,)` and `retry_kwargs={\'countdown\': 60}`, so Celery schedules another attempt 60 s later instead of giving up.',
+            bn: 'টাস্ক `TimeoutError` তোলে। টাস্কে `autoretry_for=(TimeoutError,)` আর `retry_kwargs={\'countdown\': 60}` দেওয়া আছে, তাই Celery হাল না ছেড়ে ৬০ সেকেন্ড পরে আবার চেষ্টার ব্যবস্থা করে।'
           }
         },
         {
@@ -453,7 +453,8 @@ export const celeryRedis: Topic = {
     },
     {
       code: '@app.task(bind=True, autoretry_for=(TimeoutError,),\n' +
-        '          retry_backoff=True, max_retries=5, acks_late=True)\n' +
+        "          retry_kwargs={'max_retries': 5, 'countdown': 60},\n" +
+        '          acks_late=True)\n' +
         'def generate_report(self, user_id: int) -> str:\n' +
         '    ...\n' +
         '\n' +

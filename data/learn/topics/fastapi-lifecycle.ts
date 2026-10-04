@@ -356,12 +356,12 @@ export const fastapiLifecycle: Topic = {
           moves: [ { edge: 'ops', label: 'KeyError' } ],
           title: { en: 'The error escapes to the safety net', bn: 'এরর ছিটকে সেফটি নেটে যায়' },
           simple: {
-            en: 'The error skips the error translator and your checkpoints entirely. It lands in the safety net at the very edge.',
-            bn: 'এরর অনুবাদক আর আপনার চেকপয়েন্ট পুরোপুরি এড়িয়ে যায়। সোজা একদম বাইরের সেফটি নেটে গিয়ে পড়ে।'
+            en: 'The error rushes past the error translator and your checkpoints without being handled. It lands in the safety net at the very edge.',
+            bn: 'এরর অনুবাদক আর আপনার চেকপয়েন্টের ভেতর দিয়ে কোনো সমাধান ছাড়াই ছুটে যায়। একদম বাইরের সেফটি নেটে গিয়ে পড়ে।'
           },
           tech: {
-            en: 'The exception skips ExceptionMiddleware and your middleware. `ServerErrorMiddleware` returns a plain 500, then re-raises so the server can log the traceback.',
-            bn: 'exception ExceptionMiddleware আর আপনার middleware এড়িয়ে যায়। `ServerErrorMiddleware` সাধারণ একটা 500 ফেরত দেয়, তারপর আবার raise করে, যাতে সার্ভার traceback লগ করতে পারে।'
+            en: 'The exception passes through ExceptionMiddleware and your middleware unhandled. `ServerErrorMiddleware` returns a plain 500, then re-raises so the server can log the traceback.',
+            bn: 'exception ExceptionMiddleware আর আপনার middleware-এর ভেতর দিয়ে অমীমাংসিত অবস্থায় চলে যায়। `ServerErrorMiddleware` সাধারণ একটা 500 ফেরত দেয়, তারপর আবার raise করে, যাতে সার্ভার traceback লগ করতে পারে।'
           }
         },
         {
@@ -434,8 +434,8 @@ export const fastapiLifecycle: Topic = {
             bn: 'ডেটাবেস কানেকশনগুলো ঠিকঠাক বন্ধ হয়, অ্যাপও পরিষ্কারভাবে বেরিয়ে যায়। কিছু ঝুলে থাকে না।'
           },
           tech: {
-            en: 'The `finally` half of the context manager closes the pool. Putting startup code at module top level instead would run at import, in every worker, and could not be awaited.',
-            bn: 'context manager-এর `finally` অংশ pool বন্ধ করে। স্টার্টআপ কোড মডিউলের টপ লেভেলে রাখলে সেটা import-এর সময় প্রতিটি worker-এ চলত, আর await করা যেত না।'
+            en: 'Code after `yield` closes the pool. Lifespan runs once in each worker process. Startup code at module top level would run at import and could not be awaited.',
+            bn: '`yield`-এর পরের কোড pool বন্ধ করে। lifespan প্রতিটি worker প্রসেসে আলাদাভাবে চলে। স্টার্টআপ কোড মডিউলের টপ লেভেলে রাখলে সেটা import-এর সময় চলত, আর await করা যেত না।'
           }
         }
       ]
