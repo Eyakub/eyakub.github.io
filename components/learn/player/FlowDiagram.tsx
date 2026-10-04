@@ -100,7 +100,8 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
           })
           if (t >= 1) {
             comets.forEach((c) => c?.setAttribute('hidden', ''))
-            const g = nodeRefs.current[geo.find(Boolean)!.to]
+            const dest = geo.find(Boolean)?.to
+            const g = dest ? nodeRefs.current[dest] : null
             if (g) {
               arrived = g
               g.classList.remove('arrive')
