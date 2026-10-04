@@ -73,6 +73,7 @@ const noProblems = (problems) => assert(problems.length === 0, problems.join('; 
 const TOPIC_CASES = [
   { slug: 'celery-redis', total: 10, altStop: 'Stop 5 of 8' },
   { slug: 'fastapi-lifecycle', total: 11, altStop: 'Stop 7 of 10' },
+  { slug: 'git-basics', total: 8, altStop: 'Stop 8 of 11', altBtn: 2 },
 ]
 
 const checks = [
@@ -199,6 +200,18 @@ const checks = [
       noProblems(problems)
     }
   }],
+  ['git-state', async () => {
+    const { page, context, problems } = await open('/learn/git-basics')
+    await page.waitForSelector('#next')
+    await page.click('#next'); await page.click('#next')
+    await page.waitForTimeout(1500)
+    const stop = await page.textContent('#stopno')
+    const sb = await page.locator('.flow-svg .node[data-id="repo"] .sb').textContent()
+    await context.close()
+    assert(stop === 'Stop 3 of 8', `stopno: ${stop}`)
+    assert(sb?.includes('a1b2c3'), `repo sub: ${sb}`)
+    noProblems(problems)
+  }],
   ['player-rapid', async () => {
     const { page, context } = await open('/learn/celery-redis')
     await page.waitForSelector('#next')
@@ -249,9 +262,9 @@ const checks = [
     assert(label?.trim() === 'থামান', `play label: ${label}`)
   }],
   ['player-alt-route', async () => {
-    for (const { slug, altStop } of TOPIC_CASES) {
+    for (const { slug, altStop, altBtn = 1 } of TOPIC_CASES) {
       const { page, context } = await open(`/learn/${slug}`)
-      await page.getByRole('group', { name: 'Route' }).getByRole('button').nth(1).click()
+      await page.getByRole('group', { name: 'Route' }).getByRole('button').nth(altBtn).click()
       const stop = await page.textContent('#stopno')
       await page.click('#next')
       await page.waitForTimeout(300)
