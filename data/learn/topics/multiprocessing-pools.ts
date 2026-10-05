@@ -14,8 +14,8 @@ export const multiprocessingPools: Topic = {
     bn: 'হেড শেফ একা সব লম্বা পদ রাঁধতে পারে না, তাই পাশের রান্নাঘর সাজায় আর প্রতিটায় অর্ডারের কপি পাঠায়।'
   },
   takeaway: {
-    en: 'Side kitchens share nothing, so every order and dish is a copy; that cost pays off only for long cooking jobs.',
-    bn: 'পাশের রান্নাঘরগুলো কিছুই ভাগ করে না, তাই প্রতিটি অর্ডার ও পদ একটা কপি; এই খরচ পোষায় শুধু লম্বা রান্নায়।'
+    en: 'Side kitchens share nothing, so everything is copied; that pays off only for long jobs.',
+    bn: 'রান্নাঘরগুলো কিছু ভাগ করে না, সব কপি হয়; তাই পোষায় শুধু লম্বা কাজে।'
   },
   words: [
     {
@@ -112,7 +112,7 @@ export const multiprocessingPools: Topic = {
         sub: { en: 'Waiting for a slip', bn: 'স্লিপের অপেক্ষায়' }
       },
       wide: [ 560, 110, 'up' ],
-      narrow: [ 180, 400, 'left' ]
+      narrow: [ 200, 400, 'left' ]
     },
     w2: {
       icon: 'worker',
@@ -153,11 +153,11 @@ export const multiprocessingPools: Topic = {
     },
     'main-tasks': {
       wide: [ [ 100, 220 ], [ 210, 330 ], [ 300, 330 ] ],
-      narrow: [ [ 90, 60 ], [ 320, 60 ], [ 320, 230 ] ]
+      narrow: [ [ 90, 60 ], [ 388, 60 ], [ 388, 230 ], [ 320, 230 ] ]
     },
     'start-w1': {
       wide: [ [ 300, 110 ], [ 560, 110 ] ],
-      narrow: [ [ 90, 150 ], [ 90, 310 ], [ 180, 400 ] ]
+      narrow: [ [ 90, 150 ], [ 90, 310 ], [ 200, 400 ] ]
     },
     'start-w2': {
       wide: [ [ 300, 110 ], [ 520, 330 ], [ 560, 330 ] ],
@@ -165,7 +165,7 @@ export const multiprocessingPools: Topic = {
     },
     'tasks-w1': {
       wide: [ [ 300, 330 ], [ 520, 110 ], [ 560, 110 ] ],
-      narrow: [ [ 320, 230 ], [ 180, 370 ], [ 180, 400 ] ]
+      narrow: [ [ 320, 230 ], [ 200, 370 ], [ 200, 400 ] ]
     },
     'tasks-w2': {
       wide: [ [ 300, 330 ], [ 560, 330 ] ],
@@ -173,7 +173,7 @@ export const multiprocessingPools: Topic = {
     },
     'w1-results': {
       wide: [ [ 560, 110 ], [ 690, 110 ], [ 800, 220 ] ],
-      narrow: [ [ 180, 400 ], [ 180, 490 ], [ 220, 530 ] ]
+      narrow: [ [ 200, 400 ], [ 200, 490 ], [ 220, 530 ] ]
     },
     'w2-results': {
       wide: [ [ 560, 330 ], [ 690, 330 ], [ 800, 220 ] ],
@@ -181,7 +181,7 @@ export const multiprocessingPools: Topic = {
     },
     'results-main': {
       wide: [ [ 800, 220 ], [ 100, 220 ] ],
-      narrow: [ [ 220, 530 ], [ 40, 530 ], [ 40, 110 ], [ 90, 60 ] ]
+      narrow: [ [ 220, 530 ], [ 56, 530 ], [ 56, 110 ], [ 90, 60 ] ]
     }
   },
   edges: {
@@ -199,33 +199,18 @@ export const multiprocessingPools: Topic = {
     label: UI.routeMain,
     steps: [
       {
-        id: 'create',
-        work: { node: 'main', kind: 'result' },
-        state: { main: { en: 'Creating Pool(2)', bn: 'Pool(2) বানাচ্ছে' } },
-        plainState: { main: { en: 'Planning', bn: 'পরিকল্পনা করছে' } },
-        title: { en: 'The head chef has a big pile of dishes', bn: 'হেড শেফের হাতে অনেক পদ' },
-        simple: {
-          en: 'The head chef has eight heavy dishes to cook. Alone that is slow, so it plans two side kitchens to share the work.',
-          bn: 'হেড শেফের হাতে আটটা ভারী পদ। একা রাঁধলে ধীর, তাই কাজ ভাগ করতে সে দুটো পাশের রান্নাঘর সাজানোর পরিকল্পনা করে।'
-        },
-        tech: {
-          en: '`Pool(2)` or `ProcessPoolExecutor(max_workers=2)`. With no size given, the default is `os.process_cpu_count()` on 3.13+. Spawn and forkserver need the `__main__` guard.',
-          bn: '`Pool(2)` বা `ProcessPoolExecutor(max_workers=2)`। সংখ্যা না দিলে ডিফল্ট 3.13+-এ `os.process_cpu_count()`। spawn আর forkserver-এ `__main__` guard লাগে।'
-        }
-      },
-      {
         id: 'start',
         moves: [ { edge: 'main-start', label: 'make 2 workers', plain: { en: 'Build kitchens', bn: 'রান্নাঘর বানাও' } } ],
         state: { main: { en: 'Asked for workers', bn: 'worker চেয়েছে' } },
         plainState: { main: { en: 'Asked for kitchens', bn: 'রান্নাঘর চেয়েছে' } },
-        title: { en: 'It asks for new kitchens', bn: 'নতুন রান্নাঘর চায়' },
+        title: { en: 'The head chef asks for side kitchens', bn: 'হেড শেফ পাশের রান্নাঘর চায়' },
         simple: {
-          en: 'The head chef asks Kitchen setup to build two side kitchens. Kitchen setup is how each new kitchen gets made.',
-          bn: 'হেড শেফ রান্নাঘর সাজানোকে দুটো পাশের রান্নাঘর বানাতে বলে। নতুন প্রতিটা রান্নাঘর এভাবেই তৈরি হয়।'
+          en: 'The head chef has eight heavy dishes, too slow to cook alone. It asks Kitchen setup to build two side kitchens.',
+          bn: 'হেড শেফের আটটা ভারী পদ, একা রাঁধলে ধীর। সে রান্নাঘর সাজানোকে দুটো পাশের রান্নাঘর বানাতে বলে।'
         },
         tech: {
-          en: 'The start method depends on the platform. In 3.14 the default is `forkserver` on Linux and `spawn` on macOS and Windows. `fork` is no longer the default anywhere.',
-          bn: 'start method platform-ভেদে আলাদা। 3.14-এ ডিফল্ট Linux-এ `forkserver`, macOS আর Windows-এ `spawn`। `fork` আর কোথাও ডিফল্ট নয়।'
+          en: '`Pool(2)` or `ProcessPoolExecutor(max_workers=2)` asks for two processes. In 3.14 the default start method is `forkserver` on Linux and `spawn` on macOS and Windows. Both need the `__main__` guard.',
+          bn: '`Pool(2)` বা `ProcessPoolExecutor(max_workers=2)` দুটো process চায়। 3.14-এ ডিফল্ট start method Linux-এ `forkserver`, macOS আর Windows-এ `spawn`। দুটোতেই `__main__` guard লাগে।'
         }
       },
       {
@@ -258,7 +243,7 @@ export const multiprocessingPools: Topic = {
       },
       {
         id: 'chunk',
-        moves: [ { edge: 'main-tasks', label: 'pickle chunks', plain: { en: 'Slips of 4 dishes', bn: '৪ পদের স্লিপ' } } ],
+        moves: [ { edge: 'main-tasks', label: 'pickle chunks', plain: { en: '2 slips', bn: '২ স্লিপ' } } ],
         state: {
           main: { en: 'Submitted map()', bn: 'map() দিয়েছে' },
           tasks: { en: '[0-3] [4-7]', bn: '[0-3] [4-7]' }
@@ -290,8 +275,8 @@ export const multiprocessingPools: Topic = {
         },
         plainState: {
           tasks: { en: 'Slips taken', bn: 'স্লিপ নেওয়া হয়েছে' },
-          w1: { en: 'Cooking dishes 1-4', bn: '১-৪ নম্বর পদ রাঁধছে' },
-          w2: { en: 'Cooking dishes 5-8', bn: '৫-৮ নম্বর পদ রাঁধছে' }
+          w1: { en: 'Cooking 1-4', bn: '১-৪ রাঁধছে' },
+          w2: { en: 'Cooking 5-8', bn: '৫-৮ রাঁধছে' }
         },
         title: { en: 'Each side kitchen takes a slip', bn: 'প্রতিটা পাশের রান্নাঘর একটা স্লিপ নেয়' },
         simple: {
@@ -349,7 +334,7 @@ export const multiprocessingPools: Topic = {
       },
       {
         id: 'in-order',
-        moves: [ { edge: 'results-main', label: 'reassemble', plain: { en: 'Dishes in order', bn: 'ক্রমে সাজানো পদ' } } ],
+        moves: [ { edge: 'results-main', label: 'reassemble', plain: { en: 'Sorted', bn: 'সাজানো' } } ],
         state: {
           main: { en: 'Got [0..7] in order', bn: '[0..7] ক্রমে পেয়েছে' },
           results: { en: 'Drained', bn: 'খালি' }
@@ -387,8 +372,8 @@ export const multiprocessingPools: Topic = {
         },
         title: { en: 'The side kitchens close', bn: 'পাশের রান্নাঘর বন্ধ হয়' },
         simple: {
-          en: 'The head chef closes the side kitchens. Every slip was a copy, and building kitchens takes time, so this suits only long jobs.',
-          bn: 'হেড শেফ পাশের রান্নাঘর বন্ধ করে। প্রতিটা স্লিপ ছিল কপি, আর রান্নাঘর বানাতে সময় লাগে, তাই এটা শুধু লম্বা কাজে মানায়।'
+          en: 'The head chef closes the side kitchens.',
+          bn: 'হেড শেফ পাশের রান্নাঘর বন্ধ করে।'
         },
         tech: {
           en: '`Pool.__exit__` calls `terminate()`, not `join()`, so collect results first or call `close()` and `join()`. `ProcessPoolExecutor` as a context manager calls `shutdown(wait=True)`.',
