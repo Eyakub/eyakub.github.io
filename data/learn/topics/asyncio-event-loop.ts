@@ -9,49 +9,49 @@ export const asyncioEventLoop: Topic = {
     en: 'One thread runs many tasks. Each task steps aside at an await, and a selector wakes it when its I/O is ready.',
     bn: 'একটা thread অনেক task চালায়। প্রতিটা task `await`-এ সরে দাঁড়ায়, আর I/O তৈরি হলে selector তাকে জাগায়।'
   },
-  view: { wide: [ 1000, 460 ], narrow: [ 400, 580 ] },
+  view: { wide: [ 1000, 400 ], narrow: [ 400, 580 ] },
   nodeR: { narrow: 20 },
   nodes: {
     tasks: {
       icon: 'task',
       name: { en: 'Your tasks', bn: 'আপনার task' },
       sub: { en: 'Coroutines A, B', bn: 'Coroutine A, B' },
-      wide: [ 130, 270, 'up' ],
+      wide: [ 130, 210, 'up' ],
       narrow: [ 110, 80, 'right' ]
     },
     ready: {
       icon: 'queue',
       name: { en: 'Ready queue', bn: 'Ready queue' },
       sub: { en: 'Empty', bn: 'খালি' },
-      wide: [ 330, 270, 'up' ],
+      wide: [ 330, 210, 'up' ],
       narrow: [ 110, 175, 'right' ]
     },
     loop: {
       icon: 'loop',
       name: { en: 'Event loop', bn: 'Event loop' },
       sub: { en: 'One thread', bn: 'একটা thread' },
-      wide: [ 530, 270, 'up' ],
+      wide: [ 530, 210, 'up' ],
       narrow: [ 110, 270, 'right' ]
     },
     selector: {
       icon: 'hourglass',
       name: { en: 'Selector', bn: 'Selector' },
       sub: { en: 'epoll / kqueue', bn: 'epoll / kqueue' },
-      wide: [ 730, 270, 'down' ],
+      wide: [ 730, 210, 'down' ],
       narrow: [ 110, 365, 'right' ]
     },
     net: {
       icon: 'cloud',
       name: { en: 'Sockets', bn: 'Socket' },
       sub: { en: 'Network', bn: 'নেটওয়ার্ক' },
-      wide: [ 910, 270, 'down' ],
+      wide: [ 910, 210, 'down' ],
       narrow: [ 110, 490, 'right' ]
     },
     pool: {
       icon: 'worker',
       name: { en: 'Thread pool', bn: 'Thread pool' },
       sub: { en: 'Default executor', bn: 'Default executor' },
-      wide: [ 530, 410, 'right' ],
+      wide: [ 530, 350, 'right' ],
       narrow: [ 310, 490, 'down' ]
     }
   },
@@ -59,41 +59,41 @@ export const asyncioEventLoop: Topic = {
     {
       id: 'thread',
       label: { en: 'One thread', bn: 'একটা thread' },
-      wide: [ 50, 110, 810, 375 ],
+      wide: [ 50, 50, 760, 265 ],
       narrow: [ 10, 20, 285, 410 ]
     }
   ],
   corridors: {
     'tasks-ready': {
-      wide: [ [ 130, 270 ], [ 330, 270 ] ],
+      wide: [ [ 130, 210 ], [ 330, 210 ] ],
       narrow: [ [ 110, 80 ], [ 110, 175 ] ]
     },
     'ready-loop': {
-      wide: [ [ 330, 270 ], [ 530, 270 ] ],
+      wide: [ [ 330, 210 ], [ 530, 210 ] ],
       narrow: [ [ 110, 175 ], [ 110, 270 ] ]
     },
     'loop-selector': {
-      wide: [ [ 530, 270 ], [ 730, 270 ] ],
+      wide: [ [ 530, 210 ], [ 730, 210 ] ],
       narrow: [ [ 110, 270 ], [ 110, 365 ] ]
     },
     'net-selector': {
-      wide: [ [ 910, 270 ], [ 730, 270 ] ],
+      wide: [ [ 910, 210 ], [ 730, 210 ] ],
       narrow: [ [ 110, 490 ], [ 110, 365 ] ]
     },
     'selector-ready': {
-      wide: [ [ 730, 270 ], [ 730, 150 ], [ 450, 150 ], [ 330, 270 ] ],
+      wide: [ [ 730, 210 ], [ 730, 90 ], [ 450, 90 ], [ 330, 210 ] ],
       narrow: [ [ 110, 365 ], [ 48, 303 ], [ 48, 237 ], [ 110, 175 ] ]
     },
     'loop-tasks': {
-      wide: [ [ 530, 270 ], [ 450, 350 ], [ 130, 350 ], [ 130, 270 ] ],
+      wide: [ [ 530, 210 ], [ 450, 290 ], [ 130, 290 ], [ 130, 210 ] ],
       narrow: [ [ 110, 270 ], [ 48, 208 ], [ 48, 142 ], [ 110, 80 ] ]
     },
     'loop-pool': {
-      wide: [ [ 530, 270 ], [ 530, 410 ] ],
+      wide: [ [ 530, 210 ], [ 530, 350 ] ],
       narrow: [ [ 110, 270 ], [ 157, 317 ], [ 310, 317 ], [ 310, 490 ] ]
     },
     'pool-ready': {
-      wide: [ [ 530, 410 ], [ 470, 410 ], [ 330, 270 ] ],
+      wide: [ [ 530, 350 ], [ 470, 350 ], [ 330, 210 ] ],
       narrow: [ [ 310, 490 ], [ 355, 445 ], [ 355, 225 ], [ 160, 225 ], [ 110, 175 ] ]
     }
   },
@@ -221,7 +221,8 @@ export const asyncioEventLoop: Topic = {
         moves: [ { edge: 'net-selector', label: "A's bytes" } ],
         state: {
           net: { en: 'A’s data in', bn: 'A-র ডেটা এসেছে' },
-          selector: { en: 'A ready', bn: 'A তৈরি' }
+          selector: { en: 'A ready', bn: 'A তৈরি' },
+          loop: { en: 'Waking', bn: 'জাগছে' }
         },
         title: { en: 'Data for A arrives', bn: 'A-র ডেটা আসে' },
         simple: {
@@ -248,8 +249,8 @@ export const asyncioEventLoop: Topic = {
           bn: 'A আবার করণীয়-ট্রেতে ফিরে যায়।'
         },
         tech: {
-          en: 'The loop turns the ready socket into a callback that completes A’s future and schedules A’s Task to continue. Nothing has resumed A yet.',
-          bn: 'loop তৈরি socket-কে একটা callback বানায়, যা A-র future শেষ করে আর A-র Task চালিয়ে যেতে schedule করে। A এখনো চলা শুরু করেনি।'
+          en: 'The loop learns that A’s socket is ready and marks A ready to resume. Nothing has resumed A yet.',
+          bn: 'loop জানতে পারে A-র socket তৈরি, আর A-কে আবার চলার জন্য ready করে। A এখনো চলা শুরু করেনি।'
         }
       },
       {
@@ -316,7 +317,7 @@ export const asyncioEventLoop: Topic = {
           id: 'everyone-waits',
           work: { node: [ 'ready', 'net' ], kind: 'error' },
           state: {
-            ready: { en: 'B, C stuck', bn: 'B, C আটকা' },
+            ready: { en: 'B stuck', bn: 'B আটকা' },
             net: { en: 'Timeouts', bn: 'Timeout' }
           },
           title: { en: 'Everyone else waits', bn: 'বাকি সবাই অপেক্ষা করে' },
@@ -334,7 +335,7 @@ export const asyncioEventLoop: Topic = {
           work: { node: 'loop', kind: 'result' },
           state: {
             loop: { en: 'Fix: await sleep', bn: 'সমাধান: await sleep' },
-            ready: { en: 'B, C can run', bn: 'B, C চলতে পারে' },
+            ready: { en: 'B can run', bn: 'B চলতে পারে' },
             net: { en: 'Network', bn: 'নেটওয়ার্ক' },
             tasks: { en: 'A awaits, B runs', bn: 'A await করে, B চলে' }
           },
@@ -404,8 +405,8 @@ export const asyncioEventLoop: Topic = {
             bn: 'helper শেষ করলে A আবার করণীয়-ট্রেতে ফেরে।'
           },
           tech: {
-            en: 'The result is handed back to the loop thread-safely, and A is scheduled to resume after its `await`.',
-            bn: 'ফলাফল thread-safe ভাবে loop-এ ফেরত আসে, আর A তার `await`-এর পর চলতে schedule হয়।'
+            en: 'The helper’s result reaches the loop, and A is marked ready to resume after its `await`.',
+            bn: 'helper-এর ফলাফল loop-এ পৌঁছায়, আর A তার `await`-এর পর চলার জন্য ready হয়।'
           }
         },
         {
@@ -434,7 +435,8 @@ export const asyncioEventLoop: Topic = {
           moves: [ { edge: 'ready-loop', label: 'async def route' } ],
           state: {
             loop: { en: 'Awaited on loop', bn: 'loop-এই await হয়' },
-            ready: { en: 'Next in line', bn: 'পরেরজন লাইনে' }
+            ready: { en: 'Next in line', bn: 'পরেরজন লাইনে' },
+            tasks: { en: 'Request task', bn: 'Request-এর task' }
           },
           title: { en: 'An async def route runs on the loop', bn: '`async def` route loop-এই চলে' },
           simple: {
