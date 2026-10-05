@@ -7,6 +7,7 @@ import { gitBasics } from './topics/git-basics'
 import { multiprocessingPools } from './topics/multiprocessing-pools'
 import { processesVsThreads } from './topics/processes-vs-threads'
 import { pythonGil } from './topics/python-gil'
+import { raceConditionsLocks } from './topics/race-conditions-locks'
 
 export const TOPICS: Record<string, Topic> = {
   [asyncioEventLoop.slug]: asyncioEventLoop,
@@ -16,5 +17,6 @@ export const TOPICS: Record<string, Topic> = {
   [gitBasics.slug]: gitBasics,
   [multiprocessingPools.slug]: multiprocessingPools,
   [processesVsThreads.slug]: processesVsThreads,
-  [pythonGil.slug]: pythonGil
+  [pythonGil.slug]: pythonGil,
+  [raceConditionsLocks.slug]: raceConditionsLocks
 }
