@@ -72,7 +72,7 @@ const noProblems = (problems) => assert(problems.length === 0, problems.join('; 
 
 const TOPIC_CASES = [
   { slug: 'celery-redis', total: 10, altStop: 'Stop 5 of 8' }, // add taught: true once a topic has the Simply layer
-  { slug: 'fastapi-lifecycle', total: 11, altStop: 'Stop 7 of 10' },
+  { slug: 'fastapi-lifecycle', total: 12, altStop: 'Stop 7 of 10', taught: true },
   { slug: 'git-basics', total: 9, altStop: 'Stop 9 of 12', altBtn: 2 },
   { slug: 'concurrency-vs-parallelism', total: 9, altStop: 'Stop 7 of 10' },
   { slug: 'processes-vs-threads', total: 10, altStop: 'Stop 4 of 5', altBtn: 2 },
