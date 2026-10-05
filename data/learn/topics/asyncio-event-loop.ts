@@ -9,6 +9,64 @@ export const asyncioEventLoop: Topic = {
     en: 'One thread runs many tasks. Each task steps aside at an await, and a selector wakes it when its I/O is ready.',
     bn: 'একটা thread অনেক task চালায়। প্রতিটা task `await`-এ সরে দাঁড়ায়, আর I/O তৈরি হলে selector তাকে জাগায়।'
   },
+  hook: {
+    en: 'One cook can handle many dishes because most of the time a dish is just waiting, and a waiting dish needs no cook.',
+    bn: 'এক রাঁধুনি অনেক পদ সামলাতে পারে, কারণ বেশিরভাগ সময় পদ শুধু অপেক্ষা করে, আর অপেক্ষার পদে রাঁধুনি লাগে না।'
+  },
+  takeaway: {
+    en: 'The cook does one thing at a time but never stands idle: a waiting dish steps aside, and slow jobs go to helpers.',
+    bn: 'রাঁধুনি একবারে একটাই কাজ করে, কিন্তু কখনো বসে থাকে না: অপেক্ষার পদ সরে দাঁড়ায়, আর ধীর কাজ যায় সহকারীদের কাছে।'
+  },
+  words: [
+    {
+      term: { en: 'Dish', bn: 'পদ' },
+      d: {
+        en: 'One job to cook. It can pause while it waits for something slow.',
+        bn: 'রাঁধার মতো একটা কাজ। ধীর কিছুর অপেক্ষায় সেটা থামতে পারে।'
+      }
+    },
+    {
+      term: { en: 'Cook', bn: 'রাঁধুনি' },
+      d: {
+        en: 'The one worker. It cooks one dish at a time and never stands around.',
+        bn: 'একমাত্র কর্মী। একবারে একটা পদ রাঁধে আর কখনো বসে থাকে না।'
+      }
+    },
+    {
+      term: { en: 'Ready rack', bn: 'তৈরি তাক' },
+      d: {
+        en: 'Where dishes wait that are ready to be cooked right now.',
+        bn: 'যেখানে এখনই রাঁধার জন্য তৈরি পদগুলো অপেক্ষা করে।'
+      }
+    },
+    {
+      term: { en: 'Timer board', bn: 'টাইমার বোর্ড' },
+      d: {
+        en: 'Dings when a dish that was set aside can carry on.',
+        bn: 'সরিয়ে রাখা পদ আবার চলার মতো হলে ডিং করে।'
+      }
+    },
+    {
+      term: { en: 'Delivery door', bn: 'ডেলিভারির দরজা' },
+      d: {
+        en: 'Where slow things arrive from outside, like data from the internet.',
+        bn: 'যেখানে বাইরে থেকে ধীর জিনিস আসে, যেমন ইন্টারনেটের data।'
+      }
+    },
+    {
+      term: { en: 'Helper cooks', bn: 'সহকারী রাঁধুনি' },
+      d: {
+        en: 'A small team out back. They take slow jobs so the cook stays free.',
+        bn: 'পেছনের ছোট দল। তারা ধীর কাজ নেয়, যাতে রাঁধুনি ফাঁকা থাকে।'
+      }
+    }
+  ],
+  legend: {
+    request: { en: 'Cook takes a dish', bn: 'রাঁধুনি পদ নেয়' },
+    queue: { en: 'A dish set aside', bn: 'সরিয়ে রাখা পদ' },
+    result: { en: 'Delivery or finished dish', bn: 'ডেলিভারি বা তৈরি পদ' },
+    error: { en: 'The cook is stuck', bn: 'রাঁধুনি আটকে গেছে' }
+  },
   view: { wide: [ 1000, 400 ], narrow: [ 400, 580 ] },
   nodeR: { narrow: 20 },
   nodes: {
@@ -16,6 +74,10 @@ export const asyncioEventLoop: Topic = {
       icon: 'task',
       name: { en: 'Your tasks', bn: 'আপনার task' },
       sub: { en: 'Coroutines A, B', bn: 'Coroutine A, B' },
+      plain: {
+        name: { en: 'The dishes', bn: 'পদগুলো' },
+        sub: { en: 'Dish A and dish B', bn: 'পদ A আর পদ B' }
+      },
       wide: [ 130, 210, 'up' ],
       narrow: [ 110, 80, 'right' ]
     },
@@ -23,6 +85,10 @@ export const asyncioEventLoop: Topic = {
       icon: 'queue',
       name: { en: 'Ready queue', bn: 'Ready queue' },
       sub: { en: 'Empty', bn: 'খালি' },
+      plain: {
+        name: { en: 'Ready rack', bn: 'তৈরি তাক' },
+        sub: { en: 'Dishes ready to cook', bn: 'রাঁধার জন্য তৈরি পদ' }
+      },
       wide: [ 330, 210, 'up' ],
       narrow: [ 110, 175, 'right' ]
     },
@@ -30,6 +96,10 @@ export const asyncioEventLoop: Topic = {
       icon: 'loop',
       name: { en: 'Event loop', bn: 'Event loop' },
       sub: { en: 'One thread', bn: 'একটা thread' },
+      plain: {
+        name: { en: 'The cook', bn: 'রাঁধুনি' },
+        sub: { en: 'One cook, many dishes', bn: 'এক রাঁধুনি, অনেক পদ' }
+      },
       wide: [ 530, 210, 'up' ],
       narrow: [ 110, 270, 'right' ]
     },
@@ -37,6 +107,10 @@ export const asyncioEventLoop: Topic = {
       icon: 'hourglass',
       name: { en: 'Selector', bn: 'Selector' },
       sub: { en: 'epoll / kqueue', bn: 'epoll / kqueue' },
+      plain: {
+        name: { en: 'Timer board', bn: 'টাইমার বোর্ড' },
+        sub: { en: 'Dings when ready', bn: 'তৈরি হলে ডিং করে' }
+      },
       wide: [ 730, 210, 'down' ],
       narrow: [ 110, 365, 'right' ]
     },
@@ -44,6 +118,10 @@ export const asyncioEventLoop: Topic = {
       icon: 'cloud',
       name: { en: 'Sockets', bn: 'Socket' },
       sub: { en: 'Network', bn: 'network' },
+      plain: {
+        name: { en: 'Delivery door', bn: 'ডেলিভারির দরজা' },
+        sub: { en: 'Slow things arrive', bn: 'ধীর জিনিস আসে' }
+      },
       wide: [ 910, 210, 'down' ],
       narrow: [ 110, 490, 'right' ]
     },
@@ -51,6 +129,10 @@ export const asyncioEventLoop: Topic = {
       icon: 'worker',
       name: { en: 'Thread pool', bn: 'Thread pool' },
       sub: { en: 'Default executor', bn: 'Default executor' },
+      plain: {
+        name: { en: 'Helper cooks', bn: 'সহকারী রাঁধুনি' },
+        sub: { en: 'Take the slow jobs', bn: 'ধীর কাজ নেয়' }
+      },
       wide: [ 530, 350, 'right' ],
       narrow: [ 310, 490, 'down' ]
     }
@@ -59,6 +141,7 @@ export const asyncioEventLoop: Topic = {
     {
       id: 'thread',
       label: { en: 'One thread', bn: 'একটা thread' },
+      plain: { en: 'One cook', bn: 'এক রাঁধুনি' },
       wide: [ 50, 50, 760, 265 ],
       narrow: [ 10, 22, 285, 408 ]
     }
@@ -112,15 +195,18 @@ export const asyncioEventLoop: Topic = {
     steps: [
       {
         id: 'schedule',
-        moves: [ { edge: 'tasks-ready', label: 'A, B' } ],
+        moves: [ { edge: 'tasks-ready', label: 'A, B', plain: { en: 'Dishes A, B', bn: 'পদ A, B' } } ],
         state: {
           ready: { en: 'A, B', bn: 'A, B' },
           tasks: { en: 'A, B queued', bn: 'A, B queue-এ' }
         },
-        title: { en: 'Two tasks join the queue', bn: 'দুটো task queue-তে ঢোকে' },
+        plainState: {
+          tasks: { en: 'A, B on the rack', bn: 'A, B তাকে' }
+        },
+        title: { en: 'Two dishes go on the rack', bn: 'দুটো পদ তাকে ওঠে' },
         simple: {
-          en: 'Two jobs are put in the to-do tray. Neither has started yet.',
-          bn: 'দুটো কাজ করণীয়-ট্রেতে রাখা হয়। কোনোটাই এখনও শুরু হয়নি।'
+          en: 'Meet our one cook. Two dishes, A and B, go on the ready rack. A dish that must wait will step aside, so the cook never stands around.',
+          bn: 'এই হলো আমাদের একমাত্র রাঁধুনি। দুটো পদ, A আর B, তৈরি তাকে ওঠে। যে পদকে অপেক্ষা করতে হবে সে সরে দাঁড়াবে, তাই রাঁধুনি বসে থাকে না।'
         },
         tech: {
           en: '`create_task` or `gather` wraps each coroutine in a Task and schedules its first step in the loop’s ready queue.',
@@ -129,16 +215,20 @@ export const asyncioEventLoop: Topic = {
       },
       {
         id: 'run-a',
-        moves: [ { edge: 'ready-loop', label: 'run A' } ],
+        moves: [ { edge: 'ready-loop', label: 'run A', plain: { en: 'Cook takes A', bn: 'রাঁধুনি A নেয়' } } ],
         state: {
           loop: { en: 'Running A', bn: 'A চালাচ্ছে' },
           ready: { en: 'B', bn: 'B' },
           tasks: { en: 'A runs, B queued', bn: 'A চলছে, B queue-এ' }
         },
-        title: { en: 'The loop runs task A', bn: 'Loop task A চালায়' },
+        plainState: {
+          loop: { en: 'Cooking A', bn: 'A রাঁধছে' },
+          tasks: { en: 'A cooking, B on rack', bn: 'A রান্নায়, B তাকে' }
+        },
+        title: { en: 'The cook takes dish A', bn: 'রাঁধুনি পদ A নেয়' },
         simple: {
-          en: 'The single worker picks up job A and runs it.',
-          bn: 'একমাত্র worker কাজ A তুলে নিয়ে চালায়।'
+          en: 'The cook takes dish A off the ready rack and starts cooking it.',
+          bn: 'রাঁধুনি তৈরি তাক থেকে পদ A নিয়ে রাঁধতে শুরু করে।'
         },
         tech: {
           en: 'The loop takes one callback from the ready queue and runs it until the coroutine awaits. Nothing else runs meanwhile: scheduling is cooperative.',
@@ -147,16 +237,21 @@ export const asyncioEventLoop: Topic = {
       },
       {
         id: 'a-awaits',
-        moves: [ { edge: 'loop-selector', label: 'await recv()' } ],
+        moves: [ { edge: 'loop-selector', label: 'await recv()', plain: { en: 'Ding me later', bn: 'পরে জানাও' } } ],
         state: {
           loop: { en: 'A suspended', bn: 'A থেমে আছে' },
           selector: { en: 'Watching A', bn: 'A-কে দেখছে' },
           tasks: { en: 'A waits, B queued', bn: 'A অপেক্ষায়, B queue-এ' }
         },
-        title: { en: 'A awaits the network', bn: 'A networkের জন্য await করে' },
+        plainState: {
+          loop: { en: 'A set aside', bn: 'A সরানো' },
+          selector: { en: 'Timing A', bn: 'A-র সময় দেখছে' },
+          tasks: { en: 'A waits, B on rack', bn: 'A অপেক্ষায়, B তাকে' }
+        },
+        title: { en: 'Dish A steps aside to wait', bn: 'পদ A অপেক্ষায় সরে দাঁড়ায়' },
         simple: {
-          en: 'Job A must wait for the network, so it steps aside and asks the OS to tell it when data arrives.',
-          bn: 'কাজ A-কে networkের জন্য অপেক্ষা করতে হয়, তাই সে সরে দাঁড়ায় আর OS-কে বলে data এলে জানাতে।'
+          en: 'Dish A needs something slow from the delivery door. The cook sets A aside and asks the timer board to ding when it arrives.',
+          bn: 'পদ A-র ডেলিভারির দরজা থেকে ধীর কিছু দরকার। রাঁধুনি A-কে সরিয়ে রাখে আর এলে টাইমার বোর্ডকে ডিং করতে বলে।'
         },
         tech: {
           en: '`await` on an unfinished future suspends the coroutine and returns control to the loop. The socket is registered with the selector: epoll on Linux, kqueue on macOS and BSD.',
@@ -165,16 +260,20 @@ export const asyncioEventLoop: Topic = {
       },
       {
         id: 'run-b',
-        moves: [ { edge: 'ready-loop', label: 'run B' } ],
+        moves: [ { edge: 'ready-loop', label: 'run B', plain: { en: 'Cook takes B', bn: 'রাঁধুনি B নেয়' } } ],
         state: {
           loop: { en: 'Running B', bn: 'B চালাচ্ছে' },
           ready: { en: 'Empty', bn: 'খালি' },
           tasks: { en: 'B runs, A waits', bn: 'B চলছে, A অপেক্ষায়' }
         },
-        title: { en: 'B uses the free thread', bn: 'B ফাঁকা thread পায়' },
+        plainState: {
+          loop: { en: 'Cooking B', bn: 'B রাঁধছে' },
+          tasks: { en: 'B cooking, A waits', bn: 'B রান্নায়, A অপেক্ষায়' }
+        },
+        title: { en: 'The cook moves on to B', bn: 'রাঁধুনি B-তে যায়' },
         simple: {
-          en: 'The worker moves straight to job B instead of waiting for A.',
-          bn: 'worker A-র জন্য বসে না থেকে সোজা কাজ B ধরে।'
+          en: 'The cook does not wait for A. Dish B comes off the ready rack and is cooked right away.',
+          bn: 'রাঁধুনি A-র জন্য বসে থাকে না। তৈরি তাক থেকে পদ B নিয়ে সাথে সাথে রাঁধে।'
         },
         tech: {
           en: 'This is the whole benefit. While A waits for I/O, B uses the thread, and waiting costs no CPU.',
@@ -183,16 +282,20 @@ export const asyncioEventLoop: Topic = {
       },
       {
         id: 'b-awaits',
-        moves: [ { edge: 'loop-selector', label: 'await recv()' } ],
+        moves: [ { edge: 'loop-selector', label: 'await recv()', plain: { en: 'Ding me later', bn: 'পরে জানাও' } } ],
         state: {
           loop: { en: 'B suspended', bn: 'B থেমে আছে' },
           selector: { en: 'Watching A, B', bn: 'A, B-কে দেখছে' },
           tasks: { en: 'A, B waiting', bn: 'A, B অপেক্ষায়' }
         },
-        title: { en: 'B awaits too', bn: 'B-ও await করে' },
+        plainState: {
+          loop: { en: 'B set aside', bn: 'B সরানো' },
+          selector: { en: 'Timing A and B', bn: 'A আর B-র সময় দেখছে' }
+        },
+        title: { en: 'Dish B steps aside too', bn: 'পদ B-ও সরে দাঁড়ায়' },
         simple: {
-          en: 'B has to wait for the network too, so it also steps aside.',
-          bn: 'B-কেও networkের জন্য অপেক্ষা করতে হয়, তাই সেও সরে দাঁড়ায়।'
+          en: 'Dish B needs something slow too, so it also steps aside. The timer board now keeps time for both dishes.',
+          bn: 'পদ B-রও ধীর কিছু দরকার, তাই সেও সরে দাঁড়ায়। টাইমার বোর্ড এখন দুটো পদেরই সময় দেখে।'
         },
         tech: {
           en: 'B registers its socket with the selector as well. Both tasks are now pending, and the ready queue is empty.',
@@ -206,10 +309,14 @@ export const asyncioEventLoop: Topic = {
           loop: { en: 'Idle in select', bn: 'select-এ বসে আছে' },
           selector: { en: 'Sleeping', bn: 'ঘুমিয়ে আছে' }
         },
-        title: { en: 'The loop sleeps', bn: 'Loop ঘুমায়' },
+        plainState: {
+          loop: { en: 'Resting', bn: 'বিশ্রামে' },
+          selector: { en: 'Waiting to ding', bn: 'ডিংয়ের অপেক্ষায়' }
+        },
+        title: { en: 'The cook rests', bn: 'রাঁধুনি বিশ্রাম নেয়' },
         simple: {
-          en: 'With nothing to run, the loop sleeps until the OS says a socket is ready.',
-          bn: 'চালানোর মতো কিছু না থাকলে loop ঘুমায়, যতক্ষণ না OS বলে কোনো socket তৈরি।'
+          en: 'Nothing is ready to cook. The timer board keeps watch, and the cook rests until it dings.',
+          bn: 'রাঁধার মতো কিছু তৈরি নেই। টাইমার বোর্ড নজর রাখে, আর ডিং না হওয়া পর্যন্ত রাঁধুনি বিশ্রাম নেয়।'
         },
         tech: {
           en: 'When idle, the loop blocks in `select(timeout)`, where the timeout is the time to the next timer. The kernel tracks readiness, so many sockets cost little.',
@@ -218,16 +325,21 @@ export const asyncioEventLoop: Topic = {
       },
       {
         id: 'bytes-arrive',
-        moves: [ { edge: 'net-selector', label: "A's bytes" } ],
+        moves: [ { edge: 'net-selector', label: "A's bytes", plain: { en: 'A’s delivery', bn: 'A-র ডেলিভারি' } } ],
         state: {
           net: { en: 'A’s data in', bn: 'A-র data এসেছে' },
           selector: { en: 'A ready', bn: 'A তৈরি' },
           loop: { en: 'Waking', bn: 'জাগছে' }
         },
-        title: { en: 'Data for A arrives', bn: 'A-র data আসে' },
+        plainState: {
+          net: { en: 'A’s delivery in', bn: 'A-র ডেলিভারি এসেছে' },
+          selector: { en: 'Dings for A', bn: 'A-র জন্য ডিং' },
+          loop: { en: 'Waking up', bn: 'জাগছে' }
+        },
+        title: { en: 'Delivery for A arrives', bn: 'A-র ডেলিভারি আসে' },
         simple: {
-          en: 'Data for job A shows up from the network.',
-          bn: 'কাজ A-র data network থেকে চলে আসে।'
+          en: 'What dish A was waiting for arrives at the delivery door, and the timer board notices.',
+          bn: 'পদ A যার অপেক্ষায় ছিল তা ডেলিভারির দরজায় আসে, আর টাইমার বোর্ড টের পায়।'
         },
         tech: {
           en: 'The kernel marks A’s socket readable, so the blocked `select` call returns.',
@@ -236,17 +348,21 @@ export const asyncioEventLoop: Topic = {
       },
       {
         id: 'wake-a',
-        moves: [ { edge: 'selector-ready', label: 'wake A' } ],
+        moves: [ { edge: 'selector-ready', label: 'wake A', plain: { en: 'A is ready', bn: 'A তৈরি' } } ],
         state: {
           ready: { en: 'A', bn: 'A' },
           loop: { en: 'Awake', bn: 'জেগেছে' },
           selector: { en: 'Watching B', bn: 'B-কে দেখছে' },
           net: { en: 'Network', bn: 'network' }
         },
-        title: { en: 'The selector wakes A', bn: 'Selector A-কে জাগায়' },
+        plainState: {
+          selector: { en: 'Timing B', bn: 'B-র সময় দেখছে' },
+          net: { en: 'Waiting for B', bn: 'B-র অপেক্ষায়' }
+        },
+        title: { en: 'The board calls A back', bn: 'বোর্ড A-কে ডাকে' },
         simple: {
-          en: 'A is put back in the to-do tray.',
-          bn: 'A আবার করণীয়-ট্রেতে ফিরে যায়।'
+          en: 'The timer board dings, and dish A goes back on the ready rack.',
+          bn: 'টাইমার বোর্ড ডিং করে, আর পদ A আবার তৈরি তাকে ফিরে যায়।'
         },
         tech: {
           en: 'The loop learns that A’s socket is ready and marks A ready to resume. Nothing has resumed A yet.',
@@ -255,16 +371,20 @@ export const asyncioEventLoop: Topic = {
       },
       {
         id: 'resume-a',
-        moves: [ { edge: 'ready-loop', label: 'resume A' } ],
+        moves: [ { edge: 'ready-loop', label: 'resume A', plain: { en: 'Cook resumes A', bn: 'রাঁধুনি A ধরে' } } ],
         state: {
           loop: { en: 'Running A', bn: 'A চালাচ্ছে' },
           ready: { en: 'Empty', bn: 'খালি' },
           tasks: { en: 'A runs, B waits', bn: 'A চলছে, B অপেক্ষায়' }
         },
-        title: { en: 'A resumes after its await', bn: 'A `await`-এর পর আবার চলে' },
+        plainState: {
+          loop: { en: 'Cooking A', bn: 'A রাঁধছে' },
+          tasks: { en: 'A cooking, B waits', bn: 'A রান্নায়, B অপেক্ষায়' }
+        },
+        title: { en: 'The cook picks A back up', bn: 'রাঁধুনি A আবার ধরে' },
         simple: {
-          en: 'The worker resumes job A exactly where it paused.',
-          bn: 'worker কাজ A ঠিক যেখানে থেমেছিল সেখান থেকেই আবার ধরে।'
+          en: 'The cook takes A off the rack and carries on from the exact spot where it stepped aside.',
+          bn: 'রাঁধুনি তাক থেকে A নিয়ে ঠিক যেখানে থেমেছিল সেখান থেকে আবার রাঁধে।'
         },
         tech: {
           en: 'The Task continues the coroutine right after its `await`, with the received bytes as the result. A runs until it finishes or awaits again.',
@@ -278,10 +398,13 @@ export const asyncioEventLoop: Topic = {
           tasks: { en: 'A done, B waits', bn: 'A শেষ, B অপেক্ষায়' },
           loop: { en: 'Idle again', bn: 'আবার অলস' }
         },
-        title: { en: 'A finishes, B still waits', bn: 'A শেষ করে, B তখনো অপেক্ষায়' },
+        plainState: {
+          loop: { en: 'Resting', bn: 'বিশ্রামে' }
+        },
+        title: { en: 'Dish A is done', bn: 'পদ A শেষ' },
         simple: {
-          en: 'Job A finishes. B continues when its data comes.',
-          bn: 'কাজ A শেষ হয়। B-র data এলে B এগোবে।'
+          en: 'Dish A is done. One cook finished it without ever standing around waiting, and B carries on when its delivery arrives.',
+          bn: 'পদ A শেষ। এক রাঁধুনি কখনো বসে না থেকেই সেটা শেষ করল, আর B-র ডেলিভারি এলে B এগোবে।'
         },
         tech: {
           en: 'The Task completes and its done-callbacks are scheduled. One thread served both tasks: concurrent, but never parallel.',
@@ -293,7 +416,8 @@ export const asyncioEventLoop: Topic = {
   alts: [
     {
       id: 'blocking',
-      label: { en: 'Blocking call in `async def`', bn: '`async def`-এ blocking call' },
+      label: { en: 'Cook stands and waits', bn: 'রাঁধুনি দাঁড়িয়ে অপেক্ষা করে' },
+      whatIf: { en: 'What if a dish makes the cook stand and wait instead of stepping aside?', bn: 'যদি কোনো পদ সরে না দাঁড়িয়ে রাঁধুনিকে দাঁড় করিয়ে রাখে?' },
       branchAfter: 'run-a',
       steps: [
         {
@@ -303,10 +427,14 @@ export const asyncioEventLoop: Topic = {
             loop: { en: 'Blocked 3 s', bn: '৩ সেকেন্ড আটকা' },
             tasks: { en: 'A blocks, B waits', bn: 'A আটকে, B অপেক্ষায়' }
           },
-          title: { en: 'A blocking call freezes the loop', bn: 'Blocking call পুরো loop আটকে দেয়' },
+          plainState: {
+            loop: { en: 'Stuck waiting', bn: 'আটকে অপেক্ষায়' },
+            tasks: { en: 'A stuck, B waits', bn: 'A আটকে, B অপেক্ষায়' }
+          },
+          title: { en: 'The cook gets stuck', bn: 'রাঁধুনি আটকে যায়' },
           simple: {
-            en: 'Job A does something slow without stepping aside, so the single worker is stuck.',
-            bn: 'কাজ A সরে না দাঁড়িয়ে ধীর কিছু করে, তাই একমাত্র worker আটকে যায়।'
+            en: 'Dish A makes the cook stand and wait instead of stepping aside. The cook is stuck, and nothing else gets cooked.',
+            bn: 'পদ A সরে না দাঁড়িয়ে রাঁধুনিকে দাঁড় করিয়ে রাখে। রাঁধুনি আটকে যায়, আর অন্য কিছু রাঁধা হয় না।'
           },
           tech: {
             en: '`time.sleep(3)` or `requests.get()` inside `async def` never yields. No other task, timer or I/O callback can run. Debug mode logs callbacks slower than `slow_callback_duration`, 100 ms by default.',
@@ -320,10 +448,14 @@ export const asyncioEventLoop: Topic = {
             ready: { en: 'B stuck', bn: 'B আটকা' },
             net: { en: 'Timeouts', bn: 'Timeout' }
           },
-          title: { en: 'Everyone else waits', bn: 'বাকি সবাই অপেক্ষা করে' },
+          plainState: {
+            ready: { en: 'B stuck on rack', bn: 'B তাকে আটকা' },
+            net: { en: 'Orders pile up', bn: 'অর্ডার জমছে' }
+          },
+          title: { en: 'Everything else waits', bn: 'বাকি সব অপেক্ষা করে' },
           simple: {
-            en: 'Every other request stalls behind A.',
-            bn: 'বাকি সব request A-র পেছনে আটকে যায়।'
+            en: 'Dish B sits on the rack and orders pile up at the delivery door, all waiting for the stuck cook.',
+            bn: 'পদ B তাকে পড়ে থাকে আর ডেলিভারির দরজায় অর্ডার জমে, সবাই আটকে থাকা রাঁধুনির অপেক্ষায়।'
           },
           tech: {
             en: 'Latency for every concurrent request becomes the blocker’s duration. Clients time out, and health checks can fail.',
@@ -339,10 +471,16 @@ export const asyncioEventLoop: Topic = {
             net: { en: 'Network', bn: 'network' },
             tasks: { en: 'A awaits, B runs', bn: 'A await করে, B চলে' }
           },
-          title: { en: 'Await instead of blocking', bn: 'Block না করে await করুন' },
+          plainState: {
+            loop: { en: 'A steps aside', bn: 'A সরে দাঁড়ায়' },
+            ready: { en: 'B can be cooked', bn: 'B রাঁধা যায়' },
+            net: { en: 'Delivery door', bn: 'ডেলিভারির দরজা' },
+            tasks: { en: 'A waits, B cooking', bn: 'A অপেক্ষায়, B রান্নায়' }
+          },
+          title: { en: 'Step aside instead of standing', bn: 'দাঁড়িয়ে না থেকে সরে দাঁড়ান' },
           simple: {
-            en: 'Use the polite “wait” version, so others can run.',
-            bn: 'ভদ্র “অপেক্ষা”-র ধরনটা ব্যবহার করুন, যাতে বাকিরা চলতে পারে।'
+            en: 'The fix: dish A steps aside while it waits, so the cook is free to cook dish B.',
+            bn: 'সমাধান: পদ A অপেক্ষার সময় সরে দাঁড়ায়, তাই রাঁধুনি ফাঁকা থাকে আর পদ B রাঁধতে পারে।'
           },
           tech: {
             en: 'Use `await asyncio.sleep(3)`, an async library such as `httpx.AsyncClient`, or offload the call to a thread.',
@@ -353,21 +491,27 @@ export const asyncioEventLoop: Topic = {
     },
     {
       id: 'offload',
-      label: { en: 'Offload to a thread', bn: 'Thread-এ পাঠানো' },
+      label: { en: 'Send to helper cooks', bn: 'সহকারী রাঁধুনিদের দেওয়া' },
+      whatIf: { en: 'What if the slow job is handed to the helper cooks?', bn: 'যদি ধীর কাজটা সহকারী রাঁধুনিদের দেওয়া হয়?' },
       branchAfter: 'run-a',
       steps: [
         {
           id: 'to-thread',
-          moves: [ { edge: 'loop-pool', label: 'to_thread(f)' } ],
+          moves: [ { edge: 'loop-pool', label: 'to_thread(f)', plain: { en: 'Slow job out back', bn: 'ধীর কাজ পেছনে' } } ],
           state: {
             pool: { en: 'Running f()', bn: 'f() চালাচ্ছে' },
             loop: { en: 'A suspended', bn: 'A থেমে আছে' },
             tasks: { en: 'A waits, B queued', bn: 'A অপেক্ষায়, B queue-এ' }
           },
-          title: { en: 'A hands the slow call to a thread', bn: 'A ধীর call thread-এ দেয়' },
+          plainState: {
+            pool: { en: 'Doing the slow job', bn: 'ধীর কাজ করছে' },
+            loop: { en: 'A set aside', bn: 'A সরানো' },
+            tasks: { en: 'A waits, B on rack', bn: 'A অপেক্ষায়, B তাকে' }
+          },
+          title: { en: 'A’s slow job goes out back', bn: 'A-র ধীর কাজ পেছনে যায়' },
           simple: {
-            en: 'Job A hands the slow task to a helper thread and steps aside.',
-            bn: 'কাজ A ধীর কাজটা একটা helper thread-কে দিয়ে সরে দাঁড়ায়।'
+            en: 'Dish A has a slow job. The cook hands it to the helper cooks out back and sets A aside.',
+            bn: 'পদ A-র একটা ধীর কাজ আছে। রাঁধুনি সেটা পেছনের সহকারী রাঁধুনিদের দেয় আর A-কে সরিয়ে রাখে।'
           },
           tech: {
             en: '`asyncio.to_thread(f)` submits `f` to the default executor, a `ThreadPoolExecutor` created lazily. On 3.13+ its size is `min(32, (os.process_cpu_count() or 1) + 4)`.',
@@ -376,16 +520,20 @@ export const asyncioEventLoop: Topic = {
         },
         {
           id: 'serve-b',
-          moves: [ { edge: 'ready-loop', label: 'run B' } ],
+          moves: [ { edge: 'ready-loop', label: 'run B', plain: { en: 'Cook takes B', bn: 'রাঁধুনি B নেয়' } } ],
           state: {
             loop: { en: 'Running B', bn: 'B চালাচ্ছে' },
             ready: { en: 'Empty', bn: 'খালি' },
             tasks: { en: 'B runs, A waits', bn: 'B চলছে, A অপেক্ষায়' }
           },
-          title: { en: 'The loop keeps serving B', bn: 'Loop B-কে চালিয়ে যায়' },
+          plainState: {
+            loop: { en: 'Cooking B', bn: 'B রাঁধছে' },
+            tasks: { en: 'B cooking, A waits', bn: 'B রান্নায়, A অপেক্ষায়' }
+          },
+          title: { en: 'The cook keeps cooking B', bn: 'রাঁধুনি B রাঁধতে থাকে' },
           simple: {
-            en: 'Meanwhile the worker keeps serving other jobs.',
-            bn: 'এর মধ্যে worker অন্য কাজগুলো সামলে যায়।'
+            en: 'Meanwhile the cook is free and keeps cooking other dishes, like B.',
+            bn: 'এর মধ্যে রাঁধুনি ফাঁকা থাকে আর B-র মতো অন্য পদ রাঁধতে থাকে।'
           },
           tech: {
             en: 'The loop carries on. The helper thread blocks in I/O and releases the GIL, so the loop thread can still run.',
@@ -399,10 +547,10 @@ export const asyncioEventLoop: Topic = {
             pool: { en: 'Idle', bn: 'বসে আছে' },
             ready: { en: 'A', bn: 'A' }
           },
-          title: { en: 'The thread finishes', bn: 'Thread শেষ করে' },
+          title: { en: 'The helper cooks finish', bn: 'সহকারী রাঁধুনিরা শেষ করে' },
           simple: {
-            en: 'When the helper finishes, A goes back in the to-do tray.',
-            bn: 'helper শেষ করলে A আবার করণীয়-ট্রেতে ফেরে।'
+            en: 'When the helper cooks finish, dish A goes back on the ready rack.',
+            bn: 'সহকারী রাঁধুনিরা শেষ করলে পদ A আবার তৈরি তাকে ফেরে।'
           },
           tech: {
             en: 'The helper’s result reaches the loop, and A is marked ready to resume after its `await`.',
@@ -411,12 +559,19 @@ export const asyncioEventLoop: Topic = {
         },
         {
           id: 'gil-caveat',
-          work: { node: 'loop', kind: 'queue' },
-          state: { loop: { en: 'I/O yes, CPU no', bn: 'I/O হ্যাঁ, CPU না' } },
-          title: { en: 'Threads fix waiting, not computing', bn: 'Thread অপেক্ষা সারায়, হিসাব নয়' },
+          work: { node: 'pool', kind: 'queue' },
+          state: {
+            pool: { en: 'I/O yes, CPU no', bn: 'I/O হ্যাঁ, CPU না' },
+            loop: { en: 'Free', bn: 'ফাঁকা' }
+          },
+          plainState: {
+            pool: { en: 'Good at waiting', bn: 'অপেক্ষায় ভালো' },
+            loop: { en: 'Free', bn: 'ফাঁকা' }
+          },
+          title: { en: 'Helpers fix waiting, not sums', bn: 'সহকারীরা অপেক্ষা মেটায়, হিসাব নয়' },
           simple: {
-            en: 'Helper threads fix waiting, not heavy computing.',
-            bn: 'helper thread অপেক্ষার সমস্যা মেটায়, ভারী হিসাবের নয়।'
+            en: 'Helper cooks are great at waiting for slow things, but heavy calculating still takes turns. Heavy work needs a whole separate kitchen.',
+            bn: 'সহকারী রাঁধুনিরা ধীর জিনিসের অপেক্ষায় দারুণ, কিন্তু ভারী হিসাব তবু পালা করে হয়। ভারী কাজে আলাদা পুরো রান্নাঘর লাগে।'
           },
           tech: {
             en: 'Because of the GIL, `to_thread` can typically only make I/O-bound functions non-blocking. For CPU-bound work, use a `ProcessPoolExecutor` through `run_in_executor`.',
@@ -427,21 +582,26 @@ export const asyncioEventLoop: Topic = {
     },
     {
       id: 'fastapi',
-      label: { en: 'FastAPI def vs async def', bn: 'FastAPI-তে def বনাম async def' },
+      label: { en: 'Two kinds of web page', bn: 'দুই ধরনের ওয়েব পাতা' },
+      whatIf: { en: 'What if each dish is a web page that a visitor asked for?', bn: 'যদি প্রতিটা পদ হয় দর্শকের চাওয়া একটা ওয়েব পাতা?' },
       branchAfter: 'schedule',
       steps: [
         {
           id: 'async-route',
-          moves: [ { edge: 'ready-loop', label: 'async def route' } ],
+          moves: [ { edge: 'ready-loop', label: 'async def route', plain: { en: 'Waiting-style page', bn: 'অপেক্ষা-ধরনের পাতা' } } ],
           state: {
             loop: { en: 'Awaited on loop', bn: 'loop-এই await হয়' },
             ready: { en: 'Next in line', bn: 'পরেরজন লাইনে' },
             tasks: { en: 'Request task', bn: 'Request-এর task' }
           },
-          title: { en: 'An async def route runs on the loop', bn: '`async def` route loop-এই চলে' },
+          plainState: {
+            loop: { en: 'Cooking it itself', bn: 'নিজেই রাঁধছে' },
+            tasks: { en: 'A visitor’s dish', bn: 'দর্শকের পদ' }
+          },
+          title: { en: 'A polite page runs on the cook', bn: 'ভদ্র পাতা রাঁধুনিই চালায়' },
           simple: {
-            en: 'A request for an `async def` route runs straight on the event loop.',
-            bn: '`async def` route-এর request সোজা event loop-এ চলে।'
+            en: 'A page written to step aside is cooked by the cook itself. Anything slow inside it would stall every other dish.',
+            bn: 'যে পাতা সরে দাঁড়াতে জানে তা রাঁধুনি নিজেই রাঁধে। তার ভেতরে ধীর কিছু থাকলে বাকি সব পদ আটকে যাবে।'
           },
           tech: {
             en: 'FastAPI awaits `async def` path operations on the event loop thread. Blocking code inside one blocks every other request.',
@@ -450,15 +610,18 @@ export const asyncioEventLoop: Topic = {
         },
         {
           id: 'def-route',
-          moves: [ { edge: 'loop-pool', label: 'def route' } ],
+          moves: [ { edge: 'loop-pool', label: 'def route', plain: { en: 'Plain page', bn: 'সাধারণ পাতা' } } ],
           state: {
             pool: { en: 'AnyIO thread, 40 max', bn: 'AnyIO thread, সর্বোচ্চ ৪০' },
             loop: { en: 'Stays free', bn: 'ফাঁকা থাকে' }
           },
-          title: { en: 'A def route goes to a thread', bn: '`def` route thread-এ যায়' },
+          plainState: {
+            pool: { en: 'Helper cooks busy', bn: 'সহকারীরা ব্যস্ত' }
+          },
+          title: { en: 'A plain page goes to helpers', bn: 'সাধারণ পাতা সহকারীদের কাছে যায়' },
           simple: {
-            en: 'A plain `def` route is sent to a helper thread automatically.',
-            bn: 'সাধারণ `def` route নিজে থেকেই helper thread-এ চলে যায়।'
+            en: 'A plainly written page is handed to the helper cooks automatically, so the cook stays free.',
+            bn: 'সাধারণভাবে লেখা পাতা নিজে থেকেই সহকারী রাঁধুনিদের কাছে যায়, তাই রাঁধুনি ফাঁকা থাকে।'
           },
           tech: {
             en: 'FastAPI runs `def` routes in AnyIO’s threadpool, whose default limiter is 40 threads, so they do not block the loop.',
@@ -470,72 +633,72 @@ export const asyncioEventLoop: Topic = {
   ],
   analogy: {
     intro: {
-      en: 'One waiter serves many tables. The waiter never stands still: when a guest is still choosing, the waiter moves on and returns when the bell rings.',
-      bn: 'একজন ওয়েটার অনেক টেবিল সামলায়। ওয়েটার কখনো দাঁড়িয়ে থাকে না: অতিথি এখনও বেছে না থাকলে সে অন্যদিকে যায়, আর ঘণ্টা বাজলে ফিরে আসে।'
+      en: 'One cook, many dishes. The cook never stands around: when a dish has to wait, it steps aside and the cook takes another, coming back when the timer board dings.',
+      bn: 'এক রাঁধুনি, অনেক পদ। রাঁধুনি কখনো বসে থাকে না: কোনো পদকে অপেক্ষা করতে হলে সে সরে দাঁড়ায়, রাঁধুনি অন্য পদ ধরে, আর টাইমার বোর্ড ডিং করলে ফিরে আসে।'
     },
     twins: [
       {
         icon: 'task',
         node: 'tasks',
-        name: { en: 'The tables’ orders', bn: 'টেবিলের অর্ডার' },
+        name: { en: 'The dishes', bn: 'পদগুলো' },
         d: {
-          en: 'Each table has an order in progress. It pauses whenever it has to wait.',
-          bn: 'প্রতিটা টেবিলের একটা অর্ডার চলছে। অপেক্ষা করতে হলেই সেটা থেমে যায়।'
+          en: 'Each dish is a job in progress. It pauses whenever it has to wait.',
+          bn: 'প্রতিটা পদ চলতে থাকা একটা কাজ। অপেক্ষা করতে হলেই সেটা থেমে যায়।'
         }
       },
       {
         icon: 'queue',
         node: 'ready',
-        name: { en: 'Tables needing attention', bn: 'যে টেবিলে নজর দরকার' },
+        name: { en: 'The ready rack', bn: 'তৈরি তাক' },
         d: {
-          en: 'A short list of tables that can be served right now.',
-          bn: 'এখনই সামলানো যায় এমন টেবিলের একটা ছোট তালিকা।'
+          en: 'A short row of dishes that can be cooked right now.',
+          bn: 'এখনই রাঁধা যায় এমন পদের একটা ছোট সারি।'
         }
       },
       {
         icon: 'loop',
         node: 'loop',
-        name: { en: 'The waiter', bn: 'ওয়েটার' },
+        name: { en: 'The cook', bn: 'রাঁধুনি' },
         d: {
-          en: 'One person, one table at a time. Quick visits, then straight on to the next.',
-          bn: 'একজন মানুষ, একবারে একটা টেবিল। ছোট্ট একটা ভিজিট, তারপর সোজা পরেরটায়।'
+          en: 'One person, one dish at a time. A quick turn at each, then straight on to the next.',
+          bn: 'একজন মানুষ, একবারে একটা পদ। প্রতিটায় ছোট্ট একটা পালা, তারপর সোজা পরেরটায়।'
         }
       },
       {
         icon: 'hourglass',
         node: 'selector',
-        name: { en: 'The bell panel', bn: 'ঘণ্টার প্যানেল' },
+        name: { en: 'The timer board', bn: 'টাইমার বোর্ড' },
         d: {
-          en: 'A panel that lights up when a table is ready, so the waiter does not have to check each one.',
-          bn: 'টেবিল তৈরি হলে প্যানেলে আলো জ্বলে, তাই ওয়েটারকে প্রতিটা টেবিল গিয়ে দেখতে হয় না।'
+          en: 'Lights up when a waiting dish is ready, so the cook never checks each one.',
+          bn: 'অপেক্ষার পদ তৈরি হলে জ্বলে ওঠে, তাই রাঁধুনিকে প্রতিটা দেখতে হয় না।'
         }
       },
       {
         icon: 'cloud',
         node: 'net',
-        name: { en: 'The kitchen and the street', bn: 'রান্নাঘর আর বাইরের দুনিয়া' },
+        name: { en: 'The delivery door', bn: 'ডেলিভারির দরজা' },
         d: {
-          en: 'Everything slow and outside the room: food coming, guests deciding.',
-          bn: 'ঘরের বাইরের সব ধীর জিনিস: খাবার আসা, অতিথির সিদ্ধান্ত নেওয়া।'
+          en: 'Everything slow that comes from outside the kitchen.',
+          bn: 'রান্নাঘরের বাইরে থেকে আসা সব ধীর জিনিস।'
         }
       },
       {
         icon: 'worker',
         node: 'pool',
-        name: { en: 'The extra runner', bn: 'বাড়তি runner' },
+        name: { en: 'The helper cooks', bn: 'সহকারী রাঁধুনি' },
         d: {
-          en: 'Takes slow errands outside, so the waiter can keep serving tables.',
-          bn: 'বাইরের ধীর কাজগুলো সামলায়, যাতে ওয়েটার টেবিল সামলে যেতে পারে।'
+          en: 'Take slow jobs out back, so the cook can keep cooking.',
+          bn: 'ধীর কাজগুলো পেছনে নিয়ে যায়, যাতে রাঁধুনি রাঁধতে থাকে।'
         }
       },
       {
         icon: 'alert',
         node: null,
-        name: { en: 'Standing at one table', bn: 'এক টেবিলে দাঁড়িয়ে থাকা' },
-        is: { en: 'is a blocking call', bn: 'মানে blocking call' },
+        name: { en: 'Standing and waiting', bn: 'দাঁড়িয়ে অপেক্ষা করা' },
+        is: { en: 'is a slow job that holds up the whole kitchen', bn: 'মানে এমন ধীর কাজ যা পুরো রান্নাঘর আটকে রাখে' },
         d: {
-          en: 'The waiter waits for a guest to finish choosing. Every other table is ignored until then. The runner should take such errands.',
-          bn: 'ওয়েটার একজন অতিথির বেছে নেওয়া শেষ হওয়ার অপেক্ষায় দাঁড়িয়ে থাকে। তত সময় বাকি সব টেবিল অবহেলিত। এমন কাজ runner-এর নেওয়া উচিত।'
+          en: 'The cook stands and waits for one dish to finish. Every other dish is ignored until then. Helper cooks should take such jobs.',
+          bn: 'রাঁধুনি একটা পদ শেষ হওয়ার অপেক্ষায় দাঁড়িয়ে থাকে। তত সময় বাকি সব পদ অবহেলিত। এমন কাজ সহকারী রাঁধুনিদের নেওয়া উচিত।'
         }
       }
     ]
