@@ -4,7 +4,7 @@ import { UI } from '../ui'
 export const processesVsThreads: Topic = {
   slug: 'processes-vs-threads',
   line: 'concurrency',
-  title: { en: 'Processes vs threads', bn: 'process বনাম thread' },
+  title: { en: 'Processes vs threads', bn: 'প্রসেস বনাম থ্রেড' },
   summary: {
     en: 'Threads share one memory and are cheap; processes keep memory apart and must send copies.',
     bn: 'thread একই memory ভাগ করে আর সস্তা; process-এর memory আলাদা, তাই কপি পাঠাতে হয়।'
