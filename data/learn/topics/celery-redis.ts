@@ -9,12 +9,67 @@ export const celeryRedis: Topic = {
     en: 'How a web app hands slow jobs to a background worker, so nobody sits watching a spinner.',
     bn: 'ওয়েব অ্যাপ কীভাবে ধীর কাজগুলো ব্যাকগ্রাউন্ড ওয়ার্কারের হাতে দিয়ে দেয়, যাতে কাউকে লোডিং দেখে বসে থাকতে না হয়।'
   },
+  hook: {
+    en: 'Slow jobs go to a back kitchen, so nobody stands at the counter while the page freezes.',
+    bn: 'ধীর কাজ পেছনের রান্নাঘরে যায়, তাই কাউন্টারে দাঁড়িয়ে পেজ আটকে থাকার অপেক্ষা করতে হয় না।'
+  },
+  takeaway: {
+    en: 'The waiter takes the order and moves on. The cook does the slow work, and you collect it when ready.',
+    bn: 'ওয়েটার অর্ডার নিয়ে এগিয়ে যান। ধীর কাজটা রাঁধুনি করেন, আর তৈরি হলে আপনি নিয়ে নেন।'
+  },
+  words: [
+    {
+      term: { en: 'Web app (FastAPI)', bn: 'ওয়েব অ্যাপ (FastAPI)' },
+      d: {
+        en: 'The program behind a website that answers your taps and clicks.',
+        bn: 'ওয়েবসাইটের পেছনের প্রোগ্রাম, যে আপনার ট্যাপ আর ক্লিকের উত্তর দেয়।'
+      }
+    },
+    {
+      term: { en: 'Queue (Redis)', bn: 'কিউ (Redis)' },
+      d: {
+        en: 'A waiting line where jobs stand until someone is free.',
+        bn: 'অপেক্ষার লাইন, যেখানে কাজ দাঁড়িয়ে থাকে যতক্ষণ না কেউ ফ্রি হয়।'
+      }
+    },
+    {
+      term: { en: 'Worker (Celery)', bn: 'ওয়ার্কার (Celery)' },
+      d: {
+        en: 'A helper program that waits for jobs and does them.',
+        bn: 'সাহায্যকারী প্রোগ্রাম, যে কাজের অপেক্ষায় থেকে কাজগুলো করে দেয়।'
+      }
+    },
+    {
+      term: { en: 'Ticket number', bn: 'টিকিট নম্বর' },
+      d: {
+        en: 'A number naming one job, so you can ask about it later.',
+        bn: 'একটা কাজের নম্বর, যাতে পরে তার খোঁজ নেওয়া যায়।'
+      }
+    },
+    {
+      term: { en: 'Retry', bn: 'রিট্রাই' },
+      d: {
+        en: 'Trying the same job again after it went wrong.',
+        bn: 'কাজ ভুল হলে সেটা আবার চেষ্টা করা।'
+      }
+    }
+  ],
+  legend: {
+    request: { en: 'Order going in', bn: 'ভেতরে যাওয়া অর্ডার' },
+    queue: { en: 'Ticket on the rail', bn: 'রেলের টিকিট' },
+    result: { en: 'Dish or answer back', bn: 'ফেরত আসা খাবার বা উত্তর' },
+    error: { en: 'Something went wrong', bn: 'কিছু গোলমাল হয়েছে' }
+  },
   view: { wide: [ 760, 400 ], narrow: [ 400, 530 ] },
   nodes: {
     user: {
       icon: 'user',
       name: { en: 'You', bn: 'আপনি' },
       sub: { en: 'Browser', bn: 'ব্রাউজার' },
+      plain: {
+        name: { en: 'Customer', bn: 'কাস্টমার' },
+        sub: { en: 'Orders a report', bn: 'রিপোর্ট চায়' }
+      },
       wide: [ 70, 200, 'down' ],
       narrow: [ 200, 45, 'right' ]
     },
@@ -22,6 +77,10 @@ export const celeryRedis: Topic = {
       icon: 'server',
       name: { en: 'FastAPI app', bn: 'FastAPI অ্যাপ' },
       sub: { en: 'Takes requests', bn: 'রিকোয়েস্ট নেয়' },
+      plain: {
+        name: { en: 'Waiter', bn: 'ওয়েটার' },
+        sub: { en: 'Takes the order', bn: 'অর্ডার নেয়' }
+      },
       wide: [ 250, 200, 'down' ],
       narrow: [ 200, 170, 'right' ]
     },
@@ -29,6 +88,10 @@ export const celeryRedis: Topic = {
       icon: 'queue',
       name: { en: 'Redis queue', bn: 'Redis কিউ' },
       sub: { en: 'The broker', bn: 'ব্রোকার' },
+      plain: {
+        name: { en: 'Order rail', bn: 'অর্ডার রেল' },
+        sub: { en: 'Tickets wait here', bn: 'টিকিট অপেক্ষা করে' }
+      },
       wide: [ 450, 90, 'up' ],
       narrow: [ 80, 300, 'right' ]
     },
@@ -36,6 +99,10 @@ export const celeryRedis: Topic = {
       icon: 'worker',
       name: { en: 'Celery worker', bn: 'Celery ওয়ার্কার' },
       sub: { en: 'Does slow jobs', bn: 'ধীর কাজ করে' },
+      plain: {
+        name: { en: 'Cook', bn: 'রাঁধুনি' },
+        sub: { en: 'Does the slow job', bn: 'ধীর কাজটা করে' }
+      },
       wide: [ 620, 200, 'right' ],
       narrow: [ 200, 480, 'right' ]
     },
@@ -43,6 +110,10 @@ export const celeryRedis: Topic = {
       icon: 'store',
       name: { en: 'Result store', bn: 'রেজাল্ট স্টোর' },
       sub: { en: 'Redis again', bn: 'আবারও Redis' },
+      plain: {
+        name: { en: 'Pickup counter', bn: 'পিকআপ কাউন্টার' },
+        sub: { en: 'Finished work waits', bn: 'তৈরি কাজ অপেক্ষা করে' }
+      },
       wide: [ 450, 310, 'down' ],
       narrow: [ 300, 360, 'left' ]
     }
@@ -81,11 +152,11 @@ export const celeryRedis: Topic = {
     steps: [
       {
         id: 'request',
-        moves: [ { edge: 'ua', label: 'POST /reports' } ],
-        title: { en: 'You ask for a report', bn: 'আপনি একটা রিপোর্ট চাইলেন' },
+        moves: [ { edge: 'ua', label: 'POST /reports', plain: { en: 'Report order', bn: 'রিপোর্টের অর্ডার' } } ],
+        title: { en: 'You order a report', bn: 'আপনি একটা রিপোর্ট চান' },
         simple: {
-          en: 'You tap “Make my report”. Your request travels to the web app.',
-          bn: 'আপনি “রিপোর্ট বানাও” বাটনে চাপ দিলেন। আপনার রিকোয়েস্ট ওয়েব অ্যাপের কাছে গেল।'
+          en: 'You tap “Make my report” and the order reaches the waiter, the web app. Building a report takes about half a minute, so watch how the wait is handled.',
+          bn: 'আপনি “রিপোর্ট বানাও” চাপলেন, আর অর্ডার পৌঁছাল ওয়েটারের কাছে, মানে ওয়েব অ্যাপে। রিপোর্ট বানাতে প্রায় আধ মিনিট লাগে, দেখুন এই অপেক্ষা কীভাবে সামলানো হয়।'
         },
         tech: {
           en: 'An HTTP POST reaches a FastAPI route. Building the PDF takes about 30 s, far too long to keep this request open.',
@@ -94,11 +165,11 @@ export const celeryRedis: Topic = {
       },
       {
         id: 'enqueue',
-        moves: [ { edge: 'ab', label: 'task message' } ],
-        title: { en: 'The app writes a ticket', bn: 'অ্যাপ একটা টিকিট লেখে' },
+        moves: [ { edge: 'ab', label: 'task message', plain: { en: 'Order ticket', bn: 'অর্ডার টিকিট' } } ],
+        title: { en: 'The waiter writes a ticket', bn: 'ওয়েটার একটা টিকিট লেখে' },
         simple: {
-          en: 'The app does not do the slow work itself. It writes a small ticket that says what to do and drops it into a waiting line.',
-          bn: 'অ্যাপ নিজে ধীর কাজটা করে না। কী করতে হবে তা একটা ছোট টিকিটে লিখে অপেক্ষার লাইনে রেখে দেয়।'
+          en: 'The waiter does not cook. They write a small ticket saying what to make and clip it onto the order rail, a waiting line called a queue.',
+          bn: 'ওয়েটার রান্না করেন না। কী বানাতে হবে তা ছোট টিকিটে লিখে অর্ডার রেলে আটকে দেন। এই অপেক্ষার লাইনের নাম কিউ।'
         },
         tech: {
           en: '`generate_report.delay(user_id=42)` serializes the task name and arguments to JSON and pushes the message onto the `celery` list in Redis, the broker.',
@@ -107,11 +178,11 @@ export const celeryRedis: Topic = {
       },
       {
         id: 'instant-reply',
-        moves: [ { edge: 'au', label: '202 + task id' } ],
+        moves: [ { edge: 'au', label: '202 + task id', plain: { en: 'OK, ticket #42', bn: 'ঠিক আছে, টিকিট #৪২' } } ],
         title: { en: 'You get an instant reply', bn: 'আপনি সাথে সাথে উত্তর পেলেন' },
         simple: {
-          en: 'The app answers right away: “Got it. Here is your ticket number.” You can keep using the page.',
-          bn: 'অ্যাপ সাথে সাথে জানায়: “পেয়েছি, এই নিন আপনার টিকিট নম্বর।” আপনি পেজটা ব্যবহার করতে থাকতে পারেন।'
+          en: 'The waiter answers at once: “Got it, your ticket number is 42.” You can keep using the page while the kitchen works.',
+          bn: 'ওয়েটার সাথে সাথে বলেন: “পেয়েছি, আপনার টিকিট নম্বর ৪২।” রান্নাঘর কাজ করার সময় আপনি পেজটা ব্যবহার করতে পারেন।'
         },
         tech: {
           en: 'The route returns `202 Accepted` with the task id. Response time stays in milliseconds no matter how slow the job is.',
@@ -120,11 +191,11 @@ export const celeryRedis: Topic = {
       },
       {
         id: 'pickup',
-        moves: [ { edge: 'bw', label: 'task message' } ],
-        title: { en: 'A worker picks up the ticket', bn: 'একজন ওয়ার্কার টিকিটটা তুলে নেয়' },
+        moves: [ { edge: 'bw', label: 'task message', plain: { en: 'Order ticket', bn: 'অর্ডার টিকিট' } } ],
+        title: { en: 'A cook takes the ticket', bn: 'একজন রাঁধুনি টিকিটটা নেন' },
         simple: {
-          en: 'A separate helper program, the Celery worker, keeps watching the line. It takes the next ticket.',
-          bn: 'Celery ওয়ার্কার নামে আলাদা একটা প্রোগ্রাম সবসময় লাইনের দিকে নজর রাখে। সে পরের টিকিটটা তুলে নেয়।'
+          en: 'A cook, the worker, keeps watching the order rail. As soon as they are free, they take the next ticket and carry it off.',
+          bn: 'রাঁধুনি, মানে ওয়ার্কার, সবসময় অর্ডার রেলের দিকে নজর রাখেন। ফ্রি হলেই পরের টিকিটটা নিয়ে চলে যান।'
         },
         tech: {
           en: 'The worker fetches with `BRPOP` and reserves up to 4 messages per process ahead of time (`worker_prefetch_multiplier`). Redis has no real acks, so Celery keeps an unacked copy and hands it out again after `visibility_timeout` (1 hour by default).',
@@ -134,10 +205,10 @@ export const celeryRedis: Topic = {
       {
         id: 'work',
         work: { node: 'worker', kind: 'queue' },
-        title: { en: 'The worker does the slow job', bn: 'ওয়ার্কার ধীর কাজটা করে' },
+        title: { en: 'The cook makes the slow dish', bn: 'রাঁধুনি ধীর কাজটা করেন' },
         simple: {
-          en: 'The worker builds your report. It can take as long as it needs, and the web app stays free to serve other people.',
-          bn: 'ওয়ার্কার আপনার রিপোর্ট বানায়। যত সময়ই লাগুক, ওয়েব অ্যাপ ততক্ষণ অন্যদের সেবা দিতে পারে।'
+          en: 'The cook lights up but nothing moves, because they are busy building your report. Meanwhile the waiter is free to serve other customers.',
+          bn: 'রাঁধুনি জ্বলে ওঠেন, কিন্তু কিছু নড়ে না, কারণ তিনি আপনার রিপোর্ট বানাতে ব্যস্ত। এই ফাঁকে ওয়েটার অন্য কাস্টমারদের সেবা দিতে পারেন।'
         },
         tech: {
           en: 'The task runs in a prefork child process (one per CPU core by default). The message is acknowledged just before the task starts; `acks_late=True` moves that to after it finishes.',
@@ -146,11 +217,11 @@ export const celeryRedis: Topic = {
       },
       {
         id: 'saved',
-        moves: [ { edge: 'wr', label: 'SUCCESS + file url' } ],
-        title: { en: 'The result is saved', bn: 'ফলাফল জমা হয়' },
+        moves: [ { edge: 'wr', label: 'SUCCESS + file url', plain: { en: 'Done + link', bn: 'শেষ + লিংক' } } ],
+        title: { en: 'The result goes to the counter', bn: 'ফলাফল কাউন্টারে যায়' },
         simple: {
-          en: 'When it is done, the worker puts the report link and a “done” mark in the results box.',
-          bn: 'কাজ শেষে ওয়ার্কার রিপোর্টের লিংক আর “শেষ” চিহ্ন রেজাল্ট বক্সে রেখে দেয়।'
+          en: 'When it is done, the cook puts the finished report and a “done” mark on the pickup counter, under your ticket number.',
+          bn: 'কাজ শেষে রাঁধুনি তৈরি রিপোর্ট আর একটা “শেষ” চিহ্ন পিকআপ কাউন্টারে রাখেন, আপনার টিকিট নম্বরের নিচে।'
         },
         tech: {
           en: 'State and return value are written to the result backend under `celery-task-meta-<id>`. They expire after `result_expires` (1 day by default).',
@@ -159,11 +230,11 @@ export const celeryRedis: Topic = {
       },
       {
         id: 'poll',
-        moves: [ { edge: 'ua', label: 'GET /tasks/{id}' } ],
+        moves: [ { edge: 'ua', label: 'GET /tasks/{id}', plain: { en: 'Is #42 ready?', bn: '#৪২ কি তৈরি?' } } ],
         title: { en: 'Your page checks back', bn: 'আপনার পেজ আবার খোঁজ নেয়' },
         simple: {
-          en: 'Every few seconds your page asks: “Is ticket 42 ready yet?”',
-          bn: 'কয়েক সেকেন্ড পরপর আপনার পেজ জিজ্ঞেস করে: “টিকিট ৪২ কি তৈরি?”'
+          en: 'Every few seconds your page asks the waiter: “Is ticket 42 ready yet?”',
+          bn: 'কয়েক সেকেন্ড পরপর আপনার পেজ ওয়েটারকে জিজ্ঞেস করে: “টিকিট ৪২ কি তৈরি?”'
         },
         tech: {
           en: 'The client polls a status endpoint. WebSockets or server-sent events can push the update instead.',
@@ -172,11 +243,11 @@ export const celeryRedis: Topic = {
       },
       {
         id: 'lookup',
-        moves: [ { edge: 'ar', label: 'lookup id' } ],
-        title: { en: 'The app looks up your ticket', bn: 'অ্যাপ আপনার টিকিট খোঁজে' },
+        moves: [ { edge: 'ar', label: 'lookup id', plain: { en: 'Look up #42', bn: '#৪২ খোঁজা' } } ],
+        title: { en: 'The waiter checks the counter', bn: 'ওয়েটার কাউন্টারে দেখেন' },
         simple: {
-          en: 'The app looks in the results box using your ticket number.',
-          bn: 'অ্যাপ আপনার টিকিট নম্বর দিয়ে রেজাল্ট বক্সে খোঁজে।'
+          en: 'The waiter walks over to the pickup counter and looks for ticket 42.',
+          bn: 'ওয়েটার পিকআপ কাউন্টারে গিয়ে টিকিট ৪২ খোঁজেন।'
         },
         tech: {
           en: '`AsyncResult(task_id).state` reads the backend. An unknown or expired id also comes back as `PENDING`, so `PENDING` does not prove the task exists. Never call `.get()` here; it blocks.',
@@ -185,9 +256,12 @@ export const celeryRedis: Topic = {
       },
       {
         id: 'answer',
-        moves: [ { edge: 'ra', label: 'SUCCESS' } ],
-        title: { en: 'The answer comes back', bn: 'উত্তর ফিরে আসে' },
-        simple: { en: 'The box says: done, here is the link.', bn: 'বক্স জানায়: কাজ শেষ, এই যে লিংক।' },
+        moves: [ { edge: 'ra', label: 'SUCCESS', plain: { en: 'Done + link', bn: 'শেষ + লিংক' } } ],
+        title: { en: 'The counter has your dish', bn: 'কাউন্টারে আপনার খাবার আছে' },
+        simple: {
+          en: 'The counter answers: done, and here is the link. The answer goes back to the waiter.',
+          bn: 'কাউন্টার জানায়: কাজ শেষ, এই যে লিংক। উত্তরটা ওয়েটারের কাছে ফিরে আসে।'
+        },
         tech: {
           en: 'The backend returns state `SUCCESS` and the task’s return value, deserialized from JSON.',
           bn: 'ব্যাকএন্ড `SUCCESS` স্টেট আর টাস্কের রিটার্ন ভ্যালু ফেরত দেয়, JSON থেকে ডিসিরিয়ালাইজ করে।'
@@ -195,11 +269,11 @@ export const celeryRedis: Topic = {
       },
       {
         id: 'download',
-        moves: [ { edge: 'au', label: 'report link' } ],
+        moves: [ { edge: 'au', label: 'report link', plain: { en: 'Report link', bn: 'রিপোর্টের লিংক' } } ],
         title: { en: 'You download the report', bn: 'আপনি রিপোর্ট ডাউনলোড করেন' },
         simple: {
-          en: 'Your page shows the download button. You never had to stare at a frozen screen.',
-          bn: 'আপনার পেজে ডাউনলোড বাটন চলে আসে। একবারও আটকে থাকা স্ক্রিনের দিকে তাকিয়ে থাকতে হয়নি।'
+          en: 'The waiter brings you the download button. You never stood waiting at a frozen screen, because the cook did the slow work out of sight.',
+          bn: 'ওয়েটার আপনাকে ডাউনলোড বাটন এনে দেন। আটকে থাকা স্ক্রিনের সামনে একবারও দাঁড়াতে হয়নি, কারণ ধীর কাজটা রাঁধুনি আড়ালে সেরেছেন।'
         },
         tech: {
           en: 'The status endpoint returns 200 with the result. The API spent only milliseconds on this user the whole time.',
@@ -211,16 +285,20 @@ export const celeryRedis: Topic = {
   alts: [
     {
       id: 'failure',
-      label: UI.routeFail,
+      label: { en: 'A dish goes wrong', bn: 'একটা খাবার নষ্ট হলে' },
+      whatIf: {
+        en: 'What if the cook hits a problem halfway through the dish?',
+        bn: 'রান্নার মাঝপথে রাঁধুনি যদি সমস্যায় পড়েন?'
+      },
       branchAfter: 'pickup',
       steps: [
         {
           id: 'crash',
           work: { node: 'worker', kind: 'error' },
-          title: { en: 'The job crashes', bn: 'কাজটা মাঝপথে ব্যর্থ হয়' },
+          title: { en: 'The job goes wrong', bn: 'কাজটা ভুল হয়ে যায়' },
           simple: {
-            en: 'Halfway through, the file storage does not answer. The worker hits an error.',
-            bn: 'মাঝপথে ফাইল স্টোরেজ সাড়া দেয় না। ওয়ার্কার একটা এররে পড়ে।'
+            en: 'Halfway through, the cook cannot reach the place where files are saved. The dish fails.',
+            bn: 'মাঝপথে রাঁধুনি যেখানে ফাইল জমা থাকে সেখানে পৌঁছাতে পারেন না। কাজটা ব্যর্থ হয়।'
           },
           tech: {
             en: 'The task raises `TimeoutError`. It is declared with `autoretry_for=(TimeoutError,)` and `retry_kwargs={\'countdown\': 60}`, so Celery schedules another attempt 60 s later instead of giving up.',
@@ -229,11 +307,11 @@ export const celeryRedis: Topic = {
         },
         {
           id: 'requeue',
-          moves: [ { edge: 'wb', label: 'retry in 60 s' } ],
+          moves: [ { edge: 'wb', label: 'retry in 60 s', plain: { en: 'Try again soon', bn: 'একটু পরে আবার' } } ],
           title: { en: 'The ticket goes back in line', bn: 'টিকিট আবার লাইনে ফেরে' },
           simple: {
-            en: 'The worker puts the ticket back with a note: “try again in a minute”.',
-            bn: 'ওয়ার্কার টিকিটটা একটা নোটসহ ফেরত রাখে: “এক মিনিট পরে আবার চেষ্টা করো”।'
+            en: 'The cook clips the ticket back onto the order rail with a note: “try again in a minute”.',
+            bn: 'রাঁধুনি টিকিটটা একটা নোটসহ অর্ডার রেলে আবার আটকে দেন: “এক মিনিট পরে আবার চেষ্টা করো”।'
           },
           tech: {
             en: 'A retry publishes the task again with an ETA and `retries=1`, and the state becomes `RETRY`. After `max_retries` (3 by default) it stops with `FAILURE`.',
@@ -242,11 +320,11 @@ export const celeryRedis: Topic = {
         },
         {
           id: 'second-try',
-          moves: [ { edge: 'bw', label: 'task message, try 2' } ],
+          moves: [ { edge: 'bw', label: 'task message, try 2', plain: { en: 'Ticket, try 2', bn: 'টিকিট, ২য় বার' } } ],
           title: { en: 'Second try', bn: 'দ্বিতীয় চেষ্টা' },
           simple: {
-            en: 'A minute later a worker picks the ticket up again.',
-            bn: 'এক মিনিট পরে একজন ওয়ার্কার টিকিটটা আবার তুলে নেয়।'
+            en: 'A minute later a cook takes the ticket again.',
+            bn: 'এক মিনিট পরে একজন রাঁধুনি টিকিটটা আবার নেন।'
           },
           tech: {
             en: 'Workers fetch ETA tasks early and hold them in memory until due. A countdown longer than `visibility_timeout` gets the task delivered twice, which is why tasks must be idempotent.',
@@ -255,11 +333,11 @@ export const celeryRedis: Topic = {
         },
         {
           id: 'works',
-          moves: [ { edge: 'wr', label: 'SUCCESS' } ],
+          moves: [ { edge: 'wr', label: 'SUCCESS', plain: { en: 'Done + link', bn: 'শেষ + লিংক' } } ],
           title: { en: 'This time it works', bn: 'এবার কাজ হয়ে যায়' },
           simple: {
-            en: 'The storage answers, the report is built, and the result is saved. From here, checking back works exactly like before.',
-            bn: 'এবার স্টোরেজ সাড়া দেয়, রিপোর্ট তৈরি হয়, ফলাফল জমা হয়। এরপর খোঁজ নেওয়ার ধাপগুলো আগের মতোই।'
+            en: 'This time it works. The report is built and put on the pickup counter, and checking back goes exactly as before.',
+            bn: 'এবার কাজ হয়ে যায়। রিপোর্ট তৈরি হয়ে পিকআপ কাউন্টারে যায়, আর খোঁজ নেওয়া হয় আগের মতোই।'
           },
           tech: {
             en: 'The client saw `RETRY` for about a minute, then `SUCCESS`. It never had to handle the crash itself.',
@@ -271,8 +349,8 @@ export const celeryRedis: Topic = {
   ],
   analogy: {
     intro: {
-      en: 'A busy restaurant runs the same way. Every station has a twin in the kitchen.',
-      bn: 'একটা ব্যস্ত রেস্টুরেন্টও ঠিক এভাবেই চলে। প্রতিটি স্টেশনের একটা জোড়া আছে রান্নাঘরে।'
+      en: 'A busy restaurant works the same way. This is the kitchen side, and every station has a twin there.',
+      bn: 'একটা ব্যস্ত রেস্টুরেন্টও ঠিক এভাবেই চলে। এটা রান্নাঘরের দিক, আর প্রতিটি স্টেশনের একটা জোড়া আছে সেখানে।'
     },
     twins: [
       {
@@ -289,8 +367,8 @@ export const celeryRedis: Topic = {
         node: 'api',
         name: { en: 'The waiter', bn: 'ওয়েটার' },
         d: {
-          en: 'Takes the order, hands you a token, and never cooks.',
-          bn: 'অর্ডার নেন, টোকেন দেন, নিজে কখনো রান্না করেন না।'
+          en: 'Takes the order, hands you a ticket number, and never cooks.',
+          bn: 'অর্ডার নেন, টিকিট নম্বর দেন, নিজে কখনো রান্না করেন না।'
         }
       },
       {
@@ -316,8 +394,8 @@ export const celeryRedis: Topic = {
         node: 'result',
         name: { en: 'The pickup counter', bn: 'পিকআপ কাউন্টার' },
         d: {
-          en: 'Finished dishes wait here under your token number.',
-          bn: 'তৈরি খাবার এখানে আপনার টোকেন নম্বরে অপেক্ষা করে।'
+          en: 'Finished dishes wait here under your ticket number.',
+          bn: 'তৈরি খাবার এখানে আপনার টিকিট নম্বরে অপেক্ষা করে।'
         }
       },
       {
