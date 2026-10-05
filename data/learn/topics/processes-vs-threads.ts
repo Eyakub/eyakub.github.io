@@ -14,8 +14,8 @@ export const processesVsThreads: Topic = {
     bn: 'এক রান্নাঘরের রাঁধুনিরা একই ফ্রিজ ভাগ করে, তাতে দ্রুত কিন্তু ঝুঁকি। আলাদা রান্নাঘর নিরাপদ, তবে স্লিপ পাঠাতে হয়।'
   },
   takeaway: {
-    en: 'Cooks in one kitchen share a fridge: fast but risky. Separate kitchens stay safe but must pass slips.',
-    bn: 'এক রান্নাঘরের রাঁধুনিরা ফ্রিজ ভাগ করে: দ্রুত কিন্তু ঝুঁকি। আলাদা রান্নাঘর নিরাপদ, তবে স্লিপ পাঠাতে হয়।'
+    en: 'Shared fridge: fast but risky. Separate kitchens: safe, but they must pass slips.',
+    bn: 'একই ফ্রিজ: দ্রুত কিন্তু ঝুঁকি। আলাদা রান্নাঘর: নিরাপদ, তবে স্লিপ পাঠাতে হয়।'
   },
   words: [
     {
@@ -352,8 +352,8 @@ export const processesVsThreads: Topic = {
         },
         title: { en: 'Cook 1 gets a copy', bn: 'রাঁধুনি ১ একটা কপি পায়' },
         simple: {
-          en: 'The reply reaches Cook 1 as a copy. Kitchen B’s fridge never leaves Kitchen B.',
-          bn: 'উত্তর রাঁধুনি ১-এর কাছে কপি হয়ে আসে। রান্নাঘর B-র ফ্রিজ কখনও রান্নাঘর B ছেড়ে যায় না।'
+          en: 'The reply reaches Cook 1 as a copy. The fridge stays put.',
+          bn: 'উত্তর রাঁধুনি ১-এর কাছে কপি হয়ে আসে। ফ্রিজ নিজের জায়গাতেই থাকে।'
         },
         tech: {
           en: 'Thread 1 unpickles a new object in A’s heap. Sharing in Python threads is free; across processes every hand-off is a copy.',
