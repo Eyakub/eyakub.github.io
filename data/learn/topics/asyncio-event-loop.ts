@@ -14,8 +14,8 @@ export const asyncioEventLoop: Topic = {
     bn: 'এক রাঁধুনি অনেক পদ সামলাতে পারে, কারণ বেশিরভাগ সময় পদ শুধু অপেক্ষা করে, আর অপেক্ষার পদে রাঁধুনি লাগে না।'
   },
   takeaway: {
-    en: 'The cook does one thing at a time but never stands idle: a waiting dish steps aside, and slow jobs go to helpers.',
-    bn: 'রাঁধুনি একবারে একটাই কাজ করে, কিন্তু কখনো বসে থাকে না: অপেক্ষার পদ সরে দাঁড়ায়, আর ধীর কাজ যায় সহকারীদের কাছে।'
+    en: 'The cook never stands idle: waiting dishes step aside, slow jobs go to helpers.',
+    bn: 'রাঁধুনি বসে থাকে না: অপেক্ষার পদ সরে দাঁড়ায়, ধীর কাজ যায় সহকারীদের কাছে।'
   },
   words: [
     {
@@ -393,7 +393,7 @@ export const asyncioEventLoop: Topic = {
       },
       {
         id: 'a-done',
-        moves: [ { edge: 'loop-tasks', label: 'A done' } ],
+        moves: [ { edge: 'loop-tasks', label: 'A done', plain: { en: 'A done', bn: 'A শেষ' } } ],
         state: {
           tasks: { en: 'A done, B waits', bn: 'A শেষ, B অপেক্ষায়' },
           loop: { en: 'Idle again', bn: 'আবার অলস' }
@@ -403,8 +403,8 @@ export const asyncioEventLoop: Topic = {
         },
         title: { en: 'Dish A is done', bn: 'পদ A শেষ' },
         simple: {
-          en: 'Dish A is done. One cook finished it without ever standing around waiting, and B carries on when its delivery arrives.',
-          bn: 'পদ A শেষ। এক রাঁধুনি কখনো বসে না থেকেই সেটা শেষ করল, আর B-র ডেলিভারি এলে B এগোবে।'
+          en: 'Dish A is done. B carries on when its delivery arrives.',
+          bn: 'পদ A শেষ। B-র ডেলিভারি এলে B এগোবে।'
         },
         tech: {
           en: 'The Task completes and its done-callbacks are scheduled. One thread served both tasks: concurrent, but never parallel.',
@@ -542,7 +542,7 @@ export const asyncioEventLoop: Topic = {
         },
         {
           id: 'pool-done',
-          moves: [ { edge: 'pool-ready', label: 'done' } ],
+          moves: [ { edge: 'pool-ready', label: 'done', plain: { en: 'Job done', bn: 'কাজ শেষ' } } ],
           state: {
             pool: { en: 'Idle', bn: 'বসে আছে' },
             ready: { en: 'A', bn: 'A' }
