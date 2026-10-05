@@ -76,6 +76,7 @@ const TOPIC_CASES = [
   { slug: 'git-basics', total: 9, altStop: 'Stop 9 of 12', altBtn: 2 },
   { slug: 'concurrency-vs-parallelism', total: 9, altStop: 'Stop 7 of 10' },
   { slug: 'processes-vs-threads', total: 10, altStop: 'Stop 4 of 5', altBtn: 2 },
+  { slug: 'python-gil', total: 11, altStop: 'Stop 7 of 11' },
 ]
 // SMOKE_TOPICS=a,b limits the per-topic loops to those slugs, for quick runs while authoring one topic.
 const onlyTopics = process.env.SMOKE_TOPICS?.split(',')
@@ -367,6 +368,23 @@ const checks = [
     })
     await context.close()
     assert(fill === want, `packet fill ${fill} != --k-request ${want}`)
+    // Mixed-kind parallel step: each packet must take the colour of its own edge kind.
+    const gil = await open('/learn/python-gil', { reducedMotion: 'reduce' })
+    await gil.page.waitForSelector('.packet:not([hidden]) rect')
+    for (let i = 0; i < 6; i++) { await gil.page.click('#next'); await gil.page.waitForTimeout(150) }
+    const fills = await gil.page.evaluate(() => {
+      const norm = (c) => { const el = document.createElement('i'); el.style.color = c; document.body.appendChild(el); const v = getComputedStyle(el).color; el.remove(); return v }
+      const root = getComputedStyle(document.querySelector('.learn-root'))
+      return {
+        got: [...document.querySelectorAll('.packet')].map((p) => norm(getComputedStyle(p.querySelector('rect')).fill)),
+        queue: norm(root.getPropertyValue('--k-queue').trim()),
+        result: norm(root.getPropertyValue('--k-result').trim())
+      }
+    })
+    await gil.context.close()
+    assert(fills.queue !== fills.result, `--k-queue and --k-result must differ: ${fills.queue}`)
+    assert(fills.got.length === 2, `python-gil stop 7 packets: ${fills.got.length}`)
+    assert(fills.got[0] === fills.queue && fills.got[1] === fills.result, `packet fills ${JSON.stringify(fills.got)} != [${fills.queue}, ${fills.result}]`)
   }],
   ['sections', async () => {
     const { page, context, problems } = await open('/learn/celery-redis')
