@@ -360,6 +360,29 @@ const checks = [
       }
     }
   }],
+  ['wide-frame', async () => {
+    const measure = (page) => page.evaluate(() => ({
+      svg: document.querySelector('.flow-svg').getBoundingClientRect().width,
+      frame: document.querySelector('.player').getBoundingClientRect().width,
+      sw: document.documentElement.scrollWidth,
+    }))
+    for (const [w, h, minSvg] of [[1920, 1080, 1100], [1280, 860, 690], [2560, 1440, 0]]) {
+      const { page, context } = await open('/learn/fastapi-lifecycle', { width: w, height: h })
+      await page.waitForSelector('.flow-svg')
+      const m = await measure(page)
+      if (w !== 2560) await shot(page, `wide-${w}`)
+      await context.close()
+      assert(m.svg >= minSvg, `${w}: flow-svg ${m.svg}px < ${minSvg}`)
+      assert(m.sw <= w, `${w}: horizontal overflow scrollWidth=${m.sw}`)
+      assert(m.frame <= 1680.5, `${w}: frame ${m.frame}px > 1680`)
+    }
+    const { page, context } = await open('/learn', { width: 1920, height: 1080 })
+    await page.waitForSelector('.map-sec')
+    const sw = await page.evaluate(() => document.documentElement.scrollWidth)
+    await shot(page, 'wide-hub-1920')
+    await context.close()
+    assert(sw <= 1920, `hub overflow ${sw}`)
+  }],
   ['player-mobile-order', async () => {
     const { page, context } = await open('/learn/celery-redis', { width: 390, height: 844 })
     await page.waitForSelector('.now')
