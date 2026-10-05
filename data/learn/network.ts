@@ -11,6 +11,8 @@ export interface Station {
   line: LineId
   interchange?: boolean
   name: L10n
+  blurb?: L10n
+  level?: 'beginner' | 'intermediate'
 }
 
 export interface Line {
@@ -26,24 +28,24 @@ export const PHASE_KEY: Record<Exclude<Phase, 1>, UiKey> = { 2: 'p2', 3: 'p3', 4
 export const STATIONS: Record<string, Station> = {
   'http-journey': { x: 120, y: 110, lab: 'up', phase: 3, line: 'backend', name: { en: 'HTTP journey', bn: 'HTTP-র যাত্রা' } },
   'rest-basics': { x: 300, y: 110, lab: 'up', phase: 4, line: 'backend', name: { en: 'REST basics', bn: 'REST-এর মূল কথা' } },
-  'fastapi-lifecycle': { x: 480, y: 110, lab: 'up', phase: 1, line: 'backend', interchange: true, name: { en: 'FastAPI lifecycle', bn: 'FastAPI-র জীবনচক্র' } },
+  'fastapi-lifecycle': { x: 480, y: 110, lab: 'up', phase: 1, line: 'backend', interchange: true, name: { en: 'FastAPI lifecycle', bn: 'FastAPI-র জীবনচক্র' }, blurb: { en: 'Everything between a click and the reply.', bn: 'ক্লিক থেকে উত্তর আসা পর্যন্ত মাঝের সবকিছু।' }, level: 'intermediate' },
   'auth-jwt-oauth': { x: 660, y: 110, lab: 'up', phase: 4, line: 'backend', name: { en: 'Auth: JWT & OAuth', bn: 'অথ: JWT ও OAuth' } },
-  'celery-redis': { x: 610, y: 240, lab: 'down', phase: 1, line: 'async', name: { en: 'Celery + Redis', bn: 'Celery + Redis' } },
+  'celery-redis': { x: 610, y: 240, lab: 'down', phase: 1, line: 'async', name: { en: 'Celery + Redis', bn: 'Celery + Redis' }, blurb: { en: 'Hand slow jobs to a background cook so nobody waits.', bn: 'ধীর কাজ পেছনের রাঁধুনিকে দিন, যাতে কাউকে অপেক্ষা করতে না হয়।' }, level: 'beginner' },
   'redis-deep-dive': { x: 760, y: 240, lab: 'down', phase: 4, line: 'async', name: { en: 'Redis deep-dive', bn: 'Redis গভীরে' } },
   databases: { x: 900, y: 240, lab: 'down', phase: 4, line: 'async', name: { en: 'Databases', bn: 'ডেটাবেস' } },
-  'git-basics': { x: 120, y: 240, lab: 'down', phase: 1, line: 'git', name: { en: 'Git basics', bn: 'Git-এর শুরু' } },
+  'git-basics': { x: 120, y: 240, lab: 'down', phase: 1, line: 'git', name: { en: 'Git basics', bn: 'Git-এর শুরু' }, blurb: { en: 'Save points for your files, and sharing them.', bn: 'ফাইলের সেভ পয়েন্ট রাখা, আর অন্যদের সাথে ভাগ করা।' }, level: 'beginner' },
   'github-pull-requests': { x: 300, y: 240, lab: 'down', phase: 4, line: 'git', name: { en: 'Pull requests', bn: 'পুল রিকোয়েস্ট' } },
   docker: { x: 120, y: 370, lab: 'down', phase: 3, line: 'devops', name: { en: 'Docker', bn: 'Docker' } },
   'docker-compose': { x: 300, y: 370, lab: 'down', phase: 3, line: 'devops', name: { en: 'Docker Compose', bn: 'Docker Compose' } },
   'ci-cd': { x: 480, y: 370, lab: 'down', phase: 3, line: 'devops', interchange: true, name: { en: 'CI/CD', bn: 'CI/CD' } },
   nginx: { x: 660, y: 370, lab: 'down', phase: 3, line: 'devops', name: { en: 'Nginx', bn: 'Nginx' } },
   kubernetes: { x: 840, y: 370, lab: 'down', phase: 4, line: 'devops', name: { en: 'Kubernetes', bn: 'Kubernetes' } },
-  'concurrency-vs-parallelism': { x: 120, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'Concurrency vs parallelism', bn: 'কনকারেন্সি বনাম প্যারালেলিজম' } },
-  'processes-vs-threads': { x: 270, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'Processes vs threads', bn: 'প্রসেস বনাম থ্রেড' } },
-  'python-gil': { x: 420, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'The Python GIL', bn: 'Python GIL' } },
-  'multiprocessing-pools': { x: 570, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'Multiprocessing pools', bn: 'মাল্টিপ্রসেসিং পুল' } },
-  'asyncio-event-loop': { x: 720, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'asyncio event loop', bn: 'asyncio ইভেন্ট লুপ' } },
-  'race-conditions-locks': { x: 870, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'Race conditions & locks', bn: 'রেস কন্ডিশন ও লক' } },
+  'concurrency-vs-parallelism': { x: 120, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'Concurrency vs parallelism', bn: 'কনকারেন্সি বনাম প্যারালেলিজম' }, blurb: { en: 'Juggling many jobs, or doing them at the same moment.', bn: 'অনেক কাজ পালা করে সামলানো, নয়তো একই মুহূর্তে করা।' }, level: 'beginner' },
+  'processes-vs-threads': { x: 270, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'Processes vs threads', bn: 'প্রসেস বনাম থ্রেড' }, blurb: { en: 'Separate kitchens, or cooks sharing one kitchen.', bn: 'আলাদা রান্নাঘর, নাকি এক রান্নাঘরে ভাগ করে রাঁধুনিরা।' }, level: 'beginner' },
+  'python-gil': { x: 420, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'The Python GIL', bn: 'Python GIL' }, blurb: { en: 'Why Python cooks take turns, and when they don\'t.', bn: 'Python-এর রাঁধুনিরা কেন পালা করে কাজ করে, আর কখন করে না।' }, level: 'intermediate' },
+  'multiprocessing-pools': { x: 570, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'Multiprocessing pools', bn: 'মাল্টিপ্রসেসিং পুল' }, blurb: { en: 'Send heavy work to a row of side kitchens.', bn: 'ভারী কাজ পাঠান পাশের সারি সারি রান্নাঘরে।' }, level: 'intermediate' },
+  'asyncio-event-loop': { x: 720, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'asyncio event loop', bn: 'asyncio ইভেন্ট লুপ' }, blurb: { en: 'One cook, many dishes, a timer that says what\'s ready.', bn: 'একজন রাঁধুনি, অনেক পদ, আর টাইমার বলে দেয় কোনটা তৈরি।' }, level: 'intermediate' },
+  'race-conditions-locks': { x: 870, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'Race conditions & locks', bn: 'রেস কন্ডিশন ও লক' }, blurb: { en: 'Two cooks, one tally, and why you need one pen.', bn: 'দুই রাঁধুনি, একটাই হিসাবের খাতা, আর কেন একটাই কলম লাগে।' }, level: 'intermediate' },
 }
 
 export const LINES: Line[] = [

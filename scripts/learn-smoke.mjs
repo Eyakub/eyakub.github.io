@@ -175,6 +175,19 @@ const checks = [
     assert(!mapVisible, 'network map visible on mobile')
     assert(strips === 5, `expected 5 strips, got ${strips}`)
   }],
+  ['hub-start-here', async () => {
+    const { page, context } = await open('/learn', { width: 390, height: 844 })
+    await page.waitForSelector('.start-here a')
+    const hrefs = await page.locator('.start-here a').evaluateAll((els) => els.map((e) => e.getAttribute('href')))
+    const cta = await page.locator('.hero a.btn.primary').getAttribute('href')
+    const w = await page.evaluate(() => document.documentElement.scrollWidth)
+    await shot(page, 'hub-start-here-mobile')
+    await context.close()
+    const want = ['concurrency-vs-parallelism', 'processes-vs-threads', 'git-basics', 'celery-redis'].map((s) => '/learn/' + s)
+    assert(hrefs.length === 4 && hrefs.every((h, i) => h?.replace(/\/$/, '').endsWith(want[i])), `start-here links: ${JSON.stringify(hrefs)}`)
+    assert(cta?.replace(/\/$/, '').endsWith('/learn/concurrency-vs-parallelism'), `hero href: ${cta}`)
+    assert(w <= 390, `scrollWidth ${w} > 390`)
+  }],
   ['navbar-learn', async () => {
     const { page, context } = await open('/')
     const hrefs = await page.locator('a', { hasText: /^Learn$/ }).evaluateAll((els) => els.map((e) => e.getAttribute('href')))

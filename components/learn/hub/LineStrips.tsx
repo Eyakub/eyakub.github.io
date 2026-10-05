@@ -30,7 +30,7 @@ export default function LineStrips({ openSlugs, learned, onStation }: Props) {
               const chip = done ? (
                 <span className="chip learned">{ui('learned')}</span>
               ) : open ? (
-                <span className="chip open">{ui('open')}</span>
+                <span className="chip open">{s.level === 'beginner' ? ui('levelBeginner') : s.level === 'intermediate' ? ui('levelIntermediate') : ui('open')}</span>
               ) : (
                 <span className="chip later">{ui(('p' + s.phase) as UiKey)}</span>
               )
@@ -40,6 +40,7 @@ export default function LineStrips({ openSlugs, learned, onStation }: Props) {
                     <span className="sdot" />
                     <span>
                       <span className="sname">{t(s.name)}</span>
+                      {open && s.blurb && <span className="blurb">{t(s.blurb)}</span>}
                       {other && <span className="change">{fmt(ui('changeFor'), { line: ui(other.name) })}</span>}
                     </span>
                     {chip}

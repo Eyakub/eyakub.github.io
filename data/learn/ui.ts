@@ -9,7 +9,10 @@ export const UI = {
     en: 'Every topic is a metro line. Stations are the parts of a system, and the moving tag is the data riding between them. Press play and follow along. Made for interview prep, written so a first-timer can keep up.',
     bn: 'প্রতিটি টপিক একটি মেট্রো লাইন। স্টেশনগুলো সিস্টেমের এক-একটি অংশ, আর চলন্ত ট্যাগটি হলো ডেটা, যা এক স্টেশন থেকে আরেক স্টেশনে যায়। প্লে চাপুন, সাথে সাথে দেখুন। ইন্টারভিউ প্রস্তুতির জন্য বানানো, কিন্তু এমনভাবে লেখা যে একদম নতুনরাও বুঝবে।'
   },
-  hubCta: { en: 'Ride the Celery + Redis line', bn: 'Celery + Redis লাইনে চড়ুন' },
+  hubCta: { en: 'Start with the basics', bn: 'বেসিক দিয়ে শুরু করুন' },
+  startHere: { en: 'New here? Ride these in order', bn: 'নতুন? এই ক্রমে দেখুন' },
+  levelBeginner: { en: 'Beginner', bn: 'শুরুর' },
+  levelIntermediate: { en: 'Intermediate', bn: 'মাঝারি' },
   mapHeading: { en: 'Network map of topics', bn: 'টপিকের নেটওয়ার্ক ম্যাপ' },
   allLines: { en: 'All lines', bn: 'সব লাইন' },
   open: { en: 'Open', bn: 'চালু' },
