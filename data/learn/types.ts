@@ -12,8 +12,8 @@ export interface FlowNode {
   icon: IconName
   name: L10n
   sub: L10n
-  wide?: [number, number, Side]
-  narrow?: [number, number, Side]
+  wide: [number, number, Side]
+  narrow: [number, number, Side]
   plain?: { name: L10n; sub: L10n }
 }
 export interface Corridor { wide: Pt[]; narrow: Pt[] }
@@ -31,15 +31,6 @@ export interface Step {
 }
 export interface AltRoute { id: string; label: L10n; branchAfter: string; steps: Step[]; whatIf?: L10n }
 export interface Group { id: string; label: L10n; plain?: L10n; wide: [number, number, number, number]; narrow: [number, number, number, number] }
-/** Two-lane layout: the request walks right along the top lane through each column, the reply walks back left along the bottom lane. */
-export interface Lanes {
-  cols: string[]
-  /** The first column sits outside the system (no band), e.g. the customer. */
-  outside?: boolean
-  /** Nodes hanging below a column, reached from its bottom lane. */
-  below?: { node: string; under: string }[]
-  spans?: { from: string; to: string; label: L10n; plain?: L10n }[]
-}
 export interface Twin { node: string | null; icon: IconName; name: L10n; is?: L10n; d: L10n }
 export interface QA { q: L10n; short: L10n; deep: L10n; redFlag: L10n }
 export interface Cheat { code: string; d: L10n }
@@ -52,12 +43,11 @@ export interface Topic {
   takeaway?: L10n
   words?: { term: L10n; d: L10n }[]
   legend?: Partial<Record<Kind, L10n>>
-  lanes?: Lanes
-  view?: Record<LayoutKey, [number, number]>
+  view: Record<LayoutKey, [number, number]>
   nodeR?: Partial<Record<LayoutKey, number>>
   nodes: Record<string, FlowNode>
   groups?: Group[]
-  corridors?: Record<string, Corridor>
+  corridors: Record<string, Corridor>
   edges: Record<string, Edge>
   main: { label: L10n; steps: Step[] }
   alts: AltRoute[]
@@ -66,7 +56,3 @@ export interface Topic {
   cheats: Cheat[]
   sources: { label: string; url: string }[]
 }
-
-export type MetroNode = FlowNode & Required<Pick<FlowNode, 'wide' | 'narrow'>>
-/** A topic drawn on the metro canvas: hand-placed nodes joined by corridors. */
-export type MetroTopic = Topic & { view: Record<LayoutKey, [number, number]>; corridors: Record<string, Corridor>; nodes: Record<string, MetroNode> }

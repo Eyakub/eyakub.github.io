@@ -1,61 +1,69 @@
 import { useLayoutEffect, useRef } from 'react'
-import type { Step, Topic } from '../../../data/learn/types'
+import type { LayoutKey, Pt, Topic } from '../../../data/learn/types'
 import type { Lang } from '../../../lib/learn/l10n'
 import type { Mode } from '../../../lib/learn/prefs'
-import { packetText } from './flow'
-
-/** Where a packet rests on its edge, and how its pill sits relative to the line. */
-export interface Placement { rest: number; dx: number; dy: number; anchor: 'middle' | 'start' }
-export const ON_LINE: Placement = { rest: 0.5, dx: 0, dy: 0, anchor: 'middle' }
+import { packetText, type Trip } from './flow'
+import { edgePoints, placePill, pointAt, polyLen, type Box, type Spot } from './geometry'
 
 const D1 = 750
 const D2 = 520
+const PILL_H = 28
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
 interface Opts {
   topic: Topic
-  steps: Step[]
-  index: number
+  /** Memoised per stop: a new array means a new stop to animate. */
+  trips: Trip[]
   animate: boolean
   mode: Mode
   lang: Lang
-  /** Changes that should re-place packets without a new step (e.g. a layout swap). */
-  layoutKey: string
-  placement?: (edge: string) => Placement
+  layout: LayoutKey
+  bidir: Set<string>
+  r: number
 }
 
-/** Rides each move's packet from its source to its rest point, then runs a comet to the destination and flashes it. */
-export function usePackets({ topic, steps, index, animate, mode, lang, layoutKey, placement = () => ON_LINE }: Opts) {
-  const edgeRefs = useRef<Record<string, SVGPathElement | null>>({})
+/** Rides each trip's packet from its source to a clear resting spot, then runs a comet to the destination and flashes it. */
+export function usePackets({ topic, trips, animate, mode, lang, layout, bidir, r }: Opts) {
+  const svgRef = useRef<SVGSVGElement>(null)
   const nodeRefs = useRef<Record<string, SVGGElement | null>>({})
   const packetRefs = useRef<(SVGGElement | null)[]>([])
   const cometRefs = useRef<(SVGCircleElement | null)[]>([])
 
   useLayoutEffect(() => {
-    const cur = steps[index].moves ?? []
-    const packets = cur.map((_, i) => packetRefs.current[i])
-    const comets = cur.map((_, i) => cometRefs.current[i])
-    const geo = cur.map((m) => {
-      const path = edgeRefs.current[m.edge]
-      return path ? { path, len: path.getTotalLength(), to: topic.edges[m.edge].to, at: placement(m.edge) } : null
+    const svg = svgRef.current!
+    const packets = trips.map((_, i) => packetRefs.current[i])
+    const comets = trips.map((_, i) => cometRefs.current[i])
+    const obstacles: Box[] = [...svg.querySelectorAll<SVGGraphicsElement>('.node .disc, .node text, .group text')]
+      .map((el) => el.getBBox())
+      .filter((b) => b.width > 0)
+      .map((b) => ({ x: b.x - 2, y: b.y - 2, w: b.width + 4, h: b.height + 4 }))
+
+    const geo = trips.map((trip, i) => {
+      const hops = trip.edges.map((id) => edgePoints(topic, id, layout, bidir, r))
+      const pts: Pt[] = hops.flat()
+      const pk = packets[i]
+      let spot: Spot = { t: 0.5, dx: 0, dy: 0 }
+      if (pk) {
+        const text = pk.querySelector('text')!
+        const rect = pk.querySelector('rect')!
+        text.textContent = packetText(trip.move, mode, lang)
+        pk.removeAttribute('hidden')
+        const w = text.getComputedTextLength() + 26
+        rect.setAttribute('width', String(w))
+        rect.setAttribute('x', String(-w / 2))
+        const total = polyLen(pts)
+        spot = placePill(pts, [w, PILL_H], obstacles, topic.view[layout], [(total - polyLen(hops[hops.length - 1])) / total, 1])
+        const [x, y] = pointAt(pts, spot.t)
+        obstacles.push({ x: x + spot.dx - w / 2, y: y + spot.dy - PILL_H / 2, w, h: PILL_H })
+      }
+      return { pts, spot, to: trip.to }
     })
-    const place = (el: SVGElement, i: number, t: number) => {
-      const g = geo[i]!
-      const p = g.path.getPointAtLength(g.len * t)
-      el.setAttribute('transform', `translate(${(p.x + g.at.dx).toFixed(1)} ${(p.y + g.at.dy).toFixed(1)})`)
+
+    const place = (el: SVGElement, i: number, t: number, off: number) => {
+      const { pts, spot } = geo[i]
+      const [x, y] = pointAt(pts, t)
+      el.setAttribute('transform', `translate(${(x + spot.dx * off).toFixed(1)} ${(y + spot.dy * off).toFixed(1)})`)
     }
-    packets.forEach((pk, i) => {
-      if (!pk || !geo[i]) return
-      const text = pk.querySelector('text')!
-      const rect = pk.querySelector('rect')!
-      text.textContent = packetText(cur[i], mode, lang)
-      pk.removeAttribute('hidden')
-      const tw = text.getComputedTextLength() + 26
-      const start = geo[i]!.at.anchor === 'start'
-      rect.setAttribute('width', String(tw))
-      rect.setAttribute('x', String(start ? 0 : -tw / 2))
-      text.setAttribute('x', String(start ? tw / 2 : 0))
-    })
 
     let raf = 0
     let arriveTimer: ReturnType<typeof setTimeout> | undefined
@@ -63,8 +71,8 @@ export function usePackets({ topic, steps, index, animate, mode, lang, layoutKey
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (!animate || reduce) {
       packets.forEach((pk, i) => {
-        if (!pk || !geo[i]) return
-        place(pk, i, geo[i]!.at.rest)
+        if (!pk) return
+        place(pk, i, geo[i].spot.t, 1)
         pk.style.opacity = '1'
       })
     } else {
@@ -72,30 +80,30 @@ export function usePackets({ topic, steps, index, animate, mode, lang, layoutKey
       const tick = (now: number) => {
         const el = now - t0
         if (el < D1) {
-          const t = ease(el / D1)
+          const k = ease(el / D1)
           packets.forEach((pk, i) => {
-            if (!pk || !geo[i]) return
-            const rest = geo[i]!.at.rest
-            place(pk, i, Math.min(0.04, rest) + (rest - Math.min(0.04, rest)) * t)
+            if (!pk) return
+            const rest = geo[i].spot.t
+            const from = Math.min(0.04, rest)
+            place(pk, i, from + (rest - from) * k, k)
             pk.style.opacity = String(Math.min(1, el / 200))
           })
         } else {
-          const t = Math.min((el - D1) / D2, 1)
+          const k = Math.min((el - D1) / D2, 1)
           packets.forEach((pk, i) => {
             const c = comets[i]
-            if (!pk || !c || !geo[i]) return
-            const g = geo[i]!
-            place(pk, i, g.at.rest)
+            if (!pk || !c) return
+            const { pts, spot } = geo[i]
+            place(pk, i, spot.t, 1)
             pk.style.opacity = '1'
-            const p = g.path.getPointAtLength(g.len * (g.at.rest + (1 - g.at.rest) * ease(t)))
+            const [x, y] = pointAt(pts, spot.t + (1 - spot.t) * ease(k))
             c.removeAttribute('hidden')
-            c.setAttribute('cx', String(p.x))
-            c.setAttribute('cy', String(p.y))
+            c.setAttribute('cx', String(x))
+            c.setAttribute('cy', String(y))
           })
-          if (t >= 1) {
+          if (k >= 1) {
             comets.forEach((c) => c?.setAttribute('hidden', ''))
-            const dests = [...new Set(geo.flatMap((g) => (g ? [g.to] : [])))]
-            arrived = dests.flatMap((d) => { const g = nodeRefs.current[d]; return g ? [g] : [] })
+            arrived = [...new Set(geo.map((g) => g.to))].flatMap((d) => { const g = nodeRefs.current[d]; return g ? [g] : [] })
             arrived.forEach((g) => { g.classList.remove('arrive'); void g.getBoundingClientRect(); g.classList.add('arrive') })
             if (arrived.length) arriveTimer = setTimeout(() => arrived.forEach((g) => g.classList.remove('arrive')), 600)
             return
@@ -111,7 +119,7 @@ export function usePackets({ topic, steps, index, animate, mode, lang, layoutKey
       arrived.forEach((g) => g.classList.remove('arrive'))
       comets.forEach((c) => c?.setAttribute('hidden', ''))
     }
-  }, [index, steps, layoutKey, mode, lang]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [trips, layout, mode, lang]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  return { edgeRefs, nodeRefs, packetRefs, cometRefs }
+  return { svgRef, nodeRefs, packetRefs, cometRefs }
 }

@@ -1,12 +1,12 @@
 import { useMemo, type CSSProperties } from 'react'
 import { useLearnPrefs } from '../../../contexts/LearnPrefsContext'
 import { ICON } from '../../../data/learn/icons'
-import type { Kind, LayoutKey, MetroTopic, Side, Step } from '../../../data/learn/types'
-import { focusNodes, nodeLabels, nodeSubAt, stepKind, visitedEdges, workNodes } from './flow'
+import type { Kind, LayoutKey, Topic, Side, Step } from '../../../data/learn/types'
+import { focusNodes, nodeLabels, nodeSubAt, stepKind, trips, visitedEdges, workNodes } from './flow'
 import { bidirectionalCorridors, edgePoints, pathD } from './geometry'
 import { usePackets } from './usePackets'
 
-interface Props { topic: MetroTopic; layout: LayoutKey; steps: Step[]; index: number; animate: boolean }
+interface Props { topic: Topic; layout: LayoutKey; steps: Step[]; index: number; animate: boolean }
 
 const KINDS: Kind[] = ['request', 'queue', 'result', 'error']
 // SVG prop types omit `hidden`, but the attribute is valid and is toggled via setAttribute at runtime.
@@ -28,6 +28,7 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
   const step = steps[index]
   const kind = stepKind(topic, step)
   const moves = step.moves ?? []
+  const tripList = useMemo(() => trips(topic, steps[index].moves ?? []), [topic, steps, index])
   const focus = focusNodes(topic, step)
   const working = new Set(workNodes(step))
   const passed = visitedEdges(steps, index)
@@ -35,12 +36,12 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
   const [w, h] = topic.view[layout]
   const r = topic.nodeR?.[layout] ?? NODE_R
 
-  const { edgeRefs, nodeRefs, packetRefs, cometRefs } = usePackets({ topic, steps, index, animate, mode, lang, layoutKey: layout })
+  const { svgRef, nodeRefs, packetRefs, cometRefs } = usePackets({ topic, trips: tripList, animate, mode, lang, layout, bidir, r })
 
   const kindStyle = (k: Kind) => ({ '--pk': `var(--k-${k})`, '--pk-on': `var(--k-${k}-on)` } as CSSProperties)
 
   return (
-    <svg className="flow-svg" id="flow" viewBox={`0 0 ${w} ${h}`} role="img" aria-labelledby="step-title">
+    <svg ref={svgRef} className="flow-svg" id="flow" viewBox={`0 0 ${w} ${h}`} role="img" aria-labelledby="step-title">
       <defs>
         {KINDS.map((k) => (
           <marker key={k} id={`ar-${k}`} viewBox="0 0 10 10" refX="6" refY="5" markerUnits="userSpaceOnUse" markerWidth="15" markerHeight="15" orient="auto">
@@ -62,13 +63,12 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
       {Object.entries(topic.edges).map(([id, e]) => (
         <path
           key={id}
-          ref={(el) => { edgeRefs.current[id] = el }}
           className={`edge k-${e.kind}${activeEdges.has(id) ? ' active' : passed.has(id) ? ' visited' : ''}`}
           d={pathD(edgePoints(topic, id, layout, bidir, r))}
         />
       ))}
-      {moves.map((m, i) => (
-        <circle key={`c${i}`} ref={(el) => { cometRefs.current[i] = el }} className="comet" r="6.5" {...HIDDEN} style={kindStyle(topic.edges[m.edge].kind)} />
+      {tripList.map((tr, i) => (
+        <circle key={`c${i}`} ref={(el) => { cometRefs.current[i] = el }} className="comet" r="6.5" {...HIDDEN} style={kindStyle(tr.kind)} />
       ))}
       {Object.entries(topic.nodes).map(([id, n]) => {
         const [x, y, side] = n[layout]
@@ -86,8 +86,8 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
           </g>
         )
       })}
-      {moves.map((m, i) => (
-        <g key={`p${i}`} ref={(el) => { packetRefs.current[i] = el }} className="packet" {...HIDDEN} style={kindStyle(topic.edges[m.edge].kind)}>
+      {tripList.map((tr, i) => (
+        <g key={`p${i}`} ref={(el) => { packetRefs.current[i] = el }} className="packet" {...HIDDEN} style={kindStyle(tr.kind)}>
           <rect y="-14" height="28" rx="14" />
           <text x="0" y="0" />
         </g>

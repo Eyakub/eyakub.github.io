@@ -2,9 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { TOPICS } from './index'
 import { STATIONS, LINES } from './network'
 import type { L10n, Topic } from './types'
-import { bidirectionalCorridors, edgePoints, isMetro, pointAt } from '../../components/learn/player/geometry'
-import { laneGeo, lanePath, lanePlacement } from '../../components/learn/player/lanes'
-import { workNodes } from '../../components/learn/player/flow'
+import { bidirectionalCorridors, edgePoints, pointAt } from '../../components/learn/player/geometry'
+import { trips, workNodes } from '../../components/learn/player/flow'
 
 const words = (s: string) => s.replace(/`[^`]*`/g, 'x').trim().split(/\s+/).length
 function collectL10n(v: unknown, out: L10n[] = []): L10n[] {
@@ -21,20 +20,7 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
     for (const e of Object.values(t.edges)) {
       expect(t.nodes[e.from], e.from).toBeTruthy()
       expect(t.nodes[e.to], e.to).toBeTruthy()
-      if (isMetro(t)) expect(t.corridors[`${e.from}-${e.to}`] ?? t.corridors[`${e.to}-${e.from}`], `${e.from}-${e.to}`).toBeTruthy()
-    }
-  })
-  it('lane topics place every node once and every edge on a lane', () => {
-    if (isMetro(t)) return
-    const L = t.lanes!
-    const below = (L.below ?? []).map((b) => b.node)
-    expect([...L.cols, ...below].sort()).toEqual(Object.keys(t.nodes).sort())
-    ;(L.below ?? []).forEach((b) => expect(L.cols, b.node).toContain(b.under))
-    L.spans?.forEach((sp) => expect(L.cols.indexOf(sp.to)).toBeGreaterThanOrEqual(L.cols.indexOf(sp.from)))
-    for (const [id, e] of Object.entries(t.edges)) {
-      // a below-node is only reached from the column it hangs under
-      if (below.includes(e.from)) throw new Error(`${id}: edges cannot start at a below-node`)
-      if (below.includes(e.to)) expect(L.below!.find((b) => b.node === e.to)!.under, id).toBe(e.from)
+      expect(t.corridors[`${e.from}-${e.to}`] ?? t.corridors[`${e.to}-${e.from}`], `${e.from}-${e.to}`).toBeTruthy()
     }
   })
   it('every step has exactly one of moves/work and valid refs', () => {
@@ -65,15 +51,6 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
     }
   })
   it('positions stay inside the viewBox', () => {
-    if (!isMetro(t)) {
-      for (const lk of ['wide', 'narrow'] as const) {
-        const g = laneGeo(t, lk)
-        expect(g.w).toBeLessThanOrEqual(1000)
-        if (lk === 'narrow') expect(g.h, 'narrow height').toBeLessThanOrEqual(580)
-        for (const [id, sl] of Object.entries(g.slots)) for (const p of [sl.disc, sl.inDot, sl.outDot, sl.dot]) if (p) expect(p[0] >= 0 && p[0] <= g.w && p[1] >= 0 && p[1] <= g.h, `${lk} ${id}`).toBe(true)
-      }
-      return
-    }
     for (const lk of ['wide', 'narrow'] as const) {
       const [w, h] = t.view[lk]
       const inside = ([x, y]: [number, number] | number[]) => x >= 0 && x <= w && y >= 0 && y <= h
@@ -105,23 +82,19 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
   it('parallel moves use distinct edges and their packets never overlap', () => {
     const pillW = (label: string) => label.length * 7.6 + 26
     const longest = (m: { label: string; plain?: L10n }) => [m.label, m.plain?.en ?? '', m.plain?.bn ?? ''].reduce((a, b) => (b.length > a.length ? b : a))
-    const bidir = isMetro(t) ? bidirectionalCorridors(t) : new Set<string>()
+    const bidir = bidirectionalCorridors(t)
     for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) {
       if (!s.moves || s.moves.length < 2) continue
       expect(s.moves.length, s.id).toBeLessThanOrEqual(3)
       expect(new Set(s.moves.map((m) => m.edge)).size, s.id).toBe(s.moves.length)
+      const parallel = trips(t, s.moves)
       for (const lk of ['wide', 'narrow'] as const) {
-        const centre = (edge: string, w: number): [number, number] => {
-          if (isMetro(t)) return pointAt(edgePoints(t, edge, lk, bidir, t.nodeR?.[lk] ?? 25), 0.5)
-          const g = laneGeo(t, lk)
-          const at = lanePlacement(t, g, edge, lk)
-          const p = pointAt(lanePath(t, g, edge), at.rest)
-          return [p[0] + at.dx + (at.anchor === 'start' ? w / 2 : 0), p[1] + at.dy]
-        }
-        const box = s.moves.map((m) => { const w = pillW(longest(m)); return { c: centre(m.edge, w), w } })
+        const r = t.nodeR?.[lk] ?? 25
+        // a trip's pill rests on its last hop
+        const box = parallel.map((tr) => ({ c: pointAt(edgePoints(t, tr.edges[tr.edges.length - 1], lk, bidir, r), 0.5), w: pillW(longest(tr.move)) }))
         for (let i = 0; i < box.length; i++) for (let j = i + 1; j < box.length; j++) {
           const apart = Math.abs(box[i].c[0] - box[j].c[0]) >= (box[i].w + box[j].w) / 2 + 4 || Math.abs(box[i].c[1] - box[j].c[1]) >= 32
-          expect(apart, `${s.id} ${lk}: "${s.moves[i].label}" overlaps "${s.moves[j].label}"`).toBe(true)
+          expect(apart, `${s.id} ${lk}: "${parallel[i].move.label}" overlaps "${parallel[j].move.label}"`).toBe(true)
         }
       }
     }
@@ -157,7 +130,6 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
     seen.push(['hook', t.hook?.en ?? ''], ['takeaway', t.takeaway?.en ?? ''])
     t.words.forEach((w) => seen.push([`word ${w.term.en}`, w.d.en]))
     t.groups?.forEach((g) => seen.push([`group ${g.id}`, (g.plain ?? g.label).en]))
-    t.lanes?.spans?.forEach((sp) => seen.push([`span ${sp.from}`, (sp.plain ?? sp.label).en]))
     t.analogy.twins.forEach((tw) => seen.push([`twin ${tw.name.en}`, tw.d.en]))
     for (const [where, s] of seen) {
       expect(code.test(s), `${where}: "${s}"`).toBe(false)

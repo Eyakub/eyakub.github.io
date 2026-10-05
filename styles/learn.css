@@ -170,6 +170,8 @@ html[lang="bn"] .learn-root .lede{line-height:1.65}
 .learn-root .flow-svg .node.arrive .halo{animation:learn-arrive .55s ease-out}
 .learn-root .flow-svg .node .nm{fill:var(--ink);font-size:17px;font-weight:650;font-stretch:87.5%}
 .learn-root .flow-svg .node .sb{fill:var(--ink-3);font-size:13px;font-weight:500}
+/* A halo in the stage colour lets a line run behind a label without striking through it. */
+.learn-root .flow-svg .node text{paint-order:stroke;stroke:var(--surface);stroke-width:4px;stroke-linejoin:round}
 .learn-root .flow-svg .node.on .nm{font-weight:750}
 @keyframes learn-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
 @keyframes learn-arrive{0%{opacity:.45;transform:scale(.85)}100%{opacity:.16;transform:scale(1.12)}}
@@ -317,25 +319,3 @@ html:has(.learn-root)::-webkit-scrollbar-thumb{background:#9AA4B8;border-radius:
 .learn-root .remember span{flex:none;font-size:var(--t-xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:color-mix(in srgb,var(--k-result) 70%,var(--ink))}
 .learn-root .now-body .remember p{font-size:var(--t-sm);color:var(--ink);line-height:1.35}
 
-/* Two-lane diagram: columns are the layers, the top lane carries the request in, the bottom lane the reply out */
-.learn-root .lane-svg .band{fill:color-mix(in srgb,var(--ink) 3%,transparent);transition:fill .25s ease}
-.learn-root .lane-svg .band.on{fill:color-mix(in srgb,var(--k) 10%,var(--surface))}
-.learn-root .lane-svg .track{stroke-width:4}
-.learn-root .lane-svg .track.lane-in{stroke:color-mix(in srgb,var(--k-request) 28%,var(--track))}
-.learn-root .lane-svg .track.lane-out,.learn-root .lane-svg .track.lane-turn{stroke:color-mix(in srgb,var(--k-result) 28%,var(--track))}
-.learn-root .lane-svg .chev{fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.learn-root .lane-svg .chev.lane-in{stroke:color-mix(in srgb,var(--k-request) 55%,var(--track))}
-.learn-root .lane-svg .chev.lane-out{stroke:color-mix(in srgb,var(--k-result) 55%,var(--track))}
-.learn-root .lane-svg .edge{stroke-width:4}
-.learn-root .lane-svg .edge.active{stroke-width:5}
-.learn-root .lane-svg .dot{fill:var(--surface);stroke:var(--ink-3);stroke-width:2.5;transition:stroke .25s ease}
-.learn-root .lane-svg .node.on .dot{stroke:var(--k)}
-.learn-root .lane-svg .node .disc{stroke-width:3}
-.learn-root .lane-svg .node .nm{font-size:16px}
-.learn-root .lane-svg .node .sb{font-size:13.5px;fill:var(--ink-2)}
-.learn-root .lane-svg.lane-narrow .node .nm{font-size:17px}
-.learn-root .lane-svg.lane-narrow .node .sb{font-size:14px}
-.learn-root .lane-svg.lane-narrow .packet text{font-size:12.5px}
-.learn-root .lane-svg .node:not(.on) .nm,.learn-root .lane-svg .node:not(.on) .sb,.learn-root .lane-svg .node:not(.on) .ico{opacity:.8}
-.learn-root .lane-svg .span path{fill:none;stroke:var(--ink-3);stroke-width:1.5;opacity:.45}
-.learn-root .lane-svg .span text{fill:var(--ink-3);font-size:13px;font-weight:650}

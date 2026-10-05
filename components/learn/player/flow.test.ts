@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import type { Step, Topic } from '../../../data/learn/types'
-import { buildRoutes, firstAltIndex, stepKind, focusNodes, visitedEdges, nodeSubAt, dwellMs, workNodes, nodeLabels, packetText } from './flow'
+import { buildRoutes, firstAltIndex, stepKind, focusNodes, visitedEdges, nodeSubAt, dwellMs, workNodes, nodeLabels, packetText, trips } from './flow'
 
 const L = (s: string) => ({ en: s, bn: s })
 const st = (id: string, extra: Partial<Step>): Step => ({ id, title: L(id), simple: L(id), tech: L(id), ...extra })
@@ -107,5 +107,21 @@ describe('simply layer', () => {
     const m = steps[0].moves![0]
     expect(packetText(m, 'simple', 'en')).toBe('your order')
     expect(packetText(m, 'technical', 'en')).toBe('POST /x')
+  })
+})
+
+describe('trips', () => {
+  const t = {
+    edges: { ab: { from: 'a', to: 'b', kind: 'result' }, bc: { from: 'b', to: 'c', kind: 'result' }, cd: { from: 'c', to: 'd', kind: 'error' }, xy: { from: 'x', to: 'y', kind: 'result' } },
+  } as unknown as Topic
+  it('joins hand-on hops of one kind into a single trip carrying the last label', () => {
+    const out = trips(t, [{ edge: 'ab', label: 'response' }, { edge: 'bc', label: '200 OK' }])
+    expect(out).toHaveLength(1)
+    expect(out[0]).toMatchObject({ edges: ['ab', 'bc'], to: 'c', kind: 'result' })
+    expect(out[0].move.label).toBe('200 OK')
+  })
+  it('keeps unrelated or different-kind moves apart', () => {
+    expect(trips(t, [{ edge: 'ab', label: '1' }, { edge: 'xy', label: '2' }])).toHaveLength(2)
+    expect(trips(t, [{ edge: 'bc', label: '1' }, { edge: 'cd', label: '2' }])).toHaveLength(2)
   })
 })

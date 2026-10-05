@@ -47,6 +47,19 @@ export function nodeSubAt(topic: Topic, steps: Step[], index: number, nodeId: st
   return sub
 }
 
+/** One message's ride through a stop. Consecutive same-kind moves that hand it on (a→b, then b→c) join into one trip, so a single packet travels the whole way instead of two moving at once. */
+export interface Trip { edges: string[]; kind: Kind; move: Move; to: string }
+
+export function trips(topic: Topic, moves: Move[]): Trip[] {
+  return moves.reduce<Trip[]>((acc, m) => {
+    const e = topic.edges[m.edge]
+    const last = acc[acc.length - 1]
+    if (last && last.to === e.from && last.kind === e.kind) Object.assign(last, { edges: [...last.edges, m.edge], move: m, to: e.to })
+    else acc.push({ edges: [m.edge], kind: e.kind, move: m, to: e.to })
+    return acc
+  }, [])
+}
+
 export const packetText = (m: Move, mode: Mode, lang: Lang): string => (mode === 'simple' && m.plain ? m.plain[lang] : m.label)
 
 export const dwellMs = (mode: Mode): number => (mode === 'technical' ? 6500 : 4300)

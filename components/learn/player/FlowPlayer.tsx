@@ -4,9 +4,7 @@ import type { LayoutKey, Topic } from '../../../data/learn/types'
 import type { Mode } from '../../../lib/learn/prefs'
 import SegmentedControl from '../shell/SegmentedControl'
 import FlowDiagram from './FlowDiagram'
-import { isMetro } from './geometry'
 import KindLegend from './KindLegend'
-import LaneDiagram from './LaneDiagram'
 import NowPanel from './NowPanel'
 import PlayerControls from './PlayerControls'
 import StopList from './StopList'
@@ -84,9 +82,7 @@ export default function FlowPlayer({ topic }: { topic: Topic }) {
       </div>
       <section className="player" id="player" aria-labelledby="topic-title" onKeyDown={onKeyDown}>
         <div className="stage" id="stage" ref={stageRef}>
-          {isMetro(topic)
-            ? <FlowDiagram topic={topic} layout={layout} steps={steps} index={state.step} animate={animate} />
-            : <LaneDiagram topic={topic} layout={layout} steps={steps} index={state.step} animate={animate} />}
+          <FlowDiagram topic={topic} layout={layout} steps={steps} index={state.step} animate={animate} />
           <KindLegend topic={topic} />
         </div>
         <div className="ride">
