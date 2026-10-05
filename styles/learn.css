@@ -38,7 +38,7 @@ html[lang="bn"] .learn-root{font-family:var(--f-bn);line-height:1.72}
 .learn-root :focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:8px}
 .learn-root .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-.learn-root .shell{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:0 48px}
+.learn-root .shell{max-width:1360px;margin:0 auto;padding-inline:clamp(20px,3vw,32px);padding-block:0 48px}
 
 /* top bar */
 .learn-root .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:18px;background:var(--paper)}
@@ -128,14 +128,12 @@ html[lang="bn"] .learn-root .lede{line-height:1.65}
 .learn-root .switch > span{font-size:var(--t-sm);color:var(--ink-3);font-weight:500}
 
 .learn-root .player{display:grid;gap:18px;grid-template-columns:1fr}
-@media (min-width:980px){.learn-root .player{grid-template-columns:minmax(0,1.62fr) minmax(320px,1fr);align-items:start}}
+@media (min-width:980px){.learn-root .player{grid-template-columns:minmax(0,1fr) clamp(320px,27vw,380px);align-items:start}}
 .learn-root .stage{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-card);padding:12px 12px 14px;min-width:0}
 @media (min-width:980px){.learn-root .stage{position:sticky;top:calc(env(safe-area-inset-top,0px) + 84px)}
 .learn-root .flow-svg{max-height:calc(100dvh - 140px);margin-inline:auto}}
 @media (min-width:1200px){
   .learn-root{overflow-x:clip}
-  .learn-root .switches,.learn-root .player,.learn-root .map-sec{--wide:min(1680px,100vw - 56px);width:var(--wide);margin-inline:calc(50% - var(--wide) / 2)}
-  .learn-root .player{grid-template-columns:minmax(0,1fr) clamp(320px,24vw,380px)}
   .learn-root .network-svg{max-height:calc(100dvh - 120px);width:100%;display:block;margin-inline:auto}
 }
 @media (max-width:979px){.learn-root .player .ride{display:contents}
@@ -225,13 +223,14 @@ html[lang="bn"] .learn-root .flow-svg text,html[lang="bn"] .learn-root .network-
 .learn-root .stops .n{font-variant-numeric:tabular-nums;color:var(--ink-3);margin-right:6px}
 
 /* reading sections */
-.learn-root .read{max-width:760px;padding-block:44px 0}
+.learn-root .read{max-width:none;padding-block:44px 0}
 .learn-root .read > h2{display:flex;align-items:center;gap:12px;font-size:var(--t-2xl);font-weight:700;font-stretch:80%;line-height:1.05;margin-bottom:8px}
 .learn-root .read > h2 i{flex:none;width:18px;height:18px;border-radius:50%;border:5px solid var(--l-async);background:var(--surface)}
 .learn-root .read > p.intro{color:var(--ink-2);margin:0 0 18px;max-width:62ch}
 
 .learn-root .twins{list-style:none;margin:0;padding:0;display:grid;gap:12px;grid-template-columns:1fr}
 @media (min-width:700px){.learn-root .twins{grid-template-columns:1fr 1fr}}
+@media (min-width:980px){.learn-root .twins{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}}
 .learn-root .twins li{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:start;padding:14px 16px;border:1px solid var(--rule);border-radius:16px;background:var(--surface)}
 .learn-root .twins .ic{width:48px;height:48px;border-radius:50%;border:3px solid var(--ink);display:grid;place-items:center;color:var(--ink)}
 .learn-root .twins .ic svg{width:22px;height:22px}
@@ -319,3 +318,20 @@ html:has(.learn-root)::-webkit-scrollbar-thumb{background:#9AA4B8;border-radius:
 .learn-root .remember span{flex:none;font-size:var(--t-xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:color-mix(in srgb,var(--k-result) 70%,var(--ink))}
 .learn-root .now-body .remember p{font-size:var(--t-sm);color:var(--ink);line-height:1.35}
 
+
+/* desktop single-container layout */
+@media (min-width:980px){
+  .learn-root .topic-top{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:32px;align-items:end}
+  .learn-root .topic-top > *{min-width:0}
+  .learn-root .topic-head{padding-block:4px 8px}
+  .learn-root .topic-head h1{font-size:clamp(36px,5vw,56px)}
+  .learn-root .read{padding-block:36px 0}
+  .learn-root .done-row{padding-block:40px 0}
+  .learn-root .topic-top .words{padding-block:0}
+  .learn-root .sources{columns:2;column-gap:32px;display:block}
+  .learn-root .sources li{break-inside:avoid;margin-bottom:8px}
+}
+@media (min-width:1100px){
+  .learn-root .read-pair{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:start}
+  .learn-root .read-pair > *{min-width:0}
+}

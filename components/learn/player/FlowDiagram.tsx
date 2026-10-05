@@ -41,7 +41,7 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
   const kindStyle = (k: Kind) => ({ '--pk': `var(--k-${k})`, '--pk-on': `var(--k-${k}-on)` } as CSSProperties)
 
   return (
-    <svg ref={svgRef} className="flow-svg" id="flow" viewBox={`0 0 ${w} ${h}`} role="img" aria-labelledby="step-title">
+    <svg ref={svgRef} className="flow-svg" id="flow" viewBox={`0 0 ${w} ${h}`} style={{ maxWidth: `${w}px` }} role="img" aria-labelledby="step-title">
       <defs>
         {KINDS.map((k) => (
           <marker key={k} id={`ar-${k}`} viewBox="0 0 10 10" refX="6" refY="5" markerUnits="userSpaceOnUse" markerWidth="15" markerHeight="15" orient="auto">

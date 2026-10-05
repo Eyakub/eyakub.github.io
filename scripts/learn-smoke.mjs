@@ -384,18 +384,22 @@ const checks = [
       assert(g.left >= 0 && g.right <= g.cw, `${label}: frame ${g.left}..${g.right} outside ${g.cw}`)
       assert(Math.abs(g.left - (g.cw - g.right)) <= 2, `${label}: frame not centred (${g.left} vs ${g.cw - g.right})`)
     }
-    // the 2560 case checks the frame cap only
-    for (const [w, h, minSvg] of [[1920, 1080, 1100], [1280, 860, 690], [2560, 1440, 0]]) {
+    for (const [w, h, minSvg] of [[1920, 1080, 690], [1280, 860, 690], [2560, 1440, 0]]) {
       const { page, context } = await open('/learn/fastapi-lifecycle', { width: w, height: h })
       await page.waitForSelector('.flow-svg')
       await page.evaluate(() => document.fonts.ready)
       const g = await geom(page, '.player')
-      const svg = (await geom(page, '.flow-svg')).w
+      const head = await geom(page, '.topic-head')
+      const top = await geom(page, '.topic-top')
+      const svg = await page.evaluate(() => { const el = document.querySelector('.flow-svg'); return { w: el.getBoundingClientRect().width, vb: el.viewBox.baseVal.width } })
       if (w !== 2560) await shot(page, `wide-${w}`)
       await context.close()
-      assert(svg >= minSvg, `${w}: flow-svg ${svg}px < ${minSvg}`)
-      assert(g.w <= 1680.5, `${w}: frame ${g.w}px > 1680`)
       inside(g, `${w} player`)
+      assert(Math.abs(g.left - head.left) <= 1, `${w}: player left ${g.left} != topic-head left ${head.left}`)
+      assert(Math.abs(g.right - top.right) <= 1, `${w}: player right ${g.right} != topic-top right ${top.right}`)
+      assert(g.w <= 1296.5, `${w}: player ${g.w}px > 1296`)
+      assert(svg.w <= svg.vb + 0.5, `${w}: flow-svg ${svg.w}px > viewBox ${svg.vb}`)
+      assert(svg.w >= minSvg, `${w}: flow-svg ${svg.w}px < ${minSvg}`)
     }
     const { page, context } = await open('/learn', { width: 1920, height: 1080 })
     await page.waitForSelector('.map-sec')

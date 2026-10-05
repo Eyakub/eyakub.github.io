@@ -23,6 +23,7 @@ export default function TopicPage({ topic }: { topic: Topic }) {
           <span>{ui('backToMap')}</span>
         </Link>
       </nav>
+      <div className="topic-top">
       <header className="topic-head">
         <p className="line-tag">
           <i style={line ? { borderColor: `var(${line.color})` } : undefined} />
@@ -32,10 +33,13 @@ export default function TopicPage({ topic }: { topic: Topic }) {
         <p className="lede">{t(mode === 'simple' && topic.hook ? topic.hook : topic.summary)}</p>
       </header>
       <WordsFirst topic={topic} />
+      </div>
       <FlowPlayer key={topic.slug} topic={topic} />
       <AnalogyTwins topic={topic} />
-      <InterviewQA topic={topic} />
-      <CheatSheet topic={topic} />
+      <div className="read-pair">
+        <InterviewQA topic={topic} />
+        <CheatSheet topic={topic} />
+      </div>
       <Sources topic={topic} />
       <section className="read done-row">
         <button type="button" className="btn done-btn" aria-pressed={on} onClick={() => toggleLearned(topic.slug)}>
