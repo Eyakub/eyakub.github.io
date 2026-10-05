@@ -11,7 +11,7 @@ export const pythonGil: Topic = {
   },
   hook: {
     en: 'Python lets only one cook use the stove at a time, so hiring more cooks does not always make dinner faster.',
-    bn: 'পাইথনে একসময়ে একজন রাঁধুনিই স্টোভ ব্যবহার করতে পারে, তাই বেশি রাঁধুনি নিলেই রান্না সবসময় দ্রুত হয় না।'
+    bn: 'Python-এ একসময়ে একজন রাঁধুনিই স্টোভ ব্যবহার করতে পারে, তাই বেশি রাঁধুনি নিলেই রান্না সবসময় দ্রুত হয় না।'
   },
   takeaway: {
     en: 'Only the cook wearing the hat can cook. Waiting at the door or using a rice cooker frees the hat.',
@@ -49,8 +49,8 @@ export const pythonGil: Topic = {
     {
       term: { en: 'Rice cooker (C extension)', bn: 'রাইস কুকার (C extension)' },
       d: {
-        en: 'Fast add-on code that cooks on its own, without needing the hat.',
-        bn: 'দ্রুত অ্যাড-অন কোড, যে নিজে নিজে রাঁধে, টুপি লাগে না।'
+        en: 'Fast add-on code. Some kinds cook on their own, without the hat.',
+        bn: 'দ্রুত অ্যাড-অন কোড। কিছু ধরন টুপি ছাড়াই নিজে রাঁধে।'
       }
     },
     {
@@ -78,7 +78,7 @@ export const pythonGil: Topic = {
         sub: { en: 'Ready to cook', bn: 'রাঁধতে তৈরি' }
       },
       wide: [ 280, 150, 'left' ],
-      narrow: [ 70, 140, 'up' ]
+      narrow: [ 60, 140, 'up' ]
     },
     t2: {
       icon: 'thread',
@@ -89,7 +89,7 @@ export const pythonGil: Topic = {
         sub: { en: 'Ready to cook', bn: 'রাঁধতে তৈরি' }
       },
       wide: [ 280, 380, 'left' ],
-      narrow: [ 330, 140, 'up' ]
+      narrow: [ 340, 140, 'up' ]
     },
     gil: {
       icon: 'lock',
@@ -122,7 +122,7 @@ export const pythonGil: Topic = {
         sub: { en: 'Where parcels arrive', bn: 'যেখানে পার্সেল আসে' }
       },
       wide: [ 860, 380, 'down' ],
-      narrow: [ 330, 470, 'down' ]
+      narrow: [ 340, 470, 'down' ]
     },
     cext: {
       icon: 'box',
@@ -130,10 +130,10 @@ export const pythonGil: Topic = {
       sub: { en: 'hashlib, NumPy', bn: 'hashlib, NumPy' },
       plain: {
         name: { en: 'Rice cooker', bn: 'রাইস কুকার' },
-        sub: { en: 'Cooks without the hat', bn: 'টুপি ছাড়াই রাঁধে' }
+        sub: { en: 'Some need no hat', bn: 'কারও টুপি লাগে না' }
       },
       wide: [ 680, 80, 'down' ],
-      narrow: [ 70, 340, 'down' ]
+      narrow: [ 60, 340, 'down' ]
     }
   },
   groups: [
@@ -148,27 +148,27 @@ export const pythonGil: Topic = {
   corridors: {
     'gil-t1': {
       wide: [ [ 280, 265 ], [ 280, 150 ] ],
-      narrow: [ [ 200, 140 ], [ 70, 140 ] ]
+      narrow: [ [ 200, 140 ], [ 60, 140 ] ]
     },
     'gil-t2': {
       wide: [ [ 280, 265 ], [ 280, 380 ] ],
-      narrow: [ [ 200, 140 ], [ 330, 140 ] ]
+      narrow: [ [ 200, 140 ], [ 340, 140 ] ]
     },
     't1-interp': {
       wide: [ [ 280, 150 ], [ 525, 150 ], [ 640, 265 ] ],
-      narrow: [ [ 70, 140 ], [ 200, 270 ] ]
+      narrow: [ [ 60, 140 ], [ 200, 270 ] ]
     },
     't2-interp': {
       wide: [ [ 280, 380 ], [ 395, 265 ], [ 640, 265 ] ],
-      narrow: [ [ 330, 140 ], [ 200, 270 ] ]
+      narrow: [ [ 340, 140 ], [ 200, 270 ] ]
     },
     't2-io': {
       wide: [ [ 280, 380 ], [ 860, 380 ] ],
-      narrow: [ [ 330, 140 ], [ 330, 470 ] ]
+      narrow: [ [ 340, 140 ], [ 340, 470 ] ]
     },
     't1-cext': {
       wide: [ [ 280, 150 ], [ 350, 80 ], [ 680, 80 ] ],
-      narrow: [ [ 70, 140 ], [ 70, 340 ] ]
+      narrow: [ [ 60, 140 ], [ 60, 340 ] ]
     }
   },
   edges: {
@@ -187,7 +187,7 @@ export const pythonGil: Topic = {
     steps: [
       {
         id: 't1-takes',
-        moves: [ { edge: 'gil-t1', label: 'GIL', plain: { en: 'Chef’s hat', bn: 'শেফের টুপি' } } ],
+        moves: [ { edge: 'gil-t1', label: 'GIL', plain: { en: 'The hat', bn: 'টুপি' } } ],
         state: {
           gil: { en: 'Held by T1', bn: 'T1 ধরে আছে' },
           t1: { en: 'Has the GIL', bn: 'GIL আছে' }
@@ -198,8 +198,8 @@ export const pythonGil: Topic = {
         },
         title: { en: 'Cook 1 puts on the hat', bn: 'রাঁধুনি ১ টুপি পরে' },
         simple: {
-          en: 'Python’s kitchen has one stove and one chef’s hat. Only the cook wearing the hat may cook. Cook 1 puts it on.',
-          bn: 'Python-এর রান্নাঘরে একটাই স্টোভ আর একটাই শেফের টুপি। যে রাঁধুনির মাথায় টুপি, শুধু সে-ই রাঁধতে পারে। রাঁধুনি ১ টুপিটা পরে।'
+          en: 'Python’s kitchen has one stove with several burners, but only one chef’s hat. Only the cook wearing the hat may cook. Cook 1 puts it on.',
+          bn: 'Python-এর রান্নাঘরে একটা স্টোভে কয়েকটা চুলা, কিন্তু শেফের টুপি একটাই। যে রাঁধুনির মাথায় টুপি, শুধু সে-ই রাঁধতে পারে। রাঁধুনি ১ টুপিটা পরে।'
         },
         tech: {
           en: 'A thread must hold the GIL to run Python bytecode. Only one thread can hold it at a time.',
@@ -258,7 +258,7 @@ export const pythonGil: Topic = {
       },
       {
         id: 't1-releases',
-        moves: [ { edge: 't1-gil', label: 'release', plain: { en: 'Hat back', bn: 'টুপি ফেরত' } } ],
+        moves: [ { edge: 't1-gil', label: 'release', plain: { en: 'Hat back', bn: 'ফেরত' } } ],
         state: {
           gil: { en: 'Free', bn: 'খালি' },
           t1: { en: 'Waiting', bn: 'অপেক্ষায়' },
@@ -280,7 +280,7 @@ export const pythonGil: Topic = {
       },
       {
         id: 't2-takes',
-        moves: [ { edge: 'gil-t2', label: 'GIL', plain: { en: 'Chef’s hat', bn: 'শেফের টুপি' } } ],
+        moves: [ { edge: 'gil-t2', label: 'GIL', plain: { en: 'The hat', bn: 'টুপি' } } ],
         state: {
           gil: { en: 'Held by T2', bn: 'T2 ধরে আছে' },
           t2: { en: 'Running', bn: 'চলছে' },
@@ -305,7 +305,7 @@ export const pythonGil: Topic = {
         id: 'io-release',
         moves: [
           { edge: 't2-io', label: 'recv()', plain: { en: 'Waits at door', bn: 'দরজায় অপেক্ষা' } },
-          { edge: 'gil-t1', label: 'GIL', plain: { en: 'Chef’s hat', bn: 'শেফের টুপি' } }
+          { edge: 'gil-t1', label: 'GIL', plain: { en: 'The hat', bn: 'টুপি' } }
         ],
         state: {
           gil: { en: 'Held by T1', bn: 'T1 ধরে আছে' },
@@ -369,8 +369,8 @@ export const pythonGil: Topic = {
         },
         title: { en: 'A rice cooker needs no hat', bn: 'রাইস কুকারের টুপি লাগে না' },
         simple: {
-          en: 'Cook 1 starts the rice cooker. It cooks on its own without the hat, so the hat goes back on the hook.',
-          bn: 'রাঁধুনি ১ রাইস কুকার চালু করে। ওটা টুপি ছাড়াই নিজে রাঁধে, তাই টুপি হুকে ফিরে যায়।'
+          en: 'Cook 1 starts the rice cooker. This one cooks on its own without the hat, so the hat goes back on the hook.',
+          bn: 'রাঁধুনি ১ রাইস কুকার চালু করে। এটা টুপি ছাড়াই নিজে রাঁধে, তাই টুপি হুকে ফিরে যায়।'
         },
         tech: {
           en: 'Some C extensions, such as `hashlib` on big data, zlib and NumPy, release the GIL around heavy work. Many extensions do not.',
@@ -379,7 +379,7 @@ export const pythonGil: Topic = {
       },
       {
         id: 't2-runs',
-        moves: [ { edge: 'gil-t2', label: 'GIL', plain: { en: 'Chef’s hat', bn: 'শেফের টুপি' } } ],
+        moves: [ { edge: 'gil-t2', label: 'GIL', plain: { en: 'The hat', bn: 'টুপি' } } ],
         state: {
           gil: { en: 'Held by T2', bn: 'T2 ধরে আছে' },
           t2: { en: 'Running', bn: 'চলছে' },
@@ -458,7 +458,7 @@ export const pythonGil: Topic = {
         },
         {
           id: 'taking-turns',
-          work: { node: 'gil', kind: 'error' },
+          work: { node: 'gil', kind: 'queue' },
           state: { gil: { en: 'T1 / T2 alternating', bn: 'T1 / T2 পালা করে' } },
           plainState: { gil: { en: 'Passed around', bn: 'হাতে হাতে ঘোরে' } },
           title: { en: 'They take turns', bn: 'তারা পালা করে রাঁধে' },
@@ -473,7 +473,7 @@ export const pythonGil: Topic = {
         },
         {
           id: 'ping',
-          moves: [ { edge: 't2-gil', label: 'release', plain: { en: 'Hat back', bn: 'টুপি ফেরত' } } ],
+          moves: [ { edge: 't2-gil', label: 'release', plain: { en: 'Hat back', bn: 'ফেরত' } } ],
           state: {
             gil: { en: 'Handed over', bn: 'হাতবদল' },
             t2: { en: 'Waiting', bn: 'অপেক্ষায়' }
@@ -491,7 +491,7 @@ export const pythonGil: Topic = {
         },
         {
           id: 'pong',
-          moves: [ { edge: 'gil-t1', label: 'GIL', plain: { en: 'Chef’s hat', bn: 'শেফের টুপি' } } ],
+          moves: [ { edge: 'gil-t1', label: 'GIL', plain: { en: 'The hat', bn: 'টুপি' } } ],
           state: {
             gil: { en: 'Held by T1', bn: 'T1 ধরে আছে' },
             t1: { en: 'CPU loop', bn: 'CPU loop' },
@@ -531,7 +531,7 @@ export const pythonGil: Topic = {
     },
     {
       id: 'free-threaded',
-      label: { en: 'No hat (free-threaded)', bn: 'টুপি ছাড়া (free-threaded)' },
+      label: { en: 'A kitchen with no hat', bn: 'টুপি ছাড়া রান্নাঘর' },
       whatIf: {
         en: 'What if the chef’s hat is put away and nobody needs it?',
         bn: 'শেফের টুপিটা যদি সরিয়ে রাখা হয় আর কারও লাগে না?'
@@ -611,10 +611,10 @@ export const pythonGil: Topic = {
             gil: { en: 'Hat is back', bn: 'টুপি ফিরেছে' },
             interp: { en: 'One cook at a time', bn: 'একসময়ে একজন রাঁধে' }
           },
-          title: { en: 'An old tool brings the hat back', bn: 'পুরনো যন্ত্র টুপি ফিরিয়ে আনে' },
+          title: { en: 'An old rice cooker brings the hat back', bn: 'পুরনো রাইস কুকার টুপি ফিরিয়ে আনে' },
           simple: {
-            en: 'Plug in an old tool not made for this kitchen, and the hat can come back.',
-            bn: 'এই রান্নাঘরের জন্য বানানো নয় এমন পুরনো যন্ত্র লাগালে টুপিটা ফিরে আসতে পারে।'
+            en: 'Plug in an old rice cooker not made for this kitchen, and the hat can come back.',
+            bn: 'এই রান্নাঘরের জন্য বানানো নয় এমন পুরনো রাইস কুকার লাগালে টুপিটা ফিরে আসতে পারে।'
           },
           tech: {
             en: 'Importing a C extension not marked free-threading safe can re-enable the GIL, with a warning. Check that your wheels support it.',
@@ -688,7 +688,7 @@ export const pythonGil: Topic = {
         icon: 'alert',
         node: null,
         name: { en: 'Two long dishes, one hat', bn: 'দুটো লম্বা পদ, একটা টুপি' },
-        is: { en: 'is CPU-bound threads', bn: 'মানে CPU-bound thread' },
+        is: { en: 'is two cooks with endless work', bn: 'মানে দুই রাঁধুনির একটানা কাজ' },
         d: {
           en: 'Both cooks need the stove all the time. More cooks will not speed it up, because only one may wear the hat.',
           bn: 'দুই রাঁধুনিরই সারাক্ষণ স্টোভ লাগে। আরও রাঁধুনি নিলেও দ্রুত হয় না, কারণ টুপি পরতে পারে একজনই।'

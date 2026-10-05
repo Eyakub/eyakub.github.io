@@ -76,7 +76,7 @@ const TOPIC_CASES = [
   { slug: 'git-basics', total: 9, altStop: 'Stop 9 of 12', altBtn: 2 },
   { slug: 'concurrency-vs-parallelism', total: 9, altStop: 'Stop 7 of 10' },
   { slug: 'processes-vs-threads', total: 10, altStop: 'Stop 4 of 5', altBtn: 2 },
-  { slug: 'python-gil', total: 11, altStop: 'Stop 7 of 11', taught: true },
+  { slug: 'python-gil', total: 11, altStop: 'Stop 7 of 11', taught: true, altFail: false },
   { slug: 'multiprocessing-pools', total: 9, altStop: 'Stop 3 of 4', altBtn: 2, step3Packets: 2 },
   { slug: 'asyncio-event-loop', total: 10, altStop: 'Stop 3 of 5' },
   { slug: 'race-conditions-locks', total: 10, altStop: 'Stop 7 of 9', altBtn: 2, step3Packets: 0 },
@@ -307,7 +307,7 @@ const checks = [
     assert(label?.trim() === 'থামান', `play label: ${label}`)
   }],
   ['player-alt-route', async () => {
-    for (const { slug, altStop, altBtn = 1 } of TOPIC_CASES) {
+    for (const { slug, altStop, altBtn = 1, altFail } of TOPIC_CASES) {
       const { page, context } = await open(`/learn/${slug}`)
       await page.getByRole('group', { name: 'Route' }).getByRole('button').nth(altBtn).click()
       const stop = await page.textContent('#stopno')
@@ -315,9 +315,11 @@ const checks = [
       await page.waitForTimeout(300)
       const errs = await page.locator('.edge.k-error').evaluateAll((els) => els.filter((e) => getComputedStyle(e).opacity !== '0' && e.classList.contains('active')).length)
       const errWork = await page.locator('.node.working').evaluateAll((els) => els.filter((e) => (e.getAttribute('style') ?? '').includes('--k-error')).length)
+      const lit = await page.locator('.edge.active, .node.working').evaluateAll((els) => els.filter((e) => getComputedStyle(e).opacity !== '0').length)
       await context.close()
       assert(stop === altStop, `${slug} stopno: ${stop}`)
-      assert(errs >= 1 || errWork >= 1, `${slug} no visible error edge or error-working node`)
+      if (altFail === false) assert(lit >= 1, `${slug} no visible active edge or working node`)
+      else assert(errs >= 1 || errWork >= 1, `${slug} no visible error edge or error-working node`)
     }
   }],
   ['player-keyboard', async () => {
