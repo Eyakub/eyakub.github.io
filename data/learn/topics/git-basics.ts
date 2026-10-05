@@ -9,63 +9,63 @@ export const gitBasics: Topic = {
     en: 'How a change travels from your editor into a commit, up to GitHub, and back down to your teammates.',
     bn: 'একটা পরিবর্তন কীভাবে আপনার এডিটর থেকে commit হয়ে GitHub-এ যায়, আর সেখান থেকে সহকর্মীদের কাছে ফিরে আসে।'
   },
-  view: { wide: [ 820, 380 ], narrow: [ 400, 600 ] },
+  view: { wide: [ 820, 380 ], narrow: [ 400, 540 ] },
   nodes: {
     wd: {
       icon: 'folder',
       name: { en: 'Working directory', bn: 'Working directory' },
       sub: { en: 'Files you edit', bn: 'যে ফাইল আপনি বদলান' },
       wide: [ 80, 110, 'up' ],
-      narrow: [ 90, 50, 'right' ]
+      narrow: [ 80, 60, 'right' ]
     },
     idx: {
       icon: 'box',
       name: { en: 'Staging area', bn: 'স্টেজিং এরিয়া' },
       sub: { en: 'Next snapshot', bn: 'পরের স্ন্যাপশট' },
       wide: [ 290, 110, 'up' ],
-      narrow: [ 90, 170, 'right' ]
+      narrow: [ 80, 170, 'right' ]
     },
     repo: {
       icon: 'archive',
       name: { en: 'Local repository', bn: 'লোকাল রিপোজিটরি' },
       sub: { en: 'HEAD → main → 9f8e7d', bn: 'HEAD → main → 9f8e7d' },
       wide: [ 500, 110, 'up' ],
-      narrow: [ 90, 290, 'right' ]
+      narrow: [ 80, 280, 'right' ]
     },
     rtrack: {
       icon: 'bookmark',
       name: { en: 'origin/main', bn: 'origin/main' },
       sub: { en: 'Last seen: 9f8e7d', bn: 'শেষ দেখা: 9f8e7d' },
       wide: [ 620, 280, 'right' ],
-      narrow: [ 290, 405, 'down' ]
+      narrow: [ 190, 390, 'right' ]
     },
     remote: {
       icon: 'cloud',
       name: { en: 'GitHub (origin)', bn: 'GitHub (origin)' },
       sub: { en: 'main → 9f8e7d', bn: 'main → 9f8e7d' },
       wide: [ 740, 110, 'down' ],
-      narrow: [ 90, 520, 'right' ]
+      narrow: [ 80, 500, 'right' ]
     }
   },
   corridors: {
-    'wd-idx': { wide: [ [ 80, 110 ], [ 290, 110 ] ], narrow: [ [ 90, 50 ], [ 90, 170 ] ] },
-    'idx-repo': { wide: [ [ 290, 110 ], [ 500, 110 ] ], narrow: [ [ 90, 170 ], [ 90, 290 ] ] },
-    'repo-remote': { wide: [ [ 500, 110 ], [ 740, 110 ] ], narrow: [ [ 90, 290 ], [ 90, 520 ] ] },
+    'wd-idx': { wide: [ [ 80, 110 ], [ 290, 110 ] ], narrow: [ [ 80, 60 ], [ 80, 170 ] ] },
+    'idx-repo': { wide: [ [ 290, 110 ], [ 500, 110 ] ], narrow: [ [ 80, 170 ], [ 80, 280 ] ] },
+    'repo-remote': { wide: [ [ 500, 110 ], [ 740, 110 ] ], narrow: [ [ 80, 280 ], [ 80, 500 ] ] },
     'remote-rtrack': {
       wide: [ [ 740, 110 ], [ 660, 160 ], [ 630, 280 ], [ 620, 280 ] ],
-      narrow: [ [ 90, 520 ], [ 130, 480 ], [ 290, 405 ] ]
+      narrow: [ [ 80, 500 ], [ 190, 390 ] ]
     },
     'rtrack-repo': {
       wide: [ [ 620, 280 ], [ 500, 280 ], [ 500, 110 ] ],
-      narrow: [ [ 290, 405 ], [ 150, 360 ], [ 90, 290 ] ]
+      narrow: [ [ 190, 390 ], [ 80, 280 ] ]
     },
     'remote-wd': {
       wide: [ [ 740, 110 ], [ 740, 40 ], [ 80, 40 ], [ 80, 110 ] ],
-      narrow: [ [ 90, 520 ], [ 12, 520 ], [ 12, 50 ], [ 90, 50 ] ]
+      narrow: [ [ 80, 500 ], [ 16, 500 ], [ 16, 14 ], [ 80, 14 ], [ 80, 60 ] ]
     },
     'wd-repo': {
       wide: [ [ 80, 110 ], [ 80, 200 ], [ 410, 200 ], [ 500, 110 ] ],
-      narrow: [ [ 90, 50 ], [ 30, 110 ], [ 30, 230 ], [ 90, 290 ] ]
+      narrow: [ [ 80, 60 ], [ 46, 60 ], [ 46, 280 ], [ 80, 280 ] ]
     }
   },
   edges: {
