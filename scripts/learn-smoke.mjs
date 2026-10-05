@@ -146,6 +146,22 @@ const checks = [
     assert(toast?.includes('Phase 3'), `toast missing Phase 3: ${toast}`)
     noProblems(problems)
   }],
+  ['hub-concurrency-open', async () => {
+    const slugs = ['concurrency-vs-parallelism', 'processes-vs-threads', 'python-gil', 'multiprocessing-pools', 'asyncio-event-loop', 'race-conditions-locks']
+    const { page, context, problems } = await open('/learn')
+    await page.waitForSelector('.network-svg .st')
+    const closed = []
+    for (const slug of slugs) if ((await page.locator(`.network-svg .st.open[data-id="${slug}"]`).count()) !== 1) closed.push(slug)
+    await page.locator('.network-svg .st[data-id="asyncio-event-loop"]').click()
+    await page.waitForURL('**/learn/asyncio-event-loop')
+    // Client-side navigation updates the URL before the new page renders.
+    const rendered = await page.waitForFunction(() => document.querySelector('h1')?.textContent?.includes('asyncio'), null, { timeout: 10000 }).then(() => true, () => false)
+    const h1 = await page.textContent('h1')
+    await context.close()
+    assert(closed.length === 0, `stations not open: ${closed.join(', ')}`)
+    assert(rendered, `topic page never rendered; h1: ${h1}`)
+    noProblems(problems)
+  }],
   ['hub-strips-mobile', async () => {
     const { page, context } = await open('/learn', { width: 390, height: 844 })
     const mapVisible = await page.locator('.network-svg').isVisible().catch(() => false)
