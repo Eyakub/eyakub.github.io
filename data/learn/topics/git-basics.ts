@@ -14,8 +14,8 @@ export const gitBasics: Topic = {
     bn: 'Git হলো আপনার ফাইলের ফটো অ্যালবাম। এটা প্রতিটি ভার্সন মনে রাখে, তাই ভুল ফেরানো আর অন্যের সাথে কাজ করা সহজ হয়।'
   },
   takeaway: {
-    en: 'Save in your own album, share when ready, and fetch before you merge. Your files only change when you choose.',
-    bn: 'নিজের অ্যালবামে সেভ করুন, তৈরি হলে শেয়ার করুন, আর মেলানোর আগে ডাউনলোড করে দেখুন। আপনার ফাইল বদলায় শুধু আপনি চাইলে।'
+    en: 'Save in your own album, share when ready, and fetch before you merge.',
+    bn: 'নিজের অ্যালবামে সেভ করুন, তৈরি হলে শেয়ার করুন, আর মেলানোর আগে ডাউনলোড করে দেখুন।'
   },
   words: [
     {
@@ -159,33 +159,24 @@ export const gitBasics: Topic = {
     label: UI.routeMain,
     steps: [
       {
-        id: 'edit',
-        work: { node: 'wd', kind: 'request' },
-        state: { wd: { en: 'app.py modified', bn: 'app.py বদলেছে' } },
-        plainState: { wd: { en: 'One file changed', bn: 'একটা ফাইল বদলেছে' } },
-        title: { en: 'You change a file', bn: 'আপনি একটা ফাইল বদলান' },
-        simple: {
-          en: 'This is your messy desk, where your files live and you edit them. You change one file. Git notices, but nothing is saved yet.',
-          bn: 'এটা আপনার এলোমেলো ডেস্ক, যেখানে ফাইল থাকে আর আপনি বদলান। আপনি একটা ফাইল বদলান। Git টের পায়, কিন্তু এখনো কিছু সেভ হয়নি।'
-        },
-        tech: {
-          en: '`git status` lists app.py as modified. Git has recorded nothing yet; the change exists only as a file on disk.',
-          bn: '`git status` app.py-কে modified হিসেবে দেখায়। Git এখনো কিছুই রেকর্ড করেনি; পরিবর্তনটা শুধু ডিস্কের ফাইল হিসেবে আছে।'
-        }
-      },
-      {
         id: 'add',
         moves: [ { edge: 'add', label: 'git add app.py', plain: { en: 'Photo to tray', bn: 'ট্রেতে ছবি' } } ],
-        state: { idx: { en: 'app.py staged', bn: 'app.py স্টেজ করা' } },
-        plainState: { idx: { en: 'Photo on tray', bn: 'ট্রেতে ছবি আছে' } },
-        title: { en: 'You pick what to save', bn: 'কী সেভ হবে আপনি বাছেন' },
+        state: {
+          wd: { en: 'app.py modified', bn: 'app.py বদলেছে' },
+          idx: { en: 'app.py staged', bn: 'app.py স্টেজ করা' }
+        },
+        plainState: {
+          wd: { en: 'One file changed', bn: 'একটা ফাইল বদলেছে' },
+          idx: { en: 'Photo on tray', bn: 'ট্রেতে ছবি আছে' }
+        },
+        title: { en: 'You change a file and pick it', bn: 'আপনি ফাইল বদলান আর বাছেন' },
         simple: {
-          en: 'You move the changed file onto the arranging tray. You choose only the changes that belong on the next album page.',
-          bn: 'আপনি বদলানো ফাইলটা সাজানোর ট্রেতে রাখেন। পরের অ্যালবাম পাতায় যে পরিবর্তনগুলো যাবে, শুধু সেগুলোই বাছেন।'
+          en: 'This is your messy desk, where you edit files. You change one file, then move it onto the arranging tray. Nothing is saved yet.',
+          bn: 'এটা আপনার এলোমেলো ডেস্ক, যেখানে ফাইল বদলান। আপনি একটা ফাইল বদলে সাজানোর ট্রেতে রাখেন। এখনো কিছু সেভ হয়নি।'
         },
         tech: {
-          en: '`git add` writes the file content as a blob object and updates `.git/index` to describe the next snapshot. Staging lets you commit only part of your edits.',
-          bn: '`git add` ফাইলের কনটেন্ট blob object হিসেবে লেখে আর পরের স্ন্যাপশট বোঝাতে `.git/index` আপডেট করে। স্টেজিংয়ের কারণে আপনি পরিবর্তনের শুধু একটা অংশও commit করতে পারেন।'
+          en: '`git status` lists app.py as modified. `git add` then writes its content as a blob object and updates `.git/index` for the next snapshot. Staging lets you commit only part of your edits.',
+          bn: '`git status` app.py-কে modified দেখায়। তারপর `git add` কনটেন্ট blob object হিসেবে লেখে আর পরের স্ন্যাপশটের জন্য `.git/index` আপডেট করে। স্টেজিংয়ের কারণে পরিবর্তনের শুধু একটা অংশও commit করা যায়।'
         }
       },
       {
@@ -197,14 +188,14 @@ export const gitBasics: Topic = {
           wd: { en: 'No changes', bn: 'কোনো পরিবর্তন নেই' }
         },
         plainState: {
-          repo: { en: 'Latest: page 2', bn: 'সর্বশেষ: ২ নম্বর পাতা' },
+          repo: { en: 'Latest: a1b2c3', bn: 'সর্বশেষ: a1b2c3' },
           idx: { en: 'Tray empty', bn: 'ট্রে খালি' },
           wd: { en: 'All tidy', bn: 'সব গোছানো' }
         },
         title: { en: 'You save a page', bn: 'আপনি একটা পাতা সেভ করেন' },
         simple: {
-          en: 'You glue the tray’s photos into the album as a new page. That page is a commit: a permanent snapshot in your own history.',
-          bn: 'আপনি ট্রের ছবিগুলো অ্যালবামে নতুন পাতা হিসেবে আটকান। এই পাতাই commit: আপনার নিজের ইতিহাসে স্থায়ী একটা স্ন্যাপশট।'
+          en: 'You glue the tray’s photos into the album as a new page. That page is a commit, a permanent snapshot with a short code: a1b2c3.',
+          bn: 'আপনি ট্রের ছবিগুলো অ্যালবামে নতুন পাতা হিসেবে আটকান। এই পাতাই commit, ছোট কোডসহ স্থায়ী স্ন্যাপশট: a1b2c3।'
         },
         tech: {
           en: 'Git builds a tree object from the index, then a commit object holding that tree, the parent, author and message. The SHA hash `a1b2c3` identifies it. Commits store snapshots, not diffs.',
@@ -227,18 +218,12 @@ export const gitBasics: Topic = {
       {
         id: 'push',
         moves: [ { edge: 'push', label: 'git push', plain: { en: 'Upload page', bn: 'পাতা আপলোড' } } ],
-        state: {
-          remote: { en: 'main → a1b2c3', bn: 'main → a1b2c3' },
-          rtrack: { en: 'Last seen: a1b2c3', bn: 'শেষ দেখা: a1b2c3' }
-        },
-        plainState: {
-          remote: { en: 'Has page 2', bn: '২ নম্বর পাতা আছে' },
-          rtrack: { en: 'Saw page 2', bn: '২ নম্বর পাতা দেখেছে' }
-        },
+        state: { remote: { en: 'main → a1b2c3', bn: 'main → a1b2c3' } },
+        plainState: { remote: { en: 'Has a1b2c3', bn: 'a1b2c3 আছে' } },
         title: { en: 'You upload to the cloud', bn: 'আপনি ক্লাউডে আপলোড করেন' },
         simple: {
-          en: 'You push, which means upload. Your new page goes to the shared cloud album on GitHub, where teammates can see it. Your cloud note updates too.',
-          bn: 'আপনি push করেন, মানে আপলোড। নতুন পাতাটা GitHub-এর শেয়ার করা ক্লাউড অ্যালবামে যায়, সহকর্মীরা দেখতে পায়। ক্লাউড নোটও হালনাগাদ হয়।'
+          en: 'You push, which means upload. Your new page goes to the shared cloud album on GitHub, where teammates can see it.',
+          bn: 'আপনি push করেন, মানে আপলোড। নতুন পাতাটা GitHub-এর শেয়ার করা ক্লাউড অ্যালবামে যায়, সহকর্মীরা দেখতে পায়।'
         },
         tech: {
           en: 'Git sends the missing objects, then asks the remote to fast-forward `refs/heads/main`. The remote rejects the push if it has commits you lack. Your `origin/main` updates on success.',
@@ -246,10 +231,25 @@ export const gitBasics: Topic = {
         }
       },
       {
+        id: 'cloud-note',
+        work: { node: 'rtrack', kind: 'result' },
+        state: { rtrack: { en: 'Last seen: a1b2c3', bn: 'শেষ দেখা: a1b2c3' } },
+        plainState: { rtrack: { en: 'Saw a1b2c3', bn: 'a1b2c3 দেখেছে' } },
+        title: { en: 'Your cloud note updates', bn: 'ক্লাউড নোট হালনাগাদ হয়' },
+        simple: {
+          en: 'After a successful upload, your cloud note updates to match. It now remembers the cloud album has your new page.',
+          bn: 'আপলোড সফল হলে আপনার ক্লাউড নোট মিলিয়ে হালনাগাদ হয়। এখন সেটা মনে রাখে ক্লাউড অ্যালবামে আপনার নতুন পাতা আছে।'
+        },
+        tech: {
+          en: 'After a successful push, Git also moves your local `origin/main` to `a1b2c3`, without a fetch. It is still only a bookmark of what the remote had when last contacted.',
+          bn: 'push সফল হলে Git আপনার লোকাল `origin/main`-ও `a1b2c3`-তে সরায়, fetch ছাড়াই। এটা তখনও শুধু একটা বুকমার্ক, শেষ যোগাযোগের সময় remote-এ যা ছিল তার।'
+        }
+      },
+      {
         id: 'you-commit',
         work: { node: 'repo', kind: 'request' },
         state: { repo: { en: 'HEAD → main → d4e5f6', bn: 'HEAD → main → d4e5f6' } },
-        plainState: { repo: { en: 'Latest: page 3', bn: 'সর্বশেষ: ৩ নম্বর পাতা' } },
+        plainState: { repo: { en: 'Latest: d4e5f6', bn: 'সর্বশেষ: d4e5f6' } },
         title: { en: 'You keep working', bn: 'আপনি কাজ চালিয়ে যান' },
         simple: {
           en: 'You save another page in your own album. The cloud album does not have it yet.',
@@ -297,8 +297,8 @@ export const gitBasics: Topic = {
         plainState: { repo: { en: 'Both lines joined', bn: 'দুই ধারা জোড়া' } },
         title: { en: 'You merge their work in', bn: 'আপনি তাদের কাজ মিলিয়ে নেন' },
         simple: {
-          en: 'Merge means combining. You each added pages, so Git joins your story and theirs into one. Your album now holds both.',
-          bn: 'মেলানো মানে merge। দুজনেই পাতা যোগ করেছেন, তাই Git আপনার আর তাদের গল্প এক করে। অ্যালবামে এখন দুটোই আছে।'
+          en: 'Merge means combining. You each added pages, so Git joins your story and theirs into one.',
+          bn: 'মেলানো মানে merge। দুজনেই পাতা যোগ করেছেন, তাই Git আপনার আর তাদের গল্প এক করে।'
         },
         tech: {
           en: 'Both sides have new commits, so Git creates a merge commit with two parents: yours `d4e5f6` and theirs `77d4e1`. This is `5c6d7e`. With no divergence, it would only fast-forward.',
