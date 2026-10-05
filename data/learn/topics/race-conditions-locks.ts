@@ -109,7 +109,7 @@ export const raceConditionsLocks: Topic = {
         title: { en: 'Thread 2 reads the same 0', bn: 'Thread ২-ও একই ০ পড়ে' },
         simple: {
           en: 'Before Thread 1 writes back, Thread 2 reads the counter too. It is still 0.',
-          bn: 'Thread ১ ফেরত লেখার আগেই Thread ২ও counter পড়ে। তখনো ০।'
+          bn: 'Thread ১ ফেরত লেখার আগেই Thread ২-ও counter পড়ে। তখনো ০।'
         },
         tech: {
           en: 'A thread switch between the load and the store is allowed at bytecode boundaries, even with the GIL.',
@@ -157,11 +157,11 @@ export const raceConditionsLocks: Topic = {
         title: { en: 'Thread 2 overwrites it', bn: 'Thread ২ মুছে দেয়' },
         simple: {
           en: 'Thread 2 also writes 1, wiping out Thread 1’s update. Two increments, one result.',
-          bn: 'Thread ২ও ১ লেখে, Thread ১-এর আপডেট মুছে যায়। দুটো increment, ফল একটাই।'
+          bn: 'Thread ২-ও ১ লেখে, Thread ১-এর আপডেট মুছে যায়। দুটো increment, ফল একটাই।'
         },
         tech: {
-          en: 'Lost update from a non-atomic read-modify-write. On modern CPython it needs many iterations to show, but it is a real bug.',
-          bn: 'non-atomic read-modify-write থেকে lost update। আধুনিক CPython-এ দেখা যেতে অনেক iteration লাগে, কিন্তু bug-টা সত্যি।'
+          en: 'Lost update from a non-atomic read-modify-write. On modern CPython it often needs many iterations to show, but it is a real bug.',
+          bn: 'non-atomic read-modify-write থেকে lost update। আধুনিক CPython-এ দেখা যেতে প্রায়ই অনেক iteration লাগে, কিন্তু bug-টা সত্যি।'
         }
       },
       {
@@ -305,8 +305,10 @@ export const raceConditionsLocks: Topic = {
           id: 'stuck',
           work: { node: [ 'lockA', 'lockB' ], kind: 'error' },
           state: {
-            lockA: { en: 'Stuck', bn: 'আটকে' },
-            lockB: { en: 'Stuck', bn: 'আটকে' }
+            lockA: { en: 'Held by T1', bn: 'T1 ধরে আছে' },
+            lockB: { en: 'Held by T2', bn: 'T2 ধরে আছে' },
+            t1: { en: 'Stuck forever', bn: 'চিরকাল আটকে' },
+            t2: { en: 'Stuck forever', bn: 'চিরকাল আটকে' }
           },
           title: { en: 'Nobody can move', bn: 'কেউ নড়তে পারে না' },
           simple: {
@@ -576,8 +578,8 @@ export const raceConditionsLocks: Topic = {
         bn: '`with lock:` মানে `acquire()`, তারপর `try: ... finally: release()`। `finally` ছাড়া শুধু `acquire()` lock চিরকালের জন্য ধরা রেখে দিতে পারে।'
       },
       redFlag: {
-        en: '“A lock is released automatically when its thread dies.” It is not.',
-        bn: '“thread মরে গেলে lock নিজে থেকে ছাড়া পায়।” পায় না।'
+        en: '“A lock is released automatically when its thread dies.”',
+        bn: '“thread মরে গেলে lock নিজে থেকে ছাড়া পায়।”'
       }
     }
   ],
