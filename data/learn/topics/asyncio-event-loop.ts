@@ -67,7 +67,7 @@ export const asyncioEventLoop: Topic = {
     result: { en: 'Delivery or finished dish', bn: 'ডেলিভারি বা তৈরি পদ' },
     error: { en: 'The cook is stuck', bn: 'রাঁধুনি আটকে গেছে' }
   },
-  view: { wide: [ 1000, 400 ], narrow: [ 400, 580 ] },
+  view: { wide: [ 1000, 400 ], narrow: [ 400, 550 ] },
   nodeR: { narrow: 20 },
   nodes: {
     tasks: {
@@ -79,7 +79,7 @@ export const asyncioEventLoop: Topic = {
         sub: { en: 'Dish A and dish B', bn: 'পদ A আর পদ B' }
       },
       wide: [ 130, 210, 'up' ],
-      narrow: [ 110, 80, 'right' ]
+      narrow: [ 80, 70, 'right' ]
     },
     ready: {
       icon: 'queue',
@@ -90,7 +90,7 @@ export const asyncioEventLoop: Topic = {
         sub: { en: 'Dishes ready to cook', bn: 'রাঁধার জন্য তৈরি পদ' }
       },
       wide: [ 330, 210, 'up' ],
-      narrow: [ 110, 175, 'right' ]
+      narrow: [ 80, 158, 'right' ]
     },
     loop: {
       icon: 'loop',
@@ -101,7 +101,7 @@ export const asyncioEventLoop: Topic = {
         sub: { en: 'One cook, many dishes', bn: 'এক রাঁধুনি, অনেক পদ' }
       },
       wide: [ 530, 210, 'up' ],
-      narrow: [ 110, 270, 'right' ]
+      narrow: [ 80, 246, 'right' ]
     },
     selector: {
       icon: 'hourglass',
@@ -112,7 +112,7 @@ export const asyncioEventLoop: Topic = {
         sub: { en: 'Dings when ready', bn: 'তৈরি হলে ডিং করে' }
       },
       wide: [ 730, 210, 'down' ],
-      narrow: [ 110, 365, 'right' ]
+      narrow: [ 80, 334, 'right' ]
     },
     net: {
       icon: 'cloud',
@@ -123,7 +123,7 @@ export const asyncioEventLoop: Topic = {
         sub: { en: 'Slow things arrive', bn: 'ধীর জিনিস আসে' }
       },
       wide: [ 910, 210, 'down' ],
-      narrow: [ 110, 490, 'right' ]
+      narrow: [ 80, 422, 'right' ]
     },
     pool: {
       icon: 'worker',
@@ -134,7 +134,7 @@ export const asyncioEventLoop: Topic = {
         sub: { en: 'Take the slow jobs', bn: 'ধীর কাজ নেয়' }
       },
       wide: [ 530, 350, 'right' ],
-      narrow: [ 310, 490, 'down' ]
+      narrow: [ 80, 510, 'right' ]
     }
   },
   groups: [
@@ -143,41 +143,41 @@ export const asyncioEventLoop: Topic = {
       label: { en: 'One thread', bn: 'একটা thread' },
       plain: { en: 'One cook', bn: 'এক রাঁধুনি' },
       wide: [ 50, 50, 760, 265 ],
-      narrow: [ 10, 22, 285, 408 ]
+      narrow: [ 30, 40, 305, 330 ]
     }
   ],
   corridors: {
     'tasks-ready': {
       wide: [ [ 130, 210 ], [ 330, 210 ] ],
-      narrow: [ [ 110, 80 ], [ 110, 175 ] ]
+      narrow: [ [ 80, 70 ], [ 80, 158 ] ]
     },
     'ready-loop': {
       wide: [ [ 330, 210 ], [ 530, 210 ] ],
-      narrow: [ [ 110, 175 ], [ 110, 270 ] ]
+      narrow: [ [ 80, 158 ], [ 80, 246 ] ]
     },
     'loop-selector': {
       wide: [ [ 530, 210 ], [ 730, 210 ] ],
-      narrow: [ [ 110, 270 ], [ 110, 365 ] ]
+      narrow: [ [ 80, 246 ], [ 80, 334 ] ]
     },
     'net-selector': {
       wide: [ [ 910, 210 ], [ 730, 210 ] ],
-      narrow: [ [ 110, 490 ], [ 110, 365 ] ]
+      narrow: [ [ 80, 422 ], [ 80, 334 ] ]
     },
     'selector-ready': {
       wide: [ [ 730, 210 ], [ 730, 90 ], [ 450, 90 ], [ 330, 210 ] ],
-      narrow: [ [ 110, 365 ], [ 48, 303 ], [ 48, 237 ], [ 110, 175 ] ]
+      narrow: [ [ 80, 334 ], [ 125, 289 ], [ 320, 289 ], [ 320, 203 ], [ 125, 203 ], [ 80, 158 ] ]
     },
     'loop-tasks': {
       wide: [ [ 530, 210 ], [ 450, 290 ], [ 130, 290 ], [ 130, 210 ] ],
-      narrow: [ [ 110, 270 ], [ 48, 208 ], [ 48, 142 ], [ 110, 80 ] ]
+      narrow: [ [ 80, 246 ], [ 50, 216 ], [ 50, 70 ], [ 80, 70 ] ]
     },
     'loop-pool': {
       wide: [ [ 530, 210 ], [ 530, 350 ] ],
-      narrow: [ [ 110, 270 ], [ 157, 317 ], [ 310, 317 ], [ 310, 490 ] ]
+      narrow: [ [ 80, 246 ], [ 50, 276 ], [ 50, 510 ], [ 80, 510 ] ]
     },
     'pool-ready': {
       wide: [ [ 530, 350 ], [ 470, 350 ], [ 330, 210 ] ],
-      narrow: [ [ 310, 490 ], [ 355, 445 ], [ 355, 225 ], [ 160, 225 ], [ 110, 175 ] ]
+      narrow: [ [ 80, 510 ], [ 125, 465 ], [ 360, 465 ], [ 360, 113 ], [ 125, 113 ], [ 80, 158 ] ]
     }
   },
   edges: {

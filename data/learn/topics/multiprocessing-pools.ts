@@ -67,7 +67,7 @@ export const multiprocessingPools: Topic = {
     result: { en: 'Finished dishes', bn: 'তৈরি পদ' },
     error: { en: 'Something went wrong', bn: 'কিছু গোলমাল হয়েছে' }
   },
-  view: { wide: [ 1000, 460 ], narrow: [ 400, 580 ] },
+  view: { wide: [ 1000, 460 ], narrow: [ 400, 540 ] },
   nodeR: { narrow: 20 },
   nodes: {
     main: {
@@ -79,7 +79,7 @@ export const multiprocessingPools: Topic = {
         sub: { en: 'Hands out the dishes', bn: 'পদ বিলি করে' }
       },
       wide: [ 100, 220, 'down' ],
-      narrow: [ 90, 60, 'up' ]
+      narrow: [ 80, 40, 'right' ]
     },
     start: {
       icon: 'power',
@@ -90,7 +90,7 @@ export const multiprocessingPools: Topic = {
         sub: { en: 'Builds new kitchens', bn: 'নতুন রান্নাঘর বানায়' }
       },
       wide: [ 300, 110, 'up' ],
-      narrow: [ 90, 150, 'right' ]
+      narrow: [ 80, 128, 'right' ]
     },
     tasks: {
       icon: 'queue',
@@ -101,7 +101,7 @@ export const multiprocessingPools: Topic = {
         sub: { en: 'Slips go in here', bn: 'স্লিপ এখানে যায়' }
       },
       wide: [ 300, 330, 'down' ],
-      narrow: [ 320, 230, 'left' ]
+      narrow: [ 80, 304, 'right' ]
     },
     w1: {
       icon: 'worker',
@@ -112,7 +112,7 @@ export const multiprocessingPools: Topic = {
         sub: { en: 'Waiting for a slip', bn: 'স্লিপের অপেক্ষায়' }
       },
       wide: [ 560, 110, 'up' ],
-      narrow: [ 200, 400, 'left' ]
+      narrow: [ 80, 216, 'right' ]
     },
     w2: {
       icon: 'worker',
@@ -123,7 +123,7 @@ export const multiprocessingPools: Topic = {
         sub: { en: 'Waiting for a slip', bn: 'স্লিপের অপেক্ষায়' }
       },
       wide: [ 560, 330, 'down' ],
-      narrow: [ 260, 440, 'right' ]
+      narrow: [ 80, 392, 'right' ]
     },
     results: {
       icon: 'store',
@@ -134,7 +134,7 @@ export const multiprocessingPools: Topic = {
         sub: { en: 'Dishes come back here', bn: 'পদ এখানে ফেরে' }
       },
       wide: [ 800, 220, 'right' ],
-      narrow: [ 220, 530, 'right' ]
+      narrow: [ 80, 480, 'right' ]
     }
   },
   groups: [
@@ -143,45 +143,45 @@ export const multiprocessingPools: Topic = {
       label: { en: 'Pool', bn: 'Pool' },
       plain: { en: 'Side kitchens', bn: 'পাশের রান্নাঘর' },
       wide: [ 250, 22, 710, 388 ],
-      narrow: [ 50, 110, 330, 460 ]
+      narrow: [ 36, 95, 299, 415 ]
     }
   ],
   corridors: {
     'main-start': {
       wide: [ [ 100, 220 ], [ 210, 110 ], [ 300, 110 ] ],
-      narrow: [ [ 90, 60 ], [ 90, 150 ] ]
+      narrow: [ [ 80, 40 ], [ 80, 128 ] ]
     },
     'main-tasks': {
       wide: [ [ 100, 220 ], [ 210, 330 ], [ 300, 330 ] ],
-      narrow: [ [ 90, 60 ], [ 388, 60 ], [ 388, 230 ], [ 320, 230 ] ]
+      narrow: [ [ 80, 40 ], [ 50, 40 ], [ 50, 304 ], [ 80, 304 ] ]
     },
     'start-w1': {
       wide: [ [ 300, 110 ], [ 560, 110 ] ],
-      narrow: [ [ 90, 150 ], [ 90, 310 ], [ 200, 400 ] ]
+      narrow: [ [ 80, 128 ], [ 80, 216 ] ]
     },
     'start-w2': {
       wide: [ [ 300, 110 ], [ 520, 330 ], [ 560, 330 ] ],
-      narrow: [ [ 90, 150 ], [ 90, 170 ], [ 260, 340 ], [ 260, 440 ] ]
+      narrow: [ [ 80, 128 ], [ 125, 173 ], [ 320, 173 ], [ 320, 347 ], [ 125, 347 ], [ 80, 392 ] ]
     },
     'tasks-w1': {
       wide: [ [ 300, 330 ], [ 520, 110 ], [ 560, 110 ] ],
-      narrow: [ [ 320, 230 ], [ 200, 370 ], [ 200, 400 ] ]
+      narrow: [ [ 80, 304 ], [ 80, 216 ] ]
     },
     'tasks-w2': {
       wide: [ [ 300, 330 ], [ 560, 330 ] ],
-      narrow: [ [ 320, 230 ], [ 320, 380 ], [ 260, 440 ] ]
+      narrow: [ [ 80, 304 ], [ 80, 392 ] ]
     },
     'w1-results': {
       wide: [ [ 560, 110 ], [ 690, 110 ], [ 800, 220 ] ],
-      narrow: [ [ 200, 400 ], [ 200, 490 ], [ 220, 530 ] ]
+      narrow: [ [ 80, 216 ], [ 22, 216 ], [ 22, 480 ], [ 80, 480 ] ]
     },
     'w2-results': {
       wide: [ [ 560, 330 ], [ 690, 330 ], [ 800, 220 ] ],
-      narrow: [ [ 260, 440 ], [ 260, 490 ], [ 220, 530 ] ]
+      narrow: [ [ 80, 392 ], [ 80, 480 ] ]
     },
     'results-main': {
       wide: [ [ 800, 220 ], [ 100, 220 ] ],
-      narrow: [ [ 220, 530 ], [ 56, 530 ], [ 56, 110 ], [ 90, 60 ] ]
+      narrow: [ [ 80, 480 ], [ 80, 522 ], [ 360, 522 ], [ 360, 8 ], [ 80, 8 ], [ 80, 40 ] ]
     }
   },
   edges: {
