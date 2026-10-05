@@ -82,8 +82,12 @@ const TOPIC_CASES = [
   { slug: 'race-conditions-locks', total: 10, altStop: 'Stop 7 of 9', altBtn: 2, step3Packets: 0 },
 ]
 // SMOKE_TOPICS=a,b limits the per-topic loops to those slugs, for quick runs while authoring one topic.
-const onlyTopics = process.env.SMOKE_TOPICS?.split(',')
-if (onlyTopics) TOPIC_CASES.splice(0, TOPIC_CASES.length, ...TOPIC_CASES.filter((t) => onlyTopics.includes(t.slug)))
+const onlyTopics = process.env.SMOKE_TOPICS?.split(',').map((t) => t.trim()).filter(Boolean)
+if (onlyTopics?.length) {
+  const kept = TOPIC_CASES.filter((t) => onlyTopics.includes(t.slug))
+  if (!kept.length) throw new Error(`SMOKE_TOPICS matched no topic: ${onlyTopics.join(', ')}`)
+  TOPIC_CASES.splice(0, TOPIC_CASES.length, ...kept)
+}
 
 const STEP_MS = 1400 // long enough for the packet animation and its arrival callback to finish
 
@@ -378,7 +382,7 @@ const checks = [
     assert(a && a === b, `packet moved: ${a} -> ${b}`)
   }],
   ['packet-colour', async () => {
-    const { page, context } = await open('/learn/celery-redis', { reducedMotion: 'reduce' })
+    const { page, context, problems } = await open('/learn/celery-redis', { reducedMotion: 'reduce' })
     await page.waitForSelector('.packet:not([hidden]) rect')
     const { fill, want } = await page.evaluate(() => {
       const norm = (c) => { const el = document.createElement('i'); el.style.color = c; document.body.appendChild(el); const v = getComputedStyle(el).color; el.remove(); return v }
@@ -387,6 +391,7 @@ const checks = [
       return { fill: norm(fill), want: norm(want) }
     })
     await context.close()
+    noProblems(problems)
     assert(fill === want, `packet fill ${fill} != --k-request ${want}`)
     // Mixed-kind parallel step: each packet must take the colour of its own edge kind.
     const gil = await open('/learn/python-gil', { reducedMotion: 'reduce' })
@@ -396,12 +401,15 @@ const checks = [
       const norm = (c) => { const el = document.createElement('i'); el.style.color = c; document.body.appendChild(el); const v = getComputedStyle(el).color; el.remove(); return v }
       const root = getComputedStyle(document.querySelector('.learn-root'))
       return {
-        got: [...document.querySelectorAll('.packet')].map((p) => norm(getComputedStyle(p.querySelector('rect')).fill)),
+        got: [...document.querySelectorAll('.packet:not([hidden])')].map((p) => norm(getComputedStyle(p.querySelector('rect')).fill)),
+        transforms: [...document.querySelectorAll('.packet:not([hidden])')].map((p) => p.getAttribute('transform')),
         queue: norm(root.getPropertyValue('--k-queue').trim()),
         result: norm(root.getPropertyValue('--k-result').trim())
       }
     })
     await gil.context.close()
+    noProblems(gil.problems)
+    assert(fills.transforms.length === 2 && fills.transforms[0] && fills.transforms[1] && fills.transforms[0] !== fills.transforms[1], `python-gil stop 7 packets not placed apart: ${JSON.stringify(fills.transforms)}`)
     assert(fills.queue !== fills.result, `--k-queue and --k-result must differ: ${fills.queue}`)
     assert(fills.got.length === 2, `python-gil stop 7 packets: ${fills.got.length}`)
     assert(fills.got[0] === fills.queue && fills.got[1] === fills.result, `packet fills ${JSON.stringify(fills.got)} != [${fills.queue}, ${fills.result}]`)

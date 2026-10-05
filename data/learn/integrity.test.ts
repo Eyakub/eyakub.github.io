@@ -26,6 +26,8 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
   it('every step has exactly one of moves/work and valid refs', () => {
     for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) {
       expect(Boolean(s.moves) !== Boolean(s.work), s.id).toBe(true)
+      if (s.moves) expect(s.moves.length, s.id).toBeGreaterThanOrEqual(1)
+      if (s.work) expect(workNodes(s).length, s.id).toBeGreaterThanOrEqual(1)
       s.moves?.forEach((m) => expect(t.edges[m.edge], `${s.id}:${m.edge}`).toBeTruthy())
       workNodes(s).forEach((n) => expect(t.nodes[n], `${s.id} work ${n}`).toBeTruthy())
       Object.keys(s.state ?? {}).forEach((n) => expect(t.nodes[n], `${s.id} state ${n}`).toBeTruthy())
@@ -56,7 +58,7 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
       Object.entries(t.corridors).forEach(([id, c]) => c[lk].forEach((p) => expect(inside(p), `${lk} ${id}`).toBe(true)))
       t.groups?.forEach((g) => {
         const [x, y, gw, gh] = g[lk]
-        expect(x >= 0 && y >= 0 && x + gw <= w && y + gh <= h, `${lk} group ${g.id}`).toBe(true)
+        expect(x >= 0 && y >= 22 && x + gw <= w && y + gh <= h, `${lk} group ${g.id}`).toBe(true)
       })
     }
   })
