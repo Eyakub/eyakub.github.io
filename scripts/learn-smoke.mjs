@@ -74,7 +74,7 @@ const TOPIC_CASES = [
   { slug: 'celery-redis', total: 10, altStop: 'Stop 5 of 8' }, // add taught: true once a topic has the Simply layer
   { slug: 'fastapi-lifecycle', total: 12, altStop: 'Stop 7 of 10', taught: true },
   { slug: 'git-basics', total: 9, altStop: 'Stop 9 of 12', altBtn: 2, taught: true, step3Packets: 0 },
-  { slug: 'concurrency-vs-parallelism', total: 9, altStop: 'Stop 7 of 10' },
+  { slug: 'concurrency-vs-parallelism', total: 9, altStop: 'Stop 7 of 10', taught: true, altFail: false },
   { slug: 'processes-vs-threads', total: 10, altStop: 'Stop 4 of 5', altBtn: 2, taught: true },
   { slug: 'python-gil', total: 11, altStop: 'Stop 7 of 11', taught: true, altFail: false },
   { slug: 'multiprocessing-pools', total: 8, altStop: 'Stop 2 of 3', altBtn: 2, taught: true },
