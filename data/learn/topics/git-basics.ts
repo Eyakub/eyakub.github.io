@@ -9,12 +9,74 @@ export const gitBasics: Topic = {
     en: 'How a change travels from your editor into a commit, up to GitHub, and back down to your teammates.',
     bn: 'একটা পরিবর্তন কীভাবে আপনার এডিটর থেকে commit হয়ে GitHub-এ যায়, আর সেখান থেকে সহকর্মীদের কাছে ফিরে আসে।'
   },
+  hook: {
+    en: 'Git is a photo album for your files. It remembers every version, so you can undo mistakes and work with others.',
+    bn: 'Git হলো আপনার ফাইলের ফটো অ্যালবাম। এটা প্রতিটি ভার্সন মনে রাখে, তাই ভুল ফেরানো আর অন্যের সাথে কাজ করা সহজ হয়।'
+  },
+  takeaway: {
+    en: 'Save in your own album, share when ready, and fetch before you merge. Your files only change when you choose.',
+    bn: 'নিজের অ্যালবামে সেভ করুন, তৈরি হলে শেয়ার করুন, আর মেলানোর আগে ডাউনলোড করে দেখুন। আপনার ফাইল বদলায় শুধু আপনি চাইলে।'
+  },
+  words: [
+    {
+      term: { en: 'Git', bn: 'Git' },
+      d: {
+        en: 'A tool that remembers every saved version of your files.',
+        bn: 'যে টুল আপনার ফাইলের প্রতিটি সেভ করা ভার্সন মনে রাখে।'
+      }
+    },
+    {
+      term: { en: 'Commit', bn: 'সেভ করা পাতা (commit)' },
+      d: {
+        en: 'A saved page in your album: a permanent snapshot of your files.',
+        bn: 'অ্যালবামে আটকানো একটা পাতা: আপনার ফাইলের স্থায়ী স্ন্যাপশট।'
+      }
+    },
+    {
+      term: { en: 'GitHub', bn: 'GitHub' },
+      d: {
+        en: 'A website that keeps a shared copy of your project online.',
+        bn: 'যে ওয়েবসাইটে আপনার প্রজেক্টের একটা শেয়ার করা কপি অনলাইনে থাকে।'
+      }
+    },
+    {
+      term: { en: 'Branch', bn: 'ব্রাঞ্চ' },
+      d: {
+        en: 'A sticky note marking one saved page, so you can find your place.',
+        bn: 'একটা সেভ করা পাতায় লাগানো স্টিকি নোট, যাতে নিজের জায়গা খুঁজে পান।'
+      }
+    },
+    {
+      term: { en: 'Fetch', bn: 'ডাউনলোড (fetch)' },
+      d: {
+        en: 'Downloading what others did, without changing your own files.',
+        bn: 'অন্যরা যা করেছে তা নামিয়ে আনা, আপনার নিজের ফাইল না বদলে।'
+      }
+    },
+    {
+      term: { en: 'Merge', bn: 'মেলানো (merge)' },
+      d: {
+        en: 'Combining two people’s work into one shared history.',
+        bn: 'দুজনের কাজ জুড়ে এক ইতিহাস বানানো।'
+      }
+    }
+  ],
+  legend: {
+    request: { en: 'Your work moving on', bn: 'এগিয়ে যাওয়া আপনার কাজ' },
+    queue: { en: 'Something to notice', bn: 'লক্ষ করার মতো কিছু' },
+    result: { en: 'News arriving', bn: 'আসা খবর' },
+    error: { en: 'A clash', bn: 'একটা সংঘাত' }
+  },
   view: { wide: [ 820, 380 ], narrow: [ 400, 540 ] },
   nodes: {
     wd: {
       icon: 'folder',
       name: { en: 'Working directory', bn: 'Working directory' },
       sub: { en: 'Files you edit', bn: 'যে ফাইল আপনি বদলান' },
+      plain: {
+        name: { en: 'Messy desk', bn: 'এলোমেলো ডেস্ক' },
+        sub: { en: 'Where you edit', bn: 'যেখানে বদলান' }
+      },
       wide: [ 80, 110, 'up' ],
       narrow: [ 80, 60, 'right' ]
     },
@@ -22,6 +84,10 @@ export const gitBasics: Topic = {
       icon: 'box',
       name: { en: 'Staging area', bn: 'স্টেজিং এরিয়া' },
       sub: { en: 'Next snapshot', bn: 'পরের স্ন্যাপশট' },
+      plain: {
+        name: { en: 'Arranging tray', bn: 'সাজানোর ট্রে' },
+        sub: { en: 'Photos for next page', bn: 'পরের পাতার ছবি' }
+      },
       wide: [ 290, 110, 'up' ],
       narrow: [ 80, 170, 'right' ]
     },
@@ -29,6 +95,10 @@ export const gitBasics: Topic = {
       icon: 'archive',
       name: { en: 'Local repository', bn: 'লোকাল রিপোজিটরি' },
       sub: { en: 'HEAD → main → 9f8e7d', bn: 'HEAD → main → 9f8e7d' },
+      plain: {
+        name: { en: 'Photo album', bn: 'ফটো অ্যালবাম' },
+        sub: { en: 'Pages you have saved', bn: 'সেভ করা পাতাগুলো' }
+      },
       wide: [ 500, 110, 'up' ],
       narrow: [ 80, 280, 'right' ]
     },
@@ -36,6 +106,10 @@ export const gitBasics: Topic = {
       icon: 'bookmark',
       name: { en: 'origin/main', bn: 'origin/main' },
       sub: { en: 'Last seen: 9f8e7d', bn: 'শেষ দেখা: 9f8e7d' },
+      plain: {
+        name: { en: 'Cloud note', bn: 'ক্লাউড নোট' },
+        sub: { en: 'What you last saw', bn: 'শেষবার যা দেখেছেন' }
+      },
       wide: [ 620, 280, 'right' ],
       narrow: [ 190, 390, 'right' ]
     },
@@ -43,6 +117,10 @@ export const gitBasics: Topic = {
       icon: 'cloud',
       name: { en: 'GitHub (origin)', bn: 'GitHub (origin)' },
       sub: { en: 'main → 9f8e7d', bn: 'main → 9f8e7d' },
+      plain: {
+        name: { en: 'Cloud album', bn: 'ক্লাউড অ্যালবাম' },
+        sub: { en: 'Shared with family', bn: 'পরিবারের সাথে শেয়ার' }
+      },
       wide: [ 740, 110, 'down' ],
       narrow: [ 80, 500, 'right' ]
     }
@@ -84,10 +162,11 @@ export const gitBasics: Topic = {
         id: 'edit',
         work: { node: 'wd', kind: 'request' },
         state: { wd: { en: 'app.py modified', bn: 'app.py বদলেছে' } },
-        title: { en: 'You edit a file', bn: 'আপনি একটা ফাইল বদলান' },
+        plainState: { wd: { en: 'One file changed', bn: 'একটা ফাইল বদলেছে' } },
+        title: { en: 'You change a file', bn: 'আপনি একটা ফাইল বদলান' },
         simple: {
-          en: 'You change app.py in your project folder. Git notices the change, but nothing is saved yet.',
-          bn: 'আপনি প্রজেক্ট ফোল্ডারে app.py বদলান। Git পরিবর্তনটা টের পায়, কিন্তু এখনো কিছু সেভ হয়নি।'
+          en: 'This is your messy desk, where your files live and you edit them. You change one file. Git notices, but nothing is saved yet.',
+          bn: 'এটা আপনার এলোমেলো ডেস্ক, যেখানে ফাইল থাকে আর আপনি বদলান। আপনি একটা ফাইল বদলান। Git টের পায়, কিন্তু এখনো কিছু সেভ হয়নি।'
         },
         tech: {
           en: '`git status` lists app.py as modified. Git has recorded nothing yet; the change exists only as a file on disk.',
@@ -96,12 +175,13 @@ export const gitBasics: Topic = {
       },
       {
         id: 'add',
-        moves: [ { edge: 'add', label: 'git add app.py' } ],
+        moves: [ { edge: 'add', label: 'git add app.py', plain: { en: 'Photo to tray', bn: 'ট্রেতে ছবি' } } ],
         state: { idx: { en: 'app.py staged', bn: 'app.py স্টেজ করা' } },
-        title: { en: 'You stage the change', bn: 'আপনি পরিবর্তনটা স্টেজ করেন' },
+        plainState: { idx: { en: 'Photo on tray', bn: 'ট্রেতে ছবি আছে' } },
+        title: { en: 'You pick what to save', bn: 'কী সেভ হবে আপনি বাছেন' },
         simple: {
-          en: 'You pick which changes go into the next save, like putting items in a box before sealing it.',
-          bn: 'পরের সেভে কোন পরিবর্তনগুলো যাবে সেটা আপনি বাছেন, বাক্স সিল করার আগে জিনিস ভরার মতো।'
+          en: 'You move the changed file onto the arranging tray. You choose only the changes that belong on the next album page.',
+          bn: 'আপনি বদলানো ফাইলটা সাজানোর ট্রেতে রাখেন। পরের অ্যালবাম পাতায় যে পরিবর্তনগুলো যাবে, শুধু সেগুলোই বাছেন।'
         },
         tech: {
           en: '`git add` writes the file content as a blob object and updates `.git/index` to describe the next snapshot. Staging lets you commit only part of your edits.',
@@ -110,16 +190,21 @@ export const gitBasics: Topic = {
       },
       {
         id: 'commit',
-        moves: [ { edge: 'commit', label: 'git commit' } ],
+        moves: [ { edge: 'commit', label: 'git commit', plain: { en: 'Glue to album', bn: 'অ্যালবামে আটকান' } } ],
         state: {
           repo: { en: 'HEAD → main → a1b2c3', bn: 'HEAD → main → a1b2c3' },
           idx: { en: 'Nothing staged', bn: 'কিছু স্টেজ করা নেই' },
           wd: { en: 'No changes', bn: 'কোনো পরিবর্তন নেই' }
         },
-        title: { en: 'You commit', bn: 'আপনি commit করেন' },
+        plainState: {
+          repo: { en: 'Latest: page 2', bn: 'সর্বশেষ: ২ নম্বর পাতা' },
+          idx: { en: 'Tray empty', bn: 'ট্রে খালি' },
+          wd: { en: 'All tidy', bn: 'সব গোছানো' }
+        },
+        title: { en: 'You save a page', bn: 'আপনি একটা পাতা সেভ করেন' },
         simple: {
-          en: 'You seal the box and label it. It is now a permanent snapshot in your local history.',
-          bn: 'আপনি বাক্স সিল করে লেবেল লাগান। এটা এখন আপনার লোকাল ইতিহাসে স্থায়ী একটা স্ন্যাপশট।'
+          en: 'You glue the tray’s photos into the album as a new page. That page is a commit: a permanent snapshot in your own history.',
+          bn: 'আপনি ট্রের ছবিগুলো অ্যালবামে নতুন পাতা হিসেবে আটকান। এই পাতাই commit: আপনার নিজের ইতিহাসে স্থায়ী একটা স্ন্যাপশট।'
         },
         tech: {
           en: 'Git builds a tree object from the index, then a commit object holding that tree, the parent, author and message. The SHA hash `a1b2c3` identifies it. Commits store snapshots, not diffs.',
@@ -129,10 +214,10 @@ export const gitBasics: Topic = {
       {
         id: 'branch-moves',
         work: { node: 'repo', kind: 'result' },
-        title: { en: 'The branch marker moves', bn: 'ব্রাঞ্চের মার্কার এগোয়' },
+        title: { en: 'The sticky note moves', bn: 'স্টিকি নোট এগোয়' },
         simple: {
-          en: 'The “you are here” marker slides forward to your new snapshot.',
-          bn: '“আপনি এখানে” মার্কারটা আপনার নতুন স্ন্যাপশটে এগিয়ে যায়।'
+          en: 'A branch is a sticky note that marks where you are in the album. The note named main slides onto your new page.',
+          bn: 'ব্রাঞ্চ হলো অ্যালবামে আপনার জায়গা চিহ্নিত করা স্টিকি নোট। main নামের নোটটা আপনার নতুন পাতায় সরে যায়।'
         },
         tech: {
           en: 'HEAD is a symbolic ref: `.git/HEAD` holds `ref: refs/heads/main`. Committing moves the `main` file to the new SHA `a1b2c3`; HEAD itself does not change.',
@@ -141,15 +226,19 @@ export const gitBasics: Topic = {
       },
       {
         id: 'push',
-        moves: [ { edge: 'push', label: 'git push' } ],
+        moves: [ { edge: 'push', label: 'git push', plain: { en: 'Upload page', bn: 'পাতা আপলোড' } } ],
         state: {
           remote: { en: 'main → a1b2c3', bn: 'main → a1b2c3' },
           rtrack: { en: 'Last seen: a1b2c3', bn: 'শেষ দেখা: a1b2c3' }
         },
-        title: { en: 'You push to GitHub', bn: 'আপনি GitHub-এ push করেন' },
+        plainState: {
+          remote: { en: 'Has page 2', bn: '২ নম্বর পাতা আছে' },
+          rtrack: { en: 'Saw page 2', bn: '২ নম্বর পাতা দেখেছে' }
+        },
+        title: { en: 'You upload to the cloud', bn: 'আপনি ক্লাউডে আপলোড করেন' },
         simple: {
-          en: 'You upload your new snapshots to the shared copy on GitHub, so teammates can get them.',
-          bn: 'আপনি নতুন স্ন্যাপশটগুলো GitHub-এর শেয়ার করা কপিতে আপলোড করেন, যাতে সহকর্মীরা পায়।'
+          en: 'You push, which means upload. Your new page goes to the shared cloud album on GitHub, where teammates can see it. Your cloud note updates too.',
+          bn: 'আপনি push করেন, মানে আপলোড। নতুন পাতাটা GitHub-এর শেয়ার করা ক্লাউড অ্যালবামে যায়, সহকর্মীরা দেখতে পায়। ক্লাউড নোটও হালনাগাদ হয়।'
         },
         tech: {
           en: 'Git sends the missing objects, then asks the remote to fast-forward `refs/heads/main`. The remote rejects the push if it has commits you lack. Your `origin/main` updates on success.',
@@ -160,10 +249,11 @@ export const gitBasics: Topic = {
         id: 'you-commit',
         work: { node: 'repo', kind: 'request' },
         state: { repo: { en: 'HEAD → main → d4e5f6', bn: 'HEAD → main → d4e5f6' } },
+        plainState: { repo: { en: 'Latest: page 3', bn: 'সর্বশেষ: ৩ নম্বর পাতা' } },
         title: { en: 'You keep working', bn: 'আপনি কাজ চালিয়ে যান' },
         simple: {
-          en: 'You make another commit on your laptop. GitHub does not have it yet.',
-          bn: 'আপনি ল্যাপটপে আরেকটা commit করেন। GitHub-এর কাছে সেটা এখনো নেই।'
+          en: 'You save another page in your own album. The cloud album does not have it yet.',
+          bn: 'আপনি নিজের অ্যালবামে আরেকটা পাতা সেভ করেন। ক্লাউড অ্যালবামে সেটা এখনো নেই।'
         },
         tech: {
           en: 'Your local `main` moves to `d4e5f6`, one commit ahead of `origin/main` (`a1b2c3`). Nothing is pushed, so the remote and your bookmark do not change.',
@@ -174,10 +264,11 @@ export const gitBasics: Topic = {
         id: 'teammate',
         work: { node: 'remote', kind: 'queue' },
         state: { remote: { en: 'main → 77d4e1', bn: 'main → 77d4e1' } },
-        title: { en: 'A teammate pushes', bn: 'সহকর্মী push করেন' },
+        plainState: { remote: { en: 'Teammate added a page', bn: 'সহকর্মী পাতা যোগ করেছে' } },
+        title: { en: 'A teammate adds a page', bn: 'সহকর্মী একটা পাতা যোগ করেন' },
         simple: {
-          en: 'A teammate pushed new work to GitHub. Your copy has not heard about it yet.',
-          bn: 'এক সহকর্মী GitHub-এ নতুন কাজ push করেছেন। আপনার কপি এখনো তা জানে না।'
+          en: 'A teammate adds a page to the cloud album. Your cloud note still shows the old version, because it only changes when you check.',
+          bn: 'এক সহকর্মী ক্লাউড অ্যালবামে একটা পাতা যোগ করেছেন। আপনার ক্লাউড নোট এখনো পুরোনো, কারণ আপনি দেখলে তবেই সেটা বদলায়।'
         },
         tech: {
           en: 'The remote `main` moved to `77d4e1`. Your `origin/main` is only a local bookmark, updated on fetch, pull or push, so it stays stale until you ask.',
@@ -186,12 +277,13 @@ export const gitBasics: Topic = {
       },
       {
         id: 'fetch',
-        moves: [ { edge: 'fetch', label: 'git fetch' } ],
+        moves: [ { edge: 'fetch', label: 'git fetch', plain: { en: 'Their new page', bn: 'তাদের নতুন পাতা' } } ],
         state: { rtrack: { en: 'Last seen: 77d4e1', bn: 'শেষ দেখা: 77d4e1' } },
-        title: { en: 'You fetch their work', bn: 'আপনি তাদের কাজ fetch করেন' },
+        plainState: { rtrack: { en: 'Saw teammate’s page', bn: 'সহকর্মীর পাতা দেখেছে' } },
+        title: { en: 'You fetch their page', bn: 'আপনি তাদের পাতা ডাউনলোড করেন' },
         simple: {
-          en: 'You download what your teammate did. Your own files are untouched, so this is always safe.',
-          bn: 'সহকর্মী যা করেছেন আপনি তা ডাউনলোড করেন। আপনার নিজের ফাইল ছোঁয়াই হয় না, তাই এটা সবসময় নিরাপদ।'
+          en: 'Fetch means download. Their page lands on your cloud note. Your own album and desk stay untouched, so fetching is always safe.',
+          bn: 'ডাউনলোড মানে fetch। তাদের পাতা আপনার ক্লাউড নোটে আসে। আপনার অ্যালবাম আর ডেস্ক ছোঁয়াই হয় না, তাই এটা সবসময় নিরাপদ।'
         },
         tech: {
           en: '`git fetch` downloads objects and updates `refs/remotes/origin/*`. It never touches your working directory, your index or your local branches.',
@@ -200,12 +292,13 @@ export const gitBasics: Topic = {
       },
       {
         id: 'merge',
-        moves: [ { edge: 'merge', label: 'git merge origin/main' } ],
+        moves: [ { edge: 'merge', label: 'git merge origin/main', plain: { en: 'Join their page', bn: 'তাদের পাতা জোড়া' } } ],
         state: { repo: { en: 'HEAD → main → 5c6d7e', bn: 'HEAD → main → 5c6d7e' } },
-        title: { en: 'You merge it in', bn: 'আপনি merge করে নেন' },
+        plainState: { repo: { en: 'Both lines joined', bn: 'দুই ধারা জোড়া' } },
+        title: { en: 'You merge their work in', bn: 'আপনি তাদের কাজ মিলিয়ে নেন' },
         simple: {
-          en: 'You combine their work with yours. You each added new work, so Git joins the two lines of history.',
-          bn: 'আপনি তাদের কাজ নিজের কাজের সাথে মেলান। দুজনেই নতুন কাজ করেছেন, তাই Git ইতিহাসের দুটো ধারা জোড়া লাগায়।'
+          en: 'Merge means combining. You each added pages, so Git joins your story and theirs into one. Your album now holds both.',
+          bn: 'মেলানো মানে merge। দুজনেই পাতা যোগ করেছেন, তাই Git আপনার আর তাদের গল্প এক করে। অ্যালবামে এখন দুটোই আছে।'
         },
         tech: {
           en: 'Both sides have new commits, so Git creates a merge commit with two parents: yours `d4e5f6` and theirs `77d4e1`. This is `5c6d7e`. With no divergence, it would only fast-forward.',
@@ -217,16 +310,23 @@ export const gitBasics: Topic = {
   alts: [
     {
       id: 'pull',
-      label: { en: 'git pull', bn: 'git pull' },
+      label: { en: 'Update in one go', bn: 'এক ধাপে হালনাগাদ' },
+      whatIf: {
+        en: 'What if you want their work in a single step?',
+        bn: 'তাদের কাজ যদি এক ধাপেই চান?'
+      },
       branchAfter: 'teammate',
       steps: [
         {
           id: 'pull',
-          moves: [ { edge: 'pull', label: 'git pull' } ],
-          title: { en: 'Pull: fetch and merge in one move', bn: 'Pull: fetch আর merge এক ধাপে' },
+          moves: [
+            { edge: 'fetch', label: 'git fetch', plain: { en: 'Their new page', bn: 'তাদের নতুন পাতা' } },
+            { edge: 'merge', label: 'git pull', plain: { en: 'Their work, joined', bn: 'তাদের কাজ, জোড়া' } }
+          ],
+          title: { en: 'Pull: download and join at once', bn: 'Pull: নামানো আর জোড়া এক ধাপে' },
           simple: {
-            en: 'Pull downloads your teammate’s work and immediately combines it with yours, straight into your project folder.',
-            bn: 'Pull সহকর্মীর কাজ ডাউনলোড করে সাথে সাথে আপনার কাজের সাথে মিলিয়ে সরাসরি আপনার প্রজেক্ট ফোল্ডারে আনে।'
+            en: 'Pull does both jobs at once. It downloads your teammate’s page, then joins it into your album. Because it joins right away, your files can change.',
+            bn: 'Pull দুটো কাজ একসাথে করে। সহকর্মীর পাতা নামায়, তারপর সাথে সাথে আপনার অ্যালবামে জোড়ে। তাই আপনার ফাইল বদলে যেতে পারে।'
           },
           tech: {
             en: '`git pull` is `git fetch` plus `git merge`. It rebases instead only with `--rebase` or `pull.rebase=true`. It can change your branch and files, and can cause conflicts.',
@@ -240,10 +340,14 @@ export const gitBasics: Topic = {
             repo: { en: 'HEAD → main → 5c6d7e', bn: 'HEAD → main → 5c6d7e' },
             rtrack: { en: 'Last seen: 77d4e1', bn: 'শেষ দেখা: 77d4e1' }
           },
-          title: { en: 'You are caught up with GitHub', bn: 'আপনি GitHub-এর সাথে হালনাগাদ' },
+          plainState: {
+            repo: { en: 'Both lines joined', bn: 'দুই ধারা জোড়া' },
+            rtrack: { en: 'Saw teammate’s page', bn: 'সহকর্মীর পাতা দেখেছে' }
+          },
+          title: { en: 'You are caught up', bn: 'আপনি হালনাগাদ' },
           simple: {
-            en: 'You now have their work and yours together, and your note of GitHub is up to date.',
-            bn: 'এখন আপনার কাছে তাদের আর আপনার কাজ একসাথে আছে, আর GitHub নিয়ে আপনার নোটও হালনাগাদ।'
+            en: 'Your album now holds their pages and yours together, and your cloud note is up to date.',
+            bn: 'এখন আপনার অ্যালবামে তাদের আর আপনার পাতা একসাথে আছে, আর ক্লাউড নোটও হালনাগাদ।'
           },
           tech: {
             en: 'Merge commit `5c6d7e` (parents `d4e5f6`, `77d4e1`) is on `main`; `origin/main` is `77d4e1`. GitHub lacks `5c6d7e` until you push. Fetching first and inspecting with `git log main..origin/main` gives you more control.',
@@ -254,16 +358,20 @@ export const gitBasics: Topic = {
     },
     {
       id: 'conflict',
-      label: { en: 'Merge conflict', bn: 'মার্জ কনফ্লিক্ট' },
+      label: { en: 'Clashing edits', bn: 'সংঘাতপূর্ণ বদল' },
+      whatIf: {
+        en: 'What if you and a teammate changed the very same line?',
+        bn: 'আপনি আর সহকর্মী যদি ঠিক একই লাইন বদলান?'
+      },
       branchAfter: 'fetch',
       steps: [
         {
           id: 'clash',
           work: { node: 'repo', kind: 'error' },
-          title: { en: 'You merge, but both sides changed the same lines', bn: 'আপনি merge করেন, কিন্তু দুই পক্ষই একই লাইন বদলেছে' },
+          title: { en: 'Both of you changed the same line', bn: 'দুজনেই একই লাইন বদলেছেন' },
           simple: {
-            en: 'You run `git merge origin/main`, but you and your teammate edited the very same lines of app.py. Git cannot guess whose version is right, so it stops.',
-            bn: 'আপনি `git merge origin/main` চালান, কিন্তু আপনি আর সহকর্মী app.py-র ঠিক একই লাইন বদলেছেন। কার ভার্সন ঠিক Git আন্দাজ করতে পারে না, তাই থেমে যায়।'
+            en: 'You try to join their work with yours, but you both changed the very same line. Git cannot guess whose is right, so it stops.',
+            bn: 'আপনি তাদের কাজ নিজের সাথে জোড়ার চেষ্টা করেন, কিন্তু দুজনেই ঠিক একই লাইন বদলেছেন। কারটা ঠিক Git আন্দাজ করতে পারে না, তাই থামে।'
           },
           tech: {
             en: 'Git can merge changes to different lines on its own. When both sides changed the same lines, the merge pauses with the conflicting files marked as unmerged.',
@@ -272,12 +380,13 @@ export const gitBasics: Topic = {
         },
         {
           id: 'markers',
-          moves: [ { edge: 'conflict', label: '<<<<<<< ======= >>>>>>>' } ],
+          moves: [ { edge: 'conflict', label: '<<<<<<< ======= >>>>>>>', plain: { en: 'Both versions', bn: 'দুটো ভার্সন' } } ],
           state: { wd: { en: 'app.py: conflict', bn: 'app.py: কনফ্লিক্ট' } },
-          title: { en: 'Git marks the clash in your file', bn: 'Git ফাইলে কনফ্লিক্ট চিহ্নিত করে' },
+          plainState: { wd: { en: 'Clash to fix', bn: 'মেটানোর সংঘাত' } },
+          title: { en: 'Git marks the clash in your file', bn: 'Git ফাইলে সংঘাত চিহ্নিত করে' },
           simple: {
-            en: 'Git writes both versions into the file, with marker lines around them. Now it is your job to choose.',
-            bn: 'Git ফাইলে দুটো ভার্সনই লিখে দেয়, চারপাশে মার্কার লাইন দিয়ে। এখন বেছে নেওয়া আপনার কাজ।'
+            en: 'Git writes both versions into your file, with marker lines around them. Now it is your job to choose.',
+            bn: 'Git আপনার ফাইলে দুটো ভার্সনই লিখে দেয়, চারপাশে মার্কার লাইন দিয়ে। এখন বেছে নেওয়া আপনার কাজ।'
           },
           tech: {
             en: 'The file gets `<<<<<<<` (your side), `=======` and `>>>>>>>` (theirs). Edit the file to the final text and delete all three marker lines before continuing.',
@@ -286,15 +395,19 @@ export const gitBasics: Topic = {
         },
         {
           id: 'resolve',
-          moves: [ { edge: 'add', label: 'git add app.py' } ],
+          moves: [ { edge: 'add', label: 'git add app.py', plain: { en: 'Fixed file', bn: 'ঠিক করা ফাইল' } } ],
           state: {
             wd: { en: 'app.py resolved', bn: 'app.py ঠিক করা হয়েছে' },
             idx: { en: 'app.py staged', bn: 'app.py স্টেজ করা' }
           },
-          title: { en: 'You resolve and stage', bn: 'আপনি ঠিক করে স্টেজ করেন' },
+          plainState: {
+            wd: { en: 'Clash fixed', bn: 'সংঘাত মিটেছে' },
+            idx: { en: 'Fixed file on tray', bn: 'ঠিক ফাইল ট্রেতে' }
+          },
+          title: { en: 'You fix it and tray it', bn: 'আপনি ঠিক করে ট্রেতে রাখেন' },
           simple: {
-            en: 'After fixing the file by hand, you stage it. That tells Git the clash is settled.',
-            bn: 'ফাইলটা হাতে ঠিক করে আপনি স্টেজ করেন। এতে Git বোঝে কনফ্লিক্ট মিটে গেছে।'
+            en: 'After fixing the file by hand, you put it on the arranging tray. That tells Git the clash is settled.',
+            bn: 'ফাইলটা হাতে ঠিক করে আপনি সাজানোর ট্রেতে রাখেন। এতে Git বোঝে সংঘাত মিটে গেছে।'
           },
           tech: {
             en: 'Running `git add app.py` after editing marks the conflict as resolved in the index. `git status` then shows the merge as ready to commit.',
@@ -303,16 +416,21 @@ export const gitBasics: Topic = {
         },
         {
           id: 'finish',
-          moves: [ { edge: 'commit', label: 'git commit' } ],
+          moves: [ { edge: 'commit', label: 'git commit', plain: { en: 'Glue to album', bn: 'অ্যালবামে আটকান' } } ],
           state: {
             repo: { en: 'HEAD → main → 8b9c0d', bn: 'HEAD → main → 8b9c0d' },
             idx: { en: 'Nothing staged', bn: 'কিছু স্টেজ করা নেই' },
             wd: { en: 'No changes', bn: 'কোনো পরিবর্তন নেই' }
           },
-          title: { en: 'You finish the merge', bn: 'আপনি merge শেষ করেন' },
+          plainState: {
+            repo: { en: 'Merged, clash fixed', bn: 'জোড়া, সংঘাত মিটেছে' },
+            idx: { en: 'Tray empty', bn: 'ট্রে খালি' },
+            wd: { en: 'All tidy', bn: 'সব গোছানো' }
+          },
+          title: { en: 'You finish the merge', bn: 'আপনি মেলানো শেষ করেন' },
           simple: {
-            en: 'You commit, and the merge is done. History now holds both versions of the story.',
-            bn: 'আপনি commit করেন আর merge শেষ। ইতিহাসে এখন গল্পের দুটো ধারাই আছে।'
+            en: 'You save the page, and the merge is done. Your album now holds both versions of the story.',
+            bn: 'আপনি পাতাটা সেভ করেন আর মেলানো শেষ। অ্যালবামে এখন গল্পের দুটো ধারাই আছে।'
           },
           tech: {
             en: '`git commit` records the merge commit `8b9c0d` with two parents. In a rebase, you would finish with `git rebase --continue` instead.',
@@ -323,19 +441,26 @@ export const gitBasics: Topic = {
     },
     {
       id: 'detached',
-      label: { en: 'Detached HEAD', bn: 'ডিটাচড HEAD' },
+      label: { en: 'Back in time', bn: 'অতীতে ফেরা' },
+      whatIf: {
+        en: 'What if you jump back to an old page?',
+        bn: 'পুরোনো একটা পাতায় ফিরে গেলে কী হয়?'
+      },
       branchAfter: 'commit',
       steps: [
         {
           id: 'checkout-sha',
-          work: { node: 'repo', kind: 'error' },
+          work: { node: 'repo', kind: 'queue' },
           state: {
             repo: { en: 'HEAD → 9f8e7d (no branch)', bn: 'HEAD → 9f8e7d (কোনো ব্রাঞ্চ নেই)' }
           },
-          title: { en: 'You check out an old snapshot', bn: 'আপনি পুরোনো একটা স্ন্যাপশটে যান' },
+          plainState: {
+            repo: { en: 'Marker off any branch', bn: 'নোট কোনো ব্রাঞ্চে নেই' }
+          },
+          title: { en: 'You jump to an old page', bn: 'আপনি পুরোনো পাতায় যান' },
           simple: {
-            en: 'You jump back to an old snapshot by its ID. The “you are here” marker now sits on no branch at all.',
-            bn: 'আপনি আইডি ধরে পুরোনো একটা স্ন্যাপশটে ফিরে যান। “আপনি এখানে” মার্কারটা এখন কোনো ব্রাঞ্চেই নেই।'
+            en: 'You jump back to an old page using its short code. Your sticky note now sits on no branch at all.',
+            bn: 'আপনি ছোট কোড ধরে পুরোনো একটা পাতায় ফিরে যান। আপনার স্টিকি নোট এখন কোনো ব্রাঞ্চেই নেই।'
           },
           tech: {
             en: '`git checkout 9f8e7d` puts a raw SHA in `.git/HEAD` instead of `ref: refs/heads/...`. That is a detached HEAD, and Git warns you about it.',
@@ -344,15 +469,19 @@ export const gitBasics: Topic = {
         },
         {
           id: 'orphan-commit',
-          moves: [ { edge: 'commit', label: 'git commit' } ],
+          moves: [ { edge: 'commit', label: 'git commit', plain: { en: 'Glue to album', bn: 'অ্যালবামে আটকান' } } ],
           state: {
             repo: { en: 'HEAD → e3f4a5 (no branch)', bn: 'HEAD → e3f4a5 (কোনো ব্রাঞ্চ নেই)' },
             idx: { en: 'Nothing staged', bn: 'কিছু স্টেজ করা নেই' }
           },
-          title: { en: 'A commit that belongs to no branch', bn: 'কোনো ব্রাঞ্চের নয় এমন commit' },
+          plainState: {
+            repo: { en: 'New page, no branch', bn: 'নতুন পাতা, ব্রাঞ্চ নেই' },
+            idx: { en: 'Tray empty', bn: 'ট্রে খালি' }
+          },
+          title: { en: 'A page that belongs to no branch', bn: 'কোনো ব্রাঞ্চের নয় এমন পাতা' },
           simple: {
-            en: 'You edit and stage a fix, then commit. Careful: this commit is on no branch. Leave without saving it and it is very hard to find again.',
-            bn: 'আপনি একটা ফিক্স এডিট করে স্টেজ করে commit করেন। সাবধান: এই commit কোনো ব্রাঞ্চে নেই। সেভ না করে চলে গেলে এটা আবার খুঁজে পাওয়া খুব কঠিন।'
+            en: 'You save a fix as a new page. Careful: it is on no branch. Leave without naming it, and it is very hard to find again.',
+            bn: 'আপনি একটা ফিক্স নতুন পাতা হিসেবে সেভ করেন। সাবধান: এটা কোনো ব্রাঞ্চে নেই। নাম না দিয়ে চলে গেলে এটা আবার খুঁজে পাওয়া খুব কঠিন।'
           },
           tech: {
             en: 'With a detached HEAD, a commit moves only HEAD, no branch. Once you switch away, the commit is unreachable except through `git reflog`, and is eventually garbage collected.',
@@ -363,10 +492,11 @@ export const gitBasics: Topic = {
           id: 'rescue',
           work: { node: 'repo', kind: 'result' },
           state: { repo: { en: 'HEAD → rescue → e3f4a5', bn: 'HEAD → rescue → e3f4a5' } },
-          title: { en: 'You save it on a branch', bn: 'আপনি ব্রাঞ্চে সেভ করেন' },
+          plainState: { repo: { en: 'Saved as rescue', bn: 'rescue নামে সেভ' } },
+          title: { en: 'You give it a branch', bn: 'আপনি ব্রাঞ্চ নাম দেন' },
           simple: {
-            en: 'You give the commit a branch name. Now it has a label, and it is safe.',
-            bn: 'আপনি commit-টাকে একটা ব্রাঞ্চের নাম দেন। এখন এর একটা লেবেল আছে, আর এটা নিরাপদ।'
+            en: 'You give the page a branch name. Now your sticky note has a home, and the page is safe.',
+            bn: 'আপনি পাতাটাকে একটা ব্রাঞ্চের নাম দেন। এখন স্টিকি নোটের একটা ঠিকানা আছে, আর পাতাটা নিরাপদ।'
           },
           tech: {
             en: '`git switch -c rescue` creates a branch at `e3f4a5` and attaches HEAD to it. The commit is now reachable, so it will not be garbage collected.',
@@ -412,7 +542,7 @@ export const gitBasics: Topic = {
       {
         icon: 'bookmark',
         node: 'rtrack',
-        name: { en: 'Your note about the cloud album', bn: 'ক্লাউড অ্যালবাম নিয়ে আপনার নোট' },
+        name: { en: 'Your cloud note', bn: 'আপনার ক্লাউড নোট' },
         d: {
           en: 'It says what the cloud album looked like when you last checked. It can be out of date.',
           bn: 'শেষবার দেখার সময় ক্লাউড অ্যালবাম কেমন ছিল সেটা লেখা। এটা পুরোনো হয়ে যেতে পারে।'
@@ -423,8 +553,8 @@ export const gitBasics: Topic = {
         node: 'remote',
         name: { en: 'The shared cloud album', bn: 'শেয়ার করা ক্লাউড অ্যালবাম' },
         d: {
-          en: 'The family album everyone adds to. Your relatives see only what is uploaded here.',
-          bn: 'পরিবারের সবার অ্যালবাম, সবাই এতে ছবি যোগ করে। আত্মীয়রা শুধু এখানে আপলোড করা ছবিই দেখে।'
+          en: 'The family album everyone adds to. Teammates see only what is uploaded here.',
+          bn: 'পরিবারের সবার অ্যালবাম, সবাই এতে ছবি যোগ করে। সহকর্মীরা শুধু এখানে আপলোড করা ছবিই দেখে।'
         }
       },
       {
