@@ -59,7 +59,7 @@ export const multiprocessingPools: Topic = {
     {
       id: 'pool',
       label: { en: 'Pool', bn: 'Pool' },
-      wide: [ 250, 50, 710, 360 ],
+      wide: [ 250, 20, 710, 390 ],
       narrow: [ 50, 110, 330, 460 ]
     }
   ],
@@ -261,7 +261,9 @@ export const multiprocessingPools: Topic = {
         state: {
           main: { en: 'Pool shut down', bn: 'pool বন্ধ' },
           w1: { en: 'Stopped', bn: 'বন্ধ' },
-          w2: { en: 'Stopped', bn: 'বন্ধ' }
+          w2: { en: 'Stopped', bn: 'বন্ধ' },
+          start: { en: 'Closed', bn: 'বন্ধ' },
+          tasks: { en: 'Empty', bn: 'খালি' }
         },
         title: { en: 'The pool shuts down', bn: 'pool বন্ধ হয়' },
         simple: {
@@ -291,8 +293,8 @@ export const multiprocessingPools: Topic = {
             bn: 'বস হাওয়ায় তৈরি রেসিপি ট্রেতে রাখতে পারে না। helper-রা সেটা পড়তে পারে না।'
           },
           tech: {
-            en: 'Only functions importable by name from a module can be pickled. Lambdas, nested functions and REPL-defined functions fail with `PicklingError` or `Can’t pickle local object`.',
-            bn: 'শুধু module থেকে নাম ধরে import করা যায় এমন ফাংশন pickle হয়। lambda, nested function আর REPL-এ বানানো ফাংশন `PicklingError` বা `Can’t pickle local object`-এ ব্যর্থ হয়।'
+            en: '`pickle` sends a function by its qualified name, and a lambda has none. Nested and REPL-defined functions fail too, with `PicklingError` or `Can’t pickle local object`.',
+            bn: '`pickle` ফাংশন পাঠায় তার qualified নাম দিয়ে, আর lambda-র কোনো নাম নেই। nested আর REPL-এ বানানো ফাংশনও `PicklingError` বা `Can’t pickle local object`-এ ব্যর্থ হয়।'
           }
         },
         {
@@ -562,7 +564,7 @@ export const multiprocessingPools: Topic = {
       },
       deep: {
         en: 'It was `fork` until 3.13. macOS and Windows use `spawn`. Forking a multithreaded parent can deadlock on inherited locks. Use `get_context("fork")` explicitly if you really need it.',
-        bn: '3.13 পর্যন্ত ছিল `fork`। macOS আর Windows-এ `spawn`। multithreaded parent fork করলে পাওয়া lock-এ deadlock হতে পারে। সত্যিই দরকার হলে `get_context("fork")` স্পষ্ট করে দিন।'
+        bn: '3.13 পর্যন্ত ছিল `fork`। macOS আর Windows-এ `spawn`। multithreaded parent fork করলে child-এ কপি হওয়া lock-এ deadlock হতে পারে। সত্যিই দরকার হলে `get_context("fork")` স্পষ্ট করে দিন।'
       },
       redFlag: {
         en: '“fork”, or “spawn on Linux”.',
@@ -579,8 +581,8 @@ export const multiprocessingPools: Topic = {
         bn: 'মডেল একই: একটা parent আর কয়েকটা child worker process।'
       },
       deep: {
-        en: 'Prefork is Celery’s default pool. It runs tasks in child processes, via billiard, a fork of `multiprocessing`, and `worker_max_tasks_per_child` recycles them. For I/O-bound tasks there are gevent, eventlet and thread pools.',
-        bn: 'prefork Celery-র ডিফল্ট pool। এটা child process-এ task চালায়, billiard দিয়ে, যা `multiprocessing`-এর fork, আর `worker_max_tasks_per_child` সেগুলো নতুন করে চালু করে। I/O-bound task-এর জন্য gevent, eventlet আর thread pool আছে।'
+        en: 'Prefork is Celery’s default pool. It runs tasks in child processes, built on billiard, a `multiprocessing` fork, and `worker_max_tasks_per_child` recycles them. For I/O-bound tasks there are gevent, eventlet and thread pools.',
+        bn: 'prefork Celery-র ডিফল্ট pool। এটা child process-এ task চালায়, billiard-এর ওপর ভিত্তি করে, যা `multiprocessing`-এর fork, আর `worker_max_tasks_per_child` সেগুলো নতুন করে চালু করে। I/O-bound task-এর জন্য gevent, eventlet আর thread pool আছে।'
       },
       redFlag: {
         en: '“Celery workers are threads.”',
