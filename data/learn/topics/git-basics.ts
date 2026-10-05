@@ -330,8 +330,7 @@ export const gitBasics: Topic = {
           id: 'checkout-sha',
           work: { node: 'repo', kind: 'error' },
           state: {
-            repo: { en: 'HEAD → 9f8e7d (no branch)', bn: 'HEAD → 9f8e7d (কোনো ব্রাঞ্চ নেই)' },
-            idx: { en: 'fix.py staged', bn: 'fix.py স্টেজ করা' }
+            repo: { en: 'HEAD → 9f8e7d (no branch)', bn: 'HEAD → 9f8e7d (কোনো ব্রাঞ্চ নেই)' }
           },
           title: { en: 'You check out an old snapshot', bn: 'আপনি পুরোনো একটা স্ন্যাপশটে যান' },
           simple: {

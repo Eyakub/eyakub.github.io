@@ -502,8 +502,8 @@ export const raceConditionsLocks: Topic = {
         bn: 'আপডেটটা `threading.Lock` দিয়ে বাঁচান, অথবা ভাগাভাগিই এড়ান।'
       },
       deep: {
-        en: '`with lock: counter += 1`. Or use a `queue.Queue`, per-thread counters summed at the end, or `multiprocessing.Value`. Across processes, use atomic operations in a database or Redis.',
-        bn: '`with lock: counter += 1`। বা `queue.Queue`, প্রতি thread-এর আলাদা counter শেষে যোগ করা, বা `multiprocessing.Value`। process-এর মধ্যে database বা Redis-এর atomic operation ব্যবহার করুন।'
+        en: '`with lock: counter += 1`. Or use a `queue.Queue`, per-thread counters summed at the end, or `multiprocessing.Value` (only as `with v.get_lock(): v.value += 1`). Across processes, use atomic operations in a database or Redis.',
+        bn: '`with lock: counter += 1`। বা `queue.Queue`, প্রতি thread-এর আলাদা counter শেষে যোগ করা, বা `multiprocessing.Value` (শুধু `with v.get_lock(): v.value += 1` হিসেবে)। process-এর মধ্যে database বা Redis-এর atomic operation ব্যবহার করুন।'
       },
       redFlag: {
         en: '“Add `time.sleep()` so they do not overlap.”',
@@ -592,7 +592,7 @@ export const raceConditionsLocks: Topic = {
       }
     },
     {
-      code: 'if lock.acquire(timeout=2): ...; lock.release()\nelse: log("could not get lock")',
+      code: 'if lock.acquire(timeout=2):\n    try: ...\n    finally: lock.release()\nelse: log("could not get lock")',
       d: {
         en: 'Use a timeout so you never hang forever.',
         bn: 'timeout দিন, যাতে চিরকাল আটকে না থাকেন।'
@@ -606,7 +606,7 @@ export const raceConditionsLocks: Topic = {
       }
     },
     {
-      code: 'for lk in sorted((a, b), key=id): lk.acquire()',
+      code: 'with ExitStack() as st:\n    for lk in sorted((a, b), key=id):\n        st.enter_context(lk)',
       d: {
         en: 'Enforce one global lock order with a stable key.',
         bn: 'স্থির key দিয়ে একটাই global lock order মানুন।'

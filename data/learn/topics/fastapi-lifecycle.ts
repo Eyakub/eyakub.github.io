@@ -103,7 +103,7 @@ export const fastapiLifecycle: Topic = {
     },
     'uvicorn-op': {
       wide: [ [ 164, 150 ], [ 164, 50 ], [ 870, 50 ], [ 870, 150 ], [ 784, 150 ] ],
-      narrow: [ [ 150, 100 ], [ 30, 100 ], [ 30, 484 ], [ 150, 484 ] ]
+      narrow: [ [ 150, 100 ], [ 42, 100 ], [ 42, 484 ], [ 150, 484 ] ]
     }
   },
   edges: {
@@ -386,7 +386,7 @@ export const fastapiLifecycle: Topic = {
       steps: [
         {
           id: 'lifespan-start',
-          moves: [ { edge: 'uo', label: 'lifespan.startup' } ],
+          moves: [ { edge: 'uo', label: 'startup' } ],
           title: { en: 'Rewind: before the first request', bn: 'রিওয়াইন্ড: প্রথম রিকোয়েস্টের আগে' },
           simple: {
             en: 'Before any visitor arrives, Uvicorn tells your app to get ready. Your setup code runs once: open the database, load the model.',
@@ -400,7 +400,7 @@ export const fastapiLifecycle: Topic = {
         {
           id: 'ready',
           work: { node: 'uvicorn', kind: 'result' },
-          state: { uvicorn: { en: 'Accepting requests', bn: 'রিকোয়েস্ট নিচ্ছে' } },
+          state: { uvicorn: { en: 'Accepting', bn: 'নিচ্ছে' } },
           title: { en: 'The doors open', bn: 'দরজা খুলে যায়' },
           simple: {
             en: 'Setup is done. The server opens its doors and starts accepting requests.',
@@ -413,7 +413,8 @@ export const fastapiLifecycle: Topic = {
         },
         {
           id: 'lifespan-stop',
-          moves: [ { edge: 'uo', label: 'lifespan.shutdown' } ],
+          moves: [ { edge: 'uo', label: 'shutdown' } ],
+          state: { uvicorn: { en: 'Shutting down', bn: 'বন্ধ হচ্ছে' } },
           title: { en: 'Closing time', bn: 'বন্ধের সময়' },
           simple: {
             en: 'Much later, the server is told to stop. Uvicorn warns the app first, so it can tidy up.',
@@ -427,7 +428,7 @@ export const fastapiLifecycle: Topic = {
         {
           id: 'closed',
           work: { node: 'op', kind: 'result' },
-          state: { op: { en: 'Pool closed', bn: 'Pool বন্ধ' } },
+          state: { op: { en: 'Pool closed', bn: 'Pool বন্ধ' }, uvicorn: { en: 'Stopped', bn: 'বন্ধ' } },
           title: { en: 'Everything is tidied up', bn: 'সব গুছিয়ে ফেলা হলো' },
           simple: {
             en: 'The database connections are closed neatly and the app exits cleanly. Nothing is left hanging.',

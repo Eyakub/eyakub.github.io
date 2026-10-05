@@ -270,7 +270,7 @@ export const processesVsThreads: Topic = {
           id: 'b-dies',
           work: { node: [ 'b_main', 'b_mem' ], kind: 'error' },
           state: {
-            b_main: { en: 'Dead (signal 9)', bn: 'মৃত (signal 9)' },
+            b_main: { en: 'Killed by a signal', bn: 'signal-এ মৃত' },
             b_mem: { en: 'Gone', bn: 'শেষ' }
           },
           title: { en: 'Process B dies', bn: 'Process B মারা যায়' },
@@ -279,22 +279,22 @@ export const processesVsThreads: Topic = {
             bn: 'অফিস B পুড়ে যায়। তার নোট শেষ, কিন্তু বাইরের কিছুতে আঁচ লাগে না।'
           },
           tech: {
-            en: 'A segfault or the OOM killer ends the process, and the OS reclaims its memory. A signal death shows in the parent as a negative `exitcode`: minus the signal number.',
-            bn: 'segfault বা OOM killer process শেষ করে, আর OS তার memory ফেরত নেয়। signal-এ মারা গেলে parent ঋণাত্মক `exitcode` দেখে: মাইনাস signal নম্বর।'
+            en: 'The OOM killer (SIGKILL, 9) or a segfault (SIGSEGV, 11) ends the process, and the OS reclaims its memory. The parent sees a negative `exitcode`: -9 or -11.',
+            bn: 'OOM killer (SIGKILL, 9) বা segfault (SIGSEGV, 11) process শেষ করে, আর OS তার memory ফেরত নেয়। parent ঋণাত্মক `exitcode` দেখে: -9 বা -11।'
           }
         },
         {
           id: 'a-survives',
           work: { node: 'a_t1', kind: 'result' },
-          state: { a_t1: { en: 'Alive, sees EOF', bn: 'বেঁচে, EOF পায়' } },
+          state: { a_t1: { en: 'Alive, unaffected', bn: 'বেঁচে, অক্ষত' } },
           title: { en: 'Process A carries on', bn: 'Process A চলতে থাকে' },
           simple: {
             en: 'Office A is fine. It just notices that B stopped answering.',
             bn: 'অফিস A ঠিকই আছে। সে শুধু টের পায় B আর সাড়া দিচ্ছে না।'
           },
           tech: {
-            en: 'The parent gets EOF or `BrokenPipeError`, or `BrokenProcessPool` from `ProcessPoolExecutor`, and can restart the worker. Process isolation is fault isolation.',
-            bn: 'parent EOF বা `BrokenPipeError` পায়, অথবা `ProcessPoolExecutor` থেকে `BrokenProcessPool`, আর worker আবার চালু করতে পারে। process isolation মানেই fault isolation।'
+            en: 'The parent is unaffected. A pipe read sees EOF, a `Queue.get()` without timeout can wait forever, and `ProcessPoolExecutor` raises `BrokenProcessPool`.',
+            bn: 'parent অক্ষত থাকে। pipe read EOF পায়, timeout ছাড়া `Queue.get()` চিরকাল আটকে থাকতে পারে, আর `ProcessPoolExecutor` `BrokenProcessPool` তোলে।'
           }
         }
       ]
@@ -565,7 +565,7 @@ export const processesVsThreads: Topic = {
       }
     },
     {
-      code: 'import multiprocessing as mp\np = mp.get_context("spawn").Process(target=f)\np.start(); p.join()',
+      code: 'import multiprocessing as mp\nif __name__ == "__main__":\n    ctx = mp.get_context("spawn")\n    p = ctx.Process(target=f)\n    p.start(); p.join()',
       d: {
         en: 'A process with an explicit start method.',
         bn: 'নির্দিষ্ট start method দিয়ে একটা process।'

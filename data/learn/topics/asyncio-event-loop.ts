@@ -725,8 +725,8 @@ export const asyncioEventLoop: Topic = {
     {
       code: 'asyncio.run(main(), debug=True)   # or PYTHONASYNCIODEBUG=1',
       d: {
-        en: 'Logs callbacks slower than 100 ms and coroutines that were never awaited.',
-        bn: '১০০ ms-এর বেশি ধীর callback আর কখনো await না করা coroutine log করে।'
+        en: 'Logs callbacks slower than 100 ms and shows where un-awaited coroutines were created.',
+        bn: '১০০ ms-এর বেশি ধীর callback log করে, আর await না করা coroutine কোথায় তৈরি হয়েছিল তা দেখায়।'
       }
     },
     {

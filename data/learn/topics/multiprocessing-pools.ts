@@ -383,8 +383,8 @@ export const multiprocessingPools: Topic = {
             bn: 'বস হয়তো এমন উত্তরের অপেক্ষায় থাকে, যেটা আর আসবে না।'
           },
           tech: {
-            en: '`ProcessPoolExecutor` raises `BrokenProcessPool`. Classic `Pool` can hang on a lost task, so use timeouts, `maxtasksperchild` or the executor.',
-            bn: '`ProcessPoolExecutor` `BrokenProcessPool` তোলে। পুরনো `Pool` হারানো task-এ আটকে থাকতে পারে, তাই timeout, `maxtasksperchild` বা executor ব্যবহার করুন।'
+            en: '`ProcessPoolExecutor` raises `BrokenProcessPool`. Classic `Pool` can hang on a lost task, so use timeouts or the executor.',
+            bn: '`ProcessPoolExecutor` `BrokenProcessPool` তোলে। পুরনো `Pool` হারানো task-এ আটকে থাকতে পারে, তাই timeout বা executor ব্যবহার করুন।'
           }
         }
       ]

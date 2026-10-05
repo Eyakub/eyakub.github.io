@@ -426,20 +426,6 @@ export const pythonGil: Topic = {
           }
         },
         {
-          id: 'ext-reenables',
-          work: { node: 'interp', kind: 'error' },
-          state: { gil: { en: 'Re-enabled', bn: 'আবার চালু' } },
-          title: { en: 'An old extension brings it back', bn: 'পুরনো extension GIL ফিরিয়ে আনে' },
-          simple: {
-            en: 'Import an old native library and the key can come back.',
-            bn: 'পুরনো native library import করলে চাবিটা ফিরে আসতে পারে।'
-          },
-          tech: {
-            en: 'Importing a C extension not marked free-threading safe can re-enable the GIL, with a warning. Check that your wheels support it.',
-            bn: 'free-threading নিরাপদ বলে চিহ্নিত নয় এমন C extension import করলে GIL আবার চালু হতে পারে, সাথে warning। আপনার wheel সাপোর্ট করে কি না দেখুন।'
-          }
-        },
-        {
           id: 'still-lock',
           work: { node: [ 't1', 't2' ], kind: 'queue' },
           state: {
@@ -454,6 +440,20 @@ export const pythonGil: Topic = {
           tech: {
             en: 'Built-ins stay internally consistent, but compound operations such as check-then-act and `+=` can still race. Use explicit synchronization.',
             bn: 'built-in ভেতরে ঠিক থাকে, কিন্তু check-then-act আর `+=`-এর মতো যৌগিক কাজে race হতে পারে। স্পষ্ট synchronization ব্যবহার করুন।'
+          }
+        },
+        {
+          id: 'ext-reenables',
+          work: { node: 'interp', kind: 'error' },
+          state: { gil: { en: 'Re-enabled', bn: 'আবার চালু' } },
+          title: { en: 'An old extension brings it back', bn: 'পুরনো extension GIL ফিরিয়ে আনে' },
+          simple: {
+            en: 'Import an old native library and the key can come back.',
+            bn: 'পুরনো native library import করলে চাবিটা ফিরে আসতে পারে।'
+          },
+          tech: {
+            en: 'Importing a C extension not marked free-threading safe can re-enable the GIL, with a warning. Check that your wheels support it.',
+            bn: 'free-threading নিরাপদ বলে চিহ্নিত নয় এমন C extension import করলে GIL আবার চালু হতে পারে, সাথে warning। আপনার wheel সাপোর্ট করে কি না দেখুন।'
           }
         }
       ]
