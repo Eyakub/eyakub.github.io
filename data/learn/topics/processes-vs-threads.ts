@@ -9,12 +9,67 @@ export const processesVsThreads: Topic = {
     en: 'Threads share one memory and are cheap; processes keep memory apart and must send copies.',
     bn: 'thread একই memory ভাগ করে আর সস্তা; process-এর memory আলাদা, তাই কপি পাঠাতে হয়।'
   },
+  hook: {
+    en: 'Cooks in one kitchen share a fridge, which is fast but risky. Separate kitchens are safer but must pass slips.',
+    bn: 'এক রান্নাঘরের রাঁধুনিরা একই ফ্রিজ ভাগ করে, তাতে দ্রুত কিন্তু ঝুঁকি। আলাদা রান্নাঘর নিরাপদ, তবে স্লিপ পাঠাতে হয়।'
+  },
+  takeaway: {
+    en: 'Cooks in one kitchen share a fridge: fast but risky. Separate kitchens stay safe but must pass slips.',
+    bn: 'এক রান্নাঘরের রাঁধুনিরা ফ্রিজ ভাগ করে: দ্রুত কিন্তু ঝুঁকি। আলাদা রান্নাঘর নিরাপদ, তবে স্লিপ পাঠাতে হয়।'
+  },
+  words: [
+    {
+      term: { en: 'Kitchen (process)', bn: 'রান্নাঘর (process)' },
+      d: {
+        en: 'A separate workplace with its own fridge. Nothing inside is shared with other kitchens.',
+        bn: 'নিজের ফ্রিজসহ আলাদা কাজের জায়গা। ভেতরের কিছু অন্য রান্নাঘরের সাথে ভাগ হয় না।'
+      }
+    },
+    {
+      term: { en: 'Fridge (memory)', bn: 'ফ্রিজ (memory)' },
+      d: {
+        en: 'Where a kitchen keeps what it is working on. Every kitchen has its own.',
+        bn: 'রান্নাঘর যা নিয়ে কাজ করছে তা যেখানে রাখে। প্রতিটি রান্নাঘরের নিজের ফ্রিজ।'
+      }
+    },
+    {
+      term: { en: 'Cook (thread)', bn: 'রাঁধুনি (thread)' },
+      d: {
+        en: 'One worker inside a kitchen. Cooks in the same kitchen share its fridge.',
+        bn: 'রান্নাঘরের ভেতরের একজন কর্মী। একই রান্নাঘরের রাঁধুনিরা ফ্রিজ ভাগ করে।'
+      }
+    },
+    {
+      term: { en: 'Pass window', bn: 'পাস-জানালা' },
+      d: {
+        en: 'The only way for two kitchens to swap things, using written slips.',
+        bn: 'দুই রান্নাঘরের জিনিস আদান-প্রদানের একমাত্র পথ, লেখা স্লিপের মাধ্যমে।'
+      }
+    },
+    {
+      term: { en: 'Slip', bn: 'স্লিপ' },
+      d: {
+        en: 'A written copy of an order. The other kitchen gets the copy only.',
+        bn: 'অর্ডারের লেখা কপি। অন্য রান্নাঘর শুধু কপিটাই পায়।'
+      }
+    }
+  ],
+  legend: {
+    request: { en: 'Writing a number', bn: 'সংখ্যা লেখা' },
+    queue: { en: 'A slip sent over', bn: 'স্লিপ পাঠানো' },
+    result: { en: 'Reading or a reply', bn: 'পড়া বা উত্তর' },
+    error: { en: 'Something went wrong', bn: 'কিছু গোলমাল হয়েছে' }
+  },
   view: { wide: [ 980, 420 ], narrow: [ 400, 570 ] },
   nodes: {
     a_t1: {
       icon: 'thread',
       name: { en: 'Thread 1', bn: 'Thread ১' },
       sub: { en: 'In process A', bn: 'process A-তে' },
+      plain: {
+        name: { en: 'Cook 1', bn: 'রাঁধুনি ১' },
+        sub: { en: 'In Kitchen A', bn: 'রান্নাঘর A-তে' }
+      },
       wide: [ 200, 120, 'left' ],
       narrow: [ 170, 210, 'right' ]
     },
@@ -22,6 +77,10 @@ export const processesVsThreads: Topic = {
       icon: 'thread',
       name: { en: 'Thread 2', bn: 'Thread ২' },
       sub: { en: 'In process A', bn: 'process A-তে' },
+      plain: {
+        name: { en: 'Cook 2', bn: 'রাঁধুনি ২' },
+        sub: { en: 'In Kitchen A', bn: 'রান্নাঘর A-তে' }
+      },
       wide: [ 200, 330, 'left' ],
       narrow: [ 170, 90, 'right' ]
     },
@@ -29,6 +88,10 @@ export const processesVsThreads: Topic = {
       icon: 'memory',
       name: { en: 'Memory A', bn: 'Memory A' },
       sub: { en: 'x = ?', bn: 'x = ?' },
+      plain: {
+        name: { en: 'Kitchen A’s fridge', bn: 'রান্নাঘর A-র ফ্রিজ' },
+        sub: { en: 'Shared by both cooks', bn: 'দুজনেরই ফ্রিজ' }
+      },
       wide: [ 380, 225, 'up' ],
       narrow: [ 50, 150, 'right' ]
     },
@@ -36,6 +99,10 @@ export const processesVsThreads: Topic = {
       icon: 'pipe',
       name: { en: 'Pipe / Queue', bn: 'Pipe / Queue' },
       sub: { en: 'Pickled bytes', bn: 'Pickle করা bytes' },
+      plain: {
+        name: { en: 'Pass window', bn: 'পাস-জানালা' },
+        sub: { en: 'Slips go through here', bn: 'স্লিপ এখান দিয়ে যায়' }
+      },
       wide: [ 640, 225, 'down' ],
       narrow: [ 170, 310, 'right' ]
     },
@@ -43,6 +110,10 @@ export const processesVsThreads: Topic = {
       icon: 'thread',
       name: { en: 'Process B', bn: 'Process B' },
       sub: { en: 'Own interpreter', bn: 'নিজের interpreter' },
+      plain: {
+        name: { en: 'Kitchen B’s cook', bn: 'রান্নাঘর B-র রাঁধুনি' },
+        sub: { en: 'Cooks on its own', bn: 'নিজের মতো রাঁধে' }
+      },
       wide: [ 790, 120, 'right' ],
       narrow: [ 170, 415, 'right' ]
     },
@@ -50,6 +121,10 @@ export const processesVsThreads: Topic = {
       icon: 'memory',
       name: { en: 'Memory B', bn: 'Memory B' },
       sub: { en: 'x = ?', bn: 'x = ?' },
+      plain: {
+        name: { en: 'Kitchen B’s fridge', bn: 'রান্নাঘর B-র ফ্রিজ' },
+        sub: { en: 'Its own, private', bn: 'নিজস্ব, ব্যক্তিগত' }
+      },
       wide: [ 790, 330, 'right' ],
       narrow: [ 170, 495, 'right' ]
     }
@@ -58,12 +133,14 @@ export const processesVsThreads: Topic = {
     {
       id: 'proc-a',
       label: { en: 'Process A', bn: 'Process A' },
+      plain: { en: 'Kitchen A', bn: 'রান্নাঘর A' },
       wide: [ 40, 70, 430, 310 ],
       narrow: [ 10, 40, 320, 210 ]
     },
     {
       id: 'proc-b',
       label: { en: 'Process B', bn: 'Process B' },
+      plain: { en: 'Kitchen B', bn: 'রান্নাঘর B' },
       wide: [ 750, 70, 220, 310 ],
       narrow: [ 110, 365, 220, 180 ]
     }
@@ -105,12 +182,13 @@ export const processesVsThreads: Topic = {
     steps: [
       {
         id: 't1-writes',
-        moves: [ { edge: 'a_t1-a_mem', label: 'set x=1' } ],
+        moves: [ { edge: 'a_t1-a_mem', label: 'set x=1', plain: { en: 'Writes a number', bn: 'সংখ্যা লেখে' } } ],
         state: { a_mem: { en: 'x = 1', bn: 'x = 1' } },
-        title: { en: 'One thread writes x', bn: 'একটা thread x লেখে' },
+        plainState: { a_mem: { en: 'Number is 1', bn: 'সংখ্যা ১' } },
+        title: { en: 'Cook 1 puts a number in the fridge', bn: 'রাঁধুনি ১ ফ্রিজে একটা সংখ্যা রাখে' },
         simple: {
-          en: 'One worker writes a note on the shared whiteboard.',
-          bn: 'একজন worker শেয়ার করা হোয়াইটবোর্ডে একটা নোট লেখে।'
+          en: 'Kitchen A has two cooks who share one fridge. Cook 1 puts a number in it.',
+          bn: 'রান্নাঘর A-তে দুজন রাঁধুনি, ফ্রিজ একটাই। রাঁধুনি ১ তাতে একটা সংখ্যা রাখে।'
         },
         tech: {
           en: 'Thread 1 stores into a heap object. Threads in one process share one address space: globals, heap and open files.',
@@ -119,12 +197,13 @@ export const processesVsThreads: Topic = {
       },
       {
         id: 't2-reads',
-        moves: [ { edge: 'a_mem-a_t2', label: 'read x' } ],
+        moves: [ { edge: 'a_mem-a_t2', label: 'read x', plain: { en: 'Reads the number', bn: 'সংখ্যা পড়ে' } } ],
         state: { a_t2: { en: 'Sees x = 1', bn: 'x = 1 দেখে' } },
-        title: { en: 'The other thread reads it', bn: 'অন্য thread সেটা পড়ে' },
+        plainState: { a_t2: { en: 'Sees the number 1', bn: 'সংখ্যা ১ দেখে' } },
+        title: { en: 'Cook 2 reads it', bn: 'রাঁধুনি ২ সেটা পড়ে' },
         simple: {
-          en: 'The second worker reads it instantly. Nothing was copied or sent.',
-          bn: 'দ্বিতীয় worker সেটা সাথে সাথে পড়ে। কিছু কপি বা পাঠাতে হয়নি।'
+          en: 'Cook 2 opens the same fridge and sees the number at once. Nothing was copied.',
+          bn: 'রাঁধুনি ২ একই ফ্রিজ খুলে সাথে সাথে সংখ্যাটা দেখে। কিছু কপি করতে হয়নি।'
         },
         tech: {
           en: 'Thread 2 reads the same object directly: no copy, no serialization, no IPC. Cheap, but shared mutable state needs synchronization.',
@@ -133,15 +212,19 @@ export const processesVsThreads: Topic = {
       },
       {
         id: 't2-writes',
-        moves: [ { edge: 'a_t2-a_mem', label: 'set x=2' } ],
+        moves: [ { edge: 'a_t2-a_mem', label: 'set x=2', plain: { en: 'Changes number', bn: 'সংখ্যা বদলায়' } } ],
         state: {
           a_mem: { en: 'x = 2', bn: 'x = 2' },
           a_t2: { en: 'Wrote x = 2', bn: 'x = 2 লিখেছে' }
         },
-        title: { en: 'Either thread can change it', bn: 'যেকোনো thread বদলাতে পারে' },
+        plainState: {
+          a_mem: { en: 'Number is 2', bn: 'সংখ্যা ২' },
+          a_t2: { en: 'Changed it to 2', bn: '২ করে দিয়েছে' }
+        },
+        title: { en: 'Either cook can change it', bn: 'যেকোনো রাঁধুনি বদলাতে পারে' },
         simple: {
-          en: 'Either worker can change the whiteboard, and everyone in the office sees it.',
-          bn: 'যেকোনো worker হোয়াইটবোর্ড বদলাতে পারে, আর অফিসের সবাই তা দেখে।'
+          en: 'Cook 2 changes the number, and Cook 1 sees it too. Sharing is fast, but one cook’s mess spoils it for all.',
+          bn: 'রাঁধুনি ২ সংখ্যা বদলায়, রাঁধুনি ১-ও তা দেখে। ভাগাভাগি দ্রুত, কিন্তু একজনের গোলমালে সবার ক্ষতি।'
         },
         tech: {
           en: 'Writes are visible to every thread of A at once. That is both the power and the hazard of threads.',
@@ -150,12 +233,13 @@ export const processesVsThreads: Topic = {
       },
       {
         id: 'send',
-        moves: [ { edge: 'a_t1-pipe', label: 'pickle(x)' } ],
+        moves: [ { edge: 'a_t1-pipe', label: 'pickle(x)', plain: { en: 'Writes a slip', bn: 'স্লিপ লেখে' } } ],
         state: { pipe: { en: 'Bytes in flight', bn: 'bytes যাচ্ছে' } },
-        title: { en: 'To reach B, send a copy', bn: 'B-তে পৌঁছাতে কপি পাঠাতে হয়' },
+        plainState: { pipe: { en: 'Slip in the window', bn: 'জানালায় স্লিপ' } },
+        title: { en: 'To reach Kitchen B, send a slip', bn: 'রান্নাঘর B-তে পৌঁছাতে স্লিপ পাঠাতে হয়' },
         simple: {
-          en: 'To tell another office, you write a letter, a copy. You cannot hand over the whiteboard.',
-          bn: 'অন্য অফিসকে জানাতে চিঠি লিখতে হয়, মানে একটা কপি। হোয়াইটবোর্ড তুলে দেওয়া যায় না।'
+          en: 'Kitchen B has its own fridge, so Cook 1 writes the number on a slip and puts it in the pass window.',
+          bn: 'রান্নাঘর B-র নিজের ফ্রিজ আছে, তাই রাঁধুনি ১ সংখ্যাটা স্লিপে লিখে পাস-জানালায় রাখে।'
         },
         tech: {
           en: 'Processes have separate address spaces. A `multiprocessing` Queue or Pipe pickles the object into bytes and sends them over an OS pipe or socket.',
@@ -164,15 +248,19 @@ export const processesVsThreads: Topic = {
       },
       {
         id: 'arrive',
-        moves: [ { edge: 'pipe-b_main', label: 'bytes' } ],
+        moves: [ { edge: 'pipe-b_main', label: 'bytes', plain: { en: 'The slip', bn: 'স্লিপ' } } ],
         state: {
           pipe: { en: 'Pickled bytes', bn: 'Pickle করা bytes' },
           b_main: { en: 'Receiving', bn: 'নিচ্ছে' }
         },
-        title: { en: 'The bytes arrive', bn: 'bytes পৌঁছায়' },
+        plainState: {
+          pipe: { en: 'Slip delivered', bn: 'স্লিপ পৌঁছে গেছে' },
+          b_main: { en: 'Receiving', bn: 'নিচ্ছে' }
+        },
+        title: { en: 'The slip arrives', bn: 'স্লিপ পৌঁছায়' },
         simple: {
-          en: 'The letter arrives at the other office.',
-          bn: 'চিঠিটা অন্য অফিসে পৌঁছায়।'
+          en: 'The slip comes through the pass window to Kitchen B’s cook.',
+          bn: 'স্লিপটা পাস-জানালা দিয়ে রান্নাঘর B-র রাঁধুনির কাছে পৌঁছায়।'
         },
         tech: {
           en: 'The receiving process reads the bytes. Cost grows with object size, and the object must be picklable.',
@@ -181,15 +269,19 @@ export const processesVsThreads: Topic = {
       },
       {
         id: 'unpickle',
-        work: { node: 'b_main', kind: 'result' },
+        work: { node: [ 'b_main', 'b_mem' ], kind: 'result' },
         state: {
           b_main: { en: 'Unpickled', bn: 'খোলা হয়েছে' },
           b_mem: { en: 'x = 2 (copy)', bn: 'x = 2 (কপি)' }
         },
-        title: { en: 'B rebuilds its own copy', bn: 'B নিজের কপি বানায়' },
+        plainState: {
+          b_main: { en: 'Read the slip', bn: 'স্লিপ পড়েছে' },
+          b_mem: { en: 'Number is 2, a copy', bn: 'সংখ্যা ২, একটা কপি' }
+        },
+        title: { en: 'Kitchen B makes its own copy', bn: 'রান্নাঘর B নিজের কপি বানায়' },
         simple: {
-          en: 'The other office copies the number onto its own whiteboard.',
-          bn: 'অন্য অফিস সংখ্যাটা নিজের হোয়াইটবোর্ডে টুকে নেয়।'
+          en: 'Kitchen B’s cook reads the slip and writes the number in Kitchen B’s own fridge. It is a copy.',
+          bn: 'রান্নাঘর B-র রাঁধুনি স্লিপ পড়ে সংখ্যাটা নিজেদের ফ্রিজে লেখে। এটা একটা কপি।'
         },
         tech: {
           en: 'Unpickling builds a new object in B’s heap. It is a copy, not the same object. For real sharing, use `shared_memory` or `Value`/`Array`.',
@@ -198,15 +290,19 @@ export const processesVsThreads: Topic = {
       },
       {
         id: 'b-writes',
-        moves: [ { edge: 'b_main-b_mem', label: 'x=99' } ],
+        moves: [ { edge: 'b_main-b_mem', label: 'x=99', plain: { en: 'Changes to 99', bn: '৯৯ করে' } } ],
         state: {
           b_mem: { en: 'x = 99', bn: 'x = 99' },
           b_main: { en: 'Own interpreter', bn: 'নিজের interpreter' }
         },
-        title: { en: 'B changes its copy', bn: 'B নিজের কপি বদলায়' },
+        plainState: {
+          b_mem: { en: 'Number is 99', bn: 'সংখ্যা ৯৯' },
+          b_main: { en: 'Cooks on its own', bn: 'নিজের মতো রাঁধে' }
+        },
+        title: { en: 'Kitchen B changes its copy', bn: 'রান্নাঘর B নিজের কপি বদলায়' },
         simple: {
-          en: 'Office B changes its own copy.',
-          bn: 'অফিস B নিজের কপিটা বদলায়।'
+          en: 'Kitchen B’s cook changes the number in Kitchen B’s own fridge to 99.',
+          bn: 'রান্নাঘর B-র রাঁধুনি নিজেদের ফ্রিজের সংখ্যাটা ৯৯ করে দেয়।'
         },
         tech: {
           en: 'B mutates only its private heap. Nothing in process A can see this write.',
@@ -217,10 +313,11 @@ export const processesVsThreads: Topic = {
         id: 'a-untouched',
         work: { node: 'a_mem', kind: 'result' },
         state: { a_mem: { en: 'x = 2, unchanged', bn: 'x = 2, অপরিবর্তিত' } },
-        title: { en: 'A is untouched', bn: 'A অক্ষত' },
+        plainState: { a_mem: { en: 'Still 2, untouched', bn: 'এখনও ২, অক্ষত' } },
+        title: { en: 'Kitchen A’s fridge is untouched', bn: 'রান্নাঘর A-র ফ্রিজ অক্ষত' },
         simple: {
-          en: 'Office A’s whiteboard still says 2. That is isolation.',
-          bn: 'অফিস A-র হোয়াইটবোর্ডে এখনও ২। এটাই isolation।'
+          en: 'Kitchen A’s fridge still says 2. Separate fridges mean one kitchen cannot spoil another.',
+          bn: 'রান্নাঘর A-র ফ্রিজে এখনও ২। ফ্রিজ আলাদা, তাই এক রান্নাঘর আরেকটাকে নষ্ট করতে পারে না।'
         },
         tech: {
           en: 'Isolation is the main benefit of processes: no accidental sharing, no memory data races, and each process has its own GIL.',
@@ -229,12 +326,13 @@ export const processesVsThreads: Topic = {
       },
       {
         id: 'reply',
-        moves: [ { edge: 'b_main-pipe', label: 'result' } ],
+        moves: [ { edge: 'b_main-pipe', label: 'result', plain: { en: 'Reply slip', bn: 'উত্তরের স্লিপ' } } ],
         state: { pipe: { en: 'Bytes in flight', bn: 'bytes যাচ্ছে' } },
-        title: { en: 'B sends a reply', bn: 'B উত্তর পাঠায়' },
+        plainState: { pipe: { en: 'Reply in the window', bn: 'জানালায় উত্তর' } },
+        title: { en: 'Kitchen B sends a reply', bn: 'রান্নাঘর B উত্তর পাঠায়' },
         simple: {
-          en: 'Office B sends a reply letter back.',
-          bn: 'অফিস B একটা উত্তরের চিঠি ফেরত পাঠায়।'
+          en: 'Kitchen B’s cook writes a reply on a new slip and puts it in the pass window.',
+          bn: 'রান্নাঘর B-র রাঁধুনি নতুন স্লিপে উত্তর লিখে পাস-জানালায় রাখে।'
         },
         tech: {
           en: 'Results return the same way: pickled, then copied. This IPC cost is why chunking work into larger tasks matters.',
@@ -243,15 +341,19 @@ export const processesVsThreads: Topic = {
       },
       {
         id: 'reply-lands',
-        moves: [ { edge: 'pipe-a_t1', label: 'copy of result' } ],
+        moves: [ { edge: 'pipe-a_t1', label: 'copy of result', plain: { en: 'Copy of reply', bn: 'উত্তরের কপি' } } ],
         state: {
           pipe: { en: 'Pickled bytes', bn: 'Pickle করা bytes' },
           a_t1: { en: 'Got a copy', bn: 'কপি পেয়েছে' }
         },
-        title: { en: 'A receives a copy', bn: 'A একটা কপি পায়' },
+        plainState: {
+          pipe: { en: 'Reply delivered', bn: 'উত্তর পৌঁছে গেছে' },
+          a_t1: { en: 'Got a copy', bn: 'কপি পেয়েছে' }
+        },
+        title: { en: 'Cook 1 gets a copy', bn: 'রাঁধুনি ১ একটা কপি পায়' },
         simple: {
-          en: 'The reply arrives as a copy, never as B’s own whiteboard.',
-          bn: 'উত্তর কপি হয়েই আসে, B-র নিজের হোয়াইটবোর্ড কখনও আসে না।'
+          en: 'The reply reaches Cook 1 as a copy. Kitchen B’s fridge never leaves Kitchen B.',
+          bn: 'উত্তর রাঁধুনি ১-এর কাছে কপি হয়ে আসে। রান্নাঘর B-র ফ্রিজ কখনও রান্নাঘর B ছেড়ে যায় না।'
         },
         tech: {
           en: 'Thread 1 unpickles a new object in A’s heap. Sharing in Python threads is free; across processes every hand-off is a copy.',
@@ -263,7 +365,8 @@ export const processesVsThreads: Topic = {
   alts: [
     {
       id: 'process-crash',
-      label: { en: 'A process crashes', bn: 'একটা process ক্র্যাশ করে' },
+      label: { en: 'A kitchen catches fire', bn: 'রান্নাঘরে আগুন লাগে' },
+      whatIf: { en: 'What if Kitchen B catches fire?', bn: 'যদি রান্নাঘর B-তে আগুন লাগে?' },
       branchAfter: 'b-writes',
       steps: [
         {
@@ -273,10 +376,14 @@ export const processesVsThreads: Topic = {
             b_main: { en: 'Killed by a signal', bn: 'signal-এ মৃত' },
             b_mem: { en: 'Gone', bn: 'শেষ' }
           },
-          title: { en: 'Process B dies', bn: 'Process B মারা যায়' },
+          plainState: {
+            b_main: { en: 'Kitchen on fire', bn: 'রান্নাঘরে আগুন' },
+            b_mem: { en: 'Lost', bn: 'নষ্ট' }
+          },
+          title: { en: 'Kitchen B catches fire', bn: 'রান্নাঘর B-তে আগুন লাগে' },
           simple: {
-            en: 'Office B burns down. Its notes are gone, but nothing outside it is touched.',
-            bn: 'অফিস B পুড়ে যায়। তার নোট শেষ, কিন্তু বাইরের কিছুতে আঁচ লাগে না।'
+            en: 'Kitchen B catches fire. Its fridge and everything in it are lost, but nothing outside is touched.',
+            bn: 'রান্নাঘর B-তে আগুন লাগে। তার ফ্রিজ আর ভেতরের সব নষ্ট, কিন্তু বাইরের কিছুতে আঁচ লাগে না।'
           },
           tech: {
             en: 'The OOM killer (SIGKILL, 9) or a segfault (SIGSEGV, 11) ends the process, and the OS reclaims its memory. The parent sees a negative `exitcode`: -9 or -11.',
@@ -287,10 +394,10 @@ export const processesVsThreads: Topic = {
           id: 'a-survives',
           work: { node: 'a_t1', kind: 'result' },
           state: { a_t1: { en: 'Alive, unaffected', bn: 'বেঁচে, অক্ষত' } },
-          title: { en: 'Process A carries on', bn: 'Process A চলতে থাকে' },
+          title: { en: 'Kitchen A carries on', bn: 'রান্নাঘর A চলতে থাকে' },
           simple: {
-            en: 'Office A is fine. It just notices that B stopped answering.',
-            bn: 'অফিস A ঠিকই আছে। সে শুধু টের পায় B আর সাড়া দিচ্ছে না।'
+            en: 'Kitchen A is fine. Cook 1 only notices that Kitchen B has stopped answering.',
+            bn: 'রান্নাঘর A ঠিকই আছে। রাঁধুনি ১ শুধু টের পায় রান্নাঘর B আর সাড়া দিচ্ছে না।'
           },
           tech: {
             en: 'The parent is unaffected. A pipe read sees EOF, a `Queue.get()` without timeout can wait forever, and `ProcessPoolExecutor` raises `BrokenProcessPool`.',
@@ -301,17 +408,19 @@ export const processesVsThreads: Topic = {
     },
     {
       id: 'thread-crash',
-      label: { en: 'A thread crashes', bn: 'একটা thread ক্র্যাশ করে' },
+      label: { en: 'A cook starts a fire', bn: 'রাঁধুনি আগুন ধরায়' },
+      whatIf: { en: 'What if Cook 2 starts a fire in Kitchen A?', bn: 'যদি রাঁধুনি ২ রান্নাঘর A-তে আগুন ধরিয়ে দেয়?' },
       branchAfter: 't2-writes',
       steps: [
         {
           id: 't2-segfault',
           work: { node: 'a_t2', kind: 'error' },
           state: { a_t2: { en: 'SIGSEGV', bn: 'SIGSEGV' } },
-          title: { en: 'A thread hits a hard fault', bn: 'একটা thread ভয়ানক fault-এ পড়ে' },
+          plainState: { a_t2: { en: 'Started a fire', bn: 'আগুন ধরিয়েছে' } },
+          title: { en: 'A cook starts a fire', bn: 'একজন রাঁধুনি আগুন ধরায়' },
           simple: {
-            en: 'One worker in the shared office knocks over a pillar.',
-            bn: 'শেয়ার করা অফিসে একজন worker একটা থাম ফেলে দেয়।'
+            en: 'Cook 2 makes a bad mistake and starts a fire in Kitchen A.',
+            bn: 'রাঁধুনি ২ বড় ভুল করে রান্নাঘর A-তে আগুন ধরিয়ে দেয়।'
           },
           tech: {
             en: 'A hard fault in any thread (segfault, abort, `os._exit`, OOM kill) ends the whole process. A plain Python exception only ends that one thread.',
@@ -325,10 +434,14 @@ export const processesVsThreads: Topic = {
             a_t1: { en: 'Dead', bn: 'মৃত' },
             a_mem: { en: 'Gone', bn: 'শেষ' }
           },
-          title: { en: 'The whole process goes', bn: 'পুরো process শেষ' },
+          plainState: {
+            a_t1: { en: 'Kitchen shut down', bn: 'রান্নাঘর বন্ধ' },
+            a_mem: { en: 'Food ruined', bn: 'খাবার নষ্ট' }
+          },
+          title: { en: 'The whole kitchen goes', bn: 'পুরো রান্নাঘর শেষ' },
           simple: {
-            en: 'The whole office comes down, including everyone else’s work.',
-            bn: 'পুরো অফিস ধসে পড়ে, সবার কাজসহ।'
+            en: 'The fire spreads through the whole kitchen. Cook 1 stops, and the shared fridge is ruined.',
+            bn: 'আগুন পুরো রান্নাঘরে ছড়ায়। রাঁধুনি ১ থেমে যায়, আর শেয়ার করা ফ্রিজ নষ্ট হয়।'
           },
           tech: {
             en: 'All threads and all shared state die together. A bigger blast radius is the price of cheap sharing.',
@@ -340,72 +453,72 @@ export const processesVsThreads: Topic = {
   ],
   analogy: {
     intro: {
-      en: 'A process is a separate apartment with its own kitchen. Threads are roommates in one apartment sharing the fridge.',
-      bn: 'process হলো নিজের রান্নাঘরসহ আলাদা একটা অ্যাপার্টমেন্ট। thread হলো একই অ্যাপার্টমেন্টে ফ্রিজ ভাগ করা রুমমেট।'
+      en: 'Each kitchen has its own fridge. Cooks in one kitchen share it. Kitchens talk only through the pass window, using slips.',
+      bn: 'প্রতিটি রান্নাঘরের নিজের ফ্রিজ। এক রান্নাঘরের রাঁধুনিরা সেটা ভাগ করে। রান্নাঘরগুলো শুধু পাস-জানালা দিয়ে স্লিপে কথা বলে।'
     },
     twins: [
       {
         icon: 'thread',
         node: 'a_t1',
-        name: { en: 'The first roommate', bn: 'প্রথম রুমমেট' },
+        name: { en: 'Cook 1', bn: 'রাঁধুনি ১' },
         d: {
-          en: 'Lives in apartment A. Can use anything in the shared fridge.',
-          bn: 'অ্যাপার্টমেন্ট A-তে থাকে। শেয়ার করা ফ্রিজের সবকিছু ব্যবহার করতে পারে।'
+          en: 'Works in Kitchen A. Can use anything in the shared fridge.',
+          bn: 'রান্নাঘর A-তে কাজ করে। শেয়ার করা ফ্রিজের সবকিছু ব্যবহার করতে পারে।'
         }
       },
       {
         icon: 'thread',
         node: 'a_t2',
-        name: { en: 'The second roommate', bn: 'দ্বিতীয় রুমমেট' },
+        name: { en: 'Cook 2', bn: 'রাঁধুনি ২' },
         d: {
-          en: 'Same apartment, same fridge. Sees the first roommate’s changes at once.',
-          bn: 'একই অ্যাপার্টমেন্ট, একই ফ্রিজ। প্রথম রুমমেটের বদল সাথে সাথে দেখে।'
+          en: 'Same kitchen, same fridge. Sees Cook 1’s changes at once.',
+          bn: 'একই রান্নাঘর, একই ফ্রিজ। রাঁধুনি ১-এর বদল সাথে সাথে দেখে।'
         }
       },
       {
         icon: 'memory',
         node: 'a_mem',
-        name: { en: 'The shared fridge', bn: 'শেয়ার করা ফ্রিজ' },
+        name: { en: 'Kitchen A’s fridge', bn: 'রান্নাঘর A-র ফ্রিজ' },
         d: {
-          en: 'Everything inside is open to every roommate. Handy, but they can also clash over it.',
-          bn: 'ভেতরের সবকিছু সব রুমমেটের জন্য খোলা। সুবিধাজনক, কিন্তু নিয়ে ঝগড়াও হতে পারে।'
+          en: 'Open to every cook in Kitchen A. Handy, but one cook’s mess spoils it for all.',
+          bn: 'রান্নাঘর A-র সব রাঁধুনির জন্য খোলা। সুবিধাজনক, কিন্তু একজনের গোলমালে সবার ক্ষতি।'
         }
       },
       {
         icon: 'pipe',
         node: 'pipe',
-        name: { en: 'Notes under the door', bn: 'দরজার নিচ দিয়ে নোট' },
+        name: { en: 'The pass window', bn: 'পাস-জানালা' },
         d: {
-          en: 'The only way to talk to the neighbour. You pass a copy of the note, never the fridge.',
-          bn: 'প্রতিবেশীর সাথে কথা বলার একমাত্র উপায়। নোটের কপি দেওয়া যায়, ফ্রিজ নয়।'
+          en: 'The only way for the kitchens to talk. You pass a copy on a slip, never the fridge.',
+          bn: 'রান্নাঘরগুলোর কথা বলার একমাত্র উপায়। স্লিপে কপি দেওয়া যায়, ফ্রিজ নয়।'
         }
       },
       {
         icon: 'thread',
         node: 'b_main',
-        name: { en: 'The neighbour', bn: 'প্রতিবেশী' },
+        name: { en: 'Kitchen B’s cook', bn: 'রান্নাঘর B-র রাঁধুনি' },
         d: {
-          en: 'Lives in apartment B with their own rules. Reads your note and writes their own.',
-          bn: 'অ্যাপার্টমেন্ট B-তে নিজের নিয়মে থাকে। আপনার নোট পড়ে আর নিজেরটা লেখে।'
+          en: 'Works in Kitchen B with its own rules. Reads your slip and writes its own.',
+          bn: 'রান্নাঘর B-তে নিজের নিয়মে কাজ করে। আপনার স্লিপ পড়ে আর নিজেরটা লেখে।'
         }
       },
       {
         icon: 'memory',
         node: 'b_mem',
-        name: { en: 'The neighbour’s fridge', bn: 'প্রতিবেশীর ফ্রিজ' },
+        name: { en: 'Kitchen B’s fridge', bn: 'রান্নাঘর B-র ফ্রিজ' },
         d: {
-          en: 'Private to apartment B. Your roommates cannot reach it.',
-          bn: 'শুধু অ্যাপার্টমেন্ট B-র। আপনার রুমমেটরা এতে হাত দিতে পারে না।'
+          en: 'Private to Kitchen B. Cooks from Kitchen A cannot reach it.',
+          bn: 'শুধু রান্নাঘর B-র। রান্নাঘর A-র রাঁধুনিরা এতে হাত দিতে পারে না।'
         }
       },
       {
         icon: 'alert',
         node: null,
-        name: { en: 'The stove left on', bn: 'চুলা জ্বালানো থেকে যাওয়া' },
+        name: { en: 'A fire in the kitchen', bn: 'রান্নাঘরে আগুন' },
         is: { en: 'is a crash', bn: 'মানে ক্র্যাশ' },
         d: {
-          en: 'If a roommate leaves the stove on, the whole apartment and everyone’s food burn. A neighbour’s fire stays in their apartment.',
-          bn: 'এক রুমমেট চুলা জ্বালিয়ে রাখলে পুরো অ্যাপার্টমেন্ট আর সবার খাবার পোড়ে। প্রতিবেশীর আগুন তার অ্যাপার্টমেন্টেই থাকে।'
+          en: 'If a cook starts a fire, the whole kitchen and everyone’s food are lost. A fire next door stays next door.',
+          bn: 'এক রাঁধুনি আগুন ধরালে পুরো রান্নাঘর আর সবার খাবার নষ্ট হয়। পাশের রান্নাঘরের আগুন সেখানেই থাকে।'
         }
       }
     ]

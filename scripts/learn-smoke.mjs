@@ -75,7 +75,7 @@ const TOPIC_CASES = [
   { slug: 'fastapi-lifecycle', total: 12, altStop: 'Stop 7 of 10', taught: true },
   { slug: 'git-basics', total: 9, altStop: 'Stop 9 of 12', altBtn: 2 },
   { slug: 'concurrency-vs-parallelism', total: 9, altStop: 'Stop 7 of 10' },
-  { slug: 'processes-vs-threads', total: 10, altStop: 'Stop 4 of 5', altBtn: 2 },
+  { slug: 'processes-vs-threads', total: 10, altStop: 'Stop 4 of 5', altBtn: 2, taught: true },
   { slug: 'python-gil', total: 11, altStop: 'Stop 7 of 11', taught: true, altFail: false },
   { slug: 'multiprocessing-pools', total: 9, altStop: 'Stop 3 of 4', altBtn: 2, step3Packets: 2 },
   { slug: 'asyncio-event-loop', total: 10, altStop: 'Stop 3 of 5' },
