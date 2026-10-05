@@ -125,8 +125,9 @@ html[lang="bn"] .learn-root .lede{line-height:1.65}
 .learn-root .flow-svg{max-height:calc(100dvh - 140px);margin-inline:auto}}
 @media (min-width:1200px){
   .learn-root{overflow-x:clip}
-  .learn-root .switches,.learn-root .player,.learn-root .map-sec{--wide:min(1680px,100vw - 40px);width:var(--wide);margin-inline:calc(50% - var(--wide) / 2)}
+  .learn-root .switches,.learn-root .player,.learn-root .map-sec{--wide:min(1680px,100vw - 56px);width:var(--wide);margin-inline:calc(50% - var(--wide) / 2)}
   .learn-root .player{grid-template-columns:minmax(0,1fr) 380px}
+  .learn-root .network-svg{max-height:calc(100dvh - 120px);width:100%;display:block;margin-inline:auto}
 }
 @media (max-width:979px){.learn-root .player .ride{display:contents}
 .learn-root .ride .now{order:1}

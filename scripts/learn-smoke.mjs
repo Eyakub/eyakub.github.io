@@ -361,27 +361,36 @@ const checks = [
     }
   }],
   ['wide-frame', async () => {
-    const measure = (page) => page.evaluate(() => ({
-      svg: document.querySelector('.flow-svg').getBoundingClientRect().width,
-      frame: document.querySelector('.player').getBoundingClientRect().width,
-      sw: document.documentElement.scrollWidth,
-    }))
+    const geom = (page, sel) => page.evaluate((s) => {
+      const r = document.querySelector(s).getBoundingClientRect()
+      return { left: r.left, right: r.right, cw: document.documentElement.clientWidth, w: r.width }
+    }, sel)
+    const inside = (g, label) => {
+      assert(g.left >= 0 && g.right <= g.cw, `${label}: frame ${g.left}..${g.right} outside ${g.cw}`)
+      assert(Math.abs(g.left - (g.cw - g.right)) <= 2, `${label}: frame not centred (${g.left} vs ${g.cw - g.right})`)
+    }
+    // the 2560 case checks the frame cap only
     for (const [w, h, minSvg] of [[1920, 1080, 1100], [1280, 860, 690], [2560, 1440, 0]]) {
       const { page, context } = await open('/learn/fastapi-lifecycle', { width: w, height: h })
       await page.waitForSelector('.flow-svg')
-      const m = await measure(page)
+      await page.evaluate(() => document.fonts.ready)
+      const g = await geom(page, '.player')
+      const svg = (await geom(page, '.flow-svg')).w
       if (w !== 2560) await shot(page, `wide-${w}`)
       await context.close()
-      assert(m.svg >= minSvg, `${w}: flow-svg ${m.svg}px < ${minSvg}`)
-      assert(m.sw <= w, `${w}: horizontal overflow scrollWidth=${m.sw}`)
-      assert(m.frame <= 1680.5, `${w}: frame ${m.frame}px > 1680`)
+      assert(svg >= minSvg, `${w}: flow-svg ${svg}px < ${minSvg}`)
+      assert(g.w <= 1680.5, `${w}: frame ${g.w}px > 1680`)
+      inside(g, `${w} player`)
     }
     const { page, context } = await open('/learn', { width: 1920, height: 1080 })
     await page.waitForSelector('.map-sec')
-    const sw = await page.evaluate(() => document.documentElement.scrollWidth)
+    await page.evaluate(() => document.fonts.ready)
+    const g = await geom(page, '.map-sec')
+    const mapH = await page.evaluate(() => ({ h: document.querySelector('.network-svg').getBoundingClientRect().height, ih: innerHeight }))
     await shot(page, 'wide-hub-1920')
     await context.close()
-    assert(sw <= 1920, `hub overflow ${sw}`)
+    inside(g, 'hub map-sec')
+    assert(mapH.h <= mapH.ih, `hub map height ${mapH.h} > viewport ${mapH.ih}`)
   }],
   ['player-mobile-order', async () => {
     const { page, context } = await open('/learn/celery-redis', { width: 390, height: 844 })
