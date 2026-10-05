@@ -31,6 +31,8 @@ export const UI = {
   routeFail: { en: 'A job fails', bn: 'কাজ ব্যর্থ হলে' },
   stopOf: { en: 'Stop {n} of {total}', bn: 'স্টপ {n} / {total}' },
   nextStop: { en: 'Next stop: {t}', bn: 'পরের স্টপ: {t}' },
+  wordsTitle: { en: 'Words to know', bn: 'যে শব্দগুলো জানা দরকার' },
+  remember: { en: 'Remember', bn: 'মনে রাখুন' },
   endLine: { en: 'End of the line.', bn: 'এটাই লাইনের শেষ স্টপ।' },
   underHood: { en: 'Under the hood', bn: 'ভেতরে যা ঘটে' },
   prev: { en: 'Previous stop', bn: 'আগের স্টপ' },

@@ -71,7 +71,7 @@ const assert = (cond, msg) => { if (!cond) throw new Error(msg) }
 const noProblems = (problems) => assert(problems.length === 0, problems.join('; '))
 
 const TOPIC_CASES = [
-  { slug: 'celery-redis', total: 10, altStop: 'Stop 5 of 8' },
+  { slug: 'celery-redis', total: 10, altStop: 'Stop 5 of 8' }, // add taught: true once a topic has the Simply layer
   { slug: 'fastapi-lifecycle', total: 11, altStop: 'Stop 7 of 10' },
   { slug: 'git-basics', total: 9, altStop: 'Stop 9 of 12', altBtn: 2 },
   { slug: 'concurrency-vs-parallelism', total: 9, altStop: 'Stop 7 of 10' },
@@ -473,6 +473,35 @@ const checks = [
       noProblems(problems)
     }
   }],
+  ['teach-scaffold', async () => {
+    // Runs only for topics migrated to the Simply layer (taught: true).
+    for (const { slug, altBtn = 1 } of TOPIC_CASES.filter((c) => c.taught)) {
+      const { page, context, problems } = await open(`/learn/${slug}`)
+      await page.waitForSelector('#next')
+      assert(await page.locator('.words').isVisible(), `${slug}: .words not visible`)
+      const snap = async (mode) => {
+        await page.getByRole('button', { name: mode === 'simple' ? 'Simply' : 'Technically', exact: true }).click()
+        await page.waitForTimeout(150)
+        return { lede: await page.textContent('.lede'), names: await page.locator('.node .nm').allTextContents() }
+      }
+      const simple = await snap('simple')
+      const tech = await snap('technical')
+      assert(simple.lede !== tech.lede, `${slug}: lede identical across modes`)
+      assert(simple.names.some((n, i) => n !== tech.names[i]), `${slug}: no node name differs between modes`)
+      await page.getByRole('group', { name: 'Route' }).getByRole('button').nth(altBtn).click()
+      await page.waitForTimeout(150)
+      const wi = await page.locator('.whatif').first().textContent().catch(() => null)
+      assert(wi?.startsWith('What if'), `${slug}: whatif "${wi}"`)
+      await page.getByRole('group', { name: 'Route' }).getByRole('button').nth(0).click()
+      while ((await page.getAttribute('#next', 'aria-disabled')) !== 'true') {
+        await page.click('#next')
+        await page.waitForTimeout(150)
+      }
+      assert(await page.locator('.remember').isVisible(), `${slug}: .remember not visible at last stop`)
+      await context.close()
+      noProblems(problems)
+    }
+  }],
   ['existing-pages', async () => {
     for (const url of ['/', '/projects', '/eyasir']) {
       // These pages pull external assets, so networkidle never settles offline; same-origin failures are still collected.
@@ -488,27 +517,36 @@ if (process.env.LEARN_SHOTS) {
     const env = process.env.LEARN_SHOTS
     const slugs = env === 'all' ? TOPIC_CASES.map((c) => c.slug) : env.split(',').map((s) => s.trim()).filter(Boolean)
     const viewports = [{ name: 'wide', width: 1280, height: 860 }, { name: 'narrow', width: 390, height: 844 }]
+    const modes = (process.env.LEARN_SHOTS_MODES ?? 'simple').split(',').map((m) => m.trim()).filter(Boolean)
+    const langs = (process.env.LEARN_SHOTS_LANGS ?? 'en').split(',').map((m) => m.trim()).filter(Boolean)
     for (const slug of slugs) {
-      const dir = path.join(SHOTS, 'shots', slug)
-      fs.mkdirSync(dir, { recursive: true })
-      for (const vp of viewports) {
-        const { page, context, problems } = await open(`/learn/${slug}`, { width: vp.width, height: vp.height, reducedMotion: 'reduce' })
-        await page.waitForSelector('#next')
-        // The sticky control bar covers the lower diagram on phones, so hide it for the capture only.
-        await page.addStyleTag({ content: '.controls { opacity: 0 !important }' })
-        const n = await page.locator('.switch .seg').nth(1).locator('button').count()
-        for (let r = 0; r < n; r++) {
-          await page.locator('.switch .seg').nth(1).locator('button').nth(r).click()
-          await page.waitForTimeout(120)
-          for (let i = 0; ; i++) {
-            await page.locator('.flow-svg').screenshot({ path: path.join(dir, `${vp.name}-${r}-${String(i + 1).padStart(2, '0')}.png`) })
-            if ((await page.getAttribute('#next', 'aria-disabled')) === 'true') break
-            await page.click('#next')
-            await page.waitForTimeout(120)
+      for (const mode of modes) for (const lang of langs) {
+        const dir = path.join(SHOTS, 'shots', slug, `${mode}-${lang}`)
+        fs.mkdirSync(dir, { recursive: true })
+        for (const vp of viewports) {
+          const { page, context, problems } = await open(`/learn/${slug}`, { width: vp.width, height: vp.height, reducedMotion: 'reduce' })
+          await page.waitForSelector('#next')
+          if (lang === 'bn') {
+            await page.getByRole('button', { name: 'বাংলা' }).click()
+            await page.waitForSelector('html[lang="bn"]')
           }
+          await page.locator('.switch .seg').nth(0).locator('button').nth(mode === 'simple' ? 0 : 1).click()
+          // The sticky control bar covers the lower diagram on phones, so hide it for the capture only.
+          await page.addStyleTag({ content: '.controls { opacity: 0 !important }' })
+          const n = await page.locator('.switch .seg').nth(1).locator('button').count()
+          for (let r = 0; r < n; r++) {
+            await page.locator('.switch .seg').nth(1).locator('button').nth(r).click()
+            await page.waitForTimeout(120)
+            for (let i = 0; ; i++) {
+              await page.locator('.flow-svg').screenshot({ path: path.join(dir, `${vp.name}-${r}-${String(i + 1).padStart(2, '0')}.png`) })
+              if ((await page.getAttribute('#next', 'aria-disabled')) === 'true') break
+              await page.click('#next')
+              await page.waitForTimeout(120)
+            }
+          }
+          await context.close()
+          noProblems(problems)
         }
-        await context.close()
-        noProblems(problems)
       }
     }
   }])

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import type { Step, Topic } from '../../../data/learn/types'
-import { buildRoutes, firstAltIndex, stepKind, focusNodes, visitedEdges, nodeSubAt, dwellMs, workNodes } from './flow'
+import { buildRoutes, firstAltIndex, stepKind, focusNodes, visitedEdges, nodeSubAt, dwellMs, workNodes, nodeLabels, packetText } from './flow'
 
 const L = (s: string) => ({ en: s, bn: s })
 const st = (id: string, extra: Partial<Step>): Step => ({ id, title: L(id), simple: L(id), tech: L(id), ...extra })
@@ -73,5 +73,39 @@ describe('parallel steps', () => {
   })
   it('visited edges include every edge of a parallel step', () => {
     expect([...visitedEdges(steps, 1)]).toEqual(['ab', 'cd'])
+  })
+})
+
+describe('simply layer', () => {
+  const tp = {
+    nodes: {
+      a: { name: L('Redis queue'), sub: L('The broker'), plain: { name: L('Order rail'), sub: L('Jobs wait here') } },
+      b: { name: L('Worker'), sub: L('idle') },
+    },
+    edges: { ab: { from: 'a', to: 'b', kind: 'queue' } },
+    main: {
+      label: L('main'),
+      steps: [
+        st('s1', { moves: [{ edge: 'ab', label: 'POST /x', plain: L('your order') }], state: { b: L('busy(1)') }, plainState: { b: L('Cooking') } }),
+        st('s2', { work: { node: 'b', kind: 'result' }, state: { b: L('done=1') } }),
+      ],
+    },
+    alts: [],
+  } as unknown as Topic
+  const steps = tp.main.steps
+  it('node labels switch by mode', () => {
+    expect(nodeLabels(tp, 'a', 'simple').name.en).toBe('Order rail')
+    expect(nodeLabels(tp, 'a', 'technical').name.en).toBe('Redis queue')
+    expect(nodeLabels(tp, 'b', 'simple').name.en).toBe('Worker')
+  })
+  it('simple state prefers plainState within a step and the latest step overall', () => {
+    expect(nodeSubAt(tp, steps, 0, 'b', 'simple').en).toBe('Cooking')
+    expect(nodeSubAt(tp, steps, 0, 'b', 'technical').en).toBe('busy(1)')
+    expect(nodeSubAt(tp, steps, 1, 'b', 'simple').en).toBe('done=1')
+  })
+  it('packet text switches by mode and language', () => {
+    const m = steps[0].moves![0]
+    expect(packetText(m, 'simple', 'en')).toBe('your order')
+    expect(packetText(m, 'technical', 'en')).toBe('POST /x')
   })
 })

@@ -286,3 +286,16 @@ html:has(.learn-root)::-webkit-scrollbar-thumb{background:#9AA4B8;border-radius:
   html:has(.learn-root)::-webkit-scrollbar{background:#131B2B}
   html:has(.learn-root)::-webkit-scrollbar-thumb{background:#56627D;border-color:#131B2B}
 }
+
+/* Teaching scaffold: words card, what-if line, remember box */
+.learn-root .words.read{margin-top:20px;padding:14px 18px;background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-card);max-width:none}
+.learn-root .words summary{cursor:pointer;font-weight:700;font-stretch:87.5%;font-size:var(--t-lg)}
+.learn-root .words dl{display:grid;grid-template-columns:1fr;gap:10px 28px;margin:12px 0 2px}
+@media (min-width:640px){.learn-root .words dl{grid-template-columns:1fr 1fr}}
+.learn-root .words dt{font-weight:700;font-size:var(--t-sm)}
+.learn-root .words dd{margin:2px 0 0;font-size:var(--t-sm);color:var(--ink-2)}
+.learn-root .now-body p.whatif{font-size:var(--t-xs);font-weight:650;color:var(--k-error);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.learn-root .whatif::before{content:"?";display:inline-grid;place-items:center;width:1.4em;height:1.4em;margin-right:.5em;border-radius:50%;border:2px solid currentColor;font-size:.85em;line-height:1}
+.learn-root .remember{display:flex;gap:10px;align-items:baseline;padding:8px 12px;border-radius:12px;background:color-mix(in srgb,var(--k-result) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--k-result) 40%,transparent)}
+.learn-root .remember span{flex:none;font-size:var(--t-xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--k-result)}
+.learn-root .now-body .remember p{font-size:var(--t-sm);color:var(--ink);line-height:1.35}

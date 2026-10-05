@@ -1,12 +1,12 @@
 import type { CSSProperties } from 'react'
 import { useLearnPrefs } from '../../../contexts/LearnPrefsContext'
 import { fmt, num } from '../../../lib/learn/l10n'
-import type { Kind, Step } from '../../../data/learn/types'
+import type { Kind, L10n, Step } from '../../../data/learn/types'
 import { Rich } from '../shell/Rich'
 
-interface Props { steps: Step[]; index: number; kind: Kind }
+interface Props { steps: Step[]; index: number; kind: Kind; whatIf?: L10n; takeaway?: L10n }
 
-export default function NowPanel({ steps, index, kind }: Props) {
+export default function NowPanel({ steps, index, kind, whatIf, takeaway }: Props) {
   const { t, ui, lang, mode } = useLearnPrefs()
   const step = steps[index]
   const nx = steps[index + 1]
@@ -19,6 +19,7 @@ export default function NowPanel({ steps, index, kind }: Props) {
         </span>
       </div>
       <div className="now-body" aria-live="polite">
+        {whatIf && <p className="whatif">{t(whatIf)}</p>}
         <h2 id="step-title">{t(step.title)}</h2>
         <p id="step-simple"><Rich text={t(step.simple)} /></p>
         {mode === 'technical' && (
@@ -27,7 +28,11 @@ export default function NowPanel({ steps, index, kind }: Props) {
             <p id="step-tech-text"><Rich text={t(step.tech)} /></p>
           </div>
         )}
-        <p className="next" id="step-next">{nx ? fmt(ui('nextStop'), { t: t(nx.title) }) : ui('endLine')}</p>
+        {takeaway ? (
+          <div className="remember"><span>{ui('remember')}</span><p>{t(takeaway)}</p></div>
+        ) : (
+          <p className="next" id="step-next">{nx ? fmt(ui('nextStop'), { t: t(nx.title) }) : ui('endLine')}</p>
+        )}
       </div>
     </div>
   )

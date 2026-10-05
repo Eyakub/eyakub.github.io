@@ -1,4 +1,5 @@
-import type { Kind, L10n, Step, Topic } from '../../../data/learn/types'
+import type { Kind, L10n, Move, Step, Topic } from '../../../data/learn/types'
+import type { Lang } from '../../../lib/learn/l10n'
 import type { Mode } from '../../../lib/learn/prefs'
 
 export type RouteMap = Record<string, Step[]>
@@ -32,13 +33,20 @@ export function visitedEdges(steps: Step[], index: number): Set<string> {
   return new Set(steps.slice(0, index).flatMap((s) => (s.moves ?? []).map((m) => m.edge)))
 }
 
-export function nodeSubAt(topic: Topic, steps: Step[], index: number, nodeId: string): L10n {
-  let sub = topic.nodes[nodeId].sub
+export function nodeLabels(topic: Topic, id: string, mode: Mode): { name: L10n; sub: L10n } {
+  const n = topic.nodes[id]
+  return mode === 'simple' && n.plain ? n.plain : { name: n.name, sub: n.sub }
+}
+
+export function nodeSubAt(topic: Topic, steps: Step[], index: number, nodeId: string, mode: Mode = 'technical'): L10n {
+  let sub = nodeLabels(topic, nodeId, mode).sub
   for (let i = 0; i <= index; i++) {
-    const o = steps[i].state?.[nodeId]
+    const o = (mode === 'simple' ? steps[i].plainState?.[nodeId] : undefined) ?? steps[i].state?.[nodeId]
     if (o) sub = o
   }
   return sub
 }
+
+export const packetText = (m: Move, mode: Mode, lang: Lang): string => (mode === 'simple' && m.plain ? m.plain[lang] : m.label)
 
 export const dwellMs = (mode: Mode): number => (mode === 'technical' ? 6500 : 4300)

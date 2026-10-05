@@ -8,7 +8,7 @@ import KindLegend from './KindLegend'
 import NowPanel from './NowPanel'
 import PlayerControls from './PlayerControls'
 import StopList from './StopList'
-import { stepKind } from './flow'
+import { firstAltIndex, stepKind } from './flow'
 import { useStepPlayer } from './useStepPlayer'
 
 const layoutFor = (width: number): LayoutKey => (width >= 600 ? 'wide' : 'narrow')
@@ -37,6 +37,10 @@ export default function FlowPlayer({ topic }: { topic: Topic }) {
   const step = steps[state.step]
   const kind = stepKind(topic, step)
   const atEnd = state.step === steps.length - 1
+
+  const alt = topic.alts.find((a) => a.id === state.route)
+  const whatIf = alt && state.step === firstAltIndex(topic, state.route) ? alt.whatIf : undefined
+  const takeaway = state.route === 'main' && atEnd ? topic.takeaway : undefined
 
   const onKeyDown = (e: KeyboardEvent) => {
     if ((e.target as HTMLElement).closest('button') && (e.key === ' ' || e.key === 'Enter')) return
@@ -79,10 +83,10 @@ export default function FlowPlayer({ topic }: { topic: Topic }) {
       <section className="player" id="player" aria-labelledby="topic-title" onKeyDown={onKeyDown}>
         <div className="stage" id="stage" ref={stageRef}>
           <FlowDiagram topic={topic} layout={layout} steps={steps} index={state.step} animate={animate} />
-          <KindLegend />
+          <KindLegend topic={topic} />
         </div>
         <div className="ride">
-          <NowPanel steps={steps} index={state.step} kind={kind} />
+          <NowPanel steps={steps} index={state.step} kind={kind} whatIf={whatIf} takeaway={takeaway} />
           <PlayerControls
             playing={state.playing}
             atStart={state.step === 0}

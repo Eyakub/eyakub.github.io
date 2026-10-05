@@ -2,7 +2,7 @@ import { useLayoutEffect, useMemo, useRef, type CSSProperties } from 'react'
 import { useLearnPrefs } from '../../../contexts/LearnPrefsContext'
 import { ICON } from '../../../data/learn/icons'
 import type { Kind, LayoutKey, Side, Step, Topic } from '../../../data/learn/types'
-import { focusNodes, nodeSubAt, stepKind, visitedEdges, workNodes } from './flow'
+import { focusNodes, nodeLabels, nodeSubAt, packetText, stepKind, visitedEdges, workNodes } from './flow'
 import { bidirectionalCorridors, edgePoints, pathD } from './geometry'
 
 interface Props { topic: Topic; layout: LayoutKey; steps: Step[]; index: number; animate: boolean }
@@ -26,7 +26,7 @@ function labelPos(x: number, y: number, side: Side, r: number) {
 }
 
 export default function FlowDiagram({ topic, layout, steps, index, animate }: Props) {
-  const { t } = useLearnPrefs()
+  const { t, mode, lang } = useLearnPrefs()
   const bidir = useMemo(() => bidirectionalCorridors(topic), [topic])
   const step = steps[index]
   const kind = stepKind(topic, step)
@@ -60,7 +60,7 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
       if (!pk || !geo[i]) return
       const text = pk.querySelector('text')!
       const rect = pk.querySelector('rect')!
-      text.textContent = cur[i].label
+      text.textContent = packetText(cur[i], mode, lang)
       pk.removeAttribute('hidden')
       const tw = text.getComputedTextLength() + 26
       rect.setAttribute('width', String(tw))
@@ -120,7 +120,7 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
       arrived.forEach((g) => g.classList.remove('arrive'))
       comets.forEach((c) => c?.setAttribute('hidden', ''))
     }
-  }, [index, steps, layout]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [index, steps, layout, mode, lang]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const kindStyle = (k: Kind) => ({ '--pk': `var(--k-${k})`, '--pk-on': `var(--k-${k}-on)` } as CSSProperties)
 
@@ -166,8 +166,8 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
             <g className="ico" transform={`translate(${x - 12 * (r / NODE_R)} ${y - 12 * (r / NODE_R)}) scale(${r / NODE_R})`}>
               <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: ICON[n.icon] }} />
             </g>
-            <text className="nm" x={lp.nx} y={lp.ny} textAnchor={lp.a}>{t(n.name)}</text>
-            <text className="sb" x={lp.nx} y={lp.sy} textAnchor={lp.a}>{t(nodeSubAt(topic, steps, index, id))}</text>
+            <text className="nm" x={lp.nx} y={lp.ny} textAnchor={lp.a}>{t(nodeLabels(topic, id, mode).name)}</text>
+            <text className="sb" x={lp.nx} y={lp.sy} textAnchor={lp.a}>{t(nodeSubAt(topic, steps, index, id, mode))}</text>
           </g>
         )
       })}

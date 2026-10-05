@@ -81,6 +81,7 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
   })
   it('parallel moves use distinct edges and their packets never overlap', () => {
     const pillW = (label: string) => label.length * 7.6 + 26
+    const longest = (m: { label: string; plain?: L10n }) => [m.label, m.plain?.en ?? '', m.plain?.bn ?? ''].reduce((a, b) => (b.length > a.length ? b : a))
     const bidir = bidirectionalCorridors(t)
     for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) {
       if (!s.moves || s.moves.length < 2) continue
@@ -88,7 +89,7 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
       expect(new Set(s.moves.map((m) => m.edge)).size, s.id).toBe(s.moves.length)
       for (const lk of ['wide', 'narrow'] as const) {
         const r = t.nodeR?.[lk] ?? 25
-        const box = s.moves.map((m) => ({ c: pointAt(edgePoints(t, m.edge, lk, bidir, r), 0.5), w: pillW(m.label) }))
+        const box = s.moves.map((m) => ({ c: pointAt(edgePoints(t, m.edge, lk, bidir, r), 0.5), w: pillW(longest(m)) }))
         for (let i = 0; i < box.length; i++) for (let j = i + 1; j < box.length; j++) {
           const apart = Math.abs(box[i].c[0] - box[j].c[0]) >= (box[i].w + box[j].w) / 2 + 4 || Math.abs(box[i].c[1] - box[j].c[1]) >= 32
           expect(apart, `${s.id} ${lk}: "${s.moves[i].label}" overlaps "${s.moves[j].label}"`).toBe(true)
@@ -98,6 +99,39 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
   })
   it('packet labels stay short', () => {
     for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) s.moves?.forEach((m) => expect(m.label.length, `${s.id}: ${m.label}`).toBeLessThanOrEqual(24))
+  })
+  it('teaching fields are well-formed when present', () => {
+    if (t.words) {
+      expect(t.words.length).toBeGreaterThanOrEqual(3)
+      expect(t.words.length).toBeLessThanOrEqual(6)
+      t.words.forEach((w) => expect(words(w.d.en), w.term.en).toBeLessThanOrEqual(15))
+    }
+    if (t.hook) expect(words(t.hook.en)).toBeLessThanOrEqual(25)
+    if (t.takeaway) expect(words(t.takeaway.en)).toBeLessThanOrEqual(25)
+    t.alts.forEach((a) => { if (a.whatIf) expect(a.whatIf.en.startsWith('What if'), a.id).toBe(true) })
+    for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) s.moves?.forEach((m) => { if (m.plain) expect(m.plain.en.length, s.id).toBeLessThanOrEqual(18) })
+  })
+  it('Simply mode has no code or undefined acronyms (migrated topics)', () => {
+    if (!t.words) return
+    const defined = new Set(t.words.flatMap((w) => w.term.en.match(/\b[A-Z]{2,}\b/g) ?? []))
+    const allow = new Set(['OK'])
+    const code = /`|\(\)|__|->|=|\b[a-z]+\.[a-z]+\b|\b\w\/\w\b/i
+    const seen: [string, string][] = []
+    Object.entries(t.nodes).forEach(([id, n]) => { const p = n.plain ?? n; seen.push([`node ${id} name`, p.name.en], [`node ${id} sub`, p.sub.en]) })
+    for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) {
+      seen.push([`${s.id} simple`, s.simple.en], [`${s.id} title`, s.title.en])
+      s.moves?.forEach((m) => seen.push([`${s.id} packet`, m.plain?.en ?? m.label]))
+      const keys = new Set([...Object.keys(s.state ?? {}), ...Object.keys(s.plainState ?? {})])
+      keys.forEach((k) => seen.push([`${s.id} state ${k}`, (s.plainState?.[k] ?? s.state![k]).en]))
+    }
+    t.alts.forEach((a) => seen.push([`alt ${a.id} label`, a.label.en], [`alt ${a.id} whatIf`, a.whatIf?.en ?? '']))
+    seen.push(['hook', t.hook?.en ?? ''], ['takeaway', t.takeaway?.en ?? ''])
+    t.words.forEach((w) => seen.push([`word ${w.term.en}`, w.d.en]))
+    t.analogy.twins.forEach((tw) => seen.push([`twin ${tw.name.en}`, tw.d.en]))
+    for (const [where, s] of seen) {
+      expect(code.test(s), `${where}: "${s}"`).toBe(false)
+      for (const a of s.match(/\b[A-Z]{2,}\b/g) ?? []) expect(defined.has(a) || allow.has(a), `${where}: acronym ${a}`).toBe(true)
+    }
   })
   it('has a station on the map', () => {
     expect(STATIONS[t.slug]).toBeTruthy()

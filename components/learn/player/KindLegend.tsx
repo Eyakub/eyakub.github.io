@@ -1,6 +1,6 @@
 import { useLearnPrefs } from '../../../contexts/LearnPrefsContext'
 import type { UiKey } from '../../../data/learn/ui'
-import type { Kind } from '../../../data/learn/types'
+import type { Kind, Topic } from '../../../data/learn/types'
 
 const KINDS: [Kind, UiKey, string][] = [
   ['request', 'kRequest', ''],
@@ -9,8 +9,8 @@ const KINDS: [Kind, UiKey, string][] = [
   ['error', 'kError', '2 4'],
 ]
 
-export default function KindLegend() {
-  const { ui } = useLearnPrefs()
+export default function KindLegend({ topic }: { topic: Topic }) {
+  const { ui, t } = useLearnPrefs()
   return (
     <ul className="kind-key" id="kind-key">
       {KINDS.map(([k, label, dash]) => (
@@ -18,7 +18,7 @@ export default function KindLegend() {
           <svg viewBox="0 0 30 10" aria-hidden="true">
             <path d="M2 5H28" stroke={`var(--k-${k})`} strokeWidth={k === 'result' ? 4.5 : 3.5} strokeLinecap="round" strokeDasharray={dash || undefined} />
           </svg>
-          {ui(label)}
+          {(() => { const o = topic.legend?.[k]; return o ? t(o) : ui(label) })()}
         </li>
       ))}
     </ul>

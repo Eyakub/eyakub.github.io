@@ -14,20 +14,22 @@ export interface FlowNode {
   sub: L10n
   wide: [number, number, Side]
   narrow: [number, number, Side]
+  plain?: { name: L10n; sub: L10n }
 }
 export interface Corridor { wide: Pt[]; narrow: Pt[] }
 export interface Edge { from: string; to: string; kind: Kind }
-export interface Move { edge: string; label: string }
+export interface Move { edge: string; label: string; plain?: L10n }
 export interface Step {
   id: string
   moves?: Move[]
   work?: { node: string | string[]; kind: Kind }
   state?: Record<string, L10n>
+  plainState?: Record<string, L10n>
   title: L10n
   simple: L10n
   tech: L10n
 }
-export interface AltRoute { id: string; label: L10n; branchAfter: string; steps: Step[] }
+export interface AltRoute { id: string; label: L10n; branchAfter: string; steps: Step[]; whatIf?: L10n }
 export interface Group { id: string; label: L10n; wide: [number, number, number, number]; narrow: [number, number, number, number] }
 export interface Twin { node: string | null; icon: IconName; name: L10n; is?: L10n; d: L10n }
 export interface QA { q: L10n; short: L10n; deep: L10n; redFlag: L10n }
@@ -37,6 +39,10 @@ export interface Topic {
   line: LineId
   title: L10n
   summary: L10n
+  hook?: L10n
+  takeaway?: L10n
+  words?: { term: L10n; d: L10n }[]
+  legend?: Partial<Record<Kind, L10n>>
   view: Record<LayoutKey, [number, number]>
   nodeR?: Partial<Record<LayoutKey, number>>
   nodes: Record<string, FlowNode>
