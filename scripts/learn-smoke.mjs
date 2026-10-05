@@ -478,26 +478,38 @@ const checks = [
     for (const { slug, altBtn = 1 } of TOPIC_CASES.filter((c) => c.taught)) {
       const { page, context, problems } = await open(`/learn/${slug}`)
       await page.waitForSelector('#next')
+      const route = (i) => page.getByRole('group', { name: 'Route' }).getByRole('button').nth(i)
       assert(await page.locator('.words').isVisible(), `${slug}: .words not visible`)
-      const snap = async (mode) => {
+      const setMode = async (mode) => {
+        const before = await page.textContent('.lede')
         await page.getByRole('button', { name: mode === 'simple' ? 'Simply' : 'Technically', exact: true }).click()
-        await page.waitForTimeout(150)
-        return { lede: await page.textContent('.lede'), names: await page.locator('.node .nm').allTextContents() }
+        await page.waitForFunction((b) => document.querySelector('.lede')?.textContent !== b, before, { timeout: 5000 }).catch(() => {})
+        return {
+          lede: await page.textContent('.lede'),
+          names: await page.locator('.node .nm').allTextContents(),
+          packets: await page.locator('.packet text').allTextContents(),
+        }
       }
-      const simple = await snap('simple')
-      const tech = await snap('technical')
+      await setMode('technical')
+      const simple = await setMode('simple')
+      const tech = await setMode('technical')
+      await page.getByRole('button', { name: 'Simply', exact: true }).click()
       assert(simple.lede !== tech.lede, `${slug}: lede identical across modes`)
       assert(simple.names.some((n, i) => n !== tech.names[i]), `${slug}: no node name differs between modes`)
-      await page.getByRole('group', { name: 'Route' }).getByRole('button').nth(altBtn).click()
-      await page.waitForTimeout(150)
-      const wi = await page.locator('.whatif').first().textContent().catch(() => null)
+      assert(simple.packets.length > 0 && simple.packets.some((x, i) => x !== tech.packets[i]), `${slug}: stop 1 packet text identical across modes`)
+      assert((await page.locator('.whatif').count()) === 0, `${slug}: .whatif on main stop 1`)
+      await route(altBtn).click()
+      await page.locator('.whatif').waitFor({ state: 'visible', timeout: 5000 })
+      const wi = await page.locator('.whatif').textContent()
       assert(wi?.startsWith('What if'), `${slug}: whatif "${wi}"`)
-      await page.getByRole('group', { name: 'Route' }).getByRole('button').nth(0).click()
-      while ((await page.getAttribute('#next', 'aria-disabled')) !== 'true') {
-        await page.click('#next')
-        await page.waitForTimeout(150)
-      }
-      assert(await page.locator('.remember').isVisible(), `${slug}: .remember not visible at last stop`)
+      await page.click('#next')
+      await page.waitForFunction(() => document.querySelectorAll('.whatif').length === 0, null, { timeout: 5000 })
+      await route(0).click()
+      const total = Number((await page.textContent('#stopno')).match(/\d+ of (\d+)/)?.[1])
+      for (let i = 1; i < total - 1; i++) await page.click('#next')
+      assert((await page.locator('.remember').count()) === 0, `${slug}: .remember before the last stop`)
+      await page.click('#next')
+      await page.locator('.remember').waitFor({ state: 'visible', timeout: 5000 })
       await context.close()
       noProblems(problems)
     }
