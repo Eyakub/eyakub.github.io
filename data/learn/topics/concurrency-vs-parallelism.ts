@@ -15,7 +15,7 @@ export const concurrencyVsParallelism: Topic = {
   },
   takeaway: {
     en: 'Juggling helps when dishes wait on the oven. More burners help when every dish needs a cook the whole time.',
-    bn: 'পদ ওভেনে অপেক্ষা করলে পালা করে সামলানো কাজে লাগে। প্রতিটা পদে পুরো সময় রাঁধুনি লাগলে বেশি চুলা কাজে লাগে।'
+    bn: 'ওভেনে অপেক্ষা থাকলে পালা করা কাজে লাগে। সারাক্ষণ রাঁধুনি লাগলে বেশি চুলা কাজে লাগে।'
   },
   words: [
     {
@@ -78,7 +78,7 @@ export const concurrencyVsParallelism: Topic = {
         sub: { en: 'Dishes A to D', bn: 'পদ A থেকে D' }
       },
       wide: [ 80, 245, 'down' ],
-      narrow: [ 45, 225, 'down' ]
+      narrow: [ 62, 225, 'down' ]
     },
     core1: {
       icon: 'cpu',
@@ -137,11 +137,11 @@ export const concurrencyVsParallelism: Topic = {
   corridors: {
     'queue-core1': {
       wide: [ [ 80, 245 ], [ 130, 245 ], [ 205, 170 ], [ 400, 170 ] ],
-      narrow: [ [ 45, 225 ], [ 95, 225 ], [ 170, 150 ], [ 215, 150 ] ]
+      narrow: [ [ 62, 225 ], [ 95, 225 ], [ 170, 150 ], [ 215, 150 ] ]
     },
     'queue-core2': {
       wide: [ [ 80, 245 ], [ 130, 245 ], [ 205, 320 ], [ 400, 320 ] ],
-      narrow: [ [ 45, 225 ], [ 95, 225 ], [ 170, 300 ], [ 215, 300 ] ]
+      narrow: [ [ 62, 225 ], [ 95, 225 ], [ 170, 300 ], [ 215, 300 ] ]
     },
     'core1-wait': {
       wide: [ [ 400, 170 ], [ 400, 50 ] ],
@@ -169,7 +169,7 @@ export const concurrencyVsParallelism: Topic = {
     steps: [
       {
         id: 'start-a',
-        moves: [ { edge: 'queue-core1', label: 'dish A' } ],
+        moves: [ { edge: 'queue-core1', label: 'dish A', plain: { en: 'First dish', bn: 'প্রথম পদ' } } ],
         state: { core1: { en: 'Running A', bn: 'A চালাচ্ছে' } },
         plainState: { core1: { en: 'Cooking A', bn: 'A রাঁধছে' } },
         title: { en: 'Welcome to the kitchen', bn: 'রান্নাঘরে স্বাগতম' },
@@ -322,7 +322,7 @@ export const concurrencyVsParallelism: Topic = {
         title: { en: 'Juggling is not cooking at once', bn: 'পালা করা আর একসাথে রাঁধা এক নয়' },
         simple: {
           en: 'One cook juggling A and B was concurrency. Two cooks cooking C and D together was parallelism. A kitchen can have both.',
-          bn: 'একজন কুক A আর B পালা করে সামলানো ছিল concurrency। দুজন কুক C আর D একসাথে রাঁধা ছিল parallelism। একটা রান্নাঘরে দুটোই থাকতে পারে।'
+          bn: 'একজন কুক A আর B পালা করে সামলানো ছিল concurrency। দুজন কুক C আর D একসাথে রাঁধা ছিল parallelism। দুটোই একসাথে থাকতে পারে।'
         },
         tech: {
           en: 'Concurrency is how work is structured and scheduled. Parallelism is simultaneous execution, which needs several execution units.',
