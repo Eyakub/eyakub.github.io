@@ -281,7 +281,7 @@ export const pythonGil: Topic = {
         id: 'c-returns',
         work: { node: 'cext', kind: 'result' },
         state: {
-          gil: { en: 'T1 must re-take', bn: 'T1 আবার নেবে' },
+          gil: { en: 'Held by T2', bn: 'T2 ধরে আছে' },
           cext: { en: 'Done', bn: 'শেষ' },
           t1: { en: 'Wants the GIL', bn: 'GIL চায়' }
         },
@@ -356,7 +356,8 @@ export const pythonGil: Topic = {
           moves: [ { edge: 'gil-t1', label: 'GIL' } ],
           state: {
             gil: { en: 'Held by T1', bn: 'T1 ধরে আছে' },
-            t1: { en: 'CPU loop', bn: 'CPU loop' }
+            t1: { en: 'CPU loop', bn: 'CPU loop' },
+            interp: { en: 'Running T1', bn: 'T1 চলছে' }
           },
           title: { en: 'Thread 1 takes its turn', bn: 'Thread ১ নিজের পালা নেয়' },
           simple: {
@@ -655,6 +656,24 @@ export const pythonGil: Topic = {
       redFlag: {
         en: '“Rewrite it in Go” as the only answer, or “use asyncio.”',
         bn: '“Go-তে আবার লিখুন” একমাত্র উত্তর হিসেবে, বা “asyncio ব্যবহার করুন।”'
+      }
+    },
+    {
+      q: {
+        en: 'Does asyncio bypass the GIL?',
+        bn: 'asyncio কি GIL এড়িয়ে যায়?'
+      },
+      short: {
+        en: 'No. It is single-threaded and concurrent, not parallel.',
+        bn: 'না। এটা এক thread-এ concurrent, parallel নয়।'
+      },
+      deep: {
+        en: 'Its win is cheap waiting on many sockets, not running Python on several cores. A CPU-heavy coroutine blocks the whole event loop.',
+        bn: 'এর সুবিধা অনেক socket-এ সস্তায় অপেক্ষা করা, কয়েকটা core-এ Python চালানো নয়। CPU-ভারী coroutine পুরো event loop আটকে দেয়।'
+      },
+      redFlag: {
+        en: '“asyncio gets around the GIL.”',
+        bn: '“asyncio GIL এড়িয়ে যায়।”'
       }
     }
   ],
