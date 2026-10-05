@@ -139,7 +139,7 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
           <g key={g.id} className="group">
             <rect x={gx} y={gy} width={gw} height={gh} rx="16" />
             {/* Narrow: the spine runs down the left of the group, so the label sits at its right end. */}
-            <text x={layout === 'narrow' ? gx + gw - 12 : gx + 14} y={gy - 8} textAnchor={layout === 'narrow' ? 'end' : 'start'}>{t(g.label)}</text>
+            <text x={layout === 'narrow' ? gx + gw - 12 : gx + 14} y={gy - 8} textAnchor={layout === 'narrow' ? 'end' : 'start'}>{t(mode === 'simple' && g.plain ? g.plain : g.label)}</text>
           </g>
         )
       })}

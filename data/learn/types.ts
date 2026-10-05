@@ -30,7 +30,7 @@ export interface Step {
   tech: L10n
 }
 export interface AltRoute { id: string; label: L10n; branchAfter: string; steps: Step[]; whatIf?: L10n }
-export interface Group { id: string; label: L10n; wide: [number, number, number, number]; narrow: [number, number, number, number] }
+export interface Group { id: string; label: L10n; plain?: L10n; wide: [number, number, number, number]; narrow: [number, number, number, number] }
 export interface Twin { node: string | null; icon: IconName; name: L10n; is?: L10n; d: L10n }
 export interface QA { q: L10n; short: L10n; deep: L10n; redFlag: L10n }
 export interface Cheat { code: string; d: L10n }

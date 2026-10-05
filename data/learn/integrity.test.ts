@@ -127,6 +127,7 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
     t.alts.forEach((a) => seen.push([`alt ${a.id} label`, a.label.en], [`alt ${a.id} whatIf`, a.whatIf?.en ?? '']))
     seen.push(['hook', t.hook?.en ?? ''], ['takeaway', t.takeaway?.en ?? ''])
     t.words.forEach((w) => seen.push([`word ${w.term.en}`, w.d.en]))
+    t.groups?.forEach((g) => seen.push([`group ${g.id}`, (g.plain ?? g.label).en]))
     t.analogy.twins.forEach((tw) => seen.push([`twin ${tw.name.en}`, tw.d.en]))
     for (const [where, s] of seen) {
       expect(code.test(s), `${where}: "${s}"`).toBe(false)

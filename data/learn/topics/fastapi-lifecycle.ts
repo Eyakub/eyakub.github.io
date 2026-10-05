@@ -14,8 +14,8 @@ export const fastapiLifecycle: Topic = {
     bn: 'ওয়েবসাইটের প্রতিটি ক্লিক রেস্টুরেন্টের অর্ডারের মতো একই পথে চলে, তাই আপনি জানেন সমস্যা কোথায় লুকোতে পারে।'
   },
   takeaway: {
-    en: 'One road in and out; slow extras wait until the customer is served.',
-    bn: 'প্রতিটি অনুরোধ একই পথে চলে, আর ধীর বাড়তি কাজ কাস্টমার খাবার না পাওয়া পর্যন্ত অপেক্ষা করে।'
+    en: 'Slow extras, like a receipt email, wait until the customer has been served.',
+    bn: 'রসিদ ইমেইলের মতো ধীর বাড়তি কাজ অপেক্ষা করে, কাস্টমার খাবার পাওয়ার পরে।'
   },
   words: [
     {
@@ -174,6 +174,7 @@ export const fastapiLifecycle: Topic = {
     {
       id: 'stack',
       label: { en: 'Middleware stack', bn: 'মিডলওয়্যার স্ট্যাক' },
+      plain: { en: 'Front-desk team', bn: 'সামনের দল' },
       wide: [ 190, 78, 360, 150 ],
       narrow: [ 112, 130, 280, 196 ]
     }
@@ -241,8 +242,8 @@ export const fastapiLifecycle: Topic = {
         moves: [ { edge: 'us', label: 'scope, receive, send', plain: { en: 'Order slip', bn: 'অর্ডার স্লিপ' } } ],
         title: { en: 'The host hands it to the manager', bn: 'হোস্ট ম্যানেজারের হাতে দেয়' },
         simple: {
-          en: 'The host hands the order slip into the app, first to the manager, who steps in if anything goes badly wrong later.',
-          bn: 'হোস্ট অর্ডার স্লিপ অ্যাপের ভেতরে দেয়, প্রথমে ম্যানেজারের হাতে। পরে কিছু বড় গোলমাল হলে ম্যানেজারই সামলান।'
+          en: 'The host hands the order slip into the app, first to the manager, who steps in if anything goes badly wrong.',
+          bn: 'হোস্ট অর্ডার স্লিপ অ্যাপের ভেতরে দেয়, প্রথমে ম্যানেজারের হাতে। কিছু বড় গোলমাল হলে ম্যানেজারই সামলান।'
         },
         tech: {
           en: 'FastAPI subclasses Starlette. `ServerErrorMiddleware` is always the outermost layer, so any unhandled exception ends up here and becomes a 500.',
@@ -319,8 +320,8 @@ export const fastapiLifecycle: Topic = {
         moves: [ { edge: 'opd', label: 'return value', plain: { en: 'Cooked dish', bn: 'রান্না করা খাবার' } } ],
         title: { en: 'Only the right parts get plated', bn: 'শুধু ঠিক অংশটুকু প্লেটে ওঠে' },
         simple: {
-          en: 'The chef hands the dish back to the order desk, which plates it. Only what you promised goes on the plate; secrets, like a stored password, stay behind.',
-          bn: 'শেফ খাবার ফেরত দেয় অর্ডার ডেস্কে, সে প্লেটে সাজায়। শুধু আপনার প্রতিশ্রুত অংশই প্লেটে ওঠে; সংরক্ষিত পাসওয়ার্ডের মতো গোপন জিনিস পেছনে থেকে যায়।'
+          en: 'The chef plates the dish with only the parts you promised; secrets, like a stored password, stay in the kitchen. It starts back toward the door.',
+          bn: 'শেফ শুধু আপনার প্রতিশ্রুত অংশ দিয়ে খাবার সাজায়; সংরক্ষিত পাসওয়ার্ডের মতো গোপন জিনিস রান্নাঘরেই থাকে। খাবার দরজার দিকে ফিরতি পথ ধরে।'
         },
         tech: {
           en: '`response_model` validation and filtering happen as the value leaves: Pydantic converts it, drops extra fields, then it is serialized into a `JSONResponse`. ORM objects need `from_attributes=True`.',
@@ -648,8 +649,8 @@ export const fastapiLifecycle: Topic = {
         node: 'deps',
         name: { en: 'The order desk', bn: 'অর্ডার ডেস্ক' },
         d: {
-          en: 'Checks the order form is filled in properly. Plating hides the secret ingredients.',
-          bn: 'অর্ডার ফর্ম ঠিকমতো ভরা কি না দেখেন। প্লেটিংয়ে গোপন উপকরণ আড়ালে থাকে।'
+          en: 'Checks the order form is filled in properly before any cooking starts.',
+          bn: 'রান্না শুরুর আগে অর্ডার ফর্ম ঠিকমতো ভরা কি না দেখেন।'
         }
       },
       {
@@ -657,8 +658,8 @@ export const fastapiLifecycle: Topic = {
         node: 'op',
         name: { en: 'The chef', bn: 'শেফ' },
         d: {
-          en: 'Receives a clean, checked order and cooks the dish.',
-          bn: 'যাচাই করা পরিষ্কার অর্ডার হাতে পান আর খাবারটা রান্না করেন।'
+          en: 'Receives a clean, checked order, cooks the dish, and plates only the promised parts.',
+          bn: 'যাচাই করা পরিষ্কার অর্ডার হাতে পান, রান্না করেন, আর শুধু প্রতিশ্রুত অংশ প্লেটে সাজান।'
         }
       },
       {
@@ -674,7 +675,7 @@ export const fastapiLifecycle: Topic = {
         icon: 'power',
         node: null,
         name: { en: 'A kitchen fire', bn: 'রান্নাঘরে আগুন' },
-        is: { en: 'is a 500', bn: 'মানে 500' },
+        is: { en: 'is a server error', bn: 'মানে সার্ভারের ভুল' },
         d: {
           en: 'The chef cannot cope. The manager steps in, and the customer only hears “something went wrong”.',
           bn: 'শেফ সামলাতে পারেন না। ম্যানেজার এগিয়ে আসেন, আর কাস্টমার শুধু শোনে “কিছু একটা গোলমাল হয়েছে”।'
