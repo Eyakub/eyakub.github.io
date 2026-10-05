@@ -137,10 +137,6 @@ export const gitBasics: Topic = {
       wide: [ [ 620, 280 ], [ 500, 280 ], [ 500, 110 ] ],
       narrow: [ [ 190, 390 ], [ 80, 280 ] ]
     },
-    'remote-wd': {
-      wide: [ [ 740, 110 ], [ 740, 40 ], [ 80, 40 ], [ 80, 110 ] ],
-      narrow: [ [ 80, 500 ], [ 16, 500 ], [ 16, 14 ], [ 80, 14 ], [ 80, 60 ] ]
-    },
     'wd-repo': {
       wide: [ [ 80, 110 ], [ 80, 200 ], [ 410, 200 ], [ 500, 110 ] ],
       narrow: [ [ 80, 60 ], [ 46, 60 ], [ 46, 280 ], [ 80, 280 ] ]
@@ -152,7 +148,6 @@ export const gitBasics: Topic = {
     push: { from: 'repo', to: 'remote', kind: 'request' },
     fetch: { from: 'remote', to: 'rtrack', kind: 'result' },
     merge: { from: 'rtrack', to: 'repo', kind: 'result' },
-    pull: { from: 'remote', to: 'wd', kind: 'result' },
     conflict: { from: 'repo', to: 'wd', kind: 'error' }
   },
   main: {
@@ -323,6 +318,8 @@ export const gitBasics: Topic = {
             { edge: 'fetch', label: 'git fetch', plain: { en: 'Their new page', bn: 'তাদের নতুন পাতা' } },
             { edge: 'merge', label: 'git pull', plain: { en: 'Their work, joined', bn: 'তাদের কাজ, জোড়া' } }
           ],
+          state: { rtrack: { en: 'Last seen: 77d4e1', bn: 'শেষ দেখা: 77d4e1' } },
+          plainState: { rtrack: { en: 'Saw teammate’s page', bn: 'সহকর্মীর পাতা দেখেছে' } },
           title: { en: 'Pull: download and join at once', bn: 'Pull: নামানো আর জোড়া এক ধাপে' },
           simple: {
             en: 'Pull does both jobs at once. It downloads your teammate’s page, then joins it into your album. Because it joins right away, your files can change.',
@@ -336,14 +333,8 @@ export const gitBasics: Topic = {
         {
           id: 'pulled',
           work: { node: 'repo', kind: 'result' },
-          state: {
-            repo: { en: 'HEAD → main → 5c6d7e', bn: 'HEAD → main → 5c6d7e' },
-            rtrack: { en: 'Last seen: 77d4e1', bn: 'শেষ দেখা: 77d4e1' }
-          },
-          plainState: {
-            repo: { en: 'Both lines joined', bn: 'দুই ধারা জোড়া' },
-            rtrack: { en: 'Saw teammate’s page', bn: 'সহকর্মীর পাতা দেখেছে' }
-          },
+          state: { repo: { en: 'HEAD → main → 5c6d7e', bn: 'HEAD → main → 5c6d7e' } },
+          plainState: { repo: { en: 'Both lines joined', bn: 'দুই ধারা জোড়া' } },
           title: { en: 'You are caught up', bn: 'আপনি হালনাগাদ' },
           simple: {
             en: 'Your album now holds their pages and yours together, and your cloud note is up to date.',
