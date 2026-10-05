@@ -67,8 +67,14 @@ export const fastapiLifecycle: Topic = {
     result: { en: 'Dish coming back', bn: 'ফেরত আসা খাবার' },
     error: { en: 'Something went wrong', bn: 'কিছু গোলমাল হয়েছে' }
   },
-  view: { wide: [ 900, 360 ], narrow: [ 400, 572 ] },
-  nodeR: { narrow: 20 },
+  lanes: {
+    cols: [ 'client', 'uvicorn', 'sem', 'mw', 'exm', 'router', 'deps', 'op' ],
+    outside: true,
+    below: [ { node: 'bg', under: 'op' } ],
+    spans: [
+      { from: 'sem', to: 'exm', label: { en: 'Middleware stack', bn: 'মিডলওয়্যার স্ট্যাক' }, plain: { en: 'Front-desk team', bn: 'সামনের দল' } }
+    ]
+  },
   nodes: {
     client: {
       icon: 'user',
@@ -77,20 +83,16 @@ export const fastapiLifecycle: Topic = {
       plain: {
         name: { en: 'Customer', bn: 'কাস্টমার' },
         sub: { en: 'Orders from the site', bn: 'সাইটে অর্ডার দেয়' }
-      },
-      wide: [ 60, 150, 'up' ],
-      narrow: [ 150, 36, 'right' ]
+      }
     },
     uvicorn: {
-      icon: 'power',
+      icon: 'server',
       name: { en: 'Uvicorn', bn: 'Uvicorn' },
       sub: { en: 'ASGI server', bn: 'ASGI সার্ভার' },
       plain: {
         name: { en: 'Host at the door', bn: 'দরজার হোস্ট' },
         sub: { en: 'Takes the slip', bn: 'স্লিপ নেয়' }
-      },
-      wide: [ 164, 150, 'down' ],
-      narrow: [ 150, 100, 'right' ]
+      }
     },
     sem: {
       icon: 'shield',
@@ -99,31 +101,25 @@ export const fastapiLifecycle: Topic = {
       plain: {
         name: { en: 'Manager', bn: 'ম্যানেজার' },
         sub: { en: 'Rescues big mishaps', bn: 'বড় গোলমাল সামলায়' }
-      },
-      wide: [ 267, 150, 'up' ],
-      narrow: [ 150, 164, 'right' ]
+      }
     },
     mw: {
-      icon: 'route',
+      icon: 'lock',
       name: { en: 'Your middleware', bn: 'আপনার middleware' },
       sub: { en: 'CORS, auth, timing', bn: 'CORS, auth, টাইমিং' },
       plain: {
         name: { en: 'Security desk', bn: 'সিকিউরিটি ডেস্ক' },
         sub: { en: 'Checks you in and out', bn: 'ঢোকা-বেরোনোয় যাচাই করে' }
-      },
-      wide: [ 370, 150, 'down' ],
-      narrow: [ 150, 228, 'right' ]
+      }
     },
     exm: {
-      icon: 'shield',
+      icon: 'alert',
       name: { en: 'ExceptionMiddleware', bn: 'ExceptionMiddleware' },
       sub: { en: 'Errors to replies', bn: 'এরর থেকে রিপ্লাই' },
       plain: {
         name: { en: 'Guest relations', bn: 'গেস্ট সার্ভিস' },
         sub: { en: 'Explains errors politely', bn: 'ভদ্রভাবে ভুল বোঝায়' }
-      },
-      wide: [ 474, 150, 'up' ],
-      narrow: [ 150, 292, 'right' ]
+      }
     },
     router: {
       icon: 'route',
@@ -132,9 +128,7 @@ export const fastapiLifecycle: Topic = {
       plain: {
         name: { en: 'Seating host', bn: 'সিট দেখানো হোস্ট' },
         sub: { en: 'Picks the right chef', bn: 'সঠিক শেফ বেছে দেয়' }
-      },
-      wide: [ 578, 150, 'down' ],
-      narrow: [ 150, 356, 'right' ]
+      }
     },
     deps: {
       icon: 'check',
@@ -143,9 +137,7 @@ export const fastapiLifecycle: Topic = {
       plain: {
         name: { en: 'Order desk', bn: 'অর্ডার ডেস্ক' },
         sub: { en: 'Checks the form', bn: 'ফর্ম দেখে' }
-      },
-      wide: [ 681, 150, 'up' ],
-      narrow: [ 150, 420, 'right' ]
+      }
     },
     op: {
       icon: 'code',
@@ -154,9 +146,7 @@ export const fastapiLifecycle: Topic = {
       plain: {
         name: { en: 'Chef', bn: 'শেফ' },
         sub: { en: 'Cooks the dish', bn: 'খাবার রান্না করে' }
-      },
-      wide: [ 784, 150, 'up' ],
-      narrow: [ 150, 484, 'right' ]
+      }
     },
     bg: {
       icon: 'mail',
@@ -165,40 +155,7 @@ export const fastapiLifecycle: Topic = {
       plain: {
         name: { en: 'Courier', bn: 'কুরিয়ার' },
         sub: { en: 'Slow extras afterwards', bn: 'ধীর বাড়তি কাজ, পরে' }
-      },
-      wide: [ 866, 240, 'left' ],
-      narrow: [ 150, 548, 'right' ]
-    }
-  },
-  groups: [
-    {
-      id: 'stack',
-      label: { en: 'Middleware stack', bn: 'মিডলওয়্যার স্ট্যাক' },
-      plain: { en: 'Front-desk team', bn: 'সামনের দল' },
-      wide: [ 190, 78, 360, 150 ],
-      narrow: [ 112, 130, 280, 196 ]
-    }
-  ],
-  corridors: {
-    'client-uvicorn': { wide: [ [ 60, 150 ], [ 164, 150 ] ], narrow: [ [ 150, 36 ], [ 150, 100 ] ] },
-    'uvicorn-sem': { wide: [ [ 164, 150 ], [ 267, 150 ] ], narrow: [ [ 150, 100 ], [ 150, 164 ] ] },
-    'sem-mw': { wide: [ [ 267, 150 ], [ 370, 150 ] ], narrow: [ [ 150, 164 ], [ 150, 228 ] ] },
-    'mw-exm': { wide: [ [ 370, 150 ], [ 474, 150 ] ], narrow: [ [ 150, 228 ], [ 150, 292 ] ] },
-    'exm-router': { wide: [ [ 474, 150 ], [ 578, 150 ] ], narrow: [ [ 150, 292 ], [ 150, 356 ] ] },
-    'router-deps': { wide: [ [ 578, 150 ], [ 681, 150 ] ], narrow: [ [ 150, 356 ], [ 150, 420 ] ] },
-    'deps-op': { wide: [ [ 681, 150 ], [ 784, 150 ] ], narrow: [ [ 150, 420 ], [ 150, 484 ] ] },
-    'op-bg': { wide: [ [ 784, 150 ], [ 866, 240 ] ], narrow: [ [ 150, 484 ], [ 150, 548 ] ] },
-    'exm-deps': {
-      wide: [ [ 474, 150 ], [ 474, 250 ], [ 681, 250 ], [ 681, 150 ] ],
-      narrow: [ [ 150, 292 ], [ 94, 292 ], [ 94, 420 ], [ 150, 420 ] ]
-    },
-    'sem-op': {
-      wide: [ [ 267, 150 ], [ 267, 330 ], [ 784, 330 ], [ 784, 150 ] ],
-      narrow: [ [ 150, 164 ], [ 62, 164 ], [ 62, 470 ], [ 150, 470 ] ]
-    },
-    'uvicorn-op': {
-      wide: [ [ 164, 150 ], [ 164, 50 ], [ 870, 50 ], [ 870, 150 ], [ 784, 150 ] ],
-      narrow: [ [ 150, 100 ], [ 42, 100 ], [ 42, 484 ], [ 150, 484 ] ]
+      }
     }
   },
   edges: {

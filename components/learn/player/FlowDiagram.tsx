@@ -1,20 +1,17 @@
-import { useLayoutEffect, useMemo, useRef, type CSSProperties } from 'react'
+import { useMemo, type CSSProperties } from 'react'
 import { useLearnPrefs } from '../../../contexts/LearnPrefsContext'
 import { ICON } from '../../../data/learn/icons'
-import type { Kind, LayoutKey, Side, Step, Topic } from '../../../data/learn/types'
-import { focusNodes, nodeLabels, nodeSubAt, packetText, stepKind, visitedEdges, workNodes } from './flow'
+import type { Kind, LayoutKey, MetroTopic, Side, Step } from '../../../data/learn/types'
+import { focusNodes, nodeLabels, nodeSubAt, stepKind, visitedEdges, workNodes } from './flow'
 import { bidirectionalCorridors, edgePoints, pathD } from './geometry'
+import { usePackets } from './usePackets'
 
-interface Props { topic: Topic; layout: LayoutKey; steps: Step[]; index: number; animate: boolean }
+interface Props { topic: MetroTopic; layout: LayoutKey; steps: Step[]; index: number; animate: boolean }
 
 const KINDS: Kind[] = ['request', 'queue', 'result', 'error']
 // SVG prop types omit `hidden`, but the attribute is valid and is toggled via setAttribute at runtime.
 const HIDDEN = { hidden: true } as Record<string, unknown>
-const REST = 0.5
 const NODE_R = 25
-const D1 = 750
-const D2 = 520
-const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
 function labelPos(x: number, y: number, side: Side, r: number) {
   return {
@@ -38,89 +35,7 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
   const [w, h] = topic.view[layout]
   const r = topic.nodeR?.[layout] ?? NODE_R
 
-  const edgeRefs = useRef<Record<string, SVGPathElement | null>>({})
-  const nodeRefs = useRef<Record<string, SVGGElement | null>>({})
-  const packetRefs = useRef<(SVGGElement | null)[]>([])
-  const cometRefs = useRef<(SVGCircleElement | null)[]>([])
-
-  useLayoutEffect(() => {
-    const cur = steps[index].moves ?? []
-    const packets = cur.map((_, i) => packetRefs.current[i])
-    const comets = cur.map((_, i) => cometRefs.current[i])
-    const geo = cur.map((m) => {
-      const path = edgeRefs.current[m.edge]
-      return path ? { path, len: path.getTotalLength(), to: topic.edges[m.edge].to } : null
-    })
-    const place = (el: SVGElement, i: number, t: number) => {
-      const g = geo[i]!
-      const p = g.path.getPointAtLength(g.len * t)
-      el.setAttribute('transform', `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`)
-    }
-    packets.forEach((pk, i) => {
-      if (!pk || !geo[i]) return
-      const text = pk.querySelector('text')!
-      const rect = pk.querySelector('rect')!
-      text.textContent = packetText(cur[i], mode, lang)
-      pk.removeAttribute('hidden')
-      const tw = text.getComputedTextLength() + 26
-      rect.setAttribute('width', String(tw))
-      rect.setAttribute('x', String(-tw / 2))
-    })
-
-    let raf = 0
-    let arriveTimer: ReturnType<typeof setTimeout> | undefined
-    let arrived: SVGGElement[] = []
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (!animate || reduce) {
-      packets.forEach((pk, i) => {
-        if (!pk || !geo[i]) return
-        place(pk, i, REST)
-        pk.style.opacity = '1'
-      })
-    } else {
-      const t0 = performance.now()
-      const tick = (now: number) => {
-        const el = now - t0
-        if (el < D1) {
-          const t = ease(el / D1)
-          packets.forEach((pk, i) => {
-            if (!pk || !geo[i]) return
-            place(pk, i, 0.04 + (REST - 0.04) * t)
-            pk.style.opacity = String(Math.min(1, el / 200))
-          })
-        } else {
-          const t = Math.min((el - D1) / D2, 1)
-          packets.forEach((pk, i) => {
-            const c = comets[i]
-            if (!pk || !c || !geo[i]) return
-            place(pk, i, REST)
-            pk.style.opacity = '1'
-            const g = geo[i]!
-            const p = g.path.getPointAtLength(g.len * (REST + (1 - REST) * ease(t)))
-            c.removeAttribute('hidden')
-            c.setAttribute('cx', String(p.x))
-            c.setAttribute('cy', String(p.y))
-          })
-          if (t >= 1) {
-            comets.forEach((c) => c?.setAttribute('hidden', ''))
-            const dests = [...new Set(geo.flatMap((g) => (g ? [g.to] : [])))]
-            arrived = dests.flatMap((d) => { const g = nodeRefs.current[d]; return g ? [g] : [] })
-            arrived.forEach((g) => { g.classList.remove('arrive'); void g.getBoundingClientRect(); g.classList.add('arrive') })
-            if (arrived.length) arriveTimer = setTimeout(() => arrived.forEach((g) => g.classList.remove('arrive')), 600)
-            return
-          }
-        }
-        raf = requestAnimationFrame(tick)
-      }
-      raf = requestAnimationFrame(tick)
-    }
-    return () => {
-      cancelAnimationFrame(raf)
-      clearTimeout(arriveTimer)
-      arrived.forEach((g) => g.classList.remove('arrive'))
-      comets.forEach((c) => c?.setAttribute('hidden', ''))
-    }
-  }, [index, steps, layout, mode, lang]) // eslint-disable-line react-hooks/exhaustive-deps
+  const { edgeRefs, nodeRefs, packetRefs, cometRefs } = usePackets({ topic, steps, index, animate, mode, lang, layoutKey: layout })
 
   const kindStyle = (k: Kind) => ({ '--pk': `var(--k-${k})`, '--pk-on': `var(--k-${k}-on)` } as CSSProperties)
 

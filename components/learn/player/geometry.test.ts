@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import type { Topic } from '../../../data/learn/types'
+import type { MetroTopic } from '../../../data/learn/types'
 import { offsetPolyline, trimStart, trimEnd, corridorFor, bidirectionalCorridors, edgePoints, pathD, pointAt } from './geometry'
 
 const L = { en: 'x', bn: 'x' }
@@ -8,7 +8,7 @@ const topic = {
   nodes: { a: node(0, 0), b: node(100, 0), c: node(100, 100) },
   corridors: { 'a-b': { wide: [[0, 0], [100, 0]], narrow: [[0, 0], [100, 0]] }, 'b-c': { wide: [[100, 0], [100, 100]], narrow: [[100, 0], [100, 100]] } },
   edges: { ab: { from: 'a', to: 'b', kind: 'request' }, ba: { from: 'b', to: 'a', kind: 'result' }, bc: { from: 'b', to: 'c', kind: 'queue' } },
-} as unknown as Topic
+} as unknown as MetroTopic
 
 describe('offsetPolyline', () => {
   it('moves an eastbound segment to its right side (south, +y)', () => {

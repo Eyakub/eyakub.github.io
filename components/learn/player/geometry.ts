@@ -1,16 +1,18 @@
-import type { LayoutKey, Pt, Topic } from '../../../data/learn/types'
+import type { LayoutKey, MetroTopic, Pt, Topic } from '../../../data/learn/types'
+
+export const isMetro = (t: Topic): t is MetroTopic => !t.lanes
 
 export const TRACK_OFFSET = 7.5
 export const TRIM_START = 28
 export const TRIM_END = 33
 
-export function corridorFor(topic: Topic, from: string, to: string): { key: string; reversed: boolean } {
+export function corridorFor(topic: MetroTopic, from: string, to: string): { key: string; reversed: boolean } {
   const fk = `${from}-${to}`
   if (topic.corridors[fk]) return { key: fk, reversed: false }
   return { key: `${to}-${from}`, reversed: true }
 }
 
-export function bidirectionalCorridors(topic: Topic): Set<string> {
+export function bidirectionalCorridors(topic: MetroTopic): Set<string> {
   const dirs = new Map<string, Set<boolean>>()
   for (const e of Object.values(topic.edges)) {
     const { key, reversed } = corridorFor(topic, e.from, e.to)
@@ -66,7 +68,7 @@ export const trimEnd = (pts: Pt[], dist: number): Pt[] => trimStart([...pts].rev
 export const pathD = (pts: Pt[]): string =>
   'M' + pts.map((p) => p.map((v) => +v.toFixed(1)).join(' ')).join('L')
 
-export function edgePoints(topic: Topic, edgeId: string, layout: LayoutKey, bidir: Set<string>, nodeR = 25): Pt[] {
+export function edgePoints(topic: MetroTopic, edgeId: string, layout: LayoutKey, bidir: Set<string>, nodeR = 25): Pt[] {
   const e = topic.edges[edgeId]
   const { key, reversed } = corridorFor(topic, e.from, e.to)
   let pts = topic.corridors[key][layout].map((p) => [p[0], p[1]] as Pt)
