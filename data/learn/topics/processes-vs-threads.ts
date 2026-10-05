@@ -10,12 +10,12 @@ export const processesVsThreads: Topic = {
     bn: 'thread একই memory ভাগ করে আর সস্তা; process-এর memory আলাদা, তাই কপি পাঠাতে হয়।'
   },
   hook: {
-    en: 'Cooks in one kitchen share a fridge, which is fast but risky. Separate kitchens are safer but must pass slips.',
-    bn: 'এক রান্নাঘরের রাঁধুনিরা একই ফ্রিজ ভাগ করে, তাতে দ্রুত কিন্তু ঝুঁকি। আলাদা রান্নাঘর নিরাপদ, তবে স্লিপ পাঠাতে হয়।'
+    en: 'Cooks in one kitchen share a fridge, which is fast but risky, while separate kitchens are safer but must pass slips.',
+    bn: 'এক রান্নাঘরের রাঁধুনিরা একই ফ্রিজ ভাগ করে, যা দ্রুত কিন্তু ঝুঁকির, আর আলাদা রান্নাঘর নিরাপদ হলেও স্লিপ পাঠাতে হয়।'
   },
   takeaway: {
-    en: 'Shared fridge: fast but risky. Separate kitchens: safe, but they must pass slips.',
-    bn: 'একই ফ্রিজ: দ্রুত কিন্তু ঝুঁকি। আলাদা রান্নাঘর: নিরাপদ, তবে স্লিপ পাঠাতে হয়।'
+    en: 'A shared fridge is fast but risky; separate kitchens are safe, but they must pass slips.',
+    bn: 'ভাগের ফ্রিজ দ্রুত কিন্তু ঝুঁকির; আলাদা রান্নাঘর নিরাপদ, তবে স্লিপ পাঠাতে হয়।'
   },
   words: [
     {
@@ -187,8 +187,8 @@ export const processesVsThreads: Topic = {
         plainState: { a_mem: { en: 'Number is 1', bn: 'সংখ্যা ১' } },
         title: { en: 'Cook 1 puts a number in the fridge', bn: 'রাঁধুনি ১ ফ্রিজে একটা সংখ্যা রাখে' },
         simple: {
-          en: 'Kitchen A has two cooks who share one fridge. Cook 1 puts a number in it.',
-          bn: 'রান্নাঘর A-তে দুজন রাঁধুনি, ফ্রিজ একটাই। রাঁধুনি ১ তাতে একটা সংখ্যা রাখে।'
+          en: 'Kitchen A has two cooks who share one fridge. Cook 1 puts a number in it. Kitchen B is next door; slips pass through the window.',
+          bn: 'রান্নাঘর A-তে দুজন রাঁধুনি, ফ্রিজ একটাই। রাঁধুনি ১ তাতে একটা সংখ্যা রাখে। রান্নাঘর B পাশেই; স্লিপ জানালা দিয়ে যায়।'
         },
         tech: {
           en: 'Thread 1 stores into a heap object. Threads in one process share one address space: globals, heap and open files.',
@@ -223,8 +223,8 @@ export const processesVsThreads: Topic = {
         },
         title: { en: 'Either cook can change it', bn: 'যেকোনো রাঁধুনি বদলাতে পারে' },
         simple: {
-          en: 'Cook 2 changes the number, and Cook 1 sees it too. Sharing is fast, but one cook’s mess spoils it for all.',
-          bn: 'রাঁধুনি ২ সংখ্যা বদলায়, রাঁধুনি ১-ও তা দেখে। ভাগাভাগি দ্রুত, কিন্তু একজনের গোলমালে সবার ক্ষতি।'
+          en: 'Cook 2 changes the number, and Cook 1 would see it too. Sharing is fast, but one cook’s mess spoils it for all.',
+          bn: 'রাঁধুনি ২ সংখ্যা বদলায়, রাঁধুনি ১-ও তা দেখতে পাবে। ভাগাভাগি দ্রুত, কিন্তু একজনের গোলমালে সবার ক্ষতি।'
         },
         tech: {
           en: 'Writes are visible to every thread of A at once. That is both the power and the hazard of threads.',
@@ -313,8 +313,8 @@ export const processesVsThreads: Topic = {
         id: 'a-untouched',
         work: { node: 'a_mem', kind: 'result' },
         state: { a_mem: { en: 'x = 2, unchanged', bn: 'x = 2, অপরিবর্তিত' } },
-        plainState: { a_mem: { en: 'Still 2, untouched', bn: 'এখনও ২, অক্ষত' } },
-        title: { en: 'Kitchen A’s fridge is untouched', bn: 'রান্নাঘর A-র ফ্রিজ অক্ষত' },
+        plainState: { a_mem: { en: 'Still 2, untouched', bn: 'এখনও ২, ঠিকই আছে' } },
+        title: { en: 'Kitchen A’s fridge is untouched', bn: 'রান্নাঘর A-র ফ্রিজ ঠিকই আছে' },
         simple: {
           en: 'Kitchen A’s fridge still says 2. Separate fridges mean one kitchen cannot spoil another.',
           bn: 'রান্নাঘর A-র ফ্রিজে এখনও ২। ফ্রিজ আলাদা, তাই এক রান্নাঘর আরেকটাকে নষ্ট করতে পারে না।'
@@ -365,7 +365,7 @@ export const processesVsThreads: Topic = {
   alts: [
     {
       id: 'process-crash',
-      label: { en: 'A kitchen catches fire', bn: 'রান্নাঘরে আগুন লাগে' },
+      label: { en: 'Kitchen B catches fire', bn: 'রান্নাঘর B-তে আগুন' },
       whatIf: { en: 'What if Kitchen B catches fire?', bn: 'যদি রান্নাঘর B-তে আগুন লাগে?' },
       branchAfter: 'b-writes',
       steps: [
@@ -393,7 +393,7 @@ export const processesVsThreads: Topic = {
         {
           id: 'a-survives',
           work: { node: 'a_t1', kind: 'result' },
-          state: { a_t1: { en: 'Alive, unaffected', bn: 'বেঁচে, অক্ষত' } },
+          state: { a_t1: { en: 'Alive, unaffected', bn: 'বেঁচে, ঠিকই আছে' } },
           title: { en: 'Kitchen A carries on', bn: 'রান্নাঘর A চলতে থাকে' },
           simple: {
             en: 'Kitchen A is fine. Cook 1 only notices that Kitchen B has stopped answering.',
