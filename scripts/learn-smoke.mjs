@@ -191,7 +191,8 @@ const checks = [
     assert(lang === 'en', `lang on / is ${lang}`)
   }],
   ['player-step', async () => {
-    for (const { slug, total } of TOPIC_CASES) {
+    // step3Packets: how many packets stop 3 shows (2+ for a parallel step, 0 for a work step).
+    for (const { slug, total, step3Packets = 1 } of TOPIC_CASES) {
       const { page, context, problems } = await open(`/learn/${slug}`)
       await page.waitForSelector('#next')
       await page.click('#next'); await page.click('#next')
@@ -199,12 +200,12 @@ const checks = [
       const stop = await page.textContent('#stopno')
       const vis = page.locator('.packet:not([hidden])')
       const count = await vis.count()
-      const box = await vis.first().boundingBox()
+      const box = count ? await vis.first().boundingBox() : null
       await shot(page, slug === 'celery-redis' ? 'player-desktop' : `player-${slug.split('-')[0]}-desktop`)
       await context.close()
       assert(stop === `Stop 3 of ${total}`, `${slug} stopno: ${stop}`)
-      assert(count === 1, `${slug} visible packets: ${count}`)
-      assert(box && box.width > 40, `${slug} packet width ${box?.width}`)
+      assert(count === step3Packets, `${slug} visible packets: ${count}, expected ${step3Packets}`)
+      if (step3Packets) assert(box && box.width > 40, `${slug} packet width ${box?.width}`)
       noProblems(problems)
     }
   }],
