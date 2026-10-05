@@ -10,21 +10,14 @@ export const celeryRedis: Topic = {
     bn: 'ওয়েব অ্যাপ কীভাবে ধীর কাজগুলো ব্যাকগ্রাউন্ড ওয়ার্কারের হাতে দিয়ে দেয়, যাতে কাউকে লোডিং দেখে বসে থাকতে না হয়।'
   },
   hook: {
-    en: 'Slow jobs go to a back kitchen, so nobody stands at the counter while the page freezes.',
-    bn: 'ধীর কাজ পেছনের রান্নাঘরে যায়, তাই কাউন্টারে দাঁড়িয়ে পেজ আটকে থাকার অপেক্ষা করতে হয় না।'
+    en: 'Slow jobs go to a back kitchen, so nobody waits at the counter.',
+    bn: 'ধীর কাজ পেছনের রান্নাঘরে যায়, তাই কাউন্টারে কাউকে অপেক্ষা করতে হয় না।'
   },
   takeaway: {
-    en: 'The waiter takes the order and moves on. The cook does the slow work, and you collect it when ready.',
-    bn: 'ওয়েটার অর্ডার নিয়ে এগিয়ে যান। ধীর কাজটা রাঁধুনি করেন, আর তৈরি হলে আপনি নিয়ে নেন।'
+    en: 'Take orders fast, cook elsewhere, collect when ready.',
+    bn: 'দ্রুত অর্ডার নিন, অন্যখানে রান্না হোক, তৈরি হলে নিন।'
   },
   words: [
-    {
-      term: { en: 'Web app (FastAPI)', bn: 'ওয়েব অ্যাপ (FastAPI)' },
-      d: {
-        en: 'The program behind a website that answers your taps and clicks.',
-        bn: 'ওয়েবসাইটের পেছনের প্রোগ্রাম, যে আপনার ট্যাপ আর ক্লিকের উত্তর দেয়।'
-      }
-    },
     {
       term: { en: 'Queue (Redis)', bn: 'কিউ (Redis)' },
       d: {
@@ -40,17 +33,10 @@ export const celeryRedis: Topic = {
       }
     },
     {
-      term: { en: 'Ticket number', bn: 'টিকিট নম্বর' },
+      term: { en: 'Ticket', bn: 'টিকিট' },
       d: {
-        en: 'A number naming one job, so you can ask about it later.',
+        en: 'A job’s number, so you can ask about it later.',
         bn: 'একটা কাজের নম্বর, যাতে পরে তার খোঁজ নেওয়া যায়।'
-      }
-    },
-    {
-      term: { en: 'Retry', bn: 'রিট্রাই' },
-      d: {
-        en: 'Trying the same job again after it went wrong.',
-        bn: 'কাজ ভুল হলে সেটা আবার চেষ্টা করা।'
       }
     }
   ],
@@ -155,8 +141,8 @@ export const celeryRedis: Topic = {
         moves: [ { edge: 'ua', label: 'POST /reports', plain: { en: 'Report order', bn: 'রিপোর্টের অর্ডার' } } ],
         title: { en: 'You order a report', bn: 'আপনি একটা রিপোর্ট চান' },
         simple: {
-          en: 'You tap “Make my report” and the order reaches the waiter, the web app. Building a report takes about half a minute, so watch how the wait is handled.',
-          bn: 'আপনি “রিপোর্ট বানাও” চাপলেন, আর অর্ডার পৌঁছাল ওয়েটারের কাছে, মানে ওয়েব অ্যাপে। রিপোর্ট বানাতে প্রায় আধ মিনিট লাগে, দেখুন এই অপেক্ষা কীভাবে সামলানো হয়।'
+          en: 'You tap “Make my report”. The order reaches the waiter, the web app. Building it takes half a minute.',
+          bn: 'আপনি “রিপোর্ট বানাও” চাপলেন। অর্ডার পৌঁছাল ওয়েটারের কাছে, মানে ওয়েব অ্যাপে। বানাতে আধ মিনিট লাগে।'
         },
         tech: {
           en: 'An HTTP POST reaches a FastAPI route. Building the PDF takes about 30 s, far too long to keep this request open.',
@@ -272,8 +258,8 @@ export const celeryRedis: Topic = {
         moves: [ { edge: 'au', label: 'report link', plain: { en: 'Report link', bn: 'রিপোর্টের লিংক' } } ],
         title: { en: 'You download the report', bn: 'আপনি রিপোর্ট ডাউনলোড করেন' },
         simple: {
-          en: 'The waiter brings you the download button. You never stood waiting at a frozen screen, because the cook did the slow work out of sight.',
-          bn: 'ওয়েটার আপনাকে ডাউনলোড বাটন এনে দেন। আটকে থাকা স্ক্রিনের সামনে একবারও দাঁড়াতে হয়নি, কারণ ধীর কাজটা রাঁধুনি আড়ালে সেরেছেন।'
+          en: 'The waiter brings your download button. No frozen screen, because the cook worked out of sight.',
+          bn: 'ওয়েটার ডাউনলোড বাটন এনে দেন। স্ক্রিন আটকে থাকেনি, কারণ রাঁধুনি আড়ালে কাজ সেরেছেন।'
         },
         tech: {
           en: 'The status endpoint returns 200 with the result. The API spent only milliseconds on this user the whole time.',
