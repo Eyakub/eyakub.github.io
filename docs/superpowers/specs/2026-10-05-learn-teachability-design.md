@@ -60,7 +60,7 @@ Technically mode always shows the real values.
 - **What if… banner.** At the first alt-only stop, the Now panel shows the alt's `whatIf` above the step title.
 - **Remember box.** At the last stop of the main route, the Now panel shows a "Remember" box with `takeaway`.
 - **Legend.** Each kind's label comes from `topic.legend[kind]`, falling back to the current UI string.
-- **Diagram legibility.** `view.wide` width is at most **820**, so desktop text stays at least about 11px. Topics wider than that are re-laid out in their rewrite task.
+- **Diagram legibility: wide player frame** (user decision, 2026-10-05). At ≥ 1200px the player breaks out of the ~1200px text column to `min(1680px, 100vw − gutters)`. The diagram fills `1fr` and the caption rail stays at 380px. The SVG max-height becomes `calc(100dvh − 140px)` and the hub map gets the same breakout. `view.wide` width stays ≤ 1000. Text sections keep their readable width.
 
 **Tests:**
 - **Integrity** validates the new fields when present:

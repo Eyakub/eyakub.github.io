@@ -5,14 +5,14 @@
 **Goal:** a complete beginner can follow every `/learn` topic in Simply mode.
 - Diagram labels have plain Simply-mode variants.
 - Each topic gets "Words to know", a hook, a takeaway and "What if…" banners.
-- Diagrams are legible on desktop, and the hub has a beginner path.
+- A wide player frame uses the side space on big screens, and the hub has a beginner path.
 - All 9 topics have their Simply layer rewritten.
 
 **Architecture:**
 - Optional data fields drive new rendering: Simply-mode labels, words card, hook lede, What-if banner, Remember box and legend overrides.
 - An integrity "jargon lint" gates migrated topics, i.e. topics with `words`.
 - Topics migrate one per task, worst first.
-- The last task makes the fields required and enforces `view.wide` width ≤ 820.
+- The last task makes the fields required and enforces `view.wide` width ≤ 1000.
 
 **Tech Stack:** Next 16.2 Pages Router (static export), React 19, TypeScript (`tsconfig.learn.json` strict), vitest, playwright-core.
 
@@ -32,7 +32,7 @@
 - Every L10n has EN and BN. Bangla Simply uses everyday words from spec §4.
 - Concurrency topics use exactly the kitchen mapping in spec §4. Celery and FastAPI use the restaurant; Git uses the photo album.
 - Layout:
-  - `view.wide` width ≤ 820 for any topic touched by a rewrite task;
+  - `view.wide` width ≤ 1000 (the wide frame from Task 2 gives diagrams room);
   - narrow is 400 wide and ≤ 580 tall;
   - labels are checked in **both** modes, because Simply and Technically labels differ in length.
 - Never stage `next-env.d.ts`. Commits use conventional messages, author `eyakubsorkar@gmail.com`, and no AI trailers. Do not push.
@@ -238,7 +238,34 @@ It should produce 4 folders.
 
 ---
 
-### Task 2: Hub beginner path
+### Task 2: Wide player frame (user feedback 2026-10-05)
+
+The player was boxed into the ~1200px text column, so complex diagrams were tiny on big screens. The user chose a **wide frame with the caption on the side**.
+
+**Files:** `styles/learn.css`, `components/learn/player/FlowPlayer.tsx` (wrapper class if needed), `components/learn/hub/NetworkMap.tsx` (class if needed), `scripts/learn-smoke.mjs`.
+
+- [ ] **Step 1: Layout.**
+  - At viewport ≥ 1200px, the player block (switches row, stage and rail) breaks out of the text container. Its width is `min(1680px, 100vw - 2 × the page gutter)`, centred on the viewport.
+  - Grid: diagram `minmax(0, 1fr)`, rail `380px`, gap as now.
+  - Between 980 and 1199px, keep the current two-column layout. Below 980px nothing changes.
+  - Text sections keep the existing container width: header, words card, analogy, Q&A, cheats and sources.
+  - The hub's network map section (`.map-sec`) uses the same breakout at ≥ 1200px.
+- [ ] **Step 2: Diagram sizing.**
+  - The SVG fills the diagram column width.
+  - Replace the fixed `.flow-svg` max-height cap at ≥ 980px with `max-height: calc(100dvh - 140px)`, so a wide diagram is never shrunk by an arbitrary height cap but still fits on short screens.
+  - The aspect ratio still comes from `viewBox`.
+- [ ] **Step 3: Smoke.**
+  - Add the check `wide-frame`:
+    - at 1920×1080 on `/learn/fastapi-lifecycle`, `.flow-svg` renders at least 1100px wide and `scrollWidth ≤ 1920`;
+    - at 1280×860 its width is at least 690px, with no overflow;
+    - at 2560×1440 the frame is no wider than 1680px;
+    - at 390×844 nothing changes, and `mobile-fits` still passes.
+  - Screenshot fastapi at 1920 and 1280, and the hub at 1920. Read them and check the rail alignment, that the diagram is not clipped, and that nothing scrolls sideways.
+- [ ] **Step 4: Verify and commit**: `feat(learn): wide player frame uses side space on big screens`.
+
+---
+
+### Task 3: Hub beginner path
 
 **Files:** modify `data/learn/network.ts` (`Station` gets `blurb?: L10n; level?: 'beginner' | 'intermediate'`), `data/learn/ui.ts`, `components/learn/hub/Hub.tsx`, `components/learn/hub/LineStrips.tsx`, `styles/learn.css`, `scripts/learn-smoke.mjs`.
 
@@ -270,7 +297,7 @@ It should produce 4 folders.
 
 ---
 
-## Shared procedure for Tasks 3–11 (one topic each)
+## Shared procedure for Tasks 4–12 (one topic each)
 
 **Inputs:**
 - spec §3–§5;
@@ -293,9 +320,7 @@ It should produce 4 folders.
 8. **Highlight and tone fixes** the review lists: the lit station matches the caption, and `error` is used only for failures.
 9. **`legend` overrides** when the default words ("Request", "Queued message", "Reply or result", "Failure or retry") do not fit the topic.
 10. **Analogy section aligned** with the on-diagram Simply names. Keep twins consistent with spec §4, and keep exactly one failure twin.
-11. **Re-layout when needed:**
-    - if `view.wide` width > 820, re-lay out wide to ≤ 820;
-    - fix any collision in either mode or language (narrow ≤ 580 tall).
+11. **Re-layout when needed:** fix any collision in either mode or language. Keep `view.wide` width ≤ 1000, and use horizontal space rather than cramming. Wide station spacing should be at least 110.
 12. **Factual and stale-state defects** the review lists for this topic that are not fixed yet. Check against git history; the accuracy pass on 2026-10-05 fixed several.
 13. **`TOPIC_CASES`:** set `taught: true`. Keep `total`, `altStop`, `altBtn` and `step3Packets` correct.
 
@@ -319,25 +344,25 @@ It should produce 4 folders.
 5. Run `SMOKE_TOPICS=<slug> npm run smoke:learn`. All checks must PASS, including `teach-scaffold` and `mobile-fits`.
 6. Commit: `feat(learn): teach <title> in plain words`.
 
-### Task 3: FastAPI lifecycle (review §A; scored 2.8). Metaphor: the restaurant front of house.
-### Task 4: The Python GIL (review §B; 3.1). Kitchen: cooks, burners, the stove, the chef's hat, a rice cooker, the delivery door.
-### Task 5: Processes vs threads (review §B; 3.2). Kitchen: kitchens, fridges, cooks, the pass window, slips.
-### Task 6: Multiprocessing pools (review §C; 3.2). Kitchen: head chef, kitchen setup, slips, side kitchens, the pickup window.
-### Task 7: asyncio event loop (review §C; 3.3). Kitchen: one cook, dishes, the ready rack, the timer board, the delivery door, helper cooks.
-### Task 8: Concurrency vs parallelism (review §B; 3.9). Kitchen: dishes, burners, the oven, cooks. This topic is the hub's first stop, so its stop 1 must also introduce the kitchen for the whole line.
-### Task 9: Race conditions and locks (review §C; 3.8). Kitchen: cooks, the whiteboard tally, the marker pen, the pan and the knife.
-### Task 10: Celery + Redis (review §A; 3.8). Metaphor: the restaurant, kitchen side.
-### Task 11: Git basics (review §A; 3.8). Metaphor: the photo album. Also resolve: `orphan-commit` caption says "stage a fix" but the index shows "Nothing staged" (left by accuracy fix e40f234e).
+### Task 4: FastAPI lifecycle (review §A; scored 2.8). Metaphor: the restaurant front of house.
+### Task 5: The Python GIL (review §B; 3.1). Kitchen: cooks, burners, the stove, the chef's hat, a rice cooker, the delivery door.
+### Task 6: Processes vs threads (review §B; 3.2). Kitchen: kitchens, fridges, cooks, the pass window, slips.
+### Task 7: Multiprocessing pools (review §C; 3.2). Kitchen: head chef, kitchen setup, slips, side kitchens, the pickup window.
+### Task 8: asyncio event loop (review §C; 3.3). Kitchen: one cook, dishes, the ready rack, the timer board, the delivery door, helper cooks.
+### Task 9: Concurrency vs parallelism (review §B; 3.9). Kitchen: dishes, burners, the oven, cooks. This topic is the hub's first stop, so its stop 1 must also introduce the kitchen for the whole line.
+### Task 10: Race conditions and locks (review §C; 3.8). Kitchen: cooks, the whiteboard tally, the marker pen, the pan and the knife.
+### Task 11: Celery + Redis (review §A; 3.8). Metaphor: the restaurant, kitchen side.
+### Task 12: Git basics (review §A; 3.8). Metaphor: the photo album. Also resolve: `orphan-commit` caption says "stage a fix" but the index shows "Nothing staged" (left by accuracy fix e40f234e).
 
 ---
 
-### Task 12: Make the scaffold required and verify everything
+### Task 13: Make the scaffold required and verify everything
 
 - [ ] **Step 1: Types.**
   - `Topic.words`, `hook` and `takeaway` become required.
   - `AltRoute.whatIf` becomes required.
   - The integrity jargon lint runs for every topic (drop the `if (!t.words) return`).
-  - Add `expect(t.view.wide[0]).toBeLessThanOrEqual(820)`.
+  - Add `expect(t.view.wide[0]).toBeLessThanOrEqual(1000)`.
   - Every `TOPIC_CASES` entry is `taught: true`.
 - [ ] **Step 2: Full verification.**
   - Run `npm test && npm run typecheck:learn && npm run build && npm run smoke:learn` (all PASS).
