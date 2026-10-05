@@ -9,6 +9,64 @@ export const multiprocessingPools: Topic = {
     en: 'A pool starts a few worker processes once, pickles tasks to them, and returns the results in order.',
     bn: 'pool কয়েকটা worker process একবার চালু করে, task pickle করে তাদের কাছে পাঠায়, আর result ক্রম মেনে ফেরত দেয়।'
   },
+  hook: {
+    en: 'A head chef cannot cook every long dish alone, so it sets up side kitchens and passes each one a copied order.',
+    bn: 'হেড শেফ একা সব লম্বা পদ রাঁধতে পারে না, তাই পাশের রান্নাঘর সাজায় আর প্রতিটায় অর্ডারের কপি পাঠায়।'
+  },
+  takeaway: {
+    en: 'Side kitchens share nothing, so every order and dish is a copy; that cost pays off only for long cooking jobs.',
+    bn: 'পাশের রান্নাঘরগুলো কিছুই ভাগ করে না, তাই প্রতিটি অর্ডার ও পদ একটা কপি; এই খরচ পোষায় শুধু লম্বা রান্নায়।'
+  },
+  words: [
+    {
+      term: { en: 'Head chef', bn: 'হেড শেফ' },
+      d: {
+        en: 'The main program. It plans the dishes and hands them out.',
+        bn: 'মূল প্রোগ্রাম। সে পদগুলো ঠিক করে আর বিলি করে।'
+      }
+    },
+    {
+      term: { en: 'Side kitchen', bn: 'পাশের রান্নাঘর' },
+      d: {
+        en: 'A separate kitchen with one cook and its own fridge.',
+        bn: 'একজন রাঁধুনি আর নিজের ফ্রিজসহ আলাদা রান্নাঘর।'
+      }
+    },
+    {
+      term: { en: 'Fridge', bn: 'ফ্রিজ' },
+      d: {
+        en: 'Where a kitchen keeps what it knows. Other kitchens cannot open it.',
+        bn: 'রান্নাঘর যা জানে তা যেখানে রাখে। অন্য রান্নাঘর এটা খুলতে পারে না।'
+      }
+    },
+    {
+      term: { en: 'Dish', bn: 'পদ' },
+      d: {
+        en: 'One piece of work to be cooked, here a heavy calculation.',
+        bn: 'রাঁধার মতো একটা কাজ, এখানে একটা ভারী হিসাব।'
+      }
+    },
+    {
+      term: { en: 'Slip', bn: 'স্লিপ' },
+      d: {
+        en: 'A written copy of an order. Only copies can travel between kitchens.',
+        bn: 'অর্ডারের লেখা কপি। রান্নাঘরের মধ্যে শুধু কপিই যেতে পারে।'
+      }
+    },
+    {
+      term: { en: 'Pass window', bn: 'পাস-জানালা' },
+      d: {
+        en: 'Where slips and finished dishes are handed between kitchens.',
+        bn: 'যেখানে স্লিপ আর তৈরি পদ এক রান্নাঘর থেকে আরেকটায় যায়।'
+      }
+    }
+  ],
+  legend: {
+    request: { en: 'Setting up a kitchen', bn: 'রান্নাঘর সাজানো' },
+    queue: { en: 'A slip passed along', bn: 'স্লিপ পাঠানো' },
+    result: { en: 'Finished dishes', bn: 'তৈরি পদ' },
+    error: { en: 'Something went wrong', bn: 'কিছু গোলমাল হয়েছে' }
+  },
   view: { wide: [ 1000, 460 ], narrow: [ 400, 580 ] },
   nodeR: { narrow: 20 },
   nodes: {
@@ -16,6 +74,10 @@ export const multiprocessingPools: Topic = {
       icon: 'server',
       name: { en: 'Parent process', bn: 'Parent process' },
       sub: { en: '__main__ guard', bn: '__main__ guard' },
+      plain: {
+        name: { en: 'Head chef', bn: 'হেড শেফ' },
+        sub: { en: 'Hands out the dishes', bn: 'পদ বিলি করে' }
+      },
       wide: [ 100, 220, 'down' ],
       narrow: [ 90, 60, 'up' ]
     },
@@ -23,6 +85,10 @@ export const multiprocessingPools: Topic = {
       icon: 'power',
       name: { en: 'Start method', bn: 'Start method' },
       sub: { en: 'forkserver / spawn', bn: 'forkserver / spawn' },
+      plain: {
+        name: { en: 'Kitchen setup', bn: 'রান্নাঘর সাজানো' },
+        sub: { en: 'Builds new kitchens', bn: 'নতুন রান্নাঘর বানায়' }
+      },
       wide: [ 300, 110, 'up' ],
       narrow: [ 90, 150, 'right' ]
     },
@@ -30,6 +96,10 @@ export const multiprocessingPools: Topic = {
       icon: 'queue',
       name: { en: 'Task queue', bn: 'Task queue' },
       sub: { en: 'Pickled chunks', bn: 'Pickled chunk' },
+      plain: {
+        name: { en: 'Pass window', bn: 'পাস-জানালা' },
+        sub: { en: 'Slips go in here', bn: 'স্লিপ এখানে যায়' }
+      },
       wide: [ 300, 330, 'down' ],
       narrow: [ 320, 230, 'left' ]
     },
@@ -37,6 +107,10 @@ export const multiprocessingPools: Topic = {
       icon: 'worker',
       name: { en: 'Worker 1', bn: 'Worker ১' },
       sub: { en: 'Idle', bn: 'বসে আছে' },
+      plain: {
+        name: { en: 'Side kitchen 1', bn: 'পাশের রান্নাঘর ১' },
+        sub: { en: 'Waiting for a slip', bn: 'স্লিপের অপেক্ষায়' }
+      },
       wide: [ 560, 110, 'up' ],
       narrow: [ 180, 400, 'left' ]
     },
@@ -44,6 +118,10 @@ export const multiprocessingPools: Topic = {
       icon: 'worker',
       name: { en: 'Worker 2', bn: 'Worker ২' },
       sub: { en: 'Idle', bn: 'বসে আছে' },
+      plain: {
+        name: { en: 'Side kitchen 2', bn: 'পাশের রান্নাঘর ২' },
+        sub: { en: 'Waiting for a slip', bn: 'স্লিপের অপেক্ষায়' }
+      },
       wide: [ 560, 330, 'down' ],
       narrow: [ 260, 440, 'right' ]
     },
@@ -51,6 +129,10 @@ export const multiprocessingPools: Topic = {
       icon: 'store',
       name: { en: 'Result queue', bn: 'Result queue' },
       sub: { en: 'Pickled results', bn: 'Pickled result' },
+      plain: {
+        name: { en: 'Pass window', bn: 'পাস-জানালা' },
+        sub: { en: 'Dishes come back here', bn: 'পদ এখানে ফেরে' }
+      },
       wide: [ 800, 220, 'right' ],
       narrow: [ 220, 530, 'right' ]
     }
@@ -59,6 +141,7 @@ export const multiprocessingPools: Topic = {
     {
       id: 'pool',
       label: { en: 'Pool', bn: 'Pool' },
+      plain: { en: 'Side kitchens', bn: 'পাশের রান্নাঘর' },
       wide: [ 250, 22, 710, 388 ],
       narrow: [ 50, 110, 330, 460 ]
     }
@@ -119,24 +202,26 @@ export const multiprocessingPools: Topic = {
         id: 'create',
         work: { node: 'main', kind: 'result' },
         state: { main: { en: 'Creating Pool(2)', bn: 'Pool(2) বানাচ্ছে' } },
-        title: { en: 'The parent creates a pool', bn: 'Parent একটা pool বানায়' },
+        plainState: { main: { en: 'Planning', bn: 'পরিকল্পনা করছে' } },
+        title: { en: 'The head chef has a big pile of dishes', bn: 'হেড শেফের হাতে অনেক পদ' },
         simple: {
-          en: 'The boss opens a team of two helpers, inside a safe “run me only once” block.',
-          bn: 'বস দুজন helper-এর একটা দল খোলে, একটা নিরাপদ “আমাকে একবারই চালাও” block-এর ভেতরে।'
+          en: 'The head chef has eight heavy dishes to cook. Alone that is slow, so it plans two side kitchens to share the work.',
+          bn: 'হেড শেফের হাতে আটটা ভারী পদ। একা রাঁধলে ধীর, তাই কাজ ভাগ করতে সে দুটো পাশের রান্নাঘর সাজানোর পরিকল্পনা করে।'
         },
         tech: {
-          en: '`Pool(2)` or `ProcessPoolExecutor(max_workers=2)`. The default size is `os.process_cpu_count()` on 3.13+. Spawn and forkserver need the `__main__` guard.',
-          bn: '`Pool(2)` বা `ProcessPoolExecutor(max_workers=2)`। ডিফল্ট সংখ্যা 3.13+-এ `os.process_cpu_count()`। spawn আর forkserver-এ `__main__` guard লাগে।'
+          en: '`Pool(2)` or `ProcessPoolExecutor(max_workers=2)`. With no size given, the default is `os.process_cpu_count()` on 3.13+. Spawn and forkserver need the `__main__` guard.',
+          bn: '`Pool(2)` বা `ProcessPoolExecutor(max_workers=2)`। সংখ্যা না দিলে ডিফল্ট 3.13+-এ `os.process_cpu_count()`। spawn আর forkserver-এ `__main__` guard লাগে।'
         }
       },
       {
         id: 'start',
-        moves: [ { edge: 'main-start', label: 'make 2 workers' } ],
+        moves: [ { edge: 'main-start', label: 'make 2 workers', plain: { en: 'Build kitchens', bn: 'রান্নাঘর বানাও' } } ],
         state: { main: { en: 'Asked for workers', bn: 'worker চেয়েছে' } },
-        title: { en: 'It asks for new processes', bn: 'নতুন process চায়' },
+        plainState: { main: { en: 'Asked for kitchens', bn: 'রান্নাঘর চেয়েছে' } },
+        title: { en: 'It asks for new kitchens', bn: 'নতুন রান্নাঘর চায়' },
         simple: {
-          en: 'The boss asks the operating system to create the helpers.',
-          bn: 'বস operating system-কে helper বানাতে বলে।'
+          en: 'The head chef asks Kitchen setup to build two side kitchens. Kitchen setup is how each new kitchen gets made.',
+          bn: 'হেড শেফ রান্নাঘর সাজানোকে দুটো পাশের রান্নাঘর বানাতে বলে। নতুন প্রতিটা রান্নাঘর এভাবেই তৈরি হয়।'
         },
         tech: {
           en: 'The start method depends on the platform. In 3.14 the default is `forkserver` on Linux and `spawn` on macOS and Windows. `fork` is no longer the default anywhere.',
@@ -146,8 +231,8 @@ export const multiprocessingPools: Topic = {
       {
         id: 'workers-up',
         moves: [
-          { edge: 'start-w1', label: 'new worker' },
-          { edge: 'start-w2', label: 'new worker' }
+          { edge: 'start-w1', label: 'new worker', plain: { en: 'Kitchen 1', bn: 'রান্নাঘর ১' } },
+          { edge: 'start-w2', label: 'new worker', plain: { en: 'Kitchen 2', bn: 'রান্নাঘর ২' } }
         ],
         state: {
           start: { en: 'Started 2 workers', bn: '২টা worker চালু' },
@@ -155,10 +240,16 @@ export const multiprocessingPools: Topic = {
           w2: { en: 'Ready', bn: 'তৈরি' },
           main: { en: 'Waiting', bn: 'অপেক্ষায়' }
         },
-        title: { en: 'Both workers start', bn: 'দুটো worker চালু হয়' },
+        plainState: {
+          start: { en: 'Built 2 kitchens', bn: '২টা রান্নাঘর বানিয়েছে' },
+          w1: { en: 'Ready to cook', bn: 'রাঁধতে তৈরি' },
+          w2: { en: 'Ready to cook', bn: 'রাঁধতে তৈরি' },
+          main: { en: 'Waiting', bn: 'অপেক্ষায়' }
+        },
+        title: { en: 'Both side kitchens open', bn: 'দুটো পাশের রান্নাঘর খোলে' },
         simple: {
-          en: 'Both helpers start at once. Each is brand new, with its own memory.',
-          bn: 'দুজন helper একসাথে চালু হয়। দুজনই একদম নতুন, নিজের নিজের memory নিয়ে।'
+          en: 'Both side kitchens open at once. Each has its own empty fridge, so it knows nothing the head chef knows.',
+          bn: 'দুটো পাশের রান্নাঘর একসাথে খোলে। প্রতিটার নিজের খালি ফ্রিজ, তাই হেড শেফের জানা কিছুই তারা জানে না।'
         },
         tech: {
           en: 'Each child imports the main module, which is why the guard matters, then runs a loop that reads tasks. Process start-up is the main fixed cost of a pool.',
@@ -167,15 +258,19 @@ export const multiprocessingPools: Topic = {
       },
       {
         id: 'chunk',
-        moves: [ { edge: 'main-tasks', label: 'pickle chunks' } ],
+        moves: [ { edge: 'main-tasks', label: 'pickle chunks', plain: { en: 'Slips of 4 dishes', bn: '৪ পদের স্লিপ' } } ],
         state: {
           main: { en: 'Submitted map()', bn: 'map() দিয়েছে' },
           tasks: { en: '[0-3] [4-7]', bn: '[0-3] [4-7]' }
         },
-        title: { en: 'The parent splits and queues work', bn: 'Parent কাজ ভাগ করে queue-তে দেয়' },
+        plainState: {
+          main: { en: 'Wrote the slips', bn: 'স্লিপ লিখেছে' },
+          tasks: { en: '2 slips waiting', bn: '২টা স্লিপ অপেক্ষায়' }
+        },
+        title: { en: 'The head chef copies orders onto slips', bn: 'হেড শেফ অর্ডার স্লিপে লেখে' },
         simple: {
-          en: 'The boss splits the pile into bundles and drops them in a tray.',
-          bn: 'বস কাজের স্তূপ ভাগ করে বান্ডিল বানায় আর ট্রেতে রাখে।'
+          en: 'The head chef splits the dishes into two batches and copies each order onto a slip. The slips wait at the pass window.',
+          bn: 'হেড শেফ পদগুলো দুই ভাগ করে প্রতিটা অর্ডার স্লিপে লিখে দেয়। স্লিপগুলো পাস-জানালায় অপেক্ষা করে।'
         },
         tech: {
           en: '`map` splits the input into chunks and pickles each one. `Pool.map` picks a chunk size from the input size and worker count. `Executor.map` uses 1 unless you set `chunksize`.',
@@ -185,18 +280,23 @@ export const multiprocessingPools: Topic = {
       {
         id: 'compute',
         moves: [
-          { edge: 'tasks-w1', label: 'chunk 0' },
-          { edge: 'tasks-w2', label: 'chunk 1' }
+          { edge: 'tasks-w1', label: 'chunk 0', plain: { en: 'Slip 1', bn: 'স্লিপ ১' } },
+          { edge: 'tasks-w2', label: 'chunk 1', plain: { en: 'Slip 2', bn: 'স্লিপ ২' } }
         ],
         state: {
           tasks: { en: 'Chunks taken', bn: 'chunk নেওয়া হয়েছে' },
           w1: { en: 'Busy [0-3]', bn: 'ব্যস্ত [0-3]' },
           w2: { en: 'Busy [4-7]', bn: 'ব্যস্ত [4-7]' }
         },
-        title: { en: 'Each worker grabs a chunk', bn: 'প্রতিটা worker একটা chunk নেয়' },
+        plainState: {
+          tasks: { en: 'Slips taken', bn: 'স্লিপ নেওয়া হয়েছে' },
+          w1: { en: 'Cooking dishes 1-4', bn: '১-৪ নম্বর পদ রাঁধছে' },
+          w2: { en: 'Cooking dishes 5-8', bn: '৫-৮ নম্বর পদ রাঁধছে' }
+        },
+        title: { en: 'Each side kitchen takes a slip', bn: 'প্রতিটা পাশের রান্নাঘর একটা স্লিপ নেয়' },
         simple: {
-          en: 'Each helper takes a bundle and works on it. Both work at the same time.',
-          bn: 'প্রতিটা helper একটা বান্ডিল নিয়ে কাজ করে। দুজনই একই সময়ে।'
+          en: 'Each side kitchen takes one slip and cooks its four dishes. Both cook at the same time.',
+          bn: 'প্রতিটা পাশের রান্নাঘর একটা স্লিপ নিয়ে নিজের চারটা পদ রাঁধে। দুটোই একই সময়ে রাঁধে।'
         },
         tech: {
           en: 'Workers unpickle the arguments and run your function in their own interpreter, on separate cores. That is true parallelism, with no shared GIL.',
@@ -205,16 +305,21 @@ export const multiprocessingPools: Topic = {
       },
       {
         id: 'w2-first',
-        moves: [ { edge: 'w2-results', label: 'r[4-7]' } ],
+        moves: [ { edge: 'w2-results', label: 'r[4-7]', plain: { en: 'Dishes 5-8', bn: '৫-৮ নম্বর পদ' } } ],
         state: {
           w2: { en: 'Idle', bn: 'বসে আছে' },
           w1: { en: 'Busy', bn: 'ব্যস্ত' },
           results: { en: 'Chunk 1 first', bn: 'আগে chunk ১' }
         },
-        title: { en: 'Worker 2 finishes first', bn: 'Worker ২ আগে শেষ করে' },
+        plainState: {
+          w2: { en: 'Done, resting', bn: 'শেষ, বিশ্রামে' },
+          w1: { en: 'Still cooking', bn: 'এখনও রাঁধছে' },
+          results: { en: 'Dishes 5-8 first', bn: 'আগে ৫-৮ নম্বর পদ' }
+        },
+        title: { en: 'Side kitchen 2 finishes first', bn: 'পাশের রান্নাঘর ২ আগে শেষ করে' },
         simple: {
-          en: 'Helper 2 happens to finish first.',
-          bn: 'Helper ২ আগে শেষ করে ফেলে।'
+          en: 'Side kitchen 2 finishes first. It copies its finished dishes onto a slip and sends them back through the pass window.',
+          bn: 'পাশের রান্নাঘর ২ আগে শেষ করে। তৈরি পদ স্লিপে লিখে পাস-জানালা দিয়ে ফেরত পাঠায়।'
         },
         tech: {
           en: 'Completion order depends on timing, not on submission order. `imap_unordered` and `as_completed` hand results over in this arrival order.',
@@ -223,15 +328,19 @@ export const multiprocessingPools: Topic = {
       },
       {
         id: 'w1-second',
-        moves: [ { edge: 'w1-results', label: 'r[0-3]' } ],
+        moves: [ { edge: 'w1-results', label: 'r[0-3]', plain: { en: 'Dishes 1-4', bn: '১-৪ নম্বর পদ' } } ],
         state: {
           w1: { en: 'Idle', bn: 'বসে আছে' },
           results: { en: 'Chunk 0 second', bn: 'পরে chunk ০' }
         },
-        title: { en: 'Worker 1 finishes second', bn: 'Worker ১ পরে শেষ করে' },
+        plainState: {
+          w1: { en: 'Done, resting', bn: 'শেষ, বিশ্রামে' },
+          results: { en: 'Dishes 1-4 second', bn: 'পরে ১-৪ নম্বর পদ' }
+        },
+        title: { en: 'Side kitchen 1 finishes second', bn: 'পাশের রান্নাঘর ১ পরে শেষ করে' },
         simple: {
-          en: 'Helper 1 finishes second and sends its answers too.',
-          bn: 'Helper ১ পরে শেষ করে নিজের উত্তরও পাঠায়।'
+          en: 'Side kitchen 1 finishes second and sends its dishes back the same way, as a slip through the pass window.',
+          bn: 'পাশের রান্নাঘর ১ পরে শেষ করে আর একইভাবে, স্লিপে করে পাস-জানালা দিয়ে, নিজের পদ ফেরত পাঠায়।'
         },
         tech: {
           en: 'Results are pickled in the worker and unpickled in the parent. The overhead grows with the size of the result.',
@@ -240,15 +349,19 @@ export const multiprocessingPools: Topic = {
       },
       {
         id: 'in-order',
-        moves: [ { edge: 'results-main', label: 'reassemble' } ],
+        moves: [ { edge: 'results-main', label: 'reassemble', plain: { en: 'Dishes in order', bn: 'ক্রমে সাজানো পদ' } } ],
         state: {
           main: { en: 'Got [0..7] in order', bn: '[0..7] ক্রমে পেয়েছে' },
           results: { en: 'Drained', bn: 'খালি' }
         },
-        title: { en: 'The parent puts them in order', bn: 'Parent ক্রমে সাজায়' },
+        plainState: {
+          main: { en: 'Has all 8 dishes', bn: '৮টা পদই পেয়েছে' },
+          results: { en: 'Window empty', bn: 'জানালা খালি' }
+        },
+        title: { en: 'The head chef puts them in order', bn: 'হেড শেফ ক্রমে সাজায়' },
         simple: {
-          en: 'The boss puts the answers back in the original order.',
-          bn: 'বস উত্তরগুলো আবার আসল ক্রমে সাজায়।'
+          en: 'The head chef collects both batches and puts all eight dishes in the original order, whichever kitchen finished first.',
+          bn: 'হেড শেফ দুই ভাগই নেয় আর আটটা পদ আসল ক্রমে সাজায়, যে রান্নাঘরই আগে শেষ করুক।'
         },
         tech: {
           en: '`Pool.map` and `Executor.map` return results in input order, whatever the finishing order. A slow early item can delay the first results.',
@@ -265,10 +378,17 @@ export const multiprocessingPools: Topic = {
           start: { en: 'Closed', bn: 'বন্ধ' },
           tasks: { en: 'Empty', bn: 'খালি' }
         },
-        title: { en: 'The pool shuts down', bn: 'pool বন্ধ হয়' },
+        plainState: {
+          main: { en: 'Closed the kitchens', bn: 'রান্নাঘর বন্ধ করেছে' },
+          w1: { en: 'Closed', bn: 'বন্ধ' },
+          w2: { en: 'Closed', bn: 'বন্ধ' },
+          start: { en: 'Closed', bn: 'বন্ধ' },
+          tasks: { en: 'Empty', bn: 'খালি' }
+        },
+        title: { en: 'The side kitchens close', bn: 'পাশের রান্নাঘর বন্ধ হয়' },
         simple: {
-          en: 'When the work is done, the boss sends the helpers home.',
-          bn: 'কাজ শেষ হলে বস helper-দের ছুটি দেয়।'
+          en: 'The head chef closes the side kitchens. Every slip was a copy, and building kitchens takes time, so this suits only long jobs.',
+          bn: 'হেড শেফ পাশের রান্নাঘর বন্ধ করে। প্রতিটা স্লিপ ছিল কপি, আর রান্নাঘর বানাতে সময় লাগে, তাই এটা শুধু লম্বা কাজে মানায়।'
         },
         tech: {
           en: '`Pool.__exit__` calls `terminate()`, not `join()`, so collect results first or call `close()` and `join()`. `ProcessPoolExecutor` as a context manager calls `shutdown(wait=True)`.',
@@ -280,17 +400,22 @@ export const multiprocessingPools: Topic = {
   alts: [
     {
       id: 'unpicklable',
-      label: { en: 'Unpicklable argument', bn: 'Pickle করা যায় না এমন argument' },
+      label: { en: 'An order with no name', bn: 'নামহীন অর্ডার' },
+      whatIf: {
+        en: 'What if an order cannot be copied onto a slip?',
+        bn: 'যদি কোনো অর্ডার স্লিপে লিখে দেওয়া না যায়?'
+      },
       branchAfter: 'workers-up',
       steps: [
         {
           id: 'pickle-fails',
           work: { node: 'main', kind: 'error' },
           state: { main: { en: 'PicklingError', bn: 'PicklingError' } },
-          title: { en: 'A lambda cannot be pickled', bn: 'lambda pickle করা যায় না' },
+          plainState: { main: { en: 'Cannot copy order', bn: 'অর্ডার কপি করা যায় না' } },
+          title: { en: 'An order cannot be copied', bn: 'অর্ডার কপি করা যায় না' },
           simple: {
-            en: 'The boss cannot put a recipe made of thin air in the tray. The helpers cannot read it.',
-            bn: 'বস হাওয়ায় তৈরি রেসিপি ট্রেতে রাখতে পারে না। helper-রা সেটা পড়তে পারে না।'
+            en: 'This order has no name, so there is nothing to write on a slip. The head chef stops with an error.',
+            bn: 'এই অর্ডারের কোনো নাম নেই, তাই স্লিপে লেখার কিছু নেই। হেড শেফ একটা error দিয়ে থেমে যায়।'
           },
           tech: {
             en: '`pickle` sends a function by its qualified name. A lambda’s `__qualname__` is `"<lambda>"`, which cannot be looked up by import. Nested and REPL-defined functions fail too, with `PicklingError` or `Can’t pickle local object`.',
@@ -301,10 +426,11 @@ export const multiprocessingPools: Topic = {
           id: 'fix-def',
           work: { node: 'main', kind: 'result' },
           state: { main: { en: 'Fix: top-level def', bn: 'সমাধান: top-level def' } },
-          title: { en: 'Define it at module level', bn: 'module level-এ লিখুন' },
+          plainState: { main: { en: 'Fix: give it a name', bn: 'সমাধান: নাম দেওয়া' } },
+          title: { en: 'Give the order a name', bn: 'অর্ডারকে একটা নাম দিন' },
           simple: {
-            en: 'Write the recipe in the shared cookbook instead.',
-            bn: 'রেসিপিটা বরং সবার কুকবুকে লিখে রাখুন।'
+            en: 'Write the order down under a proper name. Then any kitchen can look it up, and a slip can carry it.',
+            bn: 'অর্ডারটা একটা ঠিক নামে লিখে রাখুন। তাহলে যেকোনো রান্নাঘর সেটা খুঁজে পাবে, আর স্লিপে তা যেতে পারবে।'
           },
           tech: {
             en: 'Define the target at module level. Use `functools.partial` of a top-level function for extra arguments. Sockets, locks and DB connections generally cannot be pickled either.',
@@ -315,20 +441,28 @@ export const multiprocessingPools: Topic = {
     },
     {
       id: 'no-guard',
-      label: { en: 'Missing `__main__` guard', bn: '`__main__` guard নেই' },
+      label: { en: 'Kitchens that multiply', bn: 'বেড়ে চলা রান্নাঘর' },
+      whatIf: {
+        en: 'What if the setup instructions never say “head chef only”?',
+        bn: 'যদি সাজানোর নির্দেশে “শুধু হেড শেফের জন্য” লেখা না থাকে?'
+      },
       branchAfter: 'start',
       steps: [
         {
           id: 'reimport',
-          moves: [ { edge: 'start-w1', label: 'import __main__' } ],
+          moves: [ { edge: 'start-w1', label: 'import __main__', plain: { en: 'Setup notes', bn: 'সাজানোর নোট' } } ],
           state: {
             start: { en: 'Spawning', bn: 'চালু করছে' },
             w1: { en: 'Importing', bn: 'import করছে' }
           },
-          title: { en: 'The child re-imports the script', bn: 'Child পুরো script আবার import করে' },
+          plainState: {
+            start: { en: 'Building', bn: 'বানাচ্ছে' },
+            w1: { en: 'Reading the notes', bn: 'নোট পড়ছে' }
+          },
+          title: { en: 'A new kitchen reads the setup notes', bn: 'নতুন রান্নাঘর সাজানোর নোট পড়ে' },
           simple: {
-            en: 'The new helper reads the whole script from the top, including the line that makes more helpers.',
-            bn: 'নতুন helper পুরো script শুরু থেকে পড়ে, যে লাইন আরও helper বানায় সেটাসহ।'
+            en: 'The new kitchen starts by reading the head chef’s setup notes from the top. The first line says: build two side kitchens.',
+            bn: 'নতুন রান্নাঘর হেড শেফের সাজানোর নোট শুরু থেকে পড়ে। প্রথম লাইনেই লেখা: দুটো পাশের রান্নাঘর বানাও।'
           },
           tech: {
             en: 'Spawn and forkserver children import the main module. An unguarded top-level `Pool(...)` runs again inside the child.',
@@ -342,10 +476,14 @@ export const multiprocessingPools: Topic = {
             w1: { en: 'RuntimeError', bn: 'RuntimeError' },
             main: { en: 'Pool broken', bn: 'pool ভাঙা' }
           },
-          title: { en: 'Python stops the loop', bn: 'Python loop থামিয়ে দেয়' },
+          plainState: {
+            w1: { en: 'Stopped by error', bn: 'error-এ থেমেছে' },
+            main: { en: 'Kitchens broken', bn: 'রান্নাঘর ভেঙে গেছে' }
+          },
+          title: { en: 'The computer stops the loop', bn: 'কম্পিউটার চক্র থামিয়ে দেয়' },
           simple: {
-            en: 'Python stops the endless copying and shows an error.',
-            bn: 'Python অন্তহীন কপি করা থামিয়ে error দেখায়।'
+            en: 'So the new kitchen tries to build kitchens of its own, again and again. The computer notices and stops it with an error.',
+            bn: 'তাই নতুন রান্নাঘর নিজেও রান্নাঘর বানাতে চায়, বারবার। কম্পিউটার ধরে ফেলে আর error দিয়ে থামিয়ে দেয়।'
           },
           tech: {
             en: 'It raises “An attempt has been made to start a new process before the current process has finished its bootstrapping phase.” Fix: wrap the entry code in `if __name__ == "__main__":`.',
@@ -356,17 +494,22 @@ export const multiprocessingPools: Topic = {
     },
     {
       id: 'worker-dies',
-      label: { en: 'A worker dies', bn: 'একটা worker মরে যায়' },
+      label: { en: 'A kitchen shuts down', bn: 'একটা রান্নাঘর বন্ধ হয়' },
+      whatIf: {
+        en: 'What if a side kitchen shuts down while cooking?',
+        bn: 'যদি রান্নার মাঝে একটা পাশের রান্নাঘর বন্ধ হয়ে যায়?'
+      },
       branchAfter: 'compute',
       steps: [
         {
           id: 'oom',
           work: { node: 'w1', kind: 'error' },
           state: { w1: { en: 'Dead (-9)', bn: 'মৃত (-9)' } },
-          title: { en: 'A worker is killed', bn: 'একটা worker মারা পড়ে' },
+          plainState: { w1: { en: 'Shut down', bn: 'বন্ধ হয়ে গেছে' } },
+          title: { en: 'A side kitchen shuts down', bn: 'একটা পাশের রান্নাঘর বন্ধ হয়' },
           simple: {
-            en: 'One helper vanishes in the middle of its task.',
-            bn: 'একজন helper কাজের মাঝখানে হঠাৎ উধাও হয়ে যায়।'
+            en: 'Side kitchen 1 suddenly shuts down in the middle of its dishes. Its slip is lost with it.',
+            bn: 'পাশের রান্নাঘর ১ পদ রাঁধার মাঝখানে হঠাৎ বন্ধ হয়ে যায়। সাথে ওর স্লিপও হারায়।'
           },
           tech: {
             en: 'A worker killed by a signal, such as the OOM killer sending SIGKILL, loses the chunk it was working on.',
@@ -377,10 +520,11 @@ export const multiprocessingPools: Topic = {
           id: 'broken',
           work: { node: 'main', kind: 'error' },
           state: { main: { en: 'BrokenProcessPool', bn: 'BrokenProcessPool' } },
-          title: { en: 'The parent loses its answer', bn: 'Parent উত্তর হারায়' },
+          plainState: { main: { en: 'Dishes are lost', bn: 'পদ হারিয়েছে' } },
+          title: { en: 'The head chef loses its dishes', bn: 'হেড শেফ পদ হারায়' },
           simple: {
-            en: 'The boss may wait for an answer that never comes.',
-            bn: 'বস হয়তো এমন উত্তরের অপেক্ষায় থাকে, যেটা আর আসবে না।'
+            en: 'The head chef may wait forever for dishes that never come back.',
+            bn: 'হেড শেফ হয়তো এমন পদের জন্য অনন্তকাল অপেক্ষা করে, যা আর ফিরবে না।'
           },
           tech: {
             en: '`ProcessPoolExecutor` raises `BrokenProcessPool`. Classic `Pool` can hang on a lost task, so use timeouts or the executor.',
@@ -392,72 +536,72 @@ export const multiprocessingPools: Topic = {
   ],
   analogy: {
     intro: {
-      en: 'A boss runs a team of helpers in separate rooms. Paperwork passes through slots in the doors. Nothing is shared except photocopies sealed in envelopes.',
-      bn: 'এক বস আলাদা আলাদা ঘরে একদল helper চালায়। কাগজপত্র যায় দরজার ফাঁক দিয়ে। খামে ভরা ফটোকপি ছাড়া কিছুই ভাগ করা হয় না।'
+      en: 'The head chef cannot cook everything alone, so it sets up side kitchens. Kitchens share nothing: orders and dishes travel as copied slips.',
+      bn: 'হেড শেফ একা সব রাঁধতে পারে না, তাই পাশের রান্নাঘর সাজায়। রান্নাঘরগুলো কিছুই ভাগ করে না: অর্ডার আর পদ কপি করা স্লিপে যায়।'
     },
     twins: [
       {
         icon: 'server',
         node: 'main',
-        name: { en: 'The boss', bn: 'বস' },
+        name: { en: 'Head chef', bn: 'হেড শেফ' },
         d: {
-          en: 'Opens the team, hands out the work and collects the answers.',
-          bn: 'দল খোলে, কাজ বিলি করে আর উত্তর জড়ো করে।'
+          en: 'Plans the dishes, hands out the work and collects the finished dishes.',
+          bn: 'পদ ঠিক করে, কাজ বিলি করে আর তৈরি পদ জড়ো করে।'
         }
       },
       {
         icon: 'power',
         node: 'start',
-        name: { en: 'The hiring office', bn: 'নিয়োগ অফিস' },
+        name: { en: 'Kitchen setup', bn: 'রান্নাঘর সাজানো' },
         d: {
-          en: 'Creates each helper, either from a template or from scratch.',
-          bn: 'প্রতিটা helper তৈরি করে, হয় একটা ছাঁচ থেকে, নয়তো একদম নতুন করে।'
+          en: 'Builds each side kitchen, empty and ready for orders.',
+          bn: 'প্রতিটা পাশের রান্নাঘর বানায়, খালি আর অর্ডারের জন্য তৈরি।'
         }
       },
       {
         icon: 'queue',
         node: 'tasks',
-        name: { en: 'The inbox slot', bn: 'ইনবক্সের ফাঁক' },
+        name: { en: 'Pass window, orders', bn: 'পাস-জানালা, অর্ডার' },
         d: {
-          en: 'Stacks of forms wait here in sealed envelopes.',
-          bn: 'খামে ভরা ফর্মের স্তূপ এখানে অপেক্ষা করে।'
+          en: 'Order slips wait here until a side kitchen takes one.',
+          bn: 'পাশের রান্নাঘর না নেওয়া পর্যন্ত অর্ডারের স্লিপ এখানে অপেক্ষা করে।'
         }
       },
       {
         icon: 'worker',
         node: 'w1',
-        name: { en: 'The first helper', bn: 'প্রথম helper' },
+        name: { en: 'Side kitchen 1', bn: 'পাশের রান্নাঘর ১' },
         d: {
-          en: 'Works alone in a private room, with its own desk and its own memory.',
-          bn: 'নিজের আলাদা ঘরে একা কাজ করে, নিজের ডেস্ক আর নিজের memory নিয়ে।'
+          en: 'One cook working alone, with its own fridge that nobody else can open.',
+          bn: 'একজন রাঁধুনি একা কাজ করে, নিজের ফ্রিজ নিয়ে, যা অন্য কেউ খুলতে পারে না।'
         }
       },
       {
         icon: 'worker',
         node: 'w2',
-        name: { en: 'The second helper', bn: 'দ্বিতীয় helper' },
+        name: { en: 'Side kitchen 2', bn: 'পাশের রান্নাঘর ২' },
         d: {
-          en: 'Works at the same time in another room. Whoever finishes first posts first.',
-          bn: 'একই সময়ে অন্য ঘরে কাজ করে। যে আগে শেষ করে, সে আগে পাঠায়।'
+          en: 'Cooks at the same time in another kitchen. Whoever finishes first sends first.',
+          bn: 'একই সময়ে অন্য রান্নাঘরে রাঁধে। যে আগে শেষ করে, সে আগে পাঠায়।'
         }
       },
       {
         icon: 'store',
         node: 'results',
-        name: { en: 'The outbox slot', bn: 'আউটবক্সের ফাঁক' },
+        name: { en: 'Pass window, dishes', bn: 'পাস-জানালা, পদ' },
         d: {
-          en: 'Finished answers drop here, in the order they were done.',
-          bn: 'শেষ হওয়া উত্তরগুলো এখানে পড়ে, যে ক্রমে শেষ হয়েছে সেই ক্রমে।'
+          en: 'Finished dishes arrive here, in the order they were done.',
+          bn: 'তৈরি পদ এখানে পৌঁছায়, যে ক্রমে শেষ হয়েছে সেই ক্রমে।'
         }
       },
       {
         icon: 'alert',
         node: null,
-        name: { en: 'Mailing a living person', bn: 'জীবন্ত মানুষকে ডাকে পাঠানো' },
-        is: { en: 'is an unpicklable argument', bn: 'মানে pickle-অযোগ্য argument' },
+        name: { en: 'A live cook through the window', bn: 'জানালা দিয়ে জ্যান্ত রাঁধুনি' },
+        is: { en: 'is an order that cannot be copied', bn: 'মানে এমন অর্ডার যা কপি করা যায় না' },
         d: {
-          en: 'The boss tries to push an open database connection, or a lambda, through the slot. Only a photocopy of a document can pass.',
-          bn: 'বস একটা খোলা database connection বা lambda ফাঁক দিয়ে ঢোকাতে চায়। শুধু কাগজের ফটোকপিই যেতে পারে।'
+          en: 'The head chef tries to pass an order that has no name, or a phone line that is still open. Only a written copy fits through.',
+          bn: 'হেড শেফ এমন অর্ডার পাঠাতে চায় যার নাম নেই, বা এমন ফোন-লাইন যা এখনও খোলা। শুধু লেখা কপিই জানালা দিয়ে যায়।'
         }
       }
     ]
