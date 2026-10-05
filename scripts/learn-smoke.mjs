@@ -78,6 +78,7 @@ const TOPIC_CASES = [
   { slug: 'processes-vs-threads', total: 10, altStop: 'Stop 4 of 5', altBtn: 2 },
   { slug: 'python-gil', total: 11, altStop: 'Stop 7 of 11' },
   { slug: 'multiprocessing-pools', total: 9, altStop: 'Stop 3 of 4', altBtn: 2, step3Packets: 2 },
+  { slug: 'asyncio-event-loop', total: 10, altStop: 'Stop 3 of 5' },
 ]
 // SMOKE_TOPICS=a,b limits the per-topic loops to those slugs, for quick runs while authoring one topic.
 const onlyTopics = process.env.SMOKE_TOPICS?.split(',')

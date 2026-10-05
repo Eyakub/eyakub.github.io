@@ -1,4 +1,5 @@
 import type { Topic } from './types'
+import { asyncioEventLoop } from './topics/asyncio-event-loop'
 import { celeryRedis } from './topics/celery-redis'
 import { concurrencyVsParallelism } from './topics/concurrency-vs-parallelism'
 import { fastapiLifecycle } from './topics/fastapi-lifecycle'
@@ -8,6 +9,7 @@ import { processesVsThreads } from './topics/processes-vs-threads'
 import { pythonGil } from './topics/python-gil'
 
 export const TOPICS: Record<string, Topic> = {
+  [asyncioEventLoop.slug]: asyncioEventLoop,
   [celeryRedis.slug]: celeryRedis,
   [concurrencyVsParallelism.slug]: concurrencyVsParallelism,
   [fastapiLifecycle.slug]: fastapiLifecycle,
