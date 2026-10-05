@@ -54,6 +54,10 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
       const inside = ([x, y]: [number, number] | number[]) => x >= 0 && x <= w && y >= 0 && y <= h
       Object.entries(t.nodes).forEach(([id, n]) => expect(inside(n[lk]), `${lk} ${id}`).toBe(true))
       Object.entries(t.corridors).forEach(([id, c]) => c[lk].forEach((p) => expect(inside(p), `${lk} ${id}`).toBe(true)))
+      t.groups?.forEach((g) => {
+        const [x, y, gw, gh] = g[lk]
+        expect(x >= 0 && y >= 0 && x + gw <= w && y + gh <= h, `${lk} group ${g.id}`).toBe(true)
+      })
     }
   })
   it('content counts follow the rules', () => {
