@@ -14,8 +14,8 @@ export const raceConditionsLocks: Topic = {
     bn: 'দুই রাঁধুনি একই বোর্ডের সংখ্যা বদলালে একজনের কাজ মুছে যেতে পারে। একবারে একজনের হাতে থাকা একটা মার্কার কলম তা ঠেকায়।'
   },
   takeaway: {
-    en: 'Anything shared needs turns: only the cook holding the marker pen may read or change the tally.',
-    bn: 'ভাগ করা জিনিসে পালা লাগে: শুধু মার্কার কলম যার হাতে, সে-ই হিসাব পড়তে বা বদলাতে পারে।'
+    en: 'Shared things need turns: only the cook holding the pen may touch the tally.',
+    bn: 'ভাগ করা জিনিসে পালা লাগে: কলম যার হাতে, শুধু সে-ই হিসাব ছুঁতে পারে।'
   },
   words: [
     {
@@ -334,8 +334,8 @@ export const raceConditionsLocks: Topic = {
         },
         title: { en: 'The tally is right: 2', bn: 'হিসাব ঠিক: ২' },
         simple: {
-          en: 'Cook 2 reads 1, adds one and writes 2. Correct. Shared things need turns.',
-          bn: 'রাঁধুনি ২ ১ পড়ে, এক যোগ করে ২ লেখে। ঠিক। ভাগ করা জিনিসে পালা লাগে।'
+          en: 'Cook 2 reads 1, adds one and writes 2. Correct.',
+          bn: 'রাঁধুনি ২ ১ পড়ে, এক যোগ করে ২ লেখে। ঠিক।'
         },
         tech: {
           en: 'Serialised increments give the right result, but waiting costs throughput. Prefer designs that avoid shared state, such as queues.',
@@ -443,8 +443,8 @@ export const raceConditionsLocks: Topic = {
           plainState: {
             lockA: { en: 'Always taken first', bn: 'সবসময় আগে নেওয়া' },
             lockB: { en: 'Always taken second', bn: 'সবসময় পরে নেওয়া' },
-            t1: { en: 'Pen, then knife', bn: 'আগে কলম, পরে ছুরি' },
-            t2: { en: 'Pen, then knife', bn: 'আগে কলম, পরে ছুরি' }
+            t1: { en: 'Pen, then knife', bn: 'কলম, পরে ছুরি' },
+            t2: { en: 'Pen, then knife', bn: 'কলম, পরে ছুরি' }
           },
           title: { en: 'Fix: one order for tools', bn: 'সমাধান: জিনিস নেওয়ার একটাই ক্রম' },
           simple: {
