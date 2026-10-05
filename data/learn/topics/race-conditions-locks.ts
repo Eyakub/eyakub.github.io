@@ -6,8 +6,8 @@ export const raceConditionsLocks: Topic = {
   line: 'concurrency',
   title: { en: 'Race conditions and locks', bn: 'Race condition আর lock' },
   summary: {
-    en: 'Two threads can read the same value and overwrite each other. A lock makes the update one step at a time, but two locks can deadlock.',
-    bn: 'দুটো thread একই মান পড়ে একে অপরের লেখা মুছে দিতে পারে। lock আপডেটকে এক ধাপে এক জন করে চালায়, কিন্তু দুটো lock থেকে deadlock হতে পারে।'
+    en: 'Two threads can overwrite each other’s update; a lock fixes that by taking turns, but two locks can deadlock.',
+    bn: 'দুটো thread একে অপরের আপডেট মুছে দিতে পারে; lock পালা করে চালিয়ে তা ঠেকায়, কিন্তু দুটো lock থেকে deadlock হতে পারে।'
   },
   view: { wide: [ 1000, 440 ], narrow: [ 400, 580 ] },
   nodeR: { narrow: 20 },

@@ -4,7 +4,7 @@ import { UI } from '../ui'
 export const processesVsThreads: Topic = {
   slug: 'processes-vs-threads',
   line: 'concurrency',
-  title: { en: 'Processes vs threads', bn: 'প্রসেস বনাম থ্রেড' },
+  title: { en: 'Processes vs threads', bn: 'process বনাম thread' },
   summary: {
     en: 'Threads share one memory and are cheap; processes keep memory apart and must send copies.',
     bn: 'thread একই memory ভাগ করে আর সস্তা; process-এর memory আলাদা, তাই কপি পাঠাতে হয়।'
@@ -386,7 +386,7 @@ export const processesVsThreads: Topic = {
         name: { en: 'The neighbour', bn: 'প্রতিবেশী' },
         d: {
           en: 'Lives in apartment B with their own rules. Reads your note and writes their own.',
-          bn: 'অ্যাপার্টমেন্ট B-তে নিজের নিয়মে থাকে। তোমার নোট পড়ে আর নিজেরটা লেখে।'
+          bn: 'অ্যাপার্টমেন্ট B-তে নিজের নিয়মে থাকে। আপনার নোট পড়ে আর নিজেরটা লেখে।'
         }
       },
       {
@@ -395,7 +395,7 @@ export const processesVsThreads: Topic = {
         name: { en: 'The neighbour’s fridge', bn: 'প্রতিবেশীর ফ্রিজ' },
         d: {
           en: 'Private to apartment B. Your roommates cannot reach it.',
-          bn: 'শুধু অ্যাপার্টমেন্ট B-র। তোমার রুমমেটরা এতে হাত দিতে পারে না।'
+          bn: 'শুধু অ্যাপার্টমেন্ট B-র। আপনার রুমমেটরা এতে হাত দিতে পারে না।'
         }
       },
       {

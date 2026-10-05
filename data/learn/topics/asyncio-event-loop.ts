@@ -43,7 +43,7 @@ export const asyncioEventLoop: Topic = {
     net: {
       icon: 'cloud',
       name: { en: 'Sockets', bn: 'Socket' },
-      sub: { en: 'Network', bn: 'নেটওয়ার্ক' },
+      sub: { en: 'Network', bn: 'network' },
       wide: [ 910, 210, 'down' ],
       narrow: [ 110, 490, 'right' ]
     },
@@ -60,7 +60,7 @@ export const asyncioEventLoop: Topic = {
       id: 'thread',
       label: { en: 'One thread', bn: 'একটা thread' },
       wide: [ 50, 50, 760, 265 ],
-      narrow: [ 10, 20, 285, 410 ]
+      narrow: [ 10, 22, 285, 408 ]
     }
   ],
   corridors: {
@@ -120,7 +120,7 @@ export const asyncioEventLoop: Topic = {
         title: { en: 'Two tasks join the queue', bn: 'দুটো task queue-তে ঢোকে' },
         simple: {
           en: 'Two jobs are put in the to-do tray. Neither has started yet.',
-          bn: 'দুটো কাজ করণীয়-ট্রেতে রাখা হয়। কোনোটাই এখনো শুরু হয়নি।'
+          bn: 'দুটো কাজ করণীয়-ট্রেতে রাখা হয়। কোনোটাই এখনও শুরু হয়নি।'
         },
         tech: {
           en: '`create_task` or `gather` wraps each coroutine in a Task and schedules its first step in the loop’s ready queue.',
@@ -153,10 +153,10 @@ export const asyncioEventLoop: Topic = {
           selector: { en: 'Watching A', bn: 'A-কে দেখছে' },
           tasks: { en: 'A waits, B queued', bn: 'A অপেক্ষায়, B queue-এ' }
         },
-        title: { en: 'A awaits the network', bn: 'A নেটওয়ার্কের জন্য await করে' },
+        title: { en: 'A awaits the network', bn: 'A networkের জন্য await করে' },
         simple: {
           en: 'Job A must wait for the network, so it steps aside and asks the OS to tell it when data arrives.',
-          bn: 'কাজ A-কে নেটওয়ার্কের জন্য অপেক্ষা করতে হয়, তাই সে সরে দাঁড়ায় আর OS-কে বলে ডেটা এলে জানাতে।'
+          bn: 'কাজ A-কে networkের জন্য অপেক্ষা করতে হয়, তাই সে সরে দাঁড়ায় আর OS-কে বলে data এলে জানাতে।'
         },
         tech: {
           en: '`await` on an unfinished future suspends the coroutine and returns control to the loop. The socket is registered with the selector: epoll on Linux, kqueue on macOS and BSD.',
@@ -192,7 +192,7 @@ export const asyncioEventLoop: Topic = {
         title: { en: 'B awaits too', bn: 'B-ও await করে' },
         simple: {
           en: 'B has to wait for the network too, so it also steps aside.',
-          bn: 'B-কেও নেটওয়ার্কের জন্য অপেক্ষা করতে হয়, তাই সেও সরে দাঁড়ায়।'
+          bn: 'B-কেও networkের জন্য অপেক্ষা করতে হয়, তাই সেও সরে দাঁড়ায়।'
         },
         tech: {
           en: 'B registers its socket with the selector as well. Both tasks are now pending, and the ready queue is empty.',
@@ -220,14 +220,14 @@ export const asyncioEventLoop: Topic = {
         id: 'bytes-arrive',
         moves: [ { edge: 'net-selector', label: "A's bytes" } ],
         state: {
-          net: { en: 'A’s data in', bn: 'A-র ডেটা এসেছে' },
+          net: { en: 'A’s data in', bn: 'A-র data এসেছে' },
           selector: { en: 'A ready', bn: 'A তৈরি' },
           loop: { en: 'Waking', bn: 'জাগছে' }
         },
-        title: { en: 'Data for A arrives', bn: 'A-র ডেটা আসে' },
+        title: { en: 'Data for A arrives', bn: 'A-র data আসে' },
         simple: {
           en: 'Data for job A shows up from the network.',
-          bn: 'কাজ A-র ডেটা নেটওয়ার্ক থেকে চলে আসে।'
+          bn: 'কাজ A-র data network থেকে চলে আসে।'
         },
         tech: {
           en: 'The kernel marks A’s socket readable, so the blocked `select` call returns.',
@@ -241,7 +241,7 @@ export const asyncioEventLoop: Topic = {
           ready: { en: 'A', bn: 'A' },
           loop: { en: 'Awake', bn: 'জেগেছে' },
           selector: { en: 'Watching B', bn: 'B-কে দেখছে' },
-          net: { en: 'Network', bn: 'নেটওয়ার্ক' }
+          net: { en: 'Network', bn: 'network' }
         },
         title: { en: 'The selector wakes A', bn: 'Selector A-কে জাগায়' },
         simple: {
@@ -250,7 +250,7 @@ export const asyncioEventLoop: Topic = {
         },
         tech: {
           en: 'The loop learns that A’s socket is ready and marks A ready to resume. Nothing has resumed A yet.',
-          bn: 'loop জানতে পারে A-র socket তৈরি, আর A-কে আবার চলার জন্য ready করে। A এখনো চলা শুরু করেনি।'
+          bn: 'loop জানতে পারে A-র socket তৈরি, আর A-কে আবার চলার জন্য ready করে। A এখনও চলা শুরু করেনি।'
         }
       },
       {
@@ -281,7 +281,7 @@ export const asyncioEventLoop: Topic = {
         title: { en: 'A finishes, B still waits', bn: 'A শেষ করে, B তখনো অপেক্ষায়' },
         simple: {
           en: 'Job A finishes. B continues when its data comes.',
-          bn: 'কাজ A শেষ হয়। B-র ডেটা এলে B এগোবে।'
+          bn: 'কাজ A শেষ হয়। B-র data এলে B এগোবে।'
         },
         tech: {
           en: 'The Task completes and its done-callbacks are scheduled. One thread served both tasks: concurrent, but never parallel.',
@@ -336,7 +336,7 @@ export const asyncioEventLoop: Topic = {
           state: {
             loop: { en: 'Fix: await sleep', bn: 'সমাধান: await sleep' },
             ready: { en: 'B can run', bn: 'B চলতে পারে' },
-            net: { en: 'Network', bn: 'নেটওয়ার্ক' },
+            net: { en: 'Network', bn: 'network' },
             tasks: { en: 'A awaits, B runs', bn: 'A await করে, B চলে' }
           },
           title: { en: 'Await instead of blocking', bn: 'Block না করে await করুন' },
@@ -471,7 +471,7 @@ export const asyncioEventLoop: Topic = {
   analogy: {
     intro: {
       en: 'One waiter serves many tables. The waiter never stands still: when a guest is still choosing, the waiter moves on and returns when the bell rings.',
-      bn: 'একজন ওয়েটার অনেক টেবিল সামলায়। ওয়েটার কখনো দাঁড়িয়ে থাকে না: অতিথি এখনো বেছে না থাকলে সে অন্যদিকে যায়, আর ঘণ্টা বাজলে ফিরে আসে।'
+      bn: 'একজন ওয়েটার অনেক টেবিল সামলায়। ওয়েটার কখনো দাঁড়িয়ে থাকে না: অতিথি এখনও বেছে না থাকলে সে অন্যদিকে যায়, আর ঘণ্টা বাজলে ফিরে আসে।'
     },
     twins: [
       {
@@ -623,8 +623,8 @@ export const asyncioEventLoop: Topic = {
         bn: 'কোন file descriptor তৈরি, সেটা loop-কে জানায়।'
       },
       deep: {
-        en: 'It wraps epoll on Linux, kqueue on macOS and BSD, or `select`. The kernel keeps an interest list and a ready list, so cost follows ready sockets, not total sockets. An idle loop blocks in `select`.',
-        bn: 'এটা Linux-এ epoll, macOS আর BSD-তে kqueue, বা `select` মোড়ে। kernel একটা interest list আর একটা ready list রাখে, তাই খরচ ready socket-এর সংখ্যায়, মোট socket-এ নয়। অলস loop `select`-এ আটকে থাকে।'
+        en: 'It wraps epoll on Linux, kqueue on macOS and BSD, or `select`. With epoll, the kernel keeps an interest list and a ready list, so cost follows ready sockets, not total sockets. An idle loop blocks in `select`.',
+        bn: 'এটা Linux-এ epoll, macOS আর BSD-তে kqueue, বা `select` মোড়ে। epoll-এ kernel একটা interest list আর একটা ready list রাখে, তাই খরচ ready socket-এর সংখ্যায়, মোট socket-এ নয়। অলস loop `select`-এ আটকে থাকে।'
       },
       redFlag: {
         en: '“It polls each socket in a busy loop.”',
@@ -670,7 +670,7 @@ export const asyncioEventLoop: Topic = {
     {
       q: {
         en: 'Does `asyncio.Lock` protect data across threads?',
-        bn: '`asyncio.Lock` কি thread-এর মধ্যে ডেটা বাঁচায়?'
+        bn: '`asyncio.Lock` কি thread-এর মধ্যে data বাঁচায়?'
       },
       short: {
         en: 'No. It is for tasks on one loop and is not thread-safe.',
@@ -678,7 +678,7 @@ export const asyncioEventLoop: Topic = {
       },
       deep: {
         en: 'asyncio primitives are not thread-safe. Races across awaits are still possible: check, await, then act on a stale check.',
-        bn: 'asyncio primitive thread-safe নয়। `await`-এর ফাঁকে race এখনো সম্ভব: check করুন, await করুন, তারপর পুরনো check-এর ওপর কাজ করুন।'
+        bn: 'asyncio primitive thread-safe নয়। `await`-এর ফাঁকে race এখনও সম্ভব: একটা task check করে, await করে, তারপর পুরনো check-এর ভরসায় কাজ করে।'
       },
       redFlag: {
         en: '“asyncio code cannot have race conditions.”',

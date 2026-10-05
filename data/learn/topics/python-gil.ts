@@ -27,7 +27,7 @@ export const pythonGil: Topic = {
     },
     gil: {
       icon: 'lock',
-      name: { en: 'The GIL', bn: 'The GIL' },
+      name: { en: 'The GIL', bn: 'GIL' },
       sub: { en: 'Free', bn: 'খালি' },
       wide: [ 280, 265, 'left' ],
       narrow: [ 200, 140, 'up' ]
@@ -525,8 +525,8 @@ export const pythonGil: Topic = {
         name: { en: 'Two long jobs, one key', bn: 'দুটো লম্বা কাজ, একটা চাবি' },
         is: { en: 'is CPU-bound threads', bn: 'মানে CPU-bound thread' },
         d: {
-          en: 'Two staff both need the room for a long job. They pass the key back and forth, so it takes twice as long, however many staff you hire.',
-          bn: 'দুজন কর্মীরই লম্বা কাজের জন্য ঘর লাগে। তারা চাবি হাতবদল করে, তাই কর্মী যত বাড়ান, সময় লাগে দ্বিগুণ।'
+          en: 'Two staff both need the room for a long job. Hiring more staff does not speed it up, because only one person can hold the key at a time.',
+          bn: 'দুজন কর্মীরই লম্বা কাজের জন্য ঘর লাগে। আরও কর্মী নিলেও কাজ দ্রুত হয় না, কারণ একসময়ে একজনই চাবি ধরতে পারে।'
         }
       }
     ]
@@ -556,8 +556,8 @@ export const pythonGil: Topic = {
         bn: 'GIL কখন ছাড়া হয়?'
       },
       short: {
-        en: 'During blocking I/O, in C extensions that opt out, and on forced switches.',
-        bn: 'blocking I/O-র সময়, opt-out করা C extension-এ, আর forced switch-এ।'
+        en: 'During blocking I/O, in C extensions that release it, and on forced switches.',
+        bn: 'blocking I/O-র সময়, GIL ছেড়ে দেওয়া C extension-এ, আর forced switch-এ।'
       },
       deep: {
         en: 'The glossary says it is always released when doing I/O. Hashing, compression and numeric extensions often release it. A waiting thread also forces a switch after `getswitchinterval()`, default 5 ms.',

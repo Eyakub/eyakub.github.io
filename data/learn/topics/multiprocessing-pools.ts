@@ -59,7 +59,7 @@ export const multiprocessingPools: Topic = {
     {
       id: 'pool',
       label: { en: 'Pool', bn: 'Pool' },
-      wide: [ 250, 20, 710, 390 ],
+      wide: [ 250, 22, 710, 388 ],
       narrow: [ 50, 110, 330, 460 ]
     }
   ],
@@ -146,8 +146,8 @@ export const multiprocessingPools: Topic = {
       {
         id: 'workers-up',
         moves: [
-          { edge: 'start-w1', label: 'spawn' },
-          { edge: 'start-w2', label: 'spawn' }
+          { edge: 'start-w1', label: 'new worker' },
+          { edge: 'start-w2', label: 'new worker' }
         ],
         state: {
           start: { en: 'Started 2 workers', bn: '২টা worker চালু' },
@@ -293,8 +293,8 @@ export const multiprocessingPools: Topic = {
             bn: 'বস হাওয়ায় তৈরি রেসিপি ট্রেতে রাখতে পারে না। helper-রা সেটা পড়তে পারে না।'
           },
           tech: {
-            en: '`pickle` sends a function by its qualified name, and a lambda has none. Nested and REPL-defined functions fail too, with `PicklingError` or `Can’t pickle local object`.',
-            bn: '`pickle` ফাংশন পাঠায় তার qualified নাম দিয়ে, আর lambda-র কোনো নাম নেই। nested আর REPL-এ বানানো ফাংশনও `PicklingError` বা `Can’t pickle local object`-এ ব্যর্থ হয়।'
+            en: '`pickle` sends a function by its qualified name. A lambda’s `__qualname__` is `"<lambda>"`, which cannot be looked up by import. Nested and REPL-defined functions fail too, with `PicklingError` or `Can’t pickle local object`.',
+            bn: '`pickle` ফাংশন পাঠায় তার qualified নাম দিয়ে, আর lambda-র `__qualname__` হলো `"<lambda>"`, যা import করে খুঁজে পাওয়া যায় না। nested আর REPL-এ বানানো ফাংশনও `PicklingError` বা `Can’t pickle local object`-এ ব্যর্থ হয়।'
           }
         },
         {

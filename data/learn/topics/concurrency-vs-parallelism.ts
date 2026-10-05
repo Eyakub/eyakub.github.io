@@ -256,7 +256,7 @@ export const concurrencyVsParallelism: Topic = {
           },
           tech: {
             en: 'Two CPU-bound `threading.Thread`s on a GIL build are placed on two cores by the OS.',
-            bn: 'GIL বিল্ডে দুটো CPU-bound `threading.Thread`-কে OS দুটো core-এ বসায়।'
+            bn: 'GIL build-এ দুটো CPU-bound `threading.Thread`-কে OS দুটো core-এ বসায়।'
           }
         },
         {
@@ -275,33 +275,33 @@ export const concurrencyVsParallelism: Topic = {
         },
         {
           id: 't1-done',
-          moves: [ { edge: 'core1-done', label: 'T1 (t)' } ],
-          state: { done: { en: 'T1 at t', bn: 'T1, সময় t' } },
-          title: { en: 'T1 finishes first', bn: 'T1 আগে শেষ' },
+          moves: [ { edge: 'core1-done', label: 'T1 (~2t)' } ],
+          state: { done: { en: 'T1 at ~2t', bn: 'T1, সময় ~2t' } },
+          title: { en: 'T1 finishes late', bn: 'T1 দেরিতে শেষ' },
           simple: {
-            en: 'The first thread finishes after one full dish-time.',
-            bn: 'প্রথম thread একটা পুরো পদের সময় লাগিয়ে শেষ করে।'
+            en: 'The two threads took turns the whole way, so the first one finishes only after about two dish-times.',
+            bn: 'দুটো thread পুরো সময় পালা করে চলেছে, তাই প্রথমটা শেষ হয় প্রায় দুই পদের সময় পরে।'
           },
           tech: {
-            en: 'Threads take turns on the GIL, switching about every switch interval. Total time is roughly the sequential sum plus switching overhead.',
-            bn: 'thread-গুলো GIL-এ পালা করে চলে, প্রায় প্রতি switch interval-এ বদলায়। মোট সময় মোটামুটি ধারাবাহিক যোগফল আর switching overhead।'
+            en: 'Threads take turns on the GIL, switching about every switch interval. The alternation repeats for the whole run, so T1 ends near 2t, not t.',
+            bn: 'thread-গুলো GIL-এ পালা করে চলে, প্রায় প্রতি switch interval-এ বদলায়। এই পালাবদল পুরো সময় চলে, তাই T1 শেষ হয় প্রায় 2t-তে, t-তে নয়।'
           }
         },
         {
           id: 't2-done',
-          moves: [ { edge: 'core2-done', label: 'T2 (2t)' } ],
+          moves: [ { edge: 'core2-done', label: 'T2 (~2t)' } ],
           state: {
-            done: { en: 'T2 at ~2t', bn: 'T2, সময় ~2t' },
+            done: { en: 'Both at ~2t', bn: 'দুজনই ~2t' },
             core2: { en: 'Idle', bn: 'বসে আছে' }
           },
-          title: { en: 'T2 finishes much later', bn: 'T2 অনেক পরে শেষ' },
+          title: { en: 'T2 finishes together', bn: 'T2 প্রায় একসাথে শেষ' },
           simple: {
-            en: 'The second thread finishes much later, as if there were only one cook.',
-            bn: 'দ্বিতীয় thread অনেক পরে শেষ হয়, যেন কুক একজনই ছিল।'
+            en: 'The second thread ends about then too. Both took twice as long, as if there were only one cook.',
+            bn: 'দ্বিতীয় thread-ও প্রায় তখনই শেষ হয়। দুজনেরই দ্বিগুণ সময় লেগেছে, যেন কুক একজনই ছিল।'
           },
           tech: {
             en: 'No speed-up for pure-Python CPU work. Use processes, GIL-releasing C extensions, 3.14 `InterpreterPoolExecutor`, or a free-threaded build.',
-            bn: 'খাঁটি Python CPU-র কাজে গতি বাড়ে না। process, GIL ছেড়ে দেওয়া C extension, 3.14-এর `InterpreterPoolExecutor` বা free-threaded বিল্ড ব্যবহার করুন।'
+            bn: 'খাঁটি Python CPU-র কাজে গতি বাড়ে না। process, GIL ছেড়ে দেওয়া C extension, 3.14-এর `InterpreterPoolExecutor` বা free-threaded build ব্যবহার করুন।'
           }
         }
       ]
@@ -315,13 +315,12 @@ export const concurrencyVsParallelism: Topic = {
           id: 'many-wait',
           work: { node: 'wait', kind: 'queue' },
           state: {
-            wait: { en: '1000 waiting', bn: '১০০০টা অপেক্ষায়' },
-            core1: { en: 'Free', bn: 'ফাঁকা' }
+            wait: { en: '1000 waiting', bn: '১০০০টা অপেক্ষায়' }
           },
           title: { en: 'A thousand dishes baking', bn: 'হাজারটা পদ বেক হচ্ছে' },
           simple: {
-            en: 'A thousand dishes can be baking at once, and the cook is still free to work.',
-            bn: 'হাজারটা পদ একসাথে বেক হতে পারে, আর কুক তবুও কাজ করার জন্য ফাঁকা।'
+            en: 'A thousand dishes can bake at once while the cook keeps working on B.',
+            bn: 'হাজারটা পদ একসাথে বেক হতে পারে, আর কুক তখনও B-তে কাজ করে যায়।'
           },
           tech: {
             en: 'Waiting tasks cost no CPU. That is why threads or asyncio scale to many I/O-bound connections on one core.',
@@ -470,11 +469,11 @@ export const concurrencyVsParallelism: Topic = {
       },
       short: {
         en: 'Not for pure-Python bytecode on the default GIL build. Yes for I/O waits and GIL-releasing C code.',
-        bn: 'ডিফল্ট GIL বিল্ডে খাঁটি Python bytecode-এ না। I/O অপেক্ষা আর GIL ছাড়া C কোডে হ্যাঁ।'
+        bn: 'ডিফল্ট GIL build-এ খাঁটি Python bytecode-এ না। I/O অপেক্ষা আর GIL ছাড়া C কোডে হ্যাঁ।'
       },
       deep: {
         en: 'Only one thread holds the GIL, but blocking I/O releases it, so I/O threads overlap. Free-threaded builds, officially supported in 3.14 but optional, allow parallel bytecode.',
-        bn: 'GIL একটা thread-ই ধরে, কিন্তু blocking I/O সেটা ছেড়ে দেয়, তাই I/O thread-গুলো overlap করে। free-threaded বিল্ড (3.14-এ অফিসিয়াল সাপোর্ট, তবে ঐচ্ছিক) parallel bytecode চালাতে দেয়।'
+        bn: 'GIL একটা thread-ই ধরে, কিন্তু blocking I/O সেটা ছেড়ে দেয়, তাই I/O thread-গুলো overlap করে। free-threaded build (3.14-এ অফিসিয়াল সাপোর্ট, তবে ঐচ্ছিক) parallel bytecode চালাতে দেয়।'
       },
       redFlag: {
         en: '“Python cannot do threads or parallelism at all.”',
@@ -492,7 +491,7 @@ export const concurrencyVsParallelism: Topic = {
       },
       deep: {
         en: 'Each process has its own interpreter and GIL. Mind pickling cost and chunk size. Subinterpreters or a free-threaded build are alternatives.',
-        bn: 'প্রতিটি process-এর নিজের interpreter আর GIL আছে। pickling খরচ আর chunk size খেয়াল রাখুন। subinterpreter বা free-threaded বিল্ড বিকল্প।'
+        bn: 'প্রতিটি process-এর নিজের interpreter আর GIL আছে। pickling খরচ আর chunk size খেয়াল রাখুন। subinterpreter বা free-threaded build বিকল্প।'
       },
       redFlag: {
         en: '“Use ThreadPoolExecutor with 8 workers.”',
@@ -594,7 +593,7 @@ export const concurrencyVsParallelism: Topic = {
       code: 'python -VV',
       d: {
         en: 'Mentions “free-threading build” when you run one.',
-        bn: 'free-threaded বিল্ড চালালে “free-threading build” লেখা দেখায়।'
+        bn: 'free-threaded build চালালে “free-threading build” লেখা দেখায়।'
       }
     },
     {
