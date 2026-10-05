@@ -79,7 +79,7 @@ const TOPIC_CASES = [
   { slug: 'python-gil', total: 11, altStop: 'Stop 7 of 11', taught: true, altFail: false },
   { slug: 'multiprocessing-pools', total: 8, altStop: 'Stop 2 of 3', altBtn: 2, taught: true },
   { slug: 'asyncio-event-loop', total: 10, altStop: 'Stop 3 of 5' },
-  { slug: 'race-conditions-locks', total: 10, altStop: 'Stop 7 of 9', altBtn: 2, step3Packets: 0 },
+  { slug: 'race-conditions-locks', total: 10, altStop: 'Stop 7 of 9', altBtn: 2, step3Packets: 0, taught: true },
 ]
 // SMOKE_TOPICS=a,b limits the per-topic loops to those slugs, for quick runs while authoring one topic.
 const onlyTopics = process.env.SMOKE_TOPICS?.split(',').map((t) => t.trim()).filter(Boolean)

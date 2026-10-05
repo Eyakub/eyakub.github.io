@@ -9,6 +9,57 @@ export const raceConditionsLocks: Topic = {
     en: 'Two threads can overwrite each other’s update; a lock fixes that by taking turns, but two locks can deadlock.',
     bn: 'দুটো thread একে অপরের আপডেট মুছে দিতে পারে; lock পালা করে চালিয়ে তা ঠেকায়, কিন্তু দুটো lock থেকে deadlock হতে পারে।'
   },
+  hook: {
+    en: 'Two cooks updating one whiteboard number can erase each other’s work. One marker pen, held by one cook at a time, fixes it.',
+    bn: 'দুই রাঁধুনি একই বোর্ডের সংখ্যা বদলালে একজনের কাজ মুছে যেতে পারে। একবারে একজনের হাতে থাকা একটা মার্কার কলম তা ঠেকায়।'
+  },
+  takeaway: {
+    en: 'Anything shared needs turns: only the cook holding the marker pen may read or change the tally.',
+    bn: 'ভাগ করা জিনিসে পালা লাগে: শুধু মার্কার কলম যার হাতে, সে-ই হিসাব পড়তে বা বদলাতে পারে।'
+  },
+  words: [
+    {
+      term: { en: 'Cook (thread)', bn: 'রাঁধুনি (thread)' },
+      d: {
+        en: 'One job running inside a program. Here, one cook.',
+        bn: 'প্রোগ্রামের ভেতরে চলা একটা কাজ। এখানে, একজন রাঁধুনি।'
+      }
+    },
+    {
+      term: { en: 'Whiteboard tally (shared counter)', bn: 'হোয়াইটবোর্ডের হিসাব (shared counter)' },
+      d: {
+        en: 'One number on the whiteboard that every cook can read and change.',
+        bn: 'হোয়াইটবোর্ডের একটা সংখ্যা, যেটা প্রতিটা রাঁধুনি পড়তে আর বদলাতে পারে।'
+      }
+    },
+    {
+      term: { en: 'Marker pen (lock)', bn: 'মার্কার কলম (lock)' },
+      d: {
+        en: 'Only the cook holding it may touch the tally. Everyone else waits.',
+        bn: 'যার হাতে কলম, শুধু সে-ই হিসাব ছুঁতে পারে। বাকিরা অপেক্ষা করে।'
+      }
+    },
+    {
+      term: { en: 'Lost update (race condition)', bn: 'হারানো আপডেট (race condition)' },
+      d: {
+        en: 'Two cooks change the tally at once, and one change gets wiped out.',
+        bn: 'দুই রাঁধুনি একসাথে হিসাব বদলায়, আর একজনের বদল মুছে যায়।'
+      }
+    },
+    {
+      term: { en: 'Stuck for good (deadlock)', bn: 'চিরকাল আটকে (deadlock)' },
+      d: {
+        en: 'Two cooks each hold what the other needs, so both wait forever.',
+        bn: 'দুজনেই এমন জিনিস ধরে আছে যা অন্যজনের লাগে, তাই দুজনেই চিরকাল অপেক্ষা করে।'
+      }
+    }
+  ],
+  legend: {
+    request: { en: 'Writing the tally', bn: 'হিসাবে লেখা' },
+    queue: { en: 'Asking for a tool', bn: 'জিনিস চাওয়া' },
+    result: { en: 'Reading or handing over', bn: 'পড়া বা হাতবদল' },
+    error: { en: 'Stuck for good', bn: 'চিরকাল আটকে' }
+  },
   view: { wide: [ 1000, 440 ], narrow: [ 400, 580 ] },
   nodeR: { narrow: 20 },
   nodes: {
@@ -16,6 +67,10 @@ export const raceConditionsLocks: Topic = {
       icon: 'thread',
       name: { en: 'Thread 1', bn: 'Thread ১' },
       sub: { en: 'Idle', bn: 'বসে আছে' },
+      plain: {
+        name: { en: 'Cook 1', bn: 'রাঁধুনি ১' },
+        sub: { en: 'Ready to cook', bn: 'রাঁধতে তৈরি' }
+      },
       wide: [ 450, 80, 'up' ],
       narrow: [ 60, 230, 'right' ]
     },
@@ -23,6 +78,10 @@ export const raceConditionsLocks: Topic = {
       icon: 'thread',
       name: { en: 'Thread 2', bn: 'Thread ২' },
       sub: { en: 'Idle', bn: 'বসে আছে' },
+      plain: {
+        name: { en: 'Cook 2', bn: 'রাঁধুনি ২' },
+        sub: { en: 'Ready to cook', bn: 'রাঁধতে তৈরি' }
+      },
       wide: [ 450, 360, 'down' ],
       narrow: [ 340, 230, 'left' ]
     },
@@ -30,6 +89,10 @@ export const raceConditionsLocks: Topic = {
       icon: 'memory',
       name: { en: 'Shared counter', bn: 'Shared counter' },
       sub: { en: 'value = 0', bn: 'value = 0' },
+      plain: {
+        name: { en: 'Whiteboard tally', bn: 'হোয়াইটবোর্ডের হিসাব' },
+        sub: { en: 'Shows 0', bn: '০ লেখা আছে' }
+      },
       wide: [ 800, 220, 'right' ],
       narrow: [ 200, 500, 'down' ]
     },
@@ -37,6 +100,10 @@ export const raceConditionsLocks: Topic = {
       icon: 'lock',
       name: { en: 'Lock A', bn: 'Lock A' },
       sub: { en: 'Free', bn: 'খালি' },
+      plain: {
+        name: { en: 'The marker pen', bn: 'মার্কার কলম' },
+        sub: { en: 'On the table', bn: 'টেবিলে রাখা' }
+      },
       wide: [ 350, 220, 'left' ],
       narrow: [ 200, 80, 'up' ]
     },
@@ -44,6 +111,10 @@ export const raceConditionsLocks: Topic = {
       icon: 'lock',
       name: { en: 'Lock B', bn: 'Lock B' },
       sub: { en: 'Free', bn: 'খালি' },
+      plain: {
+        name: { en: 'The knife', bn: 'ছুরি' },
+        sub: { en: 'Not used yet', bn: 'এখনো লাগছে না' }
+      },
       wide: [ 550, 220, 'right' ],
       narrow: [ 200, 380, 'down' ]
     }
@@ -90,12 +161,13 @@ export const raceConditionsLocks: Topic = {
     steps: [
       {
         id: 't1-reads',
-        moves: [ { edge: 'counter-t1', label: 'read 0' } ],
+        moves: [ { edge: 'counter-t1', label: 'read 0', plain: { en: 'Reads 0', bn: 'পড়ে ০' } } ],
         state: { t1: { en: 'Has 0', bn: 'হাতে ০' } },
-        title: { en: 'Thread 1 reads the counter', bn: 'Thread ১ counter পড়ে' },
+        plainState: { t1: { en: 'Remembers 0', bn: '০ মনে আছে' } },
+        title: { en: 'Cook 1 reads the tally', bn: 'রাঁধুনি ১ হিসাব পড়ে' },
         simple: {
-          en: 'Thread 1 reads the shared counter and sees 0.',
-          bn: 'Thread ১ shared counter পড়ে, দেখে ০।'
+          en: 'Two cooks share one whiteboard tally, now at 0. Cook 1 reads it and remembers 0.',
+          bn: 'দুই রাঁধুনি একটা হোয়াইটবোর্ডের হিসাব ভাগ করে, এখন ০। রাঁধুনি ১ সেটা পড়ে ০ মনে রাখে।'
         },
         tech: {
           en: '`counter += 1` is load, add, store, not one step. Thread 1 loads 0 into its own private stack.',
@@ -104,12 +176,13 @@ export const raceConditionsLocks: Topic = {
       },
       {
         id: 't2-reads',
-        moves: [ { edge: 'counter-t2', label: 'read 0' } ],
+        moves: [ { edge: 'counter-t2', label: 'read 0', plain: { en: 'Reads 0', bn: 'পড়ে ০' } } ],
         state: { t2: { en: 'Has 0', bn: 'হাতে ০' } },
-        title: { en: 'Thread 2 reads the same 0', bn: 'Thread ২-ও একই ০ পড়ে' },
+        plainState: { t2: { en: 'Remembers 0', bn: '০ মনে আছে' } },
+        title: { en: 'Cook 2 reads the same 0', bn: 'রাঁধুনি ২-ও একই ০ পড়ে' },
         simple: {
-          en: 'Before Thread 1 writes back, Thread 2 reads the counter too. It is still 0.',
-          bn: 'Thread ১ ফেরত লেখার আগেই Thread ২-ও counter পড়ে। তখনো ০।'
+          en: 'Before Cook 1 writes back, Cook 2 reads the tally too. It still says 0.',
+          bn: 'রাঁধুনি ১ ফেরত লেখার আগেই রাঁধুনি ২-ও হিসাব পড়ে। তখনো ০।'
         },
         tech: {
           en: 'A thread switch between the load and the store is allowed at bytecode boundaries, even with the GIL.',
@@ -120,10 +193,11 @@ export const raceConditionsLocks: Topic = {
         id: 't1-adds',
         work: { node: 't1', kind: 'result' },
         state: { t1: { en: 'Has 1', bn: 'হাতে ১' } },
-        title: { en: 'Thread 1 adds one', bn: 'Thread ১ এক যোগ করে' },
+        plainState: { t1: { en: 'Remembers 1', bn: '১ মনে আছে' } },
+        title: { en: 'Cook 1 adds one', bn: 'রাঁধুনি ১ এক যোগ করে' },
         simple: {
-          en: 'Thread 1 adds one in its head.',
-          bn: 'Thread ১ মনে মনে এক যোগ করে।'
+          en: 'Cook 1 adds one in their head. The tally on the board has not changed yet.',
+          bn: 'রাঁধুনি ১ মনে মনে এক যোগ করে। বোর্ডের হিসাব এখনো বদলায়নি।'
         },
         tech: {
           en: 'The add happens on Thread 1’s private value. The shared counter is untouched.',
@@ -132,15 +206,16 @@ export const raceConditionsLocks: Topic = {
       },
       {
         id: 't1-writes',
-        moves: [ { edge: 't1-counter', label: 'write 1' } ],
+        moves: [ { edge: 't1-counter', label: 'write 1', plain: { en: 'Writes 1', bn: 'লেখে ১' } } ],
         state: {
           counter: { en: 'value = 1', bn: 'value = 1' },
           t1: { en: 'Wrote 1', bn: '১ লিখেছে' }
         },
-        title: { en: 'Thread 1 writes 1', bn: 'Thread ১ ১ লেখে' },
+        plainState: { counter: { en: 'Shows 1', bn: '১ লেখা আছে' } },
+        title: { en: 'Cook 1 writes 1', bn: 'রাঁধুনি ১ ১ লেখে' },
         simple: {
-          en: 'Thread 1 writes 1 back. So far so good.',
-          bn: 'Thread ১ ১ ফেরত লেখে। এ পর্যন্ত ঠিক আছে।'
+          en: 'Cook 1 writes 1 on the board. So far so good.',
+          bn: 'রাঁধুনি ১ বোর্ডে ১ লেখে। এ পর্যন্ত ঠিক আছে।'
         },
         tech: {
           en: 'The store completes. Thread 2 does not know the counter has changed.',
@@ -149,15 +224,16 @@ export const raceConditionsLocks: Topic = {
       },
       {
         id: 't2-writes',
-        moves: [ { edge: 't2-counter', label: 'write 1' } ],
+        moves: [ { edge: 't2-counter', label: 'write 1', plain: { en: 'Writes 1', bn: 'লেখে ১' } } ],
         state: {
           counter: { en: 'value = 1, not 2!', bn: 'value = 1, ২ নয়!' },
           t2: { en: 'Wrote 1', bn: '১ লিখেছে' }
         },
-        title: { en: 'Thread 2 overwrites it', bn: 'Thread ২ মুছে দেয়' },
+        plainState: { counter: { en: 'Shows 1, not 2!', bn: '১ লেখা, ২ নয়!' } },
+        title: { en: 'Cook 2 wipes it out', bn: 'রাঁধুনি ২ মুছে দেয়' },
         simple: {
-          en: 'Thread 2 also writes 1, wiping out Thread 1’s update. Two increments, one result.',
-          bn: 'Thread ২-ও ১ লেখে, Thread ১-এর আপডেট মুছে যায়। দুটো increment, ফল একটাই।'
+          en: 'Cook 2 also writes 1, erasing Cook 1’s work. Two adds, one result: a lost update.',
+          bn: 'রাঁধুনি ২-ও ১ লেখে, রাঁধুনি ১-এর কাজ মুছে যায়। দুটো যোগ, ফল একটাই: হারানো আপডেট।'
         },
         tech: {
           en: 'Lost update from a non-atomic read-modify-write. On modern CPython it often needs many iterations to show, but it is a real bug.',
@@ -166,17 +242,23 @@ export const raceConditionsLocks: Topic = {
       },
       {
         id: 'take-lock',
-        moves: [ { edge: 't1-lockA', label: 'acquire' } ],
+        moves: [ { edge: 't1-lockA', label: 'acquire', plain: { en: 'Grabs the pen', bn: 'কলম নেয়' } } ],
         state: {
           counter: { en: 'value = 0 (rerun)', bn: 'value = 0 (আবার)' },
           lockA: { en: 'Held by T1', bn: 'T1-এর হাতে' },
           t1: { en: 'Has the lock', bn: 'lock আছে' },
           t2: { en: 'Idle', bn: 'বসে আছে' }
         },
-        title: { en: 'Rerun with a lock', bn: 'Lock নিয়ে আবার চালানো' },
+        plainState: {
+          counter: { en: 'Wiped back to 0', bn: 'আবার ০ করা' },
+          lockA: { en: 'Cook 1 has it', bn: 'রাঁধুনি ১-এর হাতে' },
+          t1: { en: 'Has the pen', bn: 'কলম আছে' },
+          t2: { en: 'Ready to cook', bn: 'রাঁধতে তৈরি' }
+        },
+        title: { en: 'Replay with a marker pen', bn: 'মার্কার কলম নিয়ে আবার চালানো' },
         simple: {
-          en: 'We replay from the start, counter back at 0. This time Thread 1 takes the lock first.',
-          bn: 'শুরু থেকে আবার চালাই, counter আবার ০। এবার Thread ১ আগে lock নেয়।'
+          en: 'Replay: same cooks, tally wiped back to 0. Now one marker pen guards the tally, and Cook 1 grabs it first.',
+          bn: 'আবার চালাই: একই রাঁধুনি, হিসাব আবার ০। এবার একটা মার্কার কলম হিসাব পাহারা দেয়, আর রাঁধুনি ১ আগে সেটা নেয়।'
         },
         tech: {
           en: '`with lock:` calls `acquire()` and guarantees `release()` in a `finally`, even if an exception is raised.',
@@ -185,12 +267,13 @@ export const raceConditionsLocks: Topic = {
       },
       {
         id: 't2-blocked',
-        moves: [ { edge: 't2-lockA', label: 'acquire' } ],
+        moves: [ { edge: 't2-lockA', label: 'acquire', plain: { en: 'Asks for the pen', bn: 'কলম চায়' } } ],
         state: { t2: { en: 'Waiting on A', bn: 'A-র অপেক্ষায়' } },
-        title: { en: 'Thread 2 has to wait', bn: 'Thread ২-কে অপেক্ষা করতে হয়' },
+        plainState: { t2: { en: 'Waits for the pen', bn: 'কলমের অপেক্ষায়' } },
+        title: { en: 'Cook 2 has to wait', bn: 'রাঁধুনি ২-কে অপেক্ষা করতে হয়' },
         simple: {
-          en: 'Thread 2 asks for the same lock and must wait its turn.',
-          bn: 'Thread ২ একই lock চায় আর পালার জন্য অপেক্ষা করে।'
+          en: 'Cook 2 asks for the pen too, but Cook 1 has it. Cook 2 must wait its turn.',
+          bn: 'রাঁধুনি ২-ও কলম চায়, কিন্তু সেটা রাঁধুনি ১-এর হাতে। তাকে পালার জন্য অপেক্ষা করতে হয়।'
         },
         tech: {
           en: '`Lock.acquire()` blocks until the lock is released. It also accepts `timeout=` or `blocking=False`.',
@@ -199,15 +282,16 @@ export const raceConditionsLocks: Topic = {
       },
       {
         id: 't1-critical',
-        moves: [ { edge: 't1-counter', label: '0+1, write 1' } ],
+        moves: [ { edge: 't1-counter', label: '0+1, write 1', plain: { en: 'Updates to 1', bn: '১ করে দেয়' } } ],
         state: {
           counter: { en: 'value = 1', bn: 'value = 1' },
           t1: { en: 'Updating alone', bn: 'একা আপডেট করছে' }
         },
-        title: { en: 'Thread 1 updates alone', bn: 'Thread ১ একা আপডেট করে' },
+        plainState: { counter: { en: 'Shows 1', bn: '১ লেখা আছে' } },
+        title: { en: 'Cook 1 updates alone', bn: 'রাঁধুনি ১ একা আপডেট করে' },
         simple: {
-          en: 'Thread 1 does its whole read, add and write in one go. Nobody can cut in.',
-          bn: 'Thread ১ পড়া, যোগ আর লেখা এক টানে করে। মাঝখানে কেউ ঢুকতে পারে না।'
+          en: 'Holding the pen, Cook 1 reads, adds and writes in one go. Nobody can cut in.',
+          bn: 'কলম হাতে রাঁধুনি ১ পড়া, যোগ আর লেখা এক টানে করে। মাঝখানে কেউ ঢুকতে পারে না।'
         },
         tech: {
           en: 'This is the critical section. No other thread that needs the same lock can interleave with it.',
@@ -216,16 +300,20 @@ export const raceConditionsLocks: Topic = {
       },
       {
         id: 'handover',
-        moves: [ { edge: 'lockA-t2', label: 'your turn' } ],
+        moves: [ { edge: 'lockA-t2', label: 'your turn', plain: { en: 'Passes the pen', bn: 'কলম দেয়' } } ],
         state: {
           lockA: { en: 'Held by T2', bn: 'T2-এর হাতে' },
           t1: { en: 'Done', bn: 'শেষ' },
           t2: { en: 'Has the lock', bn: 'lock আছে' }
         },
-        title: { en: 'The lock passes to Thread 2', bn: 'Lock Thread ২-কে যায়' },
+        plainState: {
+          lockA: { en: 'Cook 2 has it', bn: 'রাঁধুনি ২-এর হাতে' },
+          t2: { en: 'Has the pen', bn: 'কলম আছে' }
+        },
+        title: { en: 'The pen passes to Cook 2', bn: 'কলম রাঁধুনি ২-এর কাছে যায়' },
         simple: {
-          en: 'Thread 1 lets go of the lock, and Thread 2 gets its turn.',
-          bn: 'Thread ১ lock ছাড়ে, আর Thread ২ তার পালা পায়।'
+          en: 'Cook 1 puts the pen down, and Cook 2 picks it up.',
+          bn: 'রাঁধুনি ১ কলম নামিয়ে রাখে, আর রাঁধুনি ২ সেটা তোলে।'
         },
         tech: {
           en: 'Leaving the `with` block releases the lock. Thread 2’s blocked `acquire()` then returns.',
@@ -234,16 +322,20 @@ export const raceConditionsLocks: Topic = {
       },
       {
         id: 't2-critical',
-        moves: [ { edge: 't2-counter', label: '1+1, write 2' } ],
+        moves: [ { edge: 't2-counter', label: '1+1, write 2', plain: { en: 'Updates to 2', bn: '২ করে দেয়' } } ],
         state: {
           counter: { en: 'value = 2', bn: 'value = 2' },
           lockA: { en: 'Free', bn: 'খালি' },
           t2: { en: 'Done', bn: 'শেষ' }
         },
-        title: { en: 'The count is correct: 2', bn: 'গোনা ঠিক: ২' },
+        plainState: {
+          counter: { en: 'Shows 2', bn: '২ লেখা আছে' },
+          lockA: { en: 'On the table', bn: 'টেবিলে রাখা' }
+        },
+        title: { en: 'The tally is right: 2', bn: 'হিসাব ঠিক: ২' },
         simple: {
-          en: 'Thread 2 reads 1, adds one and writes 2. Correct.',
-          bn: 'Thread ২ ১ পড়ে, এক যোগ করে ২ লেখে। ঠিক।'
+          en: 'Cook 2 reads 1, adds one and writes 2. Correct. Shared things need turns.',
+          bn: 'রাঁধুনি ২ ১ পড়ে, এক যোগ করে ২ লেখে। ঠিক। ভাগ করা জিনিসে পালা লাগে।'
         },
         tech: {
           en: 'Serialised increments give the right result, but waiting costs throughput. Prefer designs that avoid shared state, such as queues.',
@@ -255,14 +347,18 @@ export const raceConditionsLocks: Topic = {
   alts: [
     {
       id: 'deadlock',
-      label: { en: 'Deadlock', bn: 'Deadlock' },
+      label: { en: 'Two tools, both stuck', bn: 'দুটো জিনিস, দুজনেই আটকে' },
+      whatIf: {
+        en: 'What if a job needs both the pen and the knife?',
+        bn: 'যদি কোনো কাজে কলম আর ছুরি দুটোই লাগে?'
+      },
       branchAfter: 't2-writes',
       steps: [
         {
           id: 'take-both',
           moves: [
-            { edge: 't1-lockA', label: 'take A' },
-            { edge: 't2-lockB', label: 'take B' }
+            { edge: 't1-lockA', label: 'take A', plain: { en: 'Grabs the pen', bn: 'কলম নেয়' } },
+            { edge: 't2-lockB', label: 'take B', plain: { en: 'Grabs the knife', bn: 'ছুরি নেয়' } }
           ],
           state: {
             counter: { en: 'value = 1', bn: 'value = 1' },
@@ -271,10 +367,17 @@ export const raceConditionsLocks: Topic = {
             t1: { en: 'Has A', bn: 'A আছে' },
             t2: { en: 'Has B', bn: 'B আছে' }
           },
-          title: { en: 'Each thread grabs a different lock', bn: 'প্রতিটা thread আলাদা lock ধরে' },
+          plainState: {
+            counter: { en: 'Shows 1', bn: '১ লেখা আছে' },
+            lockA: { en: 'Cook 1 has it', bn: 'রাঁধুনি ১-এর হাতে' },
+            lockB: { en: 'Cook 2 has it', bn: 'রাঁধুনি ২-এর হাতে' },
+            t1: { en: 'Has the pen', bn: 'কলম আছে' },
+            t2: { en: 'Has the knife', bn: 'ছুরি আছে' }
+          },
+          title: { en: 'Each cook grabs a different tool', bn: 'প্রতিটা রাঁধুনি আলাদা জিনিস ধরে' },
           simple: {
-            en: 'A new job needs both locks. Thread 1 grabs A while Thread 2 grabs B.',
-            bn: 'নতুন কাজে দুটো lock-ই লাগে। Thread ১ A ধরে, একই সময়ে Thread ২ B ধরে।'
+            en: 'A new job needs the pen and the knife. Cook 1 grabs the pen while Cook 2 grabs the knife.',
+            bn: 'নতুন কাজে কলম আর ছুরি দুটোই লাগে। রাঁধুনি ১ কলম ধরে, একই সময়ে রাঁধুনি ২ ছুরি ধরে।'
           },
           tech: {
             en: 'Thread 1 takes A and will want B next. Thread 2 takes B and will want A next.',
@@ -284,17 +387,21 @@ export const raceConditionsLocks: Topic = {
         {
           id: 'cross-wait',
           moves: [
-            { edge: 't1-lockB', label: 'wait for B' },
-            { edge: 't2-lockA', label: 'wait for A' }
+            { edge: 't1-lockB', label: 'wait for B', plain: { en: 'Wants the knife', bn: 'ছুরি চায়' } },
+            { edge: 't2-lockA', label: 'wait for A', plain: { en: 'Wants the pen', bn: 'কলম চায়' } }
           ],
           state: {
             t1: { en: 'Waiting for B', bn: 'B-র অপেক্ষায়' },
             t2: { en: 'Waiting for A', bn: 'A-র অপেক্ষায়' }
           },
-          title: { en: 'Each needs the other’s lock', bn: 'প্রত্যেকে অন্যজনের lock চায়' },
+          plainState: {
+            t1: { en: 'Wants the knife', bn: 'ছুরি চায়' },
+            t2: { en: 'Wants the pen', bn: 'কলম চায়' }
+          },
+          title: { en: 'Each wants the other’s tool', bn: 'প্রত্যেকে অন্যজনের জিনিস চায়' },
           simple: {
-            en: 'Each thread now asks for the lock the other one holds.',
-            bn: 'এখন প্রতিটা thread অন্যজনের হাতের lock চায়।'
+            en: 'Each cook now asks for the tool the other one is holding.',
+            bn: 'এখন প্রতিটা রাঁধুনি অন্যজনের হাতের জিনিসটা চায়।'
           },
           tech: {
             en: 'Circular wait: Thread 1 holds A and requests B, while Thread 2 holds B and requests A.',
@@ -303,17 +410,21 @@ export const raceConditionsLocks: Topic = {
         },
         {
           id: 'stuck',
-          work: { node: [ 'lockA', 'lockB' ], kind: 'error' },
+          work: { node: [ 't1', 't2' ], kind: 'error' },
           state: {
             lockA: { en: 'Held by T1', bn: 'T1 ধরে আছে' },
             lockB: { en: 'Held by T2', bn: 'T2 ধরে আছে' },
             t1: { en: 'Stuck forever', bn: 'চিরকাল আটকে' },
             t2: { en: 'Stuck forever', bn: 'চিরকাল আটকে' }
           },
+          plainState: {
+            lockA: { en: 'Cook 1 has it', bn: 'রাঁধুনি ১ ধরে আছে' },
+            lockB: { en: 'Cook 2 has it', bn: 'রাঁধুনি ২ ধরে আছে' }
+          },
           title: { en: 'Nobody can move', bn: 'কেউ নড়তে পারে না' },
           simple: {
-            en: 'Both wait forever. The program hangs and shows no error.',
-            bn: 'দুজনেই চিরকাল অপেক্ষা করে। প্রোগ্রাম আটকে থাকে, কোনো error আসে না।'
+            en: 'Both cooks wait forever: a deadlock. The kitchen freezes and no error appears.',
+            bn: 'দুজনেই চিরকাল অপেক্ষা করে: ডেডলক। রান্নাঘর থেমে যায়, কোনো ভুলের বার্তাও আসে না।'
           },
           tech: {
             en: 'Python does not detect deadlocks. To see where threads are stuck, use `faulthandler.dump_traceback_later`.',
@@ -329,10 +440,16 @@ export const raceConditionsLocks: Topic = {
             t1: { en: 'A, then B', bn: 'A, তারপর B' },
             t2: { en: 'A, then B', bn: 'A, তারপর B' }
           },
-          title: { en: 'Fix: one lock order', bn: 'সমাধান: lock-এর একটাই ক্রম' },
+          plainState: {
+            lockA: { en: 'Always taken first', bn: 'সবসময় আগে নেওয়া' },
+            lockB: { en: 'Always taken second', bn: 'সবসময় পরে নেওয়া' },
+            t1: { en: 'Pen, then knife', bn: 'আগে কলম, পরে ছুরি' },
+            t2: { en: 'Pen, then knife', bn: 'আগে কলম, পরে ছুরি' }
+          },
+          title: { en: 'Fix: one order for tools', bn: 'সমাধান: জিনিস নেওয়ার একটাই ক্রম' },
           simple: {
-            en: 'Everyone takes the locks in the same order: A first, then B.',
-            bn: 'সবাই একই ক্রমে lock নেয়: আগে A, তারপর B।'
+            en: 'Every cook takes the pen first, then the knife. Nobody holds one and waits for the other.',
+            bn: 'সবাই আগে কলম নেয়, তারপর ছুরি। কেউ একটা ধরে অন্যটার জন্য আটকে থাকে না।'
           },
           tech: {
             en: 'A global lock order removes the circular wait. Other options: one lock, `acquire(timeout=...)`, or avoiding nested locks.',
@@ -343,17 +460,22 @@ export const raceConditionsLocks: Topic = {
     },
     {
       id: 'self-deadlock',
-      label: { en: 'Same lock twice (RLock)', bn: 'একই lock দুবার (RLock)' },
+      label: { en: 'Asking for the pen twice', bn: 'কলম দুবার চাওয়া' },
+      whatIf: {
+        en: 'What if a cook asks for a pen they already hold?',
+        bn: 'যদি কোনো রাঁধুনি এমন কলম চায় যেটা ইতিমধ্যে তার হাতে?'
+      },
       branchAfter: 'take-lock',
       steps: [
         {
           id: 'reenter',
-          moves: [ { edge: 't1-lockA', label: 'acquire again' } ],
+          moves: [ { edge: 't1-lockA', label: 'acquire again', plain: { en: 'Wants pen again', bn: 'আবার কলম চায়' } } ],
           state: { t1: { en: 'Asks A again', bn: 'আবার A চায়' } },
-          title: { en: 'Thread 1 asks for A again', bn: 'Thread ১ আবার A চায়' },
+          plainState: { t1: { en: 'Wants pen again', bn: 'আবার কলম চায়' } },
+          title: { en: 'Cook 1 asks for the pen again', bn: 'রাঁধুনি ১ আবার কলম চায়' },
           simple: {
-            en: 'Thread 1 already holds Lock A, and some other code path asks for it again.',
-            bn: 'Thread ১ ইতিমধ্যে Lock A ধরে আছে, আর কোডের অন্য এক জায়গা সেটা আবার চায়।'
+            en: 'Cook 1 already holds the pen, but another step of the same job asks for it again.',
+            bn: 'রাঁধুনি ১ ইতিমধ্যে কলম ধরে আছে, কিন্তু একই কাজের আরেক ধাপ সেটা আবার চায়।'
           },
           tech: {
             en: 'A method that holds the lock calls another method that takes the same lock.',
@@ -364,10 +486,11 @@ export const raceConditionsLocks: Topic = {
           id: 'reacquire',
           work: { node: 't1', kind: 'error' },
           state: { t1: { en: 'Blocked by itself', bn: 'নিজেই আটকে' } },
+          plainState: { t1: { en: 'Waits for itself', bn: 'নিজের জন্য অপেক্ষা' } },
           title: { en: 'It waits for itself', bn: 'নিজের জন্যই অপেক্ষা' },
           simple: {
-            en: 'The lock is taken, so Thread 1 waits for itself. It will wait forever.',
-            bn: 'lock নেওয়া, তাই Thread ১ নিজের জন্যই অপেক্ষা করে। সেটা কখনো শেষ হবে না।'
+            en: 'The pen is taken, so Cook 1 waits for the pen it is holding. That wait never ends.',
+            bn: 'কলম নেওয়া, তাই রাঁধুনি ১ নিজের হাতের কলমের জন্যই অপেক্ষা করে। সেই অপেক্ষা কখনো শেষ হবে না।'
           },
           tech: {
             en: '`threading.Lock` is not reentrant. Acquiring it twice in one thread hangs.',
@@ -381,10 +504,11 @@ export const raceConditionsLocks: Topic = {
             lockA: { en: 'RLock: T1 ×2', bn: 'RLock: T1 ×2' },
             t1: { en: 'Holds it twice', bn: 'দুবার ধরেছে' }
           },
-          title: { en: 'Use an RLock instead', bn: 'বদলে RLock নিন' },
+          plainState: { lockA: { en: 'Cook 1 holds it twice', bn: 'রাঁধুনি ১ দুবার ধরেছে' } },
+          title: { en: 'Use a pen that remembers', bn: 'যে কলম মনে রাখে সেটা নিন' },
           simple: {
-            en: 'A re-entrant lock remembers its owner and lets that owner in again.',
-            bn: 're-entrant lock তার মালিককে মনে রাখে আর মালিককে আবার ঢুকতে দেয়।'
+            en: 'A special pen remembers who holds it and lets that same cook take it again.',
+            bn: 'একটা বিশেষ কলম মনে রাখে কে ধরে আছে, আর সেই রাঁধুনিকেই আবার ধরতে দেয়।'
           },
           tech: {
             en: '`RLock` tracks owner and depth. Release it as many times as you acquired, and only the owner may release. A plain `Lock` has no owner.',
@@ -396,14 +520,14 @@ export const raceConditionsLocks: Topic = {
   ],
   analogy: {
     intro: {
-      en: 'Two people update a paper tally on the fridge. The number on the fridge is the shared counter, and a marker pen is the lock: you may change the number only while holding the pen.',
-      bn: 'দুজন মানুষ ফ্রিজের গায়ে কাগজের হিসাব হালনাগাদ করে। ফ্রিজের সংখ্যাটা shared counter, আর মার্কার কলম হলো lock: কলম হাতে থাকলেই কেবল সংখ্যা বদলানো যায়।'
+      en: 'Two cooks share one whiteboard tally. The marker pen is the lock: a cook may read or change the number only while holding the pen. Everyone else waits.',
+      bn: 'দুই রাঁধুনি একটা হোয়াইটবোর্ডের হিসাব ভাগ করে। মার্কার কলমই lock: কলম হাতে থাকলেই কেবল সংখ্যা পড়া বা বদলানো যায়। বাকিরা অপেক্ষা করে।'
     },
     twins: [
       {
         icon: 'thread',
         node: 't1',
-        name: { en: 'Person 1', bn: 'প্রথম মানুষ' },
+        name: { en: 'Cook 1', bn: 'রাঁধুনি ১' },
         d: {
           en: 'Reads the tally, adds one in their head, writes it back.',
           bn: 'হিসাব পড়ে, মনে মনে এক যোগ করে, আবার লিখে রাখে।'
@@ -412,19 +536,19 @@ export const raceConditionsLocks: Topic = {
       {
         icon: 'thread',
         node: 't2',
-        name: { en: 'Person 2', bn: 'দ্বিতীয় মানুষ' },
+        name: { en: 'Cook 2', bn: 'রাঁধুনি ২' },
         d: {
-          en: 'Does the same job at the same time, on the same fridge.',
-          bn: 'একই সময়ে, একই ফ্রিজে একই কাজ করে।'
+          en: 'Does the same job at the same time, on the same whiteboard.',
+          bn: 'একই সময়ে, একই হোয়াইটবোর্ডে একই কাজ করে।'
         }
       },
       {
         icon: 'memory',
         node: 'counter',
-        name: { en: 'The number on the fridge', bn: 'ফ্রিজের গায়ের সংখ্যা' },
+        name: { en: 'The whiteboard tally', bn: 'হোয়াইটবোর্ডের হিসাব' },
         d: {
-          en: 'One shared value that both people read and change.',
-          bn: 'একটাই ভাগ করা মান, যেটা দুজনেই পড়ে আর বদলায়।'
+          en: 'One shared number that both cooks read and change.',
+          bn: 'একটাই ভাগ করা সংখ্যা, যেটা দুই রাঁধুনিই পড়ে আর বদলায়।'
         }
       },
       {
@@ -432,37 +556,27 @@ export const raceConditionsLocks: Topic = {
         node: 'lockA',
         name: { en: 'The marker pen', bn: 'মার্কার কলম' },
         d: {
-          en: 'Only the person holding it may change the number. Everyone else waits.',
-          bn: 'যার হাতে কলম, শুধু সে-ই সংখ্যা বদলাতে পারে। বাকিরা অপেক্ষা করে।'
+          en: 'Only the cook holding it may read or change the tally. Everyone else waits.',
+          bn: 'যার হাতে কলম, শুধু সে-ই হিসাব পড়তে বা বদলাতে পারে। বাকিরা অপেক্ষা করে।'
         }
       },
       {
         icon: 'lock',
         node: 'lockB',
-        name: { en: 'The eraser', bn: 'ইরেজার' },
+        name: { en: 'The knife', bn: 'ছুরি' },
         d: {
-          en: 'A second tool that some jobs also need.',
-          bn: 'দ্বিতীয় একটা জিনিস, যেটা কিছু কাজে লাগে।'
+          en: 'A second tool that some jobs need as well as the pen.',
+          bn: 'দ্বিতীয় একটা জিনিস, যেটা কলমের পাশাপাশি কিছু কাজে লাগে।'
         }
       },
       {
         icon: 'alert',
         node: null,
-        name: { en: 'Both read 5, both write 6', bn: 'দুজনেই ৫ পড়ে, দুজনেই ৬ লেখে' },
-        is: { en: 'is a lost update', bn: 'মানে lost update' },
-        d: {
-          en: 'Two people add one to the same 5. The fridge says 6, but it should say 7.',
-          bn: 'দুজন একই ৫-এর সাথে এক যোগ করে। ফ্রিজে ৬ থাকে, অথচ হওয়ার কথা ৭।'
-        }
-      },
-      {
-        icon: 'alert',
-        node: null,
-        name: { en: 'Pen in one hand, eraser in the other', bn: 'একজনের হাতে কলম, আরেকজনের হাতে ইরেজার' },
+        name: { en: 'Cook 1 has the pen, Cook 2 the knife', bn: 'রাঁধুনি ১-এর কলম, রাঁধুনি ২-এর ছুরি' },
         is: { en: 'is a deadlock', bn: 'মানে deadlock' },
         d: {
-          en: 'Person 1 holds the pen and wants the eraser. Person 2 holds the eraser and wants the pen. Both wait forever. Fix: always take the pen first.',
-          bn: 'প্রথমজনের হাতে কলম, সে ইরেজার চায়। দ্বিতীয়জনের হাতে ইরেজার, সে কলম চায়। দুজনেই চিরকাল অপেক্ষা করে। সমাধান: সবসময় আগে কলম নিন।'
+          en: 'Cook 1 holds the pen and wants the knife. Cook 2 holds the knife and wants the pen. Both wait forever. Fix: always take the pen first.',
+          bn: 'রাঁধুনি ১-এর হাতে কলম, সে ছুরি চায়। রাঁধুনি ২-এর হাতে ছুরি, সে কলম চায়। দুজনেই চিরকাল অপেক্ষা করে। সমাধান: সবসময় আগে কলম নিন।'
         }
       }
     ]
@@ -608,8 +722,8 @@ export const raceConditionsLocks: Topic = {
     {
       code: 'with ExitStack() as st:\n    for lk in sorted((a, b), key=id):\n        st.enter_context(lk)',
       d: {
-        en: 'Enforce one global lock order with a stable key.',
-        bn: 'স্থির key দিয়ে একটাই global lock order মানুন।'
+        en: 'Enforce one global lock order with a fixed rank (here, each lock’s id).',
+        bn: 'নির্দিষ্ট ক্রম (এখানে lock-এর id) দিয়ে একটাই global lock order মানুন।'
       }
     },
     {
