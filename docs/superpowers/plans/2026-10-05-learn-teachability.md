@@ -327,7 +327,7 @@ It should produce 4 folders.
 ### Task 8: Concurrency vs parallelism (review §B; 3.9). Kitchen: dishes, burners, the oven, cooks. This topic is the hub's first stop, so its stop 1 must also introduce the kitchen for the whole line.
 ### Task 9: Race conditions and locks (review §C; 3.8). Kitchen: cooks, the whiteboard tally, the marker pen, the pan and the knife.
 ### Task 10: Celery + Redis (review §A; 3.8). Metaphor: the restaurant, kitchen side.
-### Task 11: Git basics (review §A; 3.8). Metaphor: the photo album.
+### Task 11: Git basics (review §A; 3.8). Metaphor: the photo album. Also resolve: `orphan-commit` caption says "stage a fix" but the index shows "Nothing staged" (left by accuracy fix e40f234e).
 
 ---
 
