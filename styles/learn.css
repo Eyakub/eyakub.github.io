@@ -92,6 +92,7 @@ html[lang="bn"] .learn-root .lede{line-height:1.65}
 .learn-root .start-here .num{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--paper);font-weight:700}
 .learn-root .start-here .sname,.learn-root .start-here .blurb{display:block}
 .learn-root .start-here .sname{font-weight:650}
+@media (min-width:760px){.learn-root .start-here ol{grid-template-columns:1fr 1fr}}
 .learn-root .blurb{display:block;font-size:var(--t-sm);color:var(--ink-2);font-weight:400;line-height:1.35}
 .learn-root .strips{padding-block:36px 8px}
 .learn-root .strips h2{font-size:var(--t-xl);font-weight:700;font-stretch:87.5%;margin-bottom:16px}
