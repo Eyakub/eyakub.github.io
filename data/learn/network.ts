@@ -29,7 +29,8 @@ export const STATIONS: Record<string, Station> = {
   'http-journey': { x: 120, y: 110, lab: 'up', phase: 3, line: 'backend', name: { en: 'HTTP journey', bn: 'HTTP-র যাত্রা' } },
   'rest-basics': { x: 300, y: 110, lab: 'up', phase: 4, line: 'backend', name: { en: 'REST basics', bn: 'REST-এর মূল কথা' } },
   'fastapi-lifecycle': { x: 480, y: 110, lab: 'up', phase: 1, line: 'backend', interchange: true, name: { en: 'FastAPI lifecycle', bn: 'FastAPI-র জীবনচক্র' }, blurb: { en: 'Everything between a click and the reply.', bn: 'ক্লিক থেকে উত্তর আসা পর্যন্ত মাঝের সবকিছু।' }, level: 'intermediate' },
-  'auth-jwt-oauth': { x: 660, y: 110, lab: 'up', phase: 4, line: 'backend', name: { en: 'Auth: JWT & OAuth', bn: 'অথ: JWT ও OAuth' } },
+  'django-lifecycle': { x: 660, y: 110, lab: 'up', phase: 3, line: 'backend', name: { en: 'Django lifecycle', bn: 'Django-র জীবনচক্র' } },
+  'auth-jwt-oauth': { x: 840, y: 110, lab: 'up', phase: 4, line: 'backend', name: { en: 'Auth: JWT & OAuth', bn: 'অথ: JWT ও OAuth' } },
   'celery-redis': { x: 610, y: 240, lab: 'down', phase: 1, line: 'async', name: { en: 'Celery + Redis', bn: 'Celery + Redis' }, blurb: { en: 'Hand slow jobs to a background cook so nobody waits.', bn: 'ধীর কাজ পেছনের রাঁধুনিকে দিন, যাতে কাউকে অপেক্ষা করতে না হয়।' }, level: 'beginner' },
   'redis-deep-dive': { x: 760, y: 240, lab: 'down', phase: 4, line: 'async', name: { en: 'Redis deep-dive', bn: 'Redis গভীরে' } },
   databases: { x: 900, y: 240, lab: 'down', phase: 4, line: 'async', name: { en: 'Databases', bn: 'ডেটাবেস' } },
@@ -49,7 +50,7 @@ export const STATIONS: Record<string, Station> = {
 }
 
 export const LINES: Line[] = [
-  { id: 'backend', color: '--l-backend', name: 'lineBackend', pts: [[120, 110], [660, 110]], stops: ['http-journey', 'rest-basics', 'fastapi-lifecycle', 'auth-jwt-oauth'] },
+  { id: 'backend', color: '--l-backend', name: 'lineBackend', pts: [[120, 110], [840, 110]], stops: ['http-journey', 'rest-basics', 'fastapi-lifecycle', 'django-lifecycle', 'auth-jwt-oauth'] },
   { id: 'async', color: '--l-async', name: 'lineAsync', pts: [[480, 110], [610, 240], [900, 240]], stops: ['fastapi-lifecycle', 'celery-redis', 'redis-deep-dive', 'databases'] },
   { id: 'devops', color: '--l-devops', name: 'lineDevops', pts: [[120, 370], [840, 370]], stops: ['docker', 'docker-compose', 'ci-cd', 'nginx', 'kubernetes'] },
   { id: 'git', color: '--l-git', name: 'lineGit', pts: [[120, 240], [350, 240], [480, 370]], stops: ['git-basics', 'github-pull-requests', 'ci-cd'] },
