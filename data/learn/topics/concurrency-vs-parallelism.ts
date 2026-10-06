@@ -13,6 +13,12 @@ export const concurrencyVsParallelism: Topic = {
     en: 'A kitchen can speed up by juggling dishes or by adding burners, and the two fix different problems.',
     bn: 'রান্নাঘর দ্রুত হতে পারে পদ পালা করে সামলিয়ে বা চুলা বাড়িয়ে, আর এ দুটো আলাদা সমস্যা মেটায়।'
   },
+  story: {
+    cast: {
+      en: 'Lina and Sam are cooking a big dinner for guests together in one busy home kitchen.',
+      bn: 'লিনা আর স্যাম একটা ব্যস্ত রান্নাঘরে অতিথিদের জন্য একসাথে বড় একটা ডিনার রাঁধছে।'
+    }
+  },
   takeaway: {
     en: 'Juggling helps when dishes wait on the oven, but more burners help when every dish needs a cook the whole time.',
     bn: 'ওভেনে অপেক্ষা থাকলে পালা করা কাজে লাগে, কিন্তু সারাক্ষণ রাঁধুনি লাগলে বেশি চুলা কাজে লাগে।'
@@ -172,6 +178,13 @@ export const concurrencyVsParallelism: Topic = {
         moves: [ { edge: 'queue-core1', label: 'dish A', plain: { en: 'First dish', bn: 'প্রথম পদ' } } ],
         state: { core1: { en: 'Running A', bn: 'A চালাচ্ছে' } },
         plainState: { core1: { en: 'Cooking A', bn: 'A রাঁধছে' } },
+        story: {
+          title: { en: 'Lina starts the bread', bn: 'লিনা রুটি শুরু করে' },
+          text: {
+            en: 'Lina and Sam are cooking a big dinner for guests, but Sam is late. Lina is alone in the kitchen, so she starts with the bread dough at the first burner.',
+            bn: 'লিনা আর স্যাম অতিথিদের জন্য বড় একটা ডিনার রাঁধছে, কিন্তু স্যামের আসতে দেরি। লিনা একা রান্নাঘরে, তাই সে প্রথম চুলায় রুটির খামির নিয়ে শুরু করে।'
+          }
+        },
         title: { en: 'Welcome to the kitchen', bn: 'রান্নাঘরে স্বাগতম' },
         simple: {
           en: 'Welcome to the kitchen. Dishes wait to be cooked, a burner is where cooking happens, and a cook works one burner. The cook starts dish A.',
@@ -190,6 +203,13 @@ export const concurrencyVsParallelism: Topic = {
           wait: { en: 'A needs oven', bn: 'A ওভেনে' }
         },
         plainState: { wait: { en: 'A is baking', bn: 'A বেক হচ্ছে' } },
+        story: {
+          title: { en: 'The bread goes in the oven', bn: 'রুটি ওভেনে যায়' },
+          text: {
+            en: 'The bread needs a long time in the oven. Lina slides it in and does not stand there staring. Her hands and the first burner are free again.',
+            bn: 'রুটির ওভেনে অনেকক্ষণ লাগে। লিনা সেটা ওভেনে ঢুকিয়ে দেয়, তাকিয়ে দাঁড়িয়ে থাকে না। তার হাত আর প্রথম চুলা আবার ফাঁকা।'
+          }
+        },
         title: { en: 'Dish A has to bake', bn: 'A-কে বেক হতে হবে' },
         simple: {
           en: 'Dish A needs the oven. The cook puts it in the oven instead of staring at it, so Burner 1 is free.',
@@ -205,6 +225,13 @@ export const concurrencyVsParallelism: Topic = {
         moves: [ { edge: 'queue-core1', label: 'dish B', plain: { en: 'Dish B', bn: 'পদ B' } } ],
         state: { core1: { en: 'Running B', bn: 'B চালাচ্ছে' } },
         plainState: { core1: { en: 'Cooking B', bn: 'B রাঁধছে' } },
+        story: {
+          title: { en: 'Lina starts the curry', bn: 'লিনা তরকারি চড়ায়' },
+          text: {
+            en: 'While the bread bakes, Lina starts the curry at the same burner. Two dishes are now on their way, and Lina is still the only cook.',
+            bn: 'রুটি যখন বেক হচ্ছে, লিনা সেই চুলাতেই তরকারি চড়ায়। এখন দুটো পদ এগোচ্ছে, আর রাঁধুনি তখনও লিনা একাই।'
+          }
+        },
         title: { en: 'The same cook starts B', bn: 'একই রাঁধুনি B শুরু করে' },
         simple: {
           en: 'While A bakes, the same cook starts dish B on Burner 1. Two dishes are now under way.',
@@ -223,6 +250,13 @@ export const concurrencyVsParallelism: Topic = {
           wait: { en: 'Empty', bn: 'ফাঁকা' }
         },
         plainState: { core1: { en: 'Back to A', bn: 'আবার A' } },
+        story: {
+          title: { en: 'The oven pings', bn: 'ওভেন বেজে ওঠে' },
+          text: {
+            en: 'The oven pings. The bread is ready, so Lina puts her spoon down for a moment and goes to take it out.',
+            bn: 'ওভেন বেজে ওঠে। রুটি তৈরি, তাই লিনা একটু চামচ নামিয়ে রেখে সেটা বের করতে যায়।'
+          }
+        },
         title: { en: 'The oven pings', bn: 'ওভেন বেজে ওঠে' },
         simple: {
           en: 'The oven pings. Dish A comes back to Burner 1, and the cook pauses B to finish it.',
@@ -241,6 +275,13 @@ export const concurrencyVsParallelism: Topic = {
           core1: { en: 'Back to B', bn: 'আবার B' }
         },
         plainState: { done: { en: '1 dish done', bn: '১টা পদ তৈরি' } },
+        story: {
+          title: { en: 'The bread goes to the table', bn: 'রুটি টেবিলে যায়' },
+          text: {
+            en: 'Lina carries the warm bread to the table for the guests. Then she goes straight back to stirring the curry.',
+            bn: 'লিনা গরম রুটি অতিথিদের জন্য টেবিলে নিয়ে যায়। তারপর সোজা ফিরে এসে আবার তরকারি নাড়ে।'
+          }
+        },
         title: { en: 'Dish A is finished', bn: 'A তৈরি' },
         simple: {
           en: 'Dish A goes out to be served. The cook goes back to dish B.',
@@ -262,6 +303,13 @@ export const concurrencyVsParallelism: Topic = {
           done: { en: '2 dishes done', bn: '২টা পদ তৈরি' },
           core1: { en: 'Nothing cooking', bn: 'কিছু রাঁধা হচ্ছে না' }
         },
+        story: {
+          title: { en: 'The curry is ready too', bn: 'তরকারিও তৈরি' },
+          text: {
+            en: 'Lina finishes the curry. She made two dishes all alone, by switching to the other one whenever one had to wait.',
+            bn: 'লিনা তরকারিও শেষ করে। একটা পদ অপেক্ষায় গেলেই অন্যটায় গিয়ে সে একাই দুটো পদ বানিয়ে ফেলেছে।'
+          }
+        },
         title: { en: 'B is finished too', bn: 'B-ও তৈরি' },
         simple: {
           en: 'One cook made both dishes by juggling them. That is concurrency: many dishes under way, one being cooked at a time.',
@@ -282,6 +330,13 @@ export const concurrencyVsParallelism: Topic = {
         plainState: {
           core1: { en: 'Cooking C', bn: 'C রাঁধছে' },
           core2: { en: 'Cooking D', bn: 'D রাঁধছে' }
+        },
+        story: {
+          title: { en: 'Sam arrives and they both cook', bn: 'স্যাম এসে পড়ে, দুজনেই রাঁধে' },
+          text: {
+            en: 'Sam finally arrives. Now Lina and Sam stand at two burners, and they start the rice and the lentils at the very same moment.',
+            bn: 'অবশেষে স্যাম এসে পড়ে। এবার লিনা আর স্যাম দুটো চুলায় দাঁড়ায়, আর ঠিক একই মুহূর্তে ভাত আর ডাল চড়ায়।'
+          }
         },
         title: { en: 'Two cooks start together', bn: 'দুই রাঁধুনি একসাথে শুরু করে' },
         simple: {
@@ -306,6 +361,13 @@ export const concurrencyVsParallelism: Topic = {
           core1: { en: 'Nothing cooking', bn: 'কিছু রাঁধা হচ্ছে না' },
           core2: { en: 'Nothing cooking', bn: 'কিছু রাঁধা হচ্ছে না' }
         },
+        story: {
+          title: { en: 'Both dishes finish together', bn: 'দুটো পদই একসাথে শেষ' },
+          text: {
+            en: 'The rice and the lentils are done together, in about half the time Lina would need alone. The guests are very happy.',
+            bn: 'ভাত আর ডাল একসাথে হয়ে যায়, লিনা একা হলে যা সময় লাগত তার প্রায় অর্ধেকে। অতিথিরা খুব খুশি।'
+          }
+        },
         title: { en: 'Both finish together', bn: 'দুটোই একসাথে শেষ' },
         simple: {
           en: 'Both dishes finish together, in about half the time one cook would need. Cooking at the same moment is parallelism.',
@@ -319,6 +381,13 @@ export const concurrencyVsParallelism: Topic = {
       {
         id: 'tally',
         work: { node: [ 'core1', 'core2' ], kind: 'request' },
+        story: {
+          title: { en: 'Dinner is served', bn: 'ডিনার তৈরি' },
+          text: {
+            en: 'Lina juggled two dishes alone, and later Lina and Sam cooked two dishes together. A busy kitchen can use both ways.',
+            bn: 'লিনা একা দুটো পদ পালা করে সামলেছে, আর পরে লিনা আর স্যাম একসাথে দুটো পদ রেঁধেছে। ব্যস্ত রান্নাঘরে দুটো উপায়ই কাজে লাগে।'
+          }
+        },
         title: { en: 'Juggling is not cooking at once', bn: 'পালা করা আর একসাথে রাঁধা এক নয়' },
         simple: {
           en: 'One cook juggling A and B was concurrency. Two cooks cooking C and D together was parallelism. A kitchen can have both.',
@@ -357,6 +426,13 @@ export const concurrencyVsParallelism: Topic = {
             core1: { en: 'Cook 1 cooking', bn: 'রাঁধুনি ১ রাঁধছে' },
             core2: { en: 'Cook 2 cooking?', bn: 'রাঁধুনি ২ রাঁধছে?' }
           },
+          story: {
+            title: { en: 'Two cooks, two burners', bn: 'দুই রাঁধুনি, দুই চুলা' },
+            text: {
+              en: 'Sam arrives, and Lina and Sam each start a dish at their own burner. They hope to cook twice as fast as before.',
+              bn: 'স্যাম এসে পড়ে, আর লিনা আর স্যাম নিজের নিজের চুলায় একটা করে পদ শুরু করে। তারা আশা করে আগের চেয়ে দ্বিগুণ দ্রুত রাঁধবে।'
+            }
+          },
           title: { en: 'Two cooks, two burners', bn: 'দুই রাঁধুনি, দুই চুলা' },
           simple: {
             en: 'Two cooks start a dish each, one at each burner. You would hope both cook at full speed.',
@@ -372,6 +448,13 @@ export const concurrencyVsParallelism: Topic = {
           work: { node: 'core2', kind: 'queue' },
           state: { core2: { en: 'Waits for GIL', bn: 'GIL-এর অপেক্ষায়' } },
           plainState: { core2: { en: 'No hat, waiting', bn: 'টুপি নেই, অপেক্ষায়' } },
+          story: {
+            title: { en: 'Only one hat to share', bn: 'টুপি মাত্র একটা' },
+            text: {
+              en: 'This kitchen has one chef’s hat, and only its wearer may cook. Lina wears it, so Sam stands at his burner with nothing to do.',
+              bn: 'এই রান্নাঘরে শেফের টুপি একটাই, আর যে পরে শুধু সে-ই রাঁধতে পারে। লিনা সেটা পরেছে, তাই স্যাম চুলার পাশে কাজ ছাড়া দাঁড়িয়ে থাকে।'
+            }
+          },
           title: { en: 'Only one may cook', bn: 'একজনই রাঁধতে পারে' },
           simple: {
             en: 'Python gives a kitchen one chef’s hat, and only its wearer may cook. Cook 2 has no hat, so waits at Burner 2.',
@@ -387,6 +470,13 @@ export const concurrencyVsParallelism: Topic = {
           moves: [ { edge: 'core1-done', label: 'T1 (~2t)', plain: { en: 'Cook 1 late', bn: 'রাঁধুনি ১, দেরি' } } ],
           state: { done: { en: 'T1 at ~2t', bn: 'T1, সময় ~2t' } },
           plainState: { done: { en: '1 dish, but late', bn: '১টা পদ, দেরিতে' } },
+          story: {
+            title: { en: 'Lina’s dish is late', bn: 'লিনার পদ দেরিতে' },
+            text: {
+              en: 'Lina and Sam keep passing the hat back and forth. Lina’s dish is ready only after about twice the time it should take.',
+              bn: 'লিনা আর স্যাম টুপি হাতবদল করতেই থাকে। লিনার পদ তৈরি হয় যতক্ষণ লাগার কথা তার প্রায় দ্বিগুণ সময় পরে।'
+            }
+          },
           title: { en: 'The first dish is late', bn: 'প্রথম পদ দেরিতে' },
           simple: {
             en: 'The cooks passed the hat back and forth the whole way, so the first dish is ready only after about twice the time.',
@@ -407,6 +497,13 @@ export const concurrencyVsParallelism: Topic = {
           plainState: {
             done: { en: 'Both took twice as long', bn: 'দুটোতেই দ্বিগুণ সময়' },
             core2: { en: 'Nothing cooking', bn: 'কিছু রাঁধা হচ্ছে না' }
+          },
+          story: {
+            title: { en: 'Sam’s dish is late too', bn: 'স্যামের পদও দেরিতে' },
+            text: {
+              en: 'Sam’s dish finishes about then too. Both took twice as long, as if Lina were cooking alone. The guests wait, hungry.',
+              bn: 'স্যামের পদও প্রায় তখনই শেষ হয়। দুটোতেই দ্বিগুণ সময় লেগেছে, যেন লিনা একাই রাঁধছিল। অতিথিরা খিদে নিয়ে বসে থাকে।'
+            }
           },
           title: { en: 'The second is late too', bn: 'দ্বিতীয়টাও দেরিতে' },
           simple: {
@@ -438,6 +535,13 @@ export const concurrencyVsParallelism: Topic = {
           plainState: {
             wait: { en: '1000 baking', bn: '১০০০টা বেক হচ্ছে' }
           },
+          story: {
+            title: { en: 'A thousand dishes baking', bn: 'হাজারটা পদ বেক হচ্ছে' },
+            text: {
+              en: 'Imagine a huge oven holding a thousand dishes. Lina does not mind, because baking needs no cook. She keeps working on the curry.',
+              bn: 'ভাবুন, একটা বিশাল ওভেনে হাজারটা পদ বেক হচ্ছে। লিনার কোনো চিন্তা নেই, কারণ বেক হতে রাঁধুনি লাগে না। সে তরকারির কাজ করে যায়।'
+            }
+          },
           title: { en: 'A thousand dishes baking', bn: 'হাজারটা পদ বেক হচ্ছে' },
           simple: {
             en: 'A thousand dishes can bake at once while the cook keeps working on B. Waiting in the oven needs no cook.',
@@ -453,6 +557,13 @@ export const concurrencyVsParallelism: Topic = {
           moves: [ { edge: 'wait-core1', label: 'ready', plain: { en: 'Ready', bn: 'তৈরি' } } ],
           state: { core1: { en: 'Runs one ready', bn: 'তৈরিটা ধরে' } },
           plainState: { core1: { en: 'Cooking a ready one', bn: 'তৈরিটা রাঁধছে' } },
+          story: {
+            title: { en: 'Lina serves what is ready', bn: 'যেটা তৈরি লিনা সেটাই দেয়' },
+            text: {
+              en: 'Whenever a dish is ready, Lina takes it out. She never checks the others still baking, and carries the ready one to the guests.',
+              bn: 'যখনই কোনো পদ তৈরি হয়, লিনা সেটা বের করে। যেগুলো এখনো বেক হচ্ছে সেগুলো সে দেখতে যায় না, তৈরি পদটা অতিথিদের কাছে নিয়ে যায়।'
+            }
+          },
           title: { en: 'Serve whichever is ready', bn: 'যেটা তৈরি সেটাই' },
           simple: {
             en: 'The cook takes whichever dish is ready next out of the oven.',
