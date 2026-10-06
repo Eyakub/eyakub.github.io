@@ -10,7 +10,7 @@ const KINDS: [Kind, UiKey, string][] = [
 ]
 
 export default function KindLegend({ topic }: { topic: Topic }) {
-  const { ui, t } = useLearnPrefs()
+  const { ui, t, mode } = useLearnPrefs()
   return (
     <ul className="kind-key" id="kind-key">
       {KINDS.map(([k, label, dash]) => (
@@ -18,7 +18,7 @@ export default function KindLegend({ topic }: { topic: Topic }) {
           <svg viewBox="0 0 30 10" aria-hidden="true">
             <path d="M2 5H28" stroke={`var(--k-${k})`} strokeWidth={k === 'result' ? 4.5 : 3.5} strokeLinecap="round" strokeDasharray={dash || undefined} />
           </svg>
-          {(() => { const o = topic.legend?.[k]; return o ? t(o) : ui(label) })()}
+          {(() => { const o = mode === 'simple' ? topic.legend?.[k] : undefined; return o ? t(o) : ui(label) })()}
         </li>
       ))}
     </ul>
