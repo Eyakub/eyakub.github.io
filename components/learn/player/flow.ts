@@ -35,13 +35,13 @@ export function visitedEdges(steps: Step[], index: number): Set<string> {
 
 export function nodeLabels(topic: Topic, id: string, mode: Mode): { name: L10n; sub: L10n } {
   const n = topic.nodes[id]
-  return mode === 'simple' && n.plain ? n.plain : { name: n.name, sub: n.sub }
+  return isPlain(mode) && n.plain ? n.plain : { name: n.name, sub: n.sub }
 }
 
 export function nodeSubAt(topic: Topic, steps: Step[], index: number, nodeId: string, mode: Mode = 'technical'): L10n {
   let sub = nodeLabels(topic, nodeId, mode).sub
   for (let i = 0; i <= index; i++) {
-    const o = (mode === 'simple' ? steps[i].plainState?.[nodeId] : undefined) ?? steps[i].state?.[nodeId]
+    const o = (isPlain(mode) ? steps[i].plainState?.[nodeId] : undefined) ?? steps[i].state?.[nodeId]
     if (o) sub = o
   }
   return sub
@@ -60,6 +60,14 @@ export function trips(topic: Topic, moves: Move[]): Trip[] {
   }, [])
 }
 
-export const packetText = (m: Move, mode: Mode, lang: Lang): string => (mode === 'simple' && m.plain ? m.plain[lang] : m.label)
+export const packetText = (m: Move, mode: Mode, lang: Lang): string => (isPlain(mode) && m.plain ? m.plain[lang] : m.label)
 
-export const dwellMs = (mode: Mode): number => (mode === 'technical' ? 6500 : 4300)
+export const dwellMs = (mode: Mode): number => (mode === 'technical' ? 6500 : mode === 'story' ? 6000 : 4300)
+
+/** Story reuses the Simply names for stations, packets, states, groups and the legend. */
+export const isPlain = (mode: Mode): boolean => mode === 'simple' || mode === 'story'
+
+/** A stored Story preference falls back to Simply on a topic with no story, without touching the stored value. */
+export const effectiveMode = (mode: Mode, topic: Topic): Mode => (mode === 'story' && !topic.story ? 'simple' : mode)
+
+export const stepTitle = (step: Step, mode: Mode): L10n => (mode === 'story' && step.story ? step.story.title : step.title)

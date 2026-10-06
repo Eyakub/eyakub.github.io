@@ -28,6 +28,7 @@ export interface Step {
   title: L10n
   simple: L10n
   tech: L10n
+  story?: { title: L10n; text: L10n }
 }
 export interface AltRoute { id: string; label: L10n; branchAfter: string; steps: Step[]; whatIf: L10n }
 export interface Group { id: string; label: L10n; plain?: L10n; wide: [number, number, number, number]; narrow: [number, number, number, number] }
@@ -40,6 +41,7 @@ export interface Topic {
   title: L10n
   summary: L10n
   hook: L10n
+  story?: { cast: L10n }
   takeaway: L10n
   words: { term: L10n; d: L10n }[]
   legend?: Partial<Record<Kind, L10n>>

@@ -1,11 +1,13 @@
 import { useEffect, useState, type CSSProperties } from 'react'
 import { useLearnPrefs } from '../../../contexts/LearnPrefsContext'
 import { num } from '../../../lib/learn/l10n'
+import type { Mode } from '../../../lib/learn/prefs'
 import type { Kind, Step } from '../../../data/learn/types'
+import { stepTitle } from './flow'
 
-interface Props { steps: Step[]; index: number; kind: Kind; onGo: (i: number) => void }
+interface Props { mode: Mode; steps: Step[]; index: number; kind: Kind; onGo: (i: number) => void }
 
-export default function StopList({ steps, index, kind, onGo }: Props) {
+export default function StopList({ mode, steps, index, kind, onGo }: Props) {
   const { t, ui, lang } = useLearnPrefs()
   const [open, setOpen] = useState(false)
   useEffect(() => {
@@ -23,7 +25,7 @@ export default function StopList({ steps, index, kind, onGo }: Props) {
           <li key={s.id} className={i < index ? 'past' : i === index ? 'cur' : ''} style={k}>
             <button type="button" onClick={() => onGo(i)}>
               <span className="pin" />
-              <span><span className="n">{num(i + 1, lang)}</span>{t(s.title)}</span>
+              <span><span className="n">{num(i + 1, lang)}</span>{t(stepTitle(s, mode))}</span>
             </button>
           </li>
         ))}

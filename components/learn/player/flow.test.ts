@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import type { Step, Topic } from '../../../data/learn/types'
-import { buildRoutes, firstAltIndex, stepKind, focusNodes, visitedEdges, nodeSubAt, dwellMs, workNodes, nodeLabels, packetText, trips } from './flow'
+import { buildRoutes, firstAltIndex, stepKind, focusNodes, visitedEdges, nodeSubAt, dwellMs, workNodes, nodeLabels, packetText, trips, isPlain, effectiveMode, stepTitle } from './flow'
 
 const L = (s: string) => ({ en: s, bn: s })
 const st = (id: string, extra: Partial<Step>): Step => ({ id, title: L(id), simple: L(id), tech: L(id), ...extra })
@@ -43,6 +43,7 @@ describe('step helpers', () => {
   it('dwell is longer in technical mode', () => {
     expect(dwellMs('simple')).toBe(4300)
     expect(dwellMs('technical')).toBe(6500)
+    expect(dwellMs('story')).toBe(6000)
   })
 })
 
@@ -107,6 +108,28 @@ describe('simply layer', () => {
     const m = steps[0].moves![0]
     expect(packetText(m, 'simple', 'en')).toBe('your order')
     expect(packetText(m, 'technical', 'en')).toBe('POST /x')
+  })
+  it('story uses the plain names', () => {
+    expect(isPlain('simple')).toBe(true)
+    expect(isPlain('story')).toBe(true)
+    expect(isPlain('technical')).toBe(false)
+    expect(nodeLabels(tp, 'a', 'story').name.en).toBe('Order rail')
+    expect(nodeSubAt(tp, steps, 0, 'b', 'story').en).toBe('Cooking')
+    expect(packetText(steps[0].moves![0], 'story', 'en')).toBe('your order')
+  })
+  it('stepTitle shows the story title only in story mode', () => {
+    const s = { ...steps[0], title: L('Plain'), story: { title: L('Tale'), text: L('t') } }
+    expect(stepTitle(s, 'story').en).toBe('Tale')
+    expect(stepTitle(s, 'simple').en).toBe('Plain')
+    expect(stepTitle(s, 'technical').en).toBe('Plain')
+    expect(stepTitle({ ...s, story: undefined }, 'story').en).toBe('Plain')
+  })
+  it('effectiveMode falls back to simple only for a story preference on a topic without a story', () => {
+    const withStory = { ...tp, story: { cast: L('c') } } as Topic
+    expect(effectiveMode('story', tp)).toBe('simple')
+    expect(effectiveMode('story', withStory)).toBe('story')
+    expect(effectiveMode('technical', tp)).toBe('technical')
+    expect(effectiveMode('simple', withStory)).toBe('simple')
   })
 })
 

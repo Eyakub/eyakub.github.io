@@ -1,6 +1,6 @@
 import type { Lang } from './l10n'
 
-export type Mode = 'simple' | 'technical'
+export type Mode = 'simple' | 'story' | 'technical'
 export interface Prefs { lang: Lang; mode: Mode; learned: string[] }
 export interface RawPrefs { lang: string | null; mode: string | null; learned: string | null }
 
@@ -18,7 +18,7 @@ export function parseStored(raw: RawPrefs): Prefs {
   const learned = safeJson(raw.learned)
   return {
     lang: lang === 'en' || lang === 'bn' ? lang : DEFAULT_PREFS.lang,
-    mode: mode === 'simple' || mode === 'technical' ? mode : DEFAULT_PREFS.mode,
+    mode: mode === 'simple' || mode === 'story' || mode === 'technical' ? mode : DEFAULT_PREFS.mode,
     learned: Array.isArray(learned) ? learned.filter((x): x is string => typeof x === 'string') : [],
   }
 }

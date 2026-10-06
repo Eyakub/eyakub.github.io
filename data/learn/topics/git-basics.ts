@@ -13,6 +13,12 @@ export const gitBasics: Topic = {
     en: 'Git is a photo album for your files that remembers every version, so you can undo mistakes and work with others.',
     bn: 'Git হলো আপনার ফাইলের ফটো অ্যালবাম যা প্রতিটি ভার্সন মনে রাখে, তাই ভুল ফেরানো আর অন্যের সাথে কাজ করা সহজ হয়।'
   },
+  story: {
+    cast: {
+      en: 'Mina and Rafi are making one trip photo album together, each from their own home.',
+      bn: 'মিনা আর রাফি একটা ভ্রমণের ছবির অ্যালবাম একসাথে বানাচ্ছে, দুজনেই নিজের নিজের বাড়ি থেকে।'
+    }
+  },
   takeaway: {
     en: 'Save in your own album, share when ready, and fetch before you merge.',
     bn: 'নিজের অ্যালবামে সেভ করুন, তৈরি হলে শেয়ার করুন, আর মেলানোর আগে ডাউনলোড করে দেখুন।'
@@ -164,6 +170,13 @@ export const gitBasics: Topic = {
           wd: { en: 'One file changed', bn: 'একটা ফাইল বদলেছে' },
           idx: { en: 'Photo on tray', bn: 'ট্রেতে ছবি আছে' }
         },
+        story: {
+          title: { en: 'Mina edits a photo', bn: 'মিনা একটা ছবি ঠিক করে' },
+          text: {
+            en: 'Mina is fixing the trip album at home. One photo on the messy desk looks dark, so Mina brightens it and lays it on the arranging tray. Nothing is in the album yet.',
+            bn: 'মিনা বাড়িতে ভ্রমণের অ্যালবাম সাজাচ্ছে। এলোমেলো ডেস্কের একটা ছবি অন্ধকার লাগছিল, তাই মিনা সেটা উজ্জ্বল করে সাজানোর ট্রেতে রাখে। অ্যালবামে এখনো কিছু ওঠেনি।'
+          }
+        },
         title: { en: 'You change a file and pick it', bn: 'আপনি ফাইল বদলান আর বাছেন' },
         simple: {
           en: 'This is your messy desk, where you edit files. You change one file, then move it onto the arranging tray. Nothing is saved yet.',
@@ -187,6 +200,13 @@ export const gitBasics: Topic = {
           idx: { en: 'Tray empty', bn: 'ট্রে খালি' },
           wd: { en: 'All tidy', bn: 'সব গোছানো' }
         },
+        story: {
+          title: { en: 'Mina glues a page', bn: 'মিনা একটা পাতা আটকায়' },
+          text: {
+            en: 'Happy with it, Mina glues the tray’s photo into the album as a new page. Every page gets a short code, like a1b2c3, so it can be found later.',
+            bn: 'খুশি হয়ে মিনা ট্রের ছবিটা অ্যালবামে নতুন পাতা হিসেবে আটকায়। প্রতিটা পাতার একটা ছোট কোড থাকে, যেমন a1b2c3, যাতে পরে খুঁজে পাওয়া যায়।'
+          }
+        },
         title: { en: 'You save a page', bn: 'আপনি একটা পাতা সেভ করেন' },
         simple: {
           en: 'You glue the tray’s photos into the album as a new page. That page is a commit, a permanent snapshot with a short code: a1b2c3.',
@@ -200,6 +220,13 @@ export const gitBasics: Topic = {
       {
         id: 'branch-moves',
         work: { node: 'repo', kind: 'result' },
+        story: {
+          title: { en: 'The sticky note follows', bn: 'স্টিকি নোট সাথে যায়' },
+          text: {
+            en: 'A sticky note called main marks where Mina is in the album. It hops onto the new page by itself, so Mina always knows the latest page.',
+            bn: 'main নামের একটা স্টিকি নোট দেখায় মিনা অ্যালবামের কোথায় আছে। নোটটা নিজে থেকেই নতুন পাতায় সরে যায়, তাই মিনা সবসময় সবচেয়ে নতুন পাতাটা জানে।'
+          }
+        },
         title: { en: 'The sticky note moves', bn: 'স্টিকি নোট এগোয়' },
         simple: {
           en: 'A branch is a sticky note that marks where you are in the album. The note named main slides onto your new page.',
@@ -215,6 +242,13 @@ export const gitBasics: Topic = {
         moves: [ { edge: 'push', label: 'git push', plain: { en: 'Upload page', bn: 'পাতা আপলোড' } } ],
         state: { remote: { en: 'main → a1b2c3', bn: 'main → a1b2c3' } },
         plainState: { remote: { en: 'Has a1b2c3', bn: 'a1b2c3 আছে' } },
+        story: {
+          title: { en: 'Mina shares the page', bn: 'মিনা পাতাটা শেয়ার করে' },
+          text: {
+            en: 'Mina uploads the new page to the cloud album, the shared copy online. Now Rafi can see it from home.',
+            bn: 'মিনা নতুন পাতাটা ক্লাউড অ্যালবামে তোলে, মানে অনলাইনে রাখা ভাগ করা কপিতে। এবার রাফি বাড়ি থেকেই সেটা দেখতে পারে।'
+          }
+        },
         title: { en: 'You upload to the cloud', bn: 'আপনি ক্লাউডে আপলোড করেন' },
         simple: {
           en: 'You push, which means upload. Your new page goes to the shared cloud album on GitHub, where teammates can see it.',
@@ -230,6 +264,13 @@ export const gitBasics: Topic = {
         work: { node: 'rtrack', kind: 'result' },
         state: { rtrack: { en: 'Last seen: a1b2c3', bn: 'শেষ দেখা: a1b2c3' } },
         plainState: { rtrack: { en: 'Saw a1b2c3', bn: 'a1b2c3 দেখেছে' } },
+        story: {
+          title: { en: 'Mina’s cloud note updates', bn: 'মিনার ক্লাউড নোট বদলায়' },
+          text: {
+            en: 'Mina keeps a small cloud note of what the cloud album looked like last time. After the upload, the note updates: the cloud has page a1b2c3.',
+            bn: 'ক্লাউড অ্যালবামটা শেষবার কেমন ছিল, মিনা তার একটা ছোট ক্লাউড নোট রাখে। তোলার পরে নোটটা বদলায়: ক্লাউডে এখন a1b2c3 পাতা আছে।'
+          }
+        },
         title: { en: 'Your cloud note updates', bn: 'ক্লাউড নোট হালনাগাদ হয়' },
         simple: {
           en: 'After a successful upload, your cloud note updates to match. It now remembers the cloud album has your new page.',
@@ -245,6 +286,13 @@ export const gitBasics: Topic = {
         work: { node: 'repo', kind: 'request' },
         state: { repo: { en: 'HEAD → main → d4e5f6', bn: 'HEAD → main → d4e5f6' } },
         plainState: { repo: { en: 'Latest: d4e5f6', bn: 'সর্বশেষ: d4e5f6' } },
+        story: {
+          title: { en: 'Mina keeps going', bn: 'মিনা কাজ চালিয়ে যায়' },
+          text: {
+            en: 'Mina glues another page into the album at home. Only Mina’s album has it; the cloud album does not know yet.',
+            bn: 'মিনা বাড়িতে অ্যালবামে আরেকটা পাতা আটকায়। শুধু মিনার অ্যালবামে এটা আছে; ক্লাউড অ্যালবাম এখনো জানে না।'
+          }
+        },
         title: { en: 'You keep working', bn: 'আপনি কাজ চালিয়ে যান' },
         simple: {
           en: 'You save another page in your own album. The cloud album does not have it yet.',
@@ -260,6 +308,13 @@ export const gitBasics: Topic = {
         work: { node: 'remote', kind: 'queue' },
         state: { remote: { en: 'main → 77d4e1', bn: 'main → 77d4e1' } },
         plainState: { remote: { en: 'Teammate added a page', bn: 'সহকর্মী পাতা যোগ করেছে' } },
+        story: {
+          title: { en: 'Rafi adds a page too', bn: 'রাফিও একটা পাতা যোগ করে' },
+          text: {
+            en: 'Meanwhile Rafi adds a beach photo page to the cloud album. Mina’s cloud note still shows the old picture, because it only changes when Mina checks.',
+            bn: 'এর মধ্যে রাফি ক্লাউড অ্যালবামে সমুদ্রসৈকতের একটা ছবির পাতা যোগ করে। মিনার ক্লাউড নোটে এখনো পুরোনো ছবি, কারণ মিনা দেখতে গেলে তবেই নোটটা বদলায়।'
+          }
+        },
         title: { en: 'A teammate adds a page', bn: 'সহকর্মী একটা পাতা যোগ করেন' },
         simple: {
           en: 'A teammate adds a page to the cloud album. Your cloud note still shows the old version, because it only changes when you check.',
@@ -275,6 +330,13 @@ export const gitBasics: Topic = {
         moves: [ { edge: 'fetch', label: 'git fetch', plain: { en: 'Their new page', bn: 'তাদের নতুন পাতা' } } ],
         state: { rtrack: { en: 'Last seen: 77d4e1', bn: 'শেষ দেখা: 77d4e1' } },
         plainState: { rtrack: { en: 'Saw teammate’s page', bn: 'সহকর্মীর পাতা দেখেছে' } },
+        story: {
+          title: { en: 'Mina checks the cloud', bn: 'মিনা ক্লাউড দেখে' },
+          text: {
+            en: 'Mina downloads Rafi’s new page onto the cloud note, just to look. Mina’s own album and desk stay exactly as they were, so checking is always safe.',
+            bn: 'রাফির নতুন পাতাটা মিনা শুধু দেখার জন্য ক্লাউড নোটে নামায়। মিনার নিজের অ্যালবাম আর ডেস্ক ঠিক আগের মতোই থাকে, তাই দেখে নেওয়া সবসময় নিরাপদ।'
+          }
+        },
         title: { en: 'You fetch their page', bn: 'আপনি তাদের পাতা ডাউনলোড করেন' },
         simple: {
           en: 'Fetch means download. Their page lands on your cloud note. Your own album and desk stay untouched, so fetching is always safe.',
@@ -290,6 +352,13 @@ export const gitBasics: Topic = {
         moves: [ { edge: 'merge', label: 'git merge origin/main', plain: { en: 'Join their page', bn: 'তাদের পাতা জোড়া' } } ],
         state: { repo: { en: 'HEAD → main → 5c6d7e', bn: 'HEAD → main → 5c6d7e' } },
         plainState: { repo: { en: 'Both lines joined', bn: 'দুই ধারা জোড়া' } },
+        story: {
+          title: { en: 'Two stories become one', bn: 'দুই গল্প এক হয়' },
+          text: {
+            en: 'Mina joins Rafi’s page with the new page at home. Git adds a join page that holds both, so the album tells one story again.',
+            bn: 'মিনা রাফির পাতার সাথে বাড়ির নতুন পাতাটা জোড়ে। Git একটা জোড়ার পাতা বানায় যাতে দুটোই থাকে, ফলে অ্যালবাম আবার একটাই গল্প বলে।'
+          }
+        },
         title: { en: 'You merge their work in', bn: 'আপনি তাদের কাজ মিলিয়ে নেন' },
         simple: {
           en: 'Merge means combining. You each added pages, so Git joins your story and theirs into one.',
@@ -320,6 +389,13 @@ export const gitBasics: Topic = {
           ],
           state: { rtrack: { en: 'Last seen: 77d4e1', bn: 'শেষ দেখা: 77d4e1' } },
           plainState: { rtrack: { en: 'Saw teammate’s page', bn: 'সহকর্মীর পাতা দেখেছে' } },
+          story: {
+            title: { en: 'Mina does it in one go', bn: 'মিনা এক ধাপেই সারে' },
+            text: {
+              en: 'Instead of looking first, Mina pulls: Rafi’s page is downloaded and joined into the album in one move. Quick, but Mina’s files can change straight away.',
+              bn: 'আগে দেখার বদলে মিনা সরাসরি pull করে: রাফির পাতা নামে আর এক ধাপেই অ্যালবামে জোড়া লাগে। দ্রুত, কিন্তু মিনার ফাইল সাথে সাথেই বদলে যেতে পারে।'
+            }
+          },
           title: { en: 'Pull: download and join at once', bn: 'Pull: নামানো আর জোড়া এক ধাপে' },
           simple: {
             en: 'Pull does both jobs at once. It downloads your teammate’s page, then joins it into your album. Because it joins right away, your files can change.',
@@ -335,6 +411,13 @@ export const gitBasics: Topic = {
           work: { node: 'repo', kind: 'result' },
           state: { repo: { en: 'HEAD → main → 5c6d7e', bn: 'HEAD → main → 5c6d7e' } },
           plainState: { repo: { en: 'Both lines joined', bn: 'দুই ধারা জোড়া' } },
+          story: {
+            title: { en: 'All caught up', bn: 'সব হালনাগাদ' },
+            text: {
+              en: 'Mina’s album now has Rafi’s beach page and Mina’s own pages together, and the cloud note is up to date.',
+              bn: 'মিনার অ্যালবামে এখন রাফির সৈকতের পাতা আর মিনার নিজের পাতা একসাথে আছে, আর ক্লাউড নোটও হালনাগাদ।'
+            }
+          },
           title: { en: 'You are caught up', bn: 'আপনি হালনাগাদ' },
           simple: {
             en: 'Your album now holds their pages and yours together, and your cloud note is up to date.',
@@ -361,6 +444,13 @@ export const gitBasics: Topic = {
           moves: [ { edge: 'merge', label: 'git rebase origin/main', plain: { en: 'Yours goes after', bn: 'আপনারটা পরে বসে' } } ],
           state: { repo: { en: 'HEAD → main → 9a8b7c', bn: 'HEAD → main → 9a8b7c' } },
           plainState: { repo: { en: 'Theirs, then yours', bn: 'আগে তাদের, পরে আপনার' } },
+          story: {
+            title: { en: 'Rafi goes first', bn: 'রাফি আগে যায়' },
+            text: {
+              en: 'Mina would rather keep one neat line. So Rafi’s page goes in first, and Mina’s page is put back right after it, like letting a friend into the queue ahead of you.',
+              bn: 'মিনা একটাই সুন্দর সারি রাখতে চায়। তাই রাফির পাতা আগে বসে, আর মিনার পাতা তার ঠিক পরে বসানো হয়, যেন সারিতে বন্ধুকে নিজের আগে যেতে দেওয়া।'
+            }
+          },
           title: { en: 'Rebase: let their page go first', bn: 'রিবেস: তাদের পাতা আগে যাক' },
           simple: {
             en: 'You both added a page. Rebase lets their page in first, then puts yours right after it, like letting a friend into the queue ahead of you.',
@@ -375,6 +465,13 @@ export const gitBasics: Topic = {
           id: 'rebased',
           work: { node: 'repo', kind: 'result' },
           plainState: { repo: { en: 'Same page, new code', bn: 'একই পাতা, নতুন কোড' } },
+          story: {
+            title: { en: 'Mina’s page gets a new code', bn: 'মিনার পাতা নতুন কোড পায়' },
+            text: {
+              en: 'Git made a fresh copy of Mina’s page to move it, so it now has a new code, 9a8b7c. That is fine, because nobody else had Mina’s page yet.',
+              bn: 'পাতাটা সরাতে Git মিনার পাতার একটা নতুন কপি বানিয়েছে, তাই এর কোড এখন নতুন, 9a8b7c। সমস্যা নেই, কারণ মিনার পাতা আর কারও কাছে ছিল না।'
+            }
+          },
           title: { en: 'Your page got a new code', bn: 'আপনার পাতা নতুন কোড পেল' },
           simple: {
             en: 'Git copied your page to move it, so it now has a new code, 9a8b7c. Only do this with pages nobody else has yet.',
@@ -390,6 +487,13 @@ export const gitBasics: Topic = {
           moves: [ { edge: 'push', label: 'git push', plain: { en: 'Upload page', bn: 'পাতা আপলোড' } } ],
           state: { remote: { en: 'main → 9a8b7c', bn: 'main → 9a8b7c' } },
           plainState: { remote: { en: 'Has your new page', bn: 'আপনার নতুন পাতা আছে' } },
+          story: {
+            title: { en: 'The upload just works', bn: 'তোলা ঠিকঠাক হয়' },
+            text: {
+              en: 'Mina uploads, and the cloud album simply adds Mina’s page after Rafi’s. No join page, no fuss.',
+              bn: 'মিনা তোলে, আর ক্লাউড অ্যালবাম রাফির পাতার পরে মিনার পাতা যোগ করে নেয়। জোড়ার পাতা নেই, ঝামেলাও নেই।'
+            }
+          },
           title: { en: 'Upload: it just works', bn: 'আপলোড: সহজেই হয়ে যায়' },
           simple: {
             en: 'Now you upload, and it just works: the cloud album simply adds your page after theirs.',
@@ -414,6 +518,13 @@ export const gitBasics: Topic = {
         {
           id: 'clash',
           work: { node: 'repo', kind: 'error' },
+          story: {
+            title: { en: 'Same caption, two edits', bn: 'একই ক্যাপশন, দুই বদল' },
+            text: {
+              en: 'Mina and Rafi both rewrote the caption under the same photo. When Mina tries to join their work, Git stops: it cannot guess which caption is right.',
+              bn: 'মিনা আর রাফি দুজনেই একই ছবির নিচের ক্যাপশন নতুন করে লিখেছে। মিনা কাজ জোড়ার চেষ্টা করলে Git থেমে যায়: কোন ক্যাপশন ঠিক, সেটা সে আন্দাজ করতে পারে না।'
+            }
+          },
           title: { en: 'Both of you changed the same line', bn: 'দুজনেই একই লাইন বদলেছেন' },
           simple: {
             en: 'You try to join their work with yours, but you both changed the very same line. Git cannot guess whose is right, so it stops.',
@@ -429,6 +540,13 @@ export const gitBasics: Topic = {
           moves: [ { edge: 'conflict', label: '<<<<<<< ======= >>>>>>>', plain: { en: 'Both versions', bn: 'দুটো ভার্সন' } } ],
           state: { wd: { en: 'app.py: conflict', bn: 'app.py: কনফ্লিক্ট' } },
           plainState: { wd: { en: 'Clash to fix', bn: 'মেটানোর সংঘাত' } },
+          story: {
+            title: { en: 'Git shows both captions', bn: 'Git দুটো ক্যাপশনই দেখায়' },
+            text: {
+              en: 'Git writes both captions into Mina’s file, with marker lines around each one, and hands the choice to Mina.',
+              bn: 'Git মিনার ফাইলে দুটো ক্যাপশনই লেখে, প্রতিটার চারপাশে দাগ-দেওয়া লাইন দিয়ে, আর বেছে নেওয়ার ভার মিনার হাতে দেয়।'
+            }
+          },
           title: { en: 'Git marks the clash in your file', bn: 'Git ফাইলে সংঘাত চিহ্নিত করে' },
           simple: {
             en: 'Git writes both versions into your file, with marker lines around them. Now it is your job to choose.',
@@ -449,6 +567,13 @@ export const gitBasics: Topic = {
           plainState: {
             wd: { en: 'Clash fixed', bn: 'সংঘাত মিটেছে' },
             idx: { en: 'Fixed file on tray', bn: 'ঠিক ফাইল ট্রেতে' }
+          },
+          story: {
+            title: { en: 'Mina picks the caption', bn: 'মিনা ক্যাপশন বাছে' },
+            text: {
+              en: 'Mina keeps the best words from both, deletes the markers, and lays the fixed file on the arranging tray. That tells Git the clash is settled.',
+              bn: 'মিনা দুটো থেকে সেরা কথাগুলো রাখে, দাগের লাইনগুলো মুছে ফেলে, আর ঠিক করা ফাইলটা সাজানোর ট্রেতে রাখে। এতে Git বোঝে সংঘাত মিটে গেছে।'
+            }
           },
           title: { en: 'You fix it and tray it', bn: 'আপনি ঠিক করে ট্রেতে রাখেন' },
           simple: {
@@ -472,6 +597,13 @@ export const gitBasics: Topic = {
             repo: { en: 'Merged, clash fixed', bn: 'জোড়া, সংঘাত মিটেছে' },
             idx: { en: 'Tray empty', bn: 'ট্রে খালি' },
             wd: { en: 'All tidy', bn: 'সব গোছানো' }
+          },
+          story: {
+            title: { en: 'The page is saved', bn: 'পাতাটা সেভ হয়' },
+            text: {
+              en: 'Mina glues the page, and the join is done. The album now tells both stories with one agreed caption.',
+              bn: 'মিনা পাতাটা আটকায়, আর জোড়া শেষ। অ্যালবাম এখন দুজনের গল্পই বলে, একটা ঠিক করা ক্যাপশনসহ।'
+            }
           },
           title: { en: 'You finish the merge', bn: 'আপনি মেলানো শেষ করেন' },
           simple: {
@@ -503,6 +635,13 @@ export const gitBasics: Topic = {
           plainState: {
             repo: { en: 'Marker off any branch', bn: 'নোট কোনো ব্রাঞ্চে নেই' }
           },
+          story: {
+            title: { en: 'Mina flips back in time', bn: 'মিনা সময়ে পিছিয়ে যায়' },
+            text: {
+              en: 'Mina wants to see an old page, so Mina opens it by its short code. The sticky note lets go; Mina is now on no branch at all.',
+              bn: 'মিনা একটা পুরোনো পাতা দেখতে চায়, তাই ছোট কোড দিয়ে সেটা খোলে। স্টিকি নোট ছেড়ে যায়; মিনা এখন কোনো ধারাতেই নেই।'
+            }
+          },
           title: { en: 'You jump to an old page', bn: 'আপনি পুরোনো পাতায় যান' },
           simple: {
             en: 'You jump back to an old page using its short code. Your sticky note now sits on no branch at all.',
@@ -524,6 +663,13 @@ export const gitBasics: Topic = {
             repo: { en: 'New page, no branch', bn: 'নতুন পাতা, ব্রাঞ্চ নেই' },
             idx: { en: 'Tray empty', bn: 'ট্রে খালি' }
           },
+          story: {
+            title: { en: 'A page with no note', bn: 'নোটহীন একটা পাতা' },
+            text: {
+              en: 'While there, Mina glues a quick fix as a new page. Careful: no sticky note points to it. Walk away now and it is very hard to find again.',
+              bn: 'সেখানে থাকতে মিনা ছোট একটা সংশোধন নতুন পাতা হিসেবে আটকায়। সাবধান: কোনো স্টিকি নোট এটার দিকে দেখায় না। এখনই চলে গেলে এটা আবার খুঁজে পাওয়া খুব কঠিন।'
+            }
+          },
           title: { en: 'A page that belongs to no branch', bn: 'কোনো ব্রাঞ্চের নয় এমন পাতা' },
           simple: {
             en: 'You save a fix as a new page. Careful: it is on no branch. Leave without naming it, and it is very hard to find again.',
@@ -539,6 +685,13 @@ export const gitBasics: Topic = {
           work: { node: 'repo', kind: 'result' },
           state: { repo: { en: 'HEAD → rescue → e3f4a5', bn: 'HEAD → rescue → e3f4a5' } },
           plainState: { repo: { en: 'Saved as rescue', bn: 'rescue নামে সেভ' } },
+          story: {
+            title: { en: 'Mina adds a sticky note', bn: 'মিনা স্টিকি নোট লাগায়' },
+            text: {
+              en: 'Mina sticks a new note called rescue on the page. Now it has a name, and the page is safe.',
+              bn: 'মিনা পাতাটায় rescue নামে একটা নতুন নোট লাগায়। এখন এর একটা নাম আছে, আর পাতাটা নিরাপদ।'
+            }
+          },
           title: { en: 'You give it a branch', bn: 'আপনি ব্রাঞ্চ নাম দেন' },
           simple: {
             en: 'You give the page a branch name. Now your sticky note has a home, and the page is safe.',

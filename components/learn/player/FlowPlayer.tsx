@@ -8,13 +8,14 @@ import KindLegend from './KindLegend'
 import NowPanel from './NowPanel'
 import PlayerControls from './PlayerControls'
 import StopList from './StopList'
-import { firstAltIndex, stepKind } from './flow'
+import { effectiveMode, firstAltIndex, stepKind } from './flow'
 import { useStepPlayer } from './useStepPlayer'
 
 const layoutFor = (width: number): LayoutKey => (width >= 600 ? 'wide' : 'narrow')
 
 export default function FlowPlayer({ topic }: { topic: Topic }) {
-  const { t, ui, mode, setMode } = useLearnPrefs()
+  const { t, ui, mode: stored, setMode } = useLearnPrefs()
+  const mode = effectiveMode(stored, topic)
   const { state, steps, dispatch } = useStepPlayer(topic, mode)
   const stageRef = useRef<HTMLDivElement>(null)
   const [layout, setLayout] = useState<LayoutKey>('wide')
@@ -70,7 +71,11 @@ export default function FlowPlayer({ topic }: { topic: Topic }) {
           <span id="mode-l">{ui('explainLabel')}</span>
           <SegmentedControl
             ariaLabel={ui('explainLabel')}
-            options={[{ value: 'simple', label: ui('modeSimple') }, { value: 'technical', label: ui('modeTech') }]}
+            options={[
+              { value: 'simple', label: ui('modeSimple') },
+              ...(topic.story ? [{ value: 'story', label: ui('modeStory') }] : []),
+              { value: 'technical', label: ui('modeTech') },
+            ]}
             value={mode}
             onChange={(v) => setMode(v as Mode)}
           />
@@ -86,7 +91,7 @@ export default function FlowPlayer({ topic }: { topic: Topic }) {
           <KindLegend topic={topic} />
         </div>
         <div className="ride">
-          <NowPanel steps={steps} index={state.step} kind={kind} whatIf={whatIf} takeaway={takeaway} />
+          <NowPanel topic={topic} steps={steps} index={state.step} kind={kind} whatIf={whatIf} takeaway={takeaway} />
           <PlayerControls
             playing={state.playing}
             atStart={state.step === 0}
@@ -95,7 +100,7 @@ export default function FlowPlayer({ topic }: { topic: Topic }) {
             onNext={() => dispatch({ type: 'next' })}
             onPlay={onPlay}
           />
-          <StopList steps={steps} index={state.step} kind={kind} onGo={(i) => dispatch({ type: 'go', index: i })} />
+          <StopList mode={mode} steps={steps} index={state.step} kind={kind} onGo={(i) => dispatch({ type: 'go', index: i })} />
         </div>
       </section>
     </>

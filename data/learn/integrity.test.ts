@@ -157,6 +157,10 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
     t.alts.forEach((a) => seen.push([`alt ${a.id} label`, a.label.en], [`alt ${a.id} whatIf`, a.whatIf?.en ?? '']))
     seen.push(['main label', t.main.label.en])
     Object.entries(t.legend ?? {}).forEach(([k, v]) => seen.push([`legend ${k}`, v.en]))
+    if (t.story) {
+      seen.push(['story cast', t.story.cast.en])
+      for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) seen.push([`${s.id} story title`, s.story?.title.en ?? ''], [`${s.id} story text`, s.story?.text.en ?? ''])
+    }
     seen.push(['hook', t.hook?.en ?? ''], ['takeaway', t.takeaway?.en ?? ''])
     t.words.forEach((w) => seen.push([`word ${w.term.en}`, w.d.en]))
     t.groups?.forEach((g) => seen.push([`group ${g.id}`, (g.plain ?? g.label).en]))
@@ -164,6 +168,19 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
     for (const [where, s] of seen) {
       expect(code.test(s) || camel.test(s),`${where}: "${s}"`).toBe(false)
       for (const a of s.match(/\b[A-Z]{2,}\b/g) ?? []) expect(defined.has(a) || allow.has(a), `${where}: acronym ${a}`).toBe(true)
+    }
+  })
+  it('story copy is complete and short when present', () => {
+    if (!t.story) return
+    for (const l of [t.story.cast]) expect(l.en.trim() && l.bn.trim(), 'cast').toBeTruthy()
+    for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) {
+      expect(s.story, `${s.id} story`).toBeTruthy()
+      for (const l of [s.story!.title, s.story!.text]) {
+        expect(l.en.trim().length, `${s.id} story en`).toBeGreaterThan(0)
+        expect(l.bn.trim().length, `${s.id} story bn`).toBeGreaterThan(0)
+      }
+      expect(words(s.story!.text.en), `${s.id} story text`).toBeLessThanOrEqual(45)
+      expect(s.story!.title.en.length, `${s.id} story title`).toBeLessThanOrEqual(40)
     }
   })
   it('has a station on the map', () => {

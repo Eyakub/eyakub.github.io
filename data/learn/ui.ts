@@ -28,6 +28,7 @@ export const UI = {
   backToMap: { en: 'Network map', bn: 'নেটওয়ার্ক ম্যাপ' },
   explainLabel: { en: 'Explain it', bn: 'ব্যাখ্যা' },
   modeSimple: { en: 'Simply', bn: 'সহজভাবে' },
+  modeStory: { en: 'Story', bn: 'গল্প' },
   modeTech: { en: 'Technically', bn: 'টেকনিক্যালি' },
   routeLabel: { en: 'Route', bn: 'রুট' },
   routeMain: { en: 'Everything works', bn: 'সব ঠিক থাকলে' },

@@ -2,7 +2,7 @@ import { useMemo, type CSSProperties } from 'react'
 import { useLearnPrefs } from '../../../contexts/LearnPrefsContext'
 import { ICON } from '../../../data/learn/icons'
 import type { Kind, LayoutKey, Topic, Side, Step } from '../../../data/learn/types'
-import { focusNodes, nodeLabels, nodeSubAt, stepKind, trips, visitedEdges, workNodes } from './flow'
+import { effectiveMode, focusNodes, isPlain, nodeLabels, nodeSubAt, stepKind, trips, visitedEdges, workNodes } from './flow'
 import { bidirectionalCorridors, edgePoints, pathD } from './geometry'
 import { usePackets } from './usePackets'
 
@@ -23,7 +23,8 @@ function labelPos(x: number, y: number, side: Side, r: number) {
 }
 
 export default function FlowDiagram({ topic, layout, steps, index, animate }: Props) {
-  const { t, mode, lang } = useLearnPrefs()
+  const { t, mode: stored, lang } = useLearnPrefs()
+  const mode = effectiveMode(stored, topic)
   const bidir = useMemo(() => bidirectionalCorridors(topic), [topic])
   const step = steps[index]
   const kind = stepKind(topic, step)
@@ -55,7 +56,7 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
           <g key={g.id} className="group">
             <rect x={gx} y={gy} width={gw} height={gh} rx="16" />
             {/* Narrow: the spine runs down the left of the group, so the label sits at its right end. */}
-            <text x={layout === 'narrow' ? gx + gw - 12 : gx + 14} y={gy - 8} textAnchor={layout === 'narrow' ? 'end' : 'start'}>{t(mode === 'simple' && g.plain ? g.plain : g.label)}</text>
+            <text x={layout === 'narrow' ? gx + gw - 12 : gx + 14} y={gy - 8} textAnchor={layout === 'narrow' ? 'end' : 'start'}>{t(isPlain(mode) && g.plain ? g.plain : g.label)}</text>
           </g>
         )
       })}

@@ -1,13 +1,15 @@
 import type { CSSProperties } from 'react'
 import { useLearnPrefs } from '../../../contexts/LearnPrefsContext'
 import { fmt, num } from '../../../lib/learn/l10n'
-import type { Kind, L10n, Step } from '../../../data/learn/types'
+import type { Kind, L10n, Step, Topic } from '../../../data/learn/types'
+import { effectiveMode, stepTitle } from './flow'
 import { Rich } from '../shell/Rich'
 
-interface Props { steps: Step[]; index: number; kind: Kind; whatIf?: L10n; takeaway?: L10n }
+interface Props { topic: Topic; steps: Step[]; index: number; kind: Kind; whatIf?: L10n; takeaway?: L10n }
 
-export default function NowPanel({ steps, index, kind, whatIf, takeaway }: Props) {
-  const { t, ui, lang, mode } = useLearnPrefs()
+export default function NowPanel({ topic, steps, index, kind, whatIf, takeaway }: Props) {
+  const { t, ui, lang, mode: stored } = useLearnPrefs()
+  const mode = effectiveMode(stored, topic)
   const step = steps[index]
   const nx = steps[index + 1]
   return (
@@ -20,8 +22,8 @@ export default function NowPanel({ steps, index, kind, whatIf, takeaway }: Props
       </div>
       <div className="now-body" aria-live="polite">
         {whatIf && <p className="whatif">{t(whatIf)}</p>}
-        <h2 id="step-title">{t(step.title)}</h2>
-        <p id="step-simple"><Rich text={t(step.simple)} /></p>
+        <h2 id="step-title">{t(stepTitle(step, mode))}</h2>
+        <p id="step-simple"><Rich text={t(mode === 'story' && step.story ? step.story.text : step.simple)} /></p>
         {mode === 'technical' && (
           <div className="tech" id="step-tech">
             <span className="tech-l">{ui('underHood')}</span>
@@ -31,7 +33,7 @@ export default function NowPanel({ steps, index, kind, whatIf, takeaway }: Props
         {takeaway ? (
           <div className="remember"><span>{ui('remember')}</span><p>{t(takeaway)}</p></div>
         ) : (
-          <p className="next" id="step-next">{nx ? fmt(ui('nextStop'), { t: t(nx.title) }) : ui('endLine')}</p>
+          <p className="next" id="step-next">{nx ? fmt(ui('nextStop'), { t: t(stepTitle(nx, mode)) }) : ui('endLine')}</p>
         )}
       </div>
     </div>

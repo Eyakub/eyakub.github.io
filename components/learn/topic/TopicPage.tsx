@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useLearnPrefs } from '../../../contexts/LearnPrefsContext'
 import { LINES } from '../../../data/learn/network'
 import type { Topic } from '../../../data/learn/types'
+import { effectiveMode, isPlain } from '../player/flow'
 import FlowPlayer from '../player/FlowPlayer'
 import AnalogyTwins from '../sections/AnalogyTwins'
 import CheatSheet from '../sections/CheatSheet'
@@ -10,7 +11,9 @@ import Sources from '../sections/Sources'
 import WordsFirst from '../sections/WordsFirst'
 
 export default function TopicPage({ topic }: { topic: Topic }) {
-  const { t, ui, mode, learned, toggleLearned } = useLearnPrefs()
+  const { t, ui, mode: stored, learned, toggleLearned } = useLearnPrefs()
+  const mode = effectiveMode(stored, topic)
+  const lede = mode === 'story' && topic.story ? topic.story.cast : isPlain(mode) && topic.hook ? topic.hook : topic.summary
   const on = learned.includes(topic.slug)
   const line = LINES.find((l) => l.id === topic.line)
   return (
@@ -30,7 +33,7 @@ export default function TopicPage({ topic }: { topic: Topic }) {
           <span>{line ? ui(line.name) : ''}</span>
         </p>
         <h1 className="display" id="topic-title">{t(topic.title)}</h1>
-        <p className="lede">{t(mode === 'simple' && topic.hook ? topic.hook : topic.summary)}</p>
+        <p className="lede">{t(lede)}</p>
       </header>
       <WordsFirst topic={topic} />
       </div>

@@ -536,6 +536,30 @@ const checks = [
       noProblems(problems)
     }
   }],
+  ['story-mode', async () => {
+    const git = await open('/learn/git-basics')
+    await git.page.waitForSelector('#next')
+    const storyBtn = git.page.getByRole('button', { name: 'Story', exact: true })
+    assert((await storyBtn.count()) === 1, 'git-basics: Story button missing')
+    await storyBtn.click()
+    await git.page.locator('.now h2', { hasText: 'Mina edits a photo' }).waitFor({ timeout: 5000 })
+    const now = await git.page.textContent('.now')
+    assert(now.includes('Mina is fixing the trip album at home'), `story text missing: ${now}`)
+    const lede = await git.page.textContent('.lede')
+    assert(lede.includes('Mina and Rafi are making one trip photo album'), `lede is not the cast line: ${lede}`)
+    const names = await git.page.locator('.node .nm').allTextContents()
+    assert(names.includes('Messy desk'), `station labels are not plain: ${names.join(', ')}`)
+    await git.page.click('#next')
+    await git.page.locator('.now h2', { hasText: 'Mina glues a page' }).waitFor({ timeout: 5000 })
+    await git.context.close()
+    noProblems(git.problems)
+
+    const celery = await open('/learn/celery-redis')
+    await celery.page.waitForSelector('#next')
+    assert((await celery.page.getByRole('button', { name: 'Story', exact: true }).count()) === 0, 'celery-redis: Story button should not exist')
+    await celery.context.close()
+    noProblems(celery.problems)
+  }],
   ['teach-scaffold', async () => {
     // Runs only for topics migrated to the Simply layer (taught: true).
     for (const { slug, altBtn = 1 } of TOPIC_CASES.filter((c) => c.taught)) {

@@ -2,6 +2,9 @@ import { describe, it, expect } from 'vitest'
 import { parseStored, DEFAULT_PREFS } from './prefs'
 
 describe('parseStored', () => {
+  it('accepts the story mode', () => {
+    expect(parseStored({ lang: null, mode: '"story"', learned: null }).mode).toBe('story')
+  })
   it('returns defaults for null values', () => {
     expect(parseStored({ lang: null, mode: null, learned: null })).toEqual(DEFAULT_PREFS)
   })
