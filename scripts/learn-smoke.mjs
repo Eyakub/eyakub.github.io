@@ -556,7 +556,11 @@ const checks = [
 
     const celery = await open('/learn/celery-redis')
     await celery.page.waitForSelector('#next')
-    assert((await celery.page.getByRole('button', { name: 'Story', exact: true }).count()) === 0, 'celery-redis: Story button should not exist')
+    const celeryStory = celery.page.getByRole('button', { name: 'Story', exact: true })
+    assert((await celeryStory.count()) === 1, 'celery-redis: Story button missing')
+    await celeryStory.click()
+    const celeryLede = await celery.page.textContent('.lede')
+    assert(celeryLede.includes('Nila orders a birthday cake'), `celery-redis lede is not the cast line: ${celeryLede}`)
     await celery.context.close()
     noProblems(celery.problems)
   }],
