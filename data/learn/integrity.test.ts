@@ -80,7 +80,8 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
       expect(l.bn.split('`').length % 2, l.bn).toBe(1)
     }
   })
-  it('parallel moves use distinct edges and their packets never overlap', () => {
+  // Conservative heuristic: assumes each pill rests mid-way on its trip's last hop. Real placement is placePill's job and may sit elsewhere, so a failure here is a prompt to look, not proof.
+  it('parallel moves use distinct edges and their packet pills are not obviously crowded', () => {
     const pillW = (label: string) => label.length * 7.6 + 26
     const longest = (m: { label: string; plain?: L10n }) => [m.label, m.plain?.en ?? '', m.plain?.bn ?? ''].reduce((a, b) => (b.length > a.length ? b : a))
     const bidir = bidirectionalCorridors(t)
@@ -100,6 +101,26 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
       }
     }
   })
+  it('moves in one trip show the same label, because only the last move is drawn', () => {
+    for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) {
+      if (!s.moves) continue
+      let i = 0
+      for (const tr of trips(t, s.moves)) {
+        const group = s.moves.slice(i, i + tr.edges.length)
+        i += tr.edges.length
+        group.forEach((m) => {
+          expect(m.label, `${s.id}: earlier hop "${m.label}" is hidden by "${tr.move.label}"`).toBe(tr.move.label)
+          expect(m.plain, `${s.id}: earlier hop plain differs`).toEqual(tr.move.plain)
+        })
+      }
+    }
+  })
+  it('every move has a plain label in both languages', () => {
+    for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) s.moves?.forEach((m) => {
+      expect(m.plain?.en?.trim(), `${s.id}: ${m.label} plain.en`).toBeTruthy()
+      expect(m.plain?.bn?.trim(), `${s.id}: ${m.label} plain.bn`).toBeTruthy()
+    })
+  })
   it('packet labels stay short', () => {
     for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) s.moves?.forEach((m) => expect(m.label.length, `${s.id}: ${m.label}`).toBeLessThanOrEqual(24))
   })
@@ -109,13 +130,22 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
     t.words.forEach((w) => expect(words(w.d.en), w.term.en).toBeLessThanOrEqual(15))
     expect(words(t.hook.en)).toBeLessThanOrEqual(25)
     expect(words(t.takeaway.en)).toBeLessThanOrEqual(25)
+    // one sentence: no terminal . ! ? before the end (a final one is fine)
+    const midStops = (x: string) => (x.trim().replace(/[.!?]$/, '').match(/[.!?](\s|$)/g) ?? []).length
+    for (const [k, v] of [['hook', t.hook], ['takeaway', t.takeaway]] as const) {
+      expect(midStops(v.en), `${k} en is one sentence`).toBe(0)
+      expect(v.bn.trim().replace(/[।.!?]$/, '').match(/[।!?]|\.(\s|$)/g) ?? [], `${k} bn is one sentence`).toHaveLength(0)
+    }
     t.alts.forEach((a) => expect(a.whatIf.en.startsWith('What if'), a.id).toBe(true))
+    t.alts.forEach((a) => expect(a.whatIf.en.length, `${a.id} whatIf fits the 2-line banner`).toBeLessThanOrEqual(85))
     for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) s.moves?.forEach((m) => { if (m.plain) expect(m.plain.en.length, s.id).toBeLessThanOrEqual(18) })
   })
   it('Simply mode has no code or undefined acronyms', () => {
     const defined = new Set(t.words.flatMap((w) => w.term.en.match(/\b[A-Z]{2,}\b/g) ?? []))
     const allow = new Set(['OK'])
-    const code = /`|\(\)|__|->|=|\b[a-z]+\.[a-z]+\b|\b\w\/\w\b/i
+    // snake_case, camelCase, versions (allowing a plain duration such as 3.5 seconds) and bare HTTP status codes
+    const code = /`|\(\)|__|->|=|\b[a-z]+\.[a-z]+\b|\b\w\/\w\b|\b[a-z]+_[a-z0-9_]+\b|\b\d+\.\d+(?!\d|\s*(?:seconds?|secs?|ms|s)\b)|(?<![\d.])[1-5]\d\d(?![\d.])/i
+    const camel = /\b[a-z]+[A-Z]\w*\b/
     const seen: [string, string][] = []
     Object.entries(t.nodes).forEach(([id, n]) => { const p = n.plain ?? n; seen.push([`node ${id} name`, p.name.en], [`node ${id} sub`, p.sub.en]) })
     for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) {
@@ -125,12 +155,14 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
       keys.forEach((k) => seen.push([`${s.id} state ${k}`, (s.plainState?.[k] ?? s.state![k]).en]))
     }
     t.alts.forEach((a) => seen.push([`alt ${a.id} label`, a.label.en], [`alt ${a.id} whatIf`, a.whatIf?.en ?? '']))
+    seen.push(['main label', t.main.label.en])
+    Object.entries(t.legend ?? {}).forEach(([k, v]) => seen.push([`legend ${k}`, v.en]))
     seen.push(['hook', t.hook?.en ?? ''], ['takeaway', t.takeaway?.en ?? ''])
     t.words.forEach((w) => seen.push([`word ${w.term.en}`, w.d.en]))
     t.groups?.forEach((g) => seen.push([`group ${g.id}`, (g.plain ?? g.label).en]))
     t.analogy.twins.forEach((tw) => seen.push([`twin ${tw.name.en}`, tw.d.en]))
     for (const [where, s] of seen) {
-      expect(code.test(s), `${where}: "${s}"`).toBe(false)
+      expect(code.test(s) || camel.test(s),`${where}: "${s}"`).toBe(false)
       for (const a of s.match(/\b[A-Z]{2,}\b/g) ?? []) expect(defined.has(a) || allow.has(a), `${where}: acronym ${a}`).toBe(true)
     }
   })

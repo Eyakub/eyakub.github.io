@@ -14,8 +14,8 @@ export const pythonGil: Topic = {
     bn: 'Python-এ একসময়ে একজন রাঁধুনিই স্টোভ ব্যবহার করতে পারে, তাই বেশি রাঁধুনি নিলেই রান্না সবসময় দ্রুত হয় না।'
   },
   takeaway: {
-    en: 'Only the cook wearing the hat can cook. Waiting at the door or using a rice cooker frees the hat.',
-    bn: 'যার মাথায় টুপি, শুধু সে-ই রাঁধতে পারে। দরজায় অপেক্ষা বা রাইস কুকার ব্যবহার করলে টুপি খালি হয়।'
+    en: 'Only the cook wearing the hat can cook, and waiting at the door or using a rice cooker frees the hat.',
+    bn: 'যার মাথায় টুপি, শুধু সে-ই রাঁধতে পারে, আর দরজায় অপেক্ষা বা রাইস কুকার ব্যবহার করলে টুপি খালি হয়।'
   },
   words: [
     {
@@ -592,8 +592,8 @@ export const pythonGil: Topic = {
           },
           title: { en: 'Cooks still need their own rules', bn: 'রাঁধুনিদের নিজের নিয়ম তবু লাগে' },
           simple: {
-            en: 'Even with no hat, two cooks writing on the same whiteboard can clash. They still need a rule, like one marker pen.',
-            bn: 'টুপি না থাকলেও একই হোয়াইটবোর্ডে দুজন লিখলে গোলমাল হতে পারে। তাদের নিজের নিয়ম লাগে, যেমন একটাই মার্কার কলম।'
+            en: 'Even with no hat, two cooks writing on the same note can clash. They still need a rule for taking turns.',
+            bn: 'টুপি না থাকলেও একই নোটে দুজন রাঁধুনি লিখলে গোলমাল হতে পারে। তাদের পালা নেওয়ার নিয়ম তবু লাগে।'
           },
           tech: {
             en: 'Built-ins stay internally consistent, but compound operations such as check-then-act and `+=` can still race. Use explicit synchronization.',

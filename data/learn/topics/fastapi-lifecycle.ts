@@ -354,7 +354,7 @@ export const fastapiLifecycle: Topic = {
       {
         id: 'delivered',
         moves: [
-          { edge: 'su', label: 'response', plain: { en: 'The dish', bn: 'খাবার' } },
+          { edge: 'su', label: '200 OK', plain: { en: 'The dish', bn: 'খাবার' } },
           { edge: 'uc', label: '200 OK', plain: { en: 'The dish', bn: 'খাবার' } }
         ],
         title: { en: 'The dish is served', bn: 'খাবার পরিবেশন হয়' },

@@ -14,8 +14,8 @@ export const concurrencyVsParallelism: Topic = {
     bn: 'রান্নাঘর দ্রুত হতে পারে পদ পালা করে সামলিয়ে বা চুলা বাড়িয়ে, আর এ দুটো আলাদা সমস্যা মেটায়।'
   },
   takeaway: {
-    en: 'Juggling helps when dishes wait on the oven. More burners help when every dish needs a cook the whole time.',
-    bn: 'ওভেনে অপেক্ষা থাকলে পালা করা কাজে লাগে। সারাক্ষণ রাঁধুনি লাগলে বেশি চুলা কাজে লাগে।'
+    en: 'Juggling helps when dishes wait on the oven, but more burners help when every dish needs a cook the whole time.',
+    bn: 'ওভেনে অপেক্ষা থাকলে পালা করা কাজে লাগে, কিন্তু সারাক্ষণ রাঁধুনি লাগলে বেশি চুলা কাজে লাগে।'
   },
   words: [
     {
@@ -184,7 +184,7 @@ export const concurrencyVsParallelism: Topic = {
       },
       {
         id: 'a-waits',
-        moves: [ { edge: 'core1-wait', label: 'A zzz' } ],
+        moves: [ { edge: 'core1-wait', label: 'A zzz', plain: { en: 'Dish A waits', bn: 'পদ A অপেক্ষায়' } } ],
         state: {
           core1: { en: 'Free', bn: 'ফাঁকা' },
           wait: { en: 'A needs oven', bn: 'A ওভেনে' }
@@ -193,7 +193,7 @@ export const concurrencyVsParallelism: Topic = {
         title: { en: 'Dish A has to bake', bn: 'A-কে বেক হতে হবে' },
         simple: {
           en: 'Dish A needs the oven. The cook puts it in the oven instead of staring at it, so Burner 1 is free.',
-          bn: 'A পদটার ওভেন লাগে। কুক ওভেনের দিকে তাকিয়ে না থেকে সেটা ওভেনে রাখে, তাই চুলা ১ ফাঁকা।'
+          bn: 'A পদটার ওভেন লাগে। রাঁধুনি ওভেনের দিকে তাকিয়ে না থেকে সেটা ওভেনে রাখে, তাই চুলা ১ ফাঁকা।'
         },
         tech: {
           en: 'Task A blocks on slow I/O. The core is released instead of spinning, and that is what makes interleaving possible.',
@@ -202,13 +202,13 @@ export const concurrencyVsParallelism: Topic = {
       },
       {
         id: 'start-b',
-        moves: [ { edge: 'queue-core1', label: 'dish B' } ],
+        moves: [ { edge: 'queue-core1', label: 'dish B', plain: { en: 'Dish B', bn: 'পদ B' } } ],
         state: { core1: { en: 'Running B', bn: 'B চালাচ্ছে' } },
         plainState: { core1: { en: 'Cooking B', bn: 'B রাঁধছে' } },
-        title: { en: 'The same cook starts B', bn: 'একই কুক B শুরু করে' },
+        title: { en: 'The same cook starts B', bn: 'একই রাঁধুনি B শুরু করে' },
         simple: {
           en: 'While A bakes, the same cook starts dish B on Burner 1. Two dishes are now under way.',
-          bn: 'A যখন বেক হচ্ছে, একই কুক চুলা ১-এ B শুরু করে। এখন দুটো পদ এগোচ্ছে।'
+          bn: 'A যখন বেক হচ্ছে, একই রাঁধুনি চুলা ১-এ B শুরু করে। এখন দুটো পদ এগোচ্ছে।'
         },
         tech: {
           en: 'The core runs B during A’s wait. Two tasks are in progress but only one executes at a time: that is concurrency.',
@@ -217,7 +217,7 @@ export const concurrencyVsParallelism: Topic = {
       },
       {
         id: 'a-resumes',
-        moves: [ { edge: 'wait-core1', label: 'ready' } ],
+        moves: [ { edge: 'wait-core1', label: 'ready', plain: { en: 'Ready', bn: 'তৈরি' } } ],
         state: {
           core1: { en: 'Resumes A', bn: 'A ধরে' },
           wait: { en: 'Empty', bn: 'ফাঁকা' }
@@ -226,7 +226,7 @@ export const concurrencyVsParallelism: Topic = {
         title: { en: 'The oven pings', bn: 'ওভেন বেজে ওঠে' },
         simple: {
           en: 'The oven pings. Dish A comes back to Burner 1, and the cook pauses B to finish it.',
-          bn: 'ওভেন বেজে ওঠে। A চুলা ১-এ ফিরে আসে, আর কুক B থামিয়ে সেটা শেষ করে।'
+          bn: 'ওভেন বেজে ওঠে। A চুলা ১-এ ফিরে আসে, আর রাঁধুনি B থামিয়ে সেটা শেষ করে।'
         },
         tech: {
           en: 'A’s I/O completes, so A can resume. The switch is a context switch for OS threads, or a resume at `await` in asyncio.',
@@ -235,7 +235,7 @@ export const concurrencyVsParallelism: Topic = {
       },
       {
         id: 'a-done',
-        moves: [ { edge: 'core1-done', label: 'dish A' } ],
+        moves: [ { edge: 'core1-done', label: 'dish A', plain: { en: 'Dish A', bn: 'পদ A' } } ],
         state: {
           done: { en: '1 result', bn: '১টা ফলাফল' },
           core1: { en: 'Back to B', bn: 'আবার B' }
@@ -244,7 +244,7 @@ export const concurrencyVsParallelism: Topic = {
         title: { en: 'Dish A is finished', bn: 'A তৈরি' },
         simple: {
           en: 'Dish A goes out to be served. The cook goes back to dish B.',
-          bn: 'A পদটা পরিবেশনের জন্য বেরিয়ে যায়। কুক আবার B-তে ফেরে।'
+          bn: 'A পদটা পরিবেশনের জন্য বেরিয়ে যায়। রাঁধুনি আবার B-তে ফেরে।'
         },
         tech: {
           en: 'A completes and B continues on the same core. Total time beats running A then B, because B used A’s idle time.',
@@ -253,7 +253,7 @@ export const concurrencyVsParallelism: Topic = {
       },
       {
         id: 'b-done',
-        moves: [ { edge: 'core1-done', label: 'dish B' } ],
+        moves: [ { edge: 'core1-done', label: 'dish B', plain: { en: 'Dish B', bn: 'পদ B' } } ],
         state: {
           done: { en: '2 results', bn: '২টা ফলাফল' },
           core1: { en: 'Idle', bn: 'বসে আছে' }
@@ -265,7 +265,7 @@ export const concurrencyVsParallelism: Topic = {
         title: { en: 'B is finished too', bn: 'B-ও তৈরি' },
         simple: {
           en: 'One cook made both dishes by juggling them. That is concurrency: many dishes under way, one being cooked at a time.',
-          bn: 'একজন কুক পালা করে দুটো পদই বানাল। এটাই concurrency: অনেক পদ এগোচ্ছে, কিন্তু একসময়ে একটা রান্না হচ্ছে।'
+          bn: 'একজন রাঁধুনি পালা করে দুটো পদই বানাল। এটাই concurrency: অনেক পদ এগোচ্ছে, কিন্তু একসময়ে একটা রান্না হচ্ছে।'
         },
         tech: {
           en: 'One core progressed two tasks by interleaving. Concurrency does not need more than one core.',
@@ -274,7 +274,7 @@ export const concurrencyVsParallelism: Topic = {
       },
       {
         id: 'two-start',
-        moves: [ { edge: 'queue-core1', label: 'dish C' }, { edge: 'queue-core2', label: 'dish D' } ],
+        moves: [ { edge: 'queue-core1', label: 'dish C', plain: { en: 'Dish C', bn: 'পদ C' } }, { edge: 'queue-core2', label: 'dish D', plain: { en: 'Dish D', bn: 'পদ D' } } ],
         state: {
           core1: { en: 'Running C', bn: 'C চালাচ্ছে' },
           core2: { en: 'Running D', bn: 'D চালাচ্ছে' }
@@ -283,10 +283,10 @@ export const concurrencyVsParallelism: Topic = {
           core1: { en: 'Cooking C', bn: 'C রাঁধছে' },
           core2: { en: 'Cooking D', bn: 'D রাঁধছে' }
         },
-        title: { en: 'Two cooks start together', bn: 'দুই কুক একসাথে শুরু করে' },
+        title: { en: 'Two cooks start together', bn: 'দুই রাঁধুনি একসাথে শুরু করে' },
         simple: {
           en: 'Now two cooks stand at two burners. They start dishes C and D at the exact same moment.',
-          bn: 'এবার দুই কুক দুটো চুলায় দাঁড়ায়। তারা ঠিক একই মুহূর্তে C আর D শুরু করে।'
+          bn: 'এবার দুই রাঁধুনি দুটো চুলায় দাঁড়ায়। তারা ঠিক একই মুহূর্তে C আর D শুরু করে।'
         },
         tech: {
           en: 'Two cores execute two instruction streams at the same instant: parallelism. It needs more than one core and a runtime that can use them.',
@@ -295,7 +295,7 @@ export const concurrencyVsParallelism: Topic = {
       },
       {
         id: 'two-done',
-        moves: [ { edge: 'core1-done', label: 'dish C' }, { edge: 'core2-done', label: 'dish D' } ],
+        moves: [ { edge: 'core1-done', label: 'dish C', plain: { en: 'Dish C', bn: 'পদ C' } }, { edge: 'core2-done', label: 'dish D', plain: { en: 'Dish D', bn: 'পদ D' } } ],
         state: {
           done: { en: '4 results', bn: '৪টা ফলাফল' },
           core1: { en: 'Idle', bn: 'বসে আছে' },
@@ -309,7 +309,7 @@ export const concurrencyVsParallelism: Topic = {
         title: { en: 'Both finish together', bn: 'দুটোই একসাথে শেষ' },
         simple: {
           en: 'Both dishes finish together, in about half the time one cook would need. Cooking at the same moment is parallelism.',
-          bn: 'দুটো পদই একসাথে শেষ, একজন কুকের লাগা সময়ের প্রায় অর্ধেকে। একই মুহূর্তে রান্না করাই parallelism।'
+          bn: 'দুটো পদই একসাথে শেষ, একজন রাঁধুনির লাগা সময়ের প্রায় অর্ধেকে। একই মুহূর্তে রান্না করাই parallelism।'
         },
         tech: {
           en: 'Two equal CPU-bound jobs take about half the wall-clock time, minus overhead. Interleaving alone only helps when tasks wait.',
@@ -322,7 +322,7 @@ export const concurrencyVsParallelism: Topic = {
         title: { en: 'Juggling is not cooking at once', bn: 'পালা করা আর একসাথে রাঁধা এক নয়' },
         simple: {
           en: 'One cook juggling A and B was concurrency. Two cooks cooking C and D together was parallelism. A kitchen can have both.',
-          bn: 'একজন কুক A আর B পালা করে সামলানো ছিল concurrency। দুজন কুক C আর D একসাথে রাঁধা ছিল parallelism। দুটোই একসাথে থাকতে পারে।'
+          bn: 'একজন রাঁধুনি A আর B পালা করে সামলানো ছিল concurrency। দুজন রাঁধুনি C আর D একসাথে রাঁধা ছিল parallelism। দুটোই একসাথে থাকতে পারে।'
         },
         tech: {
           en: 'Concurrency is how work is structured and scheduled. Parallelism is simultaneous execution, which needs several execution units.',
@@ -411,7 +411,7 @@ export const concurrencyVsParallelism: Topic = {
           title: { en: 'The second is late too', bn: 'দ্বিতীয়টাও দেরিতে' },
           simple: {
             en: 'The second dish finishes about then too. Both took twice as long, as if there were only one cook.',
-            bn: 'দ্বিতীয় পদও প্রায় তখনই শেষ হয়। দুটোতেই দ্বিগুণ সময় লেগেছে, যেন কুক একজনই ছিল।'
+            bn: 'দ্বিতীয় পদও প্রায় তখনই শেষ হয়। দুটোতেই দ্বিগুণ সময় লেগেছে, যেন রাঁধুনি একজনই ছিল।'
           },
           tech: {
             en: 'No speed-up for pure-Python CPU work. Use processes, GIL-releasing C extensions, 3.14 `InterpreterPoolExecutor`, or a free-threaded build.',
@@ -441,7 +441,7 @@ export const concurrencyVsParallelism: Topic = {
           title: { en: 'A thousand dishes baking', bn: 'হাজারটা পদ বেক হচ্ছে' },
           simple: {
             en: 'A thousand dishes can bake at once while the cook keeps working on B. Waiting in the oven needs no cook.',
-            bn: 'হাজারটা পদ একসাথে বেক হতে পারে, আর কুক B-তে কাজ করে যায়। ওভেনে অপেক্ষা করতে কুক লাগে না।'
+            bn: 'হাজারটা পদ একসাথে বেক হতে পারে, আর রাঁধুনি B-তে কাজ করে যায়। ওভেনে অপেক্ষা করতে রাঁধুনি লাগে না।'
           },
           tech: {
             en: 'Waiting tasks cost no CPU. That is why threads or asyncio scale to many I/O-bound connections on one core.',
@@ -450,13 +450,13 @@ export const concurrencyVsParallelism: Topic = {
         },
         {
           id: 'ready-one',
-          moves: [ { edge: 'wait-core1', label: 'ready' } ],
+          moves: [ { edge: 'wait-core1', label: 'ready', plain: { en: 'Ready', bn: 'তৈরি' } } ],
           state: { core1: { en: 'Runs one ready', bn: 'তৈরিটা ধরে' } },
           plainState: { core1: { en: 'Cooking a ready one', bn: 'তৈরিটা রাঁধছে' } },
           title: { en: 'Serve whichever is ready', bn: 'যেটা তৈরি সেটাই' },
           simple: {
             en: 'The cook takes whichever dish is ready next out of the oven.',
-            bn: 'কুক ওভেন থেকে যে পদটা পরের তৈরি, সেটাই নেয়।'
+            bn: 'রাঁধুনি ওভেন থেকে যে পদটা পরের তৈরি, সেটাই নেয়।'
           },
           tech: {
             en: 'The runtime wakes only ready tasks, via the OS scheduler for threads or a selector such as epoll for asyncio.',
@@ -469,7 +469,7 @@ export const concurrencyVsParallelism: Topic = {
   analogy: {
     intro: {
       en: 'Think of a kitchen. One cook juggling two dishes is concurrency; two cooks working side by side is parallelism.',
-      bn: 'একটা রান্নাঘর ভাবুন। একজন কুক দুটো পদ পালা করে সামলালে সেটা concurrency; দুজন কুক পাশাপাশি রান্না করলে সেটা parallelism।'
+      bn: 'একটা রান্নাঘর ভাবুন। একজন রাঁধুনি দুটো পদ পালা করে সামলালে সেটা concurrency; দুজন রাঁধুনি পাশাপাশি রান্না করলে সেটা parallelism।'
     },
     twins: [
       {
@@ -505,7 +505,7 @@ export const concurrencyVsParallelism: Topic = {
         name: { en: 'The oven', bn: 'ওভেন' },
         d: {
           en: 'A dish sits here while it bakes. Waiting needs no cook at all.',
-          bn: 'বেক হওয়ার সময় পদটা এখানে থাকে। অপেক্ষা করতে কুকের দরকারই হয় না।'
+          bn: 'বেক হওয়ার সময় পদটা এখানে থাকে। অপেক্ষা করতে রাঁধুনির দরকারই হয় না।'
         }
       },
       {
@@ -524,7 +524,7 @@ export const concurrencyVsParallelism: Topic = {
         is: { en: 'in a Python kitchen', bn: 'Python-এর রান্নাঘরে' },
         d: {
           en: 'You hired two cooks, but they share one chef’s hat. Only the wearer may cook, so the second cook stands idle.',
-          bn: 'দুজন কুক রেখেছেন, কিন্তু তাদের টুপি একটাই। শুধু যে পরে সে-ই রাঁধতে পারে, তাই দ্বিতীয় কুক বসে থাকে।'
+          bn: 'দুজন রাঁধুনি রেখেছেন, কিন্তু তাদের টুপি একটাই। শুধু যে পরে সে-ই রাঁধতে পারে, তাই দ্বিতীয় রাঁধুনি বসে থাকে।'
         }
       }
     ]

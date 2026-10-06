@@ -54,10 +54,10 @@ export const multiprocessingPools: Topic = {
       }
     },
     {
-      term: { en: 'Pass window', bn: 'পাস-জানালা' },
+      term: { en: 'Slip and pickup windows', bn: 'স্লিপ আর পিকআপ জানালা' },
       d: {
-        en: 'Where slips and finished dishes are handed between kitchens.',
-        bn: 'যেখানে স্লিপ আর তৈরি পদ এক রান্নাঘর থেকে আরেকটায় যায়।'
+        en: 'The slip window takes orders in. The pickup window hands finished dishes back.',
+        bn: 'স্লিপ-জানালা অর্ডার নেয়। পিকআপ-জানালা তৈরি পদ ফেরত দেয়।'
       }
     }
   ],
@@ -97,7 +97,7 @@ export const multiprocessingPools: Topic = {
       name: { en: 'Task queue', bn: 'Task queue' },
       sub: { en: 'Pickled chunks', bn: 'Pickled chunk' },
       plain: {
-        name: { en: 'Pass window', bn: 'পাস-জানালা' },
+        name: { en: 'Slip window', bn: 'স্লিপ-জানালা' },
         sub: { en: 'Slips go in here', bn: 'স্লিপ এখানে যায়' }
       },
       wide: [ 300, 330, 'down' ],
@@ -130,7 +130,7 @@ export const multiprocessingPools: Topic = {
       name: { en: 'Result queue', bn: 'Result queue' },
       sub: { en: 'Pickled results', bn: 'Pickled result' },
       plain: {
-        name: { en: 'Pass window', bn: 'পাস-জানালা' },
+        name: { en: 'Pickup window', bn: 'পিকআপ-জানালা' },
         sub: { en: 'Dishes come back here', bn: 'পদ এখানে ফেরে' }
       },
       wide: [ 800, 220, 'right' ],
@@ -254,8 +254,8 @@ export const multiprocessingPools: Topic = {
         },
         title: { en: 'The head chef copies orders onto slips', bn: 'হেড শেফ অর্ডার স্লিপে লেখে' },
         simple: {
-          en: 'The head chef splits the dishes into two batches and copies each order onto a slip. The slips wait at the pass window.',
-          bn: 'হেড শেফ পদগুলো দুই ভাগ করে প্রতিটা অর্ডার স্লিপে লিখে দেয়। স্লিপগুলো পাস-জানালায় অপেক্ষা করে।'
+          en: 'The head chef splits the dishes into two batches and copies each order onto a slip. The slips wait at the slip window.',
+          bn: 'হেড শেফ পদগুলো দুই ভাগ করে প্রতিটা অর্ডার স্লিপে লিখে দেয়। স্লিপগুলো স্লিপ-জানালায় অপেক্ষা করে।'
         },
         tech: {
           en: '`map` splits the input into chunks and pickles each one. `Pool.map` picks a chunk size from the input size and worker count. `Executor.map` uses 1 unless you set `chunksize`.',
@@ -303,8 +303,8 @@ export const multiprocessingPools: Topic = {
         },
         title: { en: 'Side kitchen 2 finishes first', bn: 'পাশের রান্নাঘর ২ আগে শেষ করে' },
         simple: {
-          en: 'Side kitchen 2 finishes first. It copies its finished dishes onto a slip and sends them back through the pass window.',
-          bn: 'পাশের রান্নাঘর ২ আগে শেষ করে। তৈরি পদ স্লিপে লিখে পাস-জানালা দিয়ে ফেরত পাঠায়।'
+          en: 'Side kitchen 2 finishes first. It copies its finished dishes onto a slip and sends them back through the pickup window.',
+          bn: 'পাশের রান্নাঘর ২ আগে শেষ করে। তৈরি পদ স্লিপে লিখে পিকআপ-জানালা দিয়ে ফেরত পাঠায়।'
         },
         tech: {
           en: 'Completion order depends on timing, not on submission order. `imap_unordered` and `as_completed` hand results over in this arrival order.',
@@ -324,8 +324,8 @@ export const multiprocessingPools: Topic = {
         },
         title: { en: 'Side kitchen 1 finishes second', bn: 'পাশের রান্নাঘর ১ পরে শেষ করে' },
         simple: {
-          en: 'Side kitchen 1 finishes second and sends its dishes back the same way, as a slip through the pass window.',
-          bn: 'পাশের রান্নাঘর ১ পরে শেষ করে আর একইভাবে, স্লিপে করে পাস-জানালা দিয়ে, নিজের পদ ফেরত পাঠায়।'
+          en: 'Side kitchen 1 finishes second and sends its dishes back the same way, as a slip through the pickup window.',
+          bn: 'পাশের রান্নাঘর ১ পরে শেষ করে আর একইভাবে, স্লিপে করে পিকআপ-জানালা দিয়ে, নিজের পদ ফেরত পাঠায়।'
         },
         tech: {
           en: 'Results are pickled in the worker and unpickled in the parent. The overhead grows with the size of the result.',
@@ -341,7 +341,7 @@ export const multiprocessingPools: Topic = {
         },
         plainState: {
           main: { en: 'Has all 8 dishes', bn: '৮টা পদই পেয়েছে' },
-          results: { en: 'Window empty', bn: 'জানালা খালি' }
+          results: { en: 'Pickup empty', bn: 'পিকআপ খালি' }
         },
         title: { en: 'The head chef puts them in order', bn: 'হেড শেফ ক্রমে সাজায়' },
         simple: {
@@ -546,7 +546,7 @@ export const multiprocessingPools: Topic = {
       {
         icon: 'queue',
         node: 'tasks',
-        name: { en: 'Pass window, orders', bn: 'পাস-জানালা, অর্ডার' },
+        name: { en: 'Slip window', bn: 'স্লিপ-জানালা' },
         d: {
           en: 'Order slips wait here until a side kitchen takes one.',
           bn: 'পাশের রান্নাঘর না নেওয়া পর্যন্ত অর্ডারের স্লিপ এখানে অপেক্ষা করে।'
@@ -573,7 +573,7 @@ export const multiprocessingPools: Topic = {
       {
         icon: 'store',
         node: 'results',
-        name: { en: 'Pass window, dishes', bn: 'পাস-জানালা, পদ' },
+        name: { en: 'Pickup window', bn: 'পিকআপ-জানালা' },
         d: {
           en: 'Finished dishes arrive here, in the order they were done.',
           bn: 'তৈরি পদ এখানে পৌঁছায়, যে ক্রমে শেষ হয়েছে সেই ক্রমে।'

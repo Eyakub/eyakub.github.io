@@ -10,8 +10,8 @@ export const raceConditionsLocks: Topic = {
     bn: 'দুটো thread একে অপরের আপডেট মুছে দিতে পারে; lock পালা করে চালিয়ে তা ঠেকায়, কিন্তু দুটো lock থেকে deadlock হতে পারে।'
   },
   hook: {
-    en: 'Two cooks updating one whiteboard number can erase each other’s work. One marker pen, held by one cook at a time, fixes it.',
-    bn: 'দুই রাঁধুনি একই বোর্ডের সংখ্যা বদলালে একজনের কাজ মুছে যেতে পারে। একবারে একজনের হাতে থাকা একটা মার্কার কলম তা ঠেকায়।'
+    en: 'Two cooks updating one whiteboard number can erase each other’s work, but one marker pen, held by one cook at a time, fixes it.',
+    bn: 'দুই রাঁধুনি একই বোর্ডের সংখ্যা বদলালে একজনের কাজ মুছে যেতে পারে, কিন্তু একবারে একজনের হাতে থাকা একটা মার্কার কলম তা ঠেকায়।'
   },
   takeaway: {
     en: 'Shared things need turns: only the cook holding the pen may touch the tally.',

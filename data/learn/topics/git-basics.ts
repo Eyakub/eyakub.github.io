@@ -10,8 +10,8 @@ export const gitBasics: Topic = {
     bn: 'একটা পরিবর্তন কীভাবে আপনার এডিটর থেকে commit হয়ে GitHub-এ যায়, আর সেখান থেকে সহকর্মীদের কাছে ফিরে আসে।'
   },
   hook: {
-    en: 'Git is a photo album for your files. It remembers every version, so you can undo mistakes and work with others.',
-    bn: 'Git হলো আপনার ফাইলের ফটো অ্যালবাম। এটা প্রতিটি ভার্সন মনে রাখে, তাই ভুল ফেরানো আর অন্যের সাথে কাজ করা সহজ হয়।'
+    en: 'Git is a photo album for your files that remembers every version, so you can undo mistakes and work with others.',
+    bn: 'Git হলো আপনার ফাইলের ফটো অ্যালবাম যা প্রতিটি ভার্সন মনে রাখে, তাই ভুল ফেরানো আর অন্যের সাথে কাজ করা সহজ হয়।'
   },
   takeaway: {
     en: 'Save in your own album, share when ready, and fetch before you merge.',
@@ -315,7 +315,7 @@ export const gitBasics: Topic = {
         {
           id: 'pull',
           moves: [
-            { edge: 'fetch', label: 'git fetch', plain: { en: 'Their new page', bn: 'তাদের নতুন পাতা' } },
+            { edge: 'fetch', label: 'git pull', plain: { en: 'Their work, joined', bn: 'তাদের কাজ, জোড়া' } },
             { edge: 'merge', label: 'git pull', plain: { en: 'Their work, joined', bn: 'তাদের কাজ, জোড়া' } }
           ],
           state: { rtrack: { en: 'Last seen: 77d4e1', bn: 'শেষ দেখা: 77d4e1' } },
