@@ -27,7 +27,7 @@ export default function FlowPlayer({ topic }: { topic: Topic }) {
     return () => ro.disconnect()
   }, [])
 
-  // First paint and layout swaps place the packet at rest; only step changes animate.
+  // First paint and layout swaps place the packet at rest; usePackets also rests it on mode/language changes, so only step changes animate.
   const seen = useRef<{ layout: LayoutKey } | null>(null)
   const animate = seen.current !== null && seen.current.layout === layout
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function FlowPlayer({ topic }: { topic: Topic }) {
   const onPlay = () => {
     if (state.playing) return dispatch({ type: 'pause' })
     dispatch({ type: 'play' })
-    if (window.matchMedia('(max-width: 979px)').matches) {
+    if (window.matchMedia('(max-width: 1179px)').matches) {
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
       document.querySelector('.learn-root .now')?.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' })
     }

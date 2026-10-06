@@ -18,7 +18,7 @@ export default function WordsFirst({ topic }: { topic: Topic }) {
           </button>
         ))}
       </div>
-      {word && <p className="word-def" id="word-def" aria-live="polite"><b>{t(word.term)}</b>{t(word.d)}</p>}
+      <p className="word-def" id="word-def" aria-live="polite">{word && <><b>{t(word.term)}</b>{t(word.d)}</>}</p>
     </section>
   )
 }
