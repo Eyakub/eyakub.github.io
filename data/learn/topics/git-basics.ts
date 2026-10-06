@@ -349,22 +349,22 @@ export const gitBasics: Topic = {
     },
     {
       id: 'rebase',
-      label: { en: 'Rebase instead', bn: 'বদলে rebase' },
+      label: { en: 'Rebase instead', bn: 'বদলে রিবেস' },
       whatIf: {
-        en: 'What if you want one straight line instead of a join page?',
-        bn: 'জোড়া পাতার বদলে একটাই সোজা লাইন চাইলে?'
+        en: 'What if you want their page first and yours after, with no join page?',
+        bn: 'তাদের পাতা আগে আর আপনারটা পরে চাইলে, জোড়া পাতা ছাড়া?'
       },
       branchAfter: 'fetch',
       steps: [
         {
           id: 'rebase',
-          moves: [ { edge: 'merge', label: 'git rebase origin/main', plain: { en: 'Replay my pages', bn: 'আমার পাতা নতুন করে' } } ],
+          moves: [ { edge: 'merge', label: 'git rebase origin/main', plain: { en: 'Yours goes after', bn: 'আপনারটা পরে বসে' } } ],
           state: { repo: { en: 'HEAD → main → 9a8b7c', bn: 'HEAD → main → 9a8b7c' } },
-          plainState: { repo: { en: 'Your page, on top', bn: 'আপনার পাতা ওপরে' } },
-          title: { en: 'You replay your page on theirs', bn: 'আপনার পাতা তাদের ওপরে বসান' },
+          plainState: { repo: { en: 'Theirs, then yours', bn: 'আগে তাদের, পরে আপনার' } },
+          title: { en: 'Rebase: let their page go first', bn: 'রিবেস: তাদের পাতা আগে যাক' },
           simple: {
-            en: 'Rebase means replay. Git lifts your page off, sets their page down first, then lays yours back on top. One straight line, no join page.',
-            bn: 'Rebase মানে নতুন করে বসানো। Git আপনার পাতা তুলে নেয়, আগে তাদের পাতা রাখে, তারপর আপনারটা ওপরে বসায়। একটাই সোজা লাইন, জোড়া পাতা নেই।'
+            en: 'You both added a page. Rebase lets their page in first, then puts yours right after it, like letting a friend into the queue ahead of you.',
+            bn: 'দুজনেই একটা করে পাতা যোগ করেছেন। রিবেসে তাদের পাতা আগে ঢোকে, তারপর আপনারটা ঠিক তার পরে বসে, যেন লাইনে বন্ধুকে আপনার আগে ঢুকতে দিলেন।'
           },
           tech: {
             en: '`git rebase origin/main` re-applies `d4e5f6` on top of `77d4e1` as a NEW commit, `9a8b7c`, with a new hash. History stays linear, with no merge commit.',
@@ -374,10 +374,11 @@ export const gitBasics: Topic = {
         {
           id: 'rebased',
           work: { node: 'repo', kind: 'result' },
-          title: { en: 'Your page has a new code', bn: 'আপনার পাতার নতুন কোড' },
+          plainState: { repo: { en: 'Same page, new code', bn: 'একই পাতা, নতুন কোড' } },
+          title: { en: 'Your page got a new code', bn: 'আপনার পাতা নতুন কোড পেল' },
           simple: {
-            en: 'Your page now has a new code, 9a8b7c, because it is a fresh copy. Never replay pages you already shared: teammates still hold the old code.',
-            bn: 'আপনার পাতার এখন নতুন কোড 9a8b7c, কারণ এটা নতুন কপি। শেয়ার করা পাতা কখনো নতুন করে বসাবেন না: সহকর্মীদের কাছে এখনো পুরোনো কোড।'
+            en: 'Git copied your page to move it, so it now has a new code, 9a8b7c. Only do this with pages nobody else has yet.',
+            bn: 'সরানোর জন্য Git আপনার পাতার কপি করেছে, তাই এখন তার নতুন কোড 9a8b7c। শুধু সেই পাতায় এটা করুন যা আর কারও কাছে এখনও নেই।'
           },
           tech: {
             en: 'Rewriting published commits forces everyone who has the old ones to reconcile. Rebase only local work. Here `d4e5f6` was never pushed, so it is safe to rewrite.',
@@ -389,10 +390,10 @@ export const gitBasics: Topic = {
           moves: [ { edge: 'push', label: 'git push', plain: { en: 'Upload page', bn: 'পাতা আপলোড' } } ],
           state: { remote: { en: 'main → 9a8b7c', bn: 'main → 9a8b7c' } },
           plainState: { remote: { en: 'Has your new page', bn: 'আপনার নতুন পাতা আছে' } },
-          title: { en: 'You upload the straight line', bn: 'আপনি সোজা লাইন আপলোড করেন' },
+          title: { en: 'Upload: it just works', bn: 'আপলোড: সহজেই হয়ে যায়' },
           simple: {
-            en: 'You upload, and it just works. Your line is straight, so the cloud album only adds your page on the end.',
-            bn: 'আপনি আপলোড করেন, আর সেটা সহজেই হয়ে যায়। আপনার লাইন সোজা, তাই ক্লাউড অ্যালবাম শুধু শেষে আপনার পাতা জোড়ে।'
+            en: 'Now you upload, and it just works: the cloud album simply adds your page after theirs.',
+            bn: 'এখন আপলোড করলে সহজেই হয়ে যায়: ক্লাউড অ্যালবাম শুধু তাদের পাতার পরে আপনারটা জোড়ে।'
           },
           tech: {
             en: 'The remote `main` moves from `77d4e1` to `9a8b7c`. This is a fast-forward push, so the remote accepts it without force.',
