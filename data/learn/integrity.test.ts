@@ -51,6 +51,7 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
     }
   })
   it('positions stay inside the viewBox', () => {
+    expect(t.view.wide[0]).toBeLessThanOrEqual(1000)
     for (const lk of ['wide', 'narrow'] as const) {
       const [w, h] = t.view[lk]
       const inside = ([x, y]: [number, number] | number[]) => x >= 0 && x <= w && y >= 0 && y <= h
@@ -102,19 +103,16 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
   it('packet labels stay short', () => {
     for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) s.moves?.forEach((m) => expect(m.label.length, `${s.id}: ${m.label}`).toBeLessThanOrEqual(24))
   })
-  it('teaching fields are well-formed when present', () => {
-    if (t.words) {
-      expect(t.words.length).toBeGreaterThanOrEqual(3)
-      expect(t.words.length).toBeLessThanOrEqual(6)
-      t.words.forEach((w) => expect(words(w.d.en), w.term.en).toBeLessThanOrEqual(15))
-    }
-    if (t.hook) expect(words(t.hook.en)).toBeLessThanOrEqual(25)
-    if (t.takeaway) expect(words(t.takeaway.en)).toBeLessThanOrEqual(25)
-    t.alts.forEach((a) => { if (a.whatIf) expect(a.whatIf.en.startsWith('What if'), a.id).toBe(true) })
+  it('teaching fields are well-formed', () => {
+    expect(t.words.length).toBeGreaterThanOrEqual(3)
+    expect(t.words.length).toBeLessThanOrEqual(6)
+    t.words.forEach((w) => expect(words(w.d.en), w.term.en).toBeLessThanOrEqual(15))
+    expect(words(t.hook.en)).toBeLessThanOrEqual(25)
+    expect(words(t.takeaway.en)).toBeLessThanOrEqual(25)
+    t.alts.forEach((a) => expect(a.whatIf.en.startsWith('What if'), a.id).toBe(true))
     for (const s of [...t.main.steps, ...t.alts.flatMap((a) => a.steps)]) s.moves?.forEach((m) => { if (m.plain) expect(m.plain.en.length, s.id).toBeLessThanOrEqual(18) })
   })
-  it('Simply mode has no code or undefined acronyms (migrated topics)', () => {
-    if (!t.words) return
+  it('Simply mode has no code or undefined acronyms', () => {
     const defined = new Set(t.words.flatMap((w) => w.term.en.match(/\b[A-Z]{2,}\b/g) ?? []))
     const allow = new Set(['OK'])
     const code = /`|\(\)|__|->|=|\b[a-z]+\.[a-z]+\b|\b\w\/\w\b/i

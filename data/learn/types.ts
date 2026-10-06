@@ -29,7 +29,7 @@ export interface Step {
   simple: L10n
   tech: L10n
 }
-export interface AltRoute { id: string; label: L10n; branchAfter: string; steps: Step[]; whatIf?: L10n }
+export interface AltRoute { id: string; label: L10n; branchAfter: string; steps: Step[]; whatIf: L10n }
 export interface Group { id: string; label: L10n; plain?: L10n; wide: [number, number, number, number]; narrow: [number, number, number, number] }
 export interface Twin { node: string | null; icon: IconName; name: L10n; is?: L10n; d: L10n }
 export interface QA { q: L10n; short: L10n; deep: L10n; redFlag: L10n }
@@ -39,9 +39,9 @@ export interface Topic {
   line: LineId
   title: L10n
   summary: L10n
-  hook?: L10n
-  takeaway?: L10n
-  words?: { term: L10n; d: L10n }[]
+  hook: L10n
+  takeaway: L10n
+  words: { term: L10n; d: L10n }[]
   legend?: Partial<Record<Kind, L10n>>
   view: Record<LayoutKey, [number, number]>
   nodeR?: Partial<Record<LayoutKey, number>>

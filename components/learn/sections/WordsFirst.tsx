@@ -6,7 +6,7 @@ import type { Topic } from '../../../data/learn/types'
 export default function WordsFirst({ topic }: { topic: Topic }) {
   const { t, ui } = useLearnPrefs()
   const [open, setOpen] = useState<number | null>(null)
-  if (!topic.words?.length) return null
+  if (!topic.words.length) return null
   const word = open === null ? undefined : topic.words[open]
   return (
     <section className="words" aria-label={ui('wordsTitle')}>
