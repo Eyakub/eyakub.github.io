@@ -359,7 +359,7 @@ const checks = [
         await page.waitForSelector('#next')
         const total = Number((await page.textContent('#stopno')).match(/(\d+)\D*$/)?.[1] ?? 0) || (await page.locator('.pips i').count())
         const bad = []
-        for (let i = 0; i < total; i++) {
+        const fits = async (label) => {
           await page.evaluate(() => document.querySelector('.now').scrollIntoView({ block: 'start', behavior: 'instant' }))
           await page.waitForTimeout(450)
           const m = await page.evaluate(() => ({
@@ -367,8 +367,20 @@ const checks = [
             stageBottom: document.querySelector('.stage .flow-svg').getBoundingClientRect().bottom,
             ctrlTop: document.querySelector('.controls').getBoundingClientRect().top,
           }))
-          if (m.stageBottom > m.ctrlTop + 0.5 || m.nowTop < -0.5) bad.push(`stop ${i + 1}: ${JSON.stringify(m)}`)
+          if (m.stageBottom > m.ctrlTop + 0.5 || m.nowTop < -0.5) bad.push(`${label}: ${JSON.stringify(m)}`)
+        }
+        for (let i = 0; i < total; i++) {
+          await fits(`stop ${i + 1}`)
           if (i < total - 1) await page.click('#next')
+        }
+        // The What-if banner makes the first alt stop the tallest Now panel on a route; check only that stop per alt route.
+        const routeBtns = page.locator('.switches .switch').nth(1).locator('button')
+        const routes = await routeBtns.count()
+        for (let r = 1; r < routes; r++) {
+          await routeBtns.nth(r).click()
+          await page.waitForTimeout(100)
+          const first = Number((await page.textContent('#stopno')).match(/(\d+)\D+\d+\D*$/)?.[1] ?? 0)
+          await fits(`alt ${r} first stop (${first})`)
         }
         await context.close()
         assert(bad.length === 0, `${slug} ${lang}: ${bad.slice(0, 3).join(' | ')} (${bad.length} bad)`)
