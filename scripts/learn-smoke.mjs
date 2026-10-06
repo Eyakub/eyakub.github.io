@@ -633,7 +633,9 @@ if (process.env.LEARN_SHOTS) {
             await page.getByRole('button', { name: 'বাংলা' }).click()
             await page.waitForSelector('html[lang="bn"]')
           }
-          await page.locator('.switch .seg').nth(0).locator('button').nth(mode === 'simple' ? 0 : 1).click()
+          // Mode buttons are Simply, Story (only when the topic has one), Technically.
+          const modeBtns = page.locator('.switch .seg').nth(0).locator('button')
+          await (mode === 'simple' ? modeBtns.first() : mode === 'tech' ? modeBtns.last() : modeBtns.nth(1)).click()
           // The sticky control bar covers the lower diagram on phones, so hide it for the capture only.
           await page.addStyleTag({ content: '.controls { opacity: 0 !important }' })
           const n = await page.locator('.switch .seg').nth(1).locator('button').count()
