@@ -13,6 +13,12 @@ export const multiprocessingPools: Topic = {
     en: 'A head chef cannot cook every long dish alone, so it sets up side kitchens and passes each one a copied order.',
     bn: 'হেড শেফ একা সব লম্বা পদ রাঁধতে পারে না, তাই পাশের রান্নাঘর সাজায় আর প্রতিটায় অর্ডারের কপি পাঠায়।'
   },
+  story: {
+    cast: {
+      en: 'Ruma is cooking a big feast for her street, and her neighbour Sohel lends her his spare kitchens.',
+      bn: 'রুমা পাড়ার জন্য বিশাল এক ভোজ রাঁধছে, আর প্রতিবেশী সোহেল তাকে নিজের বাড়তি রান্নাঘর ধার দেয়।'
+    }
+  },
   takeaway: {
     en: 'Side kitchens share nothing, so everything is copied; that pays off only for long jobs.',
     bn: 'রান্নাঘরগুলো কিছু ভাগ করে না, সব কপি হয়; তাই পোষায় শুধু লম্বা কাজে।'
@@ -203,6 +209,13 @@ export const multiprocessingPools: Topic = {
         moves: [ { edge: 'main-start', label: 'make 2 workers', plain: { en: 'Build kitchens', bn: 'রান্নাঘর বানাও' } } ],
         state: { main: { en: 'Asked for workers', bn: 'worker চেয়েছে' } },
         plainState: { main: { en: 'Asked for kitchens', bn: 'রান্নাঘর চেয়েছে' } },
+        story: {
+          title: { en: 'Ruma has too much to cook', bn: 'রুমার রান্না অনেক বেশি' },
+          text: {
+            en: 'Ruma must cook eight slow dishes for a street feast. Alone, it would take all night, so she asks her neighbour Sohel to open two spare kitchens for her.',
+            bn: 'রুমাকে পাড়ার ভোজের জন্য আটটা সময়সাপেক্ষ পদ রাঁধতে হবে। একা রাঁধলে সারা রাত লাগবে, তাই সে প্রতিবেশী সোহেলকে দুটো বাড়তি রান্নাঘর খুলে দিতে বলে।'
+          }
+        },
         title: { en: 'The head chef asks for side kitchens', bn: 'হেড শেফ পাশের রান্নাঘর চায়' },
         simple: {
           en: 'The head chef has eight heavy dishes, too slow to cook alone. It asks Kitchen setup to build two side kitchens.',
@@ -231,6 +244,13 @@ export const multiprocessingPools: Topic = {
           w2: { en: 'Ready to cook', bn: 'রাঁধতে তৈরি' },
           main: { en: 'Waiting', bn: 'অপেক্ষায়' }
         },
+        story: {
+          title: { en: 'Sohel opens two kitchens', bn: 'সোহেল দুটো রান্নাঘর খোলে' },
+          text: {
+            en: 'Sohel opens both kitchens. They are clean and ready, but the fridges are empty. Nobody there knows what Ruma planned.',
+            bn: 'সোহেল দুটো রান্নাঘরই খুলে দেয়। দুটোই পরিষ্কার আর তৈরি, কিন্তু ফ্রিজ খালি। রুমা কী ভেবেছে, সেখানে কেউ জানে না।'
+          }
+        },
         title: { en: 'Both side kitchens open', bn: 'দুটো পাশের রান্নাঘর খোলে' },
         simple: {
           en: 'Both side kitchens open at once. Each has its own empty fridge, so it knows nothing the head chef knows.',
@@ -251,6 +271,13 @@ export const multiprocessingPools: Topic = {
         plainState: {
           main: { en: 'Wrote the slips', bn: 'স্লিপ লিখেছে' },
           tasks: { en: '2 slips waiting', bn: '২টা স্লিপ অপেক্ষায়' }
+        },
+        story: {
+          title: { en: 'Ruma writes the orders down', bn: 'রুমা অর্ডার লিখে রাখে' },
+          text: {
+            en: 'Ruma cannot carry her recipes next door, so she copies her orders onto two slips, four dishes each, and leaves them at the slip window.',
+            bn: 'রুমা তার রান্নার খাতা পাশের বাড়িতে নিয়ে যেতে পারে না। তাই দুটো স্লিপে চারটা করে পদের অর্ডার লিখে স্লিপ-জানালায় রেখে আসে।'
+          }
         },
         title: { en: 'The head chef copies orders onto slips', bn: 'হেড শেফ অর্ডার স্লিপে লেখে' },
         simple: {
@@ -278,6 +305,13 @@ export const multiprocessingPools: Topic = {
           w1: { en: 'Cooking 1-4', bn: '১-৪ রাঁধছে' },
           w2: { en: 'Cooking 5-8', bn: '৫-৮ রাঁধছে' }
         },
+        story: {
+          title: { en: 'Both kitchens start cooking', bn: 'দুই রান্নাঘরে রান্না শুরু' },
+          text: {
+            en: 'Sohel takes one slip and his cousin takes the other. Both kitchens cook their four dishes at the same time, and the smell drifts down the street.',
+            bn: 'সোহেল একটা স্লিপ নেয়, তার কাজিন নেয় আরেকটা। দুই রান্নাঘরেই একসাথে চারটা করে পদ রান্না চলে, গন্ধ ছড়িয়ে পড়ে পুরো গলিতে।'
+          }
+        },
         title: { en: 'Each side kitchen takes a slip', bn: 'প্রতিটা পাশের রান্নাঘর একটা স্লিপ নেয়' },
         simple: {
           en: 'Each side kitchen takes one slip and cooks its four dishes. Both cook at the same time.',
@@ -301,6 +335,13 @@ export const multiprocessingPools: Topic = {
           w1: { en: 'Still cooking', bn: 'এখনও রাঁধছে' },
           results: { en: 'Dishes 5-8 first', bn: 'আগে ৫-৮ নম্বর পদ' }
         },
+        story: {
+          title: { en: 'The second kitchen finishes first', bn: 'দ্বিতীয় রান্নাঘর আগে শেষ করে' },
+          text: {
+            en: 'Sohel’s cousin finishes first. The cousin writes the dishes onto a slip and sends the plates back to Ruma through the pickup window.',
+            bn: 'সোহেলের কাজিন আগে শেষ করে। সে পদগুলো স্লিপে লিখে পিকআপ-জানালা দিয়ে রুমার কাছে পাঠিয়ে দেয়।'
+          }
+        },
         title: { en: 'Side kitchen 2 finishes first', bn: 'পাশের রান্নাঘর ২ আগে শেষ করে' },
         simple: {
           en: 'Side kitchen 2 finishes first. It copies its finished dishes onto a slip and sends them back through the pickup window.',
@@ -322,6 +363,13 @@ export const multiprocessingPools: Topic = {
           w1: { en: 'Done, resting', bn: 'শেষ, বিশ্রামে' },
           results: { en: 'Dishes 1-4 second', bn: 'পরে ১-৪ নম্বর পদ' }
         },
+        story: {
+          title: { en: 'Sohel finishes next', bn: 'সোহেল এরপর শেষ করে' },
+          text: {
+            en: 'A little later Sohel finishes too. He sends his four dishes back the same way, as a slip through the pickup window.',
+            bn: 'একটু পরে সোহেলও শেষ করে। সে নিজের চারটা পদ একইভাবে, স্লিপে করে পিকআপ-জানালা দিয়ে ফেরত পাঠায়।'
+          }
+        },
         title: { en: 'Side kitchen 1 finishes second', bn: 'পাশের রান্নাঘর ১ পরে শেষ করে' },
         simple: {
           en: 'Side kitchen 1 finishes second and sends its dishes back the same way, as a slip through the pickup window.',
@@ -342,6 +390,13 @@ export const multiprocessingPools: Topic = {
         plainState: {
           main: { en: 'Has all 8 dishes', bn: '৮টা পদই পেয়েছে' },
           results: { en: 'Pickup empty', bn: 'পিকআপ খালি' }
+        },
+        story: {
+          title: { en: 'Ruma lines up the feast', bn: 'রুমা ভোজ সাজায়' },
+          text: {
+            en: 'Ruma collects both batches and sets all eight dishes on the table in her planned order, no matter whose kitchen finished first.',
+            bn: 'রুমা দুই ভাগই নেয় আর আটটা পদ নিজের ঠিক করা ক্রমে টেবিলে সাজায়, যার রান্নাঘর আগে শেষ করুক না কেন।'
+          }
         },
         title: { en: 'The head chef puts them in order', bn: 'হেড শেফ ক্রমে সাজায়' },
         simple: {
@@ -370,6 +425,13 @@ export const multiprocessingPools: Topic = {
           start: { en: 'Closed', bn: 'বন্ধ' },
           tasks: { en: 'Empty', bn: 'খালি' }
         },
+        story: {
+          title: { en: 'The kitchens go quiet', bn: 'রান্নাঘর শান্ত হয়ে যায়' },
+          text: {
+            en: 'The feast is ready. Ruma thanks Sohel, and the two spare kitchens are switched off and locked for the night.',
+            bn: 'ভোজ তৈরি। রুমা সোহেলকে ধন্যবাদ জানায়, আর বাড়তি দুটো রান্নাঘর বন্ধ করে রাতের জন্য তালা দেওয়া হয়।'
+          }
+        },
         title: { en: 'The side kitchens close', bn: 'পাশের রান্নাঘর বন্ধ হয়' },
         simple: {
           en: 'The head chef closes the side kitchens.',
@@ -397,6 +459,13 @@ export const multiprocessingPools: Topic = {
           work: { node: 'main', kind: 'error' },
           state: { main: { en: 'PicklingError', bn: 'PicklingError' } },
           plainState: { main: { en: 'Cannot copy order', bn: 'অর্ডার কপি করা যায় না' } },
+          story: {
+            title: { en: 'One order has no name', bn: 'একটা অর্ডারের নাম নেই' },
+            text: {
+              en: 'One of Ruma’s orders is just “do what I did last time”, with no name. There is nothing to write on a slip, so Ruma stops, stuck.',
+              bn: 'রুমার একটা অর্ডার শুধু “আগেরবার যা করেছিলাম তাই করো”, কোনো নাম নেই। স্লিপে লেখার মতো কিছু নেই, তাই রুমা আটকে গিয়ে থেমে যায়।'
+            }
+          },
           title: { en: 'An order cannot be copied', bn: 'অর্ডার কপি করা যায় না' },
           simple: {
             en: 'This order has no name, so there is nothing to write on a slip. The head chef stops with an error.',
@@ -412,6 +481,13 @@ export const multiprocessingPools: Topic = {
           work: { node: 'main', kind: 'result' },
           state: { main: { en: 'Fix: top-level def', bn: 'সমাধান: top-level def' } },
           plainState: { main: { en: 'Fix: give it a name', bn: 'সমাধান: নাম দেওয়া' } },
+          story: {
+            title: { en: 'Ruma names the dish', bn: 'রুমা পদটার নাম দেয়' },
+            text: {
+              en: 'Ruma writes the dish down under a proper name, like “lamb stew”. Now Sohel can look it up in his own book, and the slip carries it fine.',
+              bn: 'রুমা পদটা একটা ঠিক নামে লিখে রাখে, যেমন “মাংসের স্ট্যু”। এখন সোহেল নিজের খাতায় সেটা খুঁজে পায়, আর স্লিপে তা দিব্যি যায়।'
+            }
+          },
           title: { en: 'Give the order a name', bn: 'অর্ডারকে একটা নাম দিন' },
           simple: {
             en: 'Write the order down under a proper name. Then any kitchen can look it up, and a slip can carry it.',
@@ -444,6 +520,13 @@ export const multiprocessingPools: Topic = {
             start: { en: 'Building', bn: 'বানাচ্ছে' },
             w1: { en: 'Reading the notes', bn: 'নোট পড়ছে' }
           },
+          story: {
+            title: { en: 'Sohel reads Ruma’s notes', bn: 'সোহেল রুমার নোট পড়ে' },
+            text: {
+              en: 'Sohel starts by reading Ruma’s whole notebook from the top. Its first line says: ask the neighbour for two more kitchens.',
+              bn: 'সোহেল রুমার পুরো নোটবই শুরু থেকে পড়তে শুরু করে। প্রথম লাইনেই লেখা: প্রতিবেশীর কাছে আরও দুটো রান্নাঘর চাও।'
+            }
+          },
           title: { en: 'A new kitchen reads the setup notes', bn: 'নতুন রান্নাঘর সাজানোর নোট পড়ে' },
           simple: {
             en: 'The new kitchen starts by reading the head chef’s setup notes from the top. The first line says: build two side kitchens.',
@@ -464,6 +547,13 @@ export const multiprocessingPools: Topic = {
           plainState: {
             w1: { en: 'Stopped by error', bn: 'error-এ থেমেছে' },
             main: { en: 'Kitchens broken', bn: 'রান্নাঘর ভেঙে গেছে' }
+          },
+          story: {
+            title: { en: 'The kitchens keep multiplying', bn: 'রান্নাঘর বাড়তেই থাকে' },
+            text: {
+              en: 'So Sohel asks his own neighbour for kitchens too, and that neighbour reads the same notes, again and again. The street council spots it and stops everything.',
+              bn: 'তাই সোহেলও নিজের প্রতিবেশীর কাছে রান্নাঘর চায়, সেই প্রতিবেশীও একই নোট পড়ে, বারবার। পাড়ার কমিটি ব্যাপারটা ধরে ফেলে আর সবকিছু থামিয়ে দেয়।'
+            }
           },
           title: { en: 'The computer stops the loop', bn: 'কম্পিউটার চক্র থামিয়ে দেয়' },
           simple: {
@@ -491,6 +581,13 @@ export const multiprocessingPools: Topic = {
           work: { node: 'w1', kind: 'error' },
           state: { w1: { en: 'Dead (-9)', bn: 'মৃত (-9)' } },
           plainState: { w1: { en: 'Shut down', bn: 'বন্ধ হয়ে গেছে' } },
+          story: {
+            title: { en: 'A kitchen goes dark', bn: 'একটা রান্নাঘর অন্ধকার হয়ে যায়' },
+            text: {
+              en: 'Halfway through cooking, the power cuts out in Sohel’s kitchen. The pots go cold, and his slip is lost with everything on it.',
+              bn: 'রান্নার মাঝপথে সোহেলের রান্নাঘরে হঠাৎ কারেন্ট চলে যায়। হাঁড়ি ঠান্ডা হয়ে যায়, আর তার স্লিপও সবকিছুসহ হারিয়ে যায়।'
+            }
+          },
           title: { en: 'A side kitchen shuts down', bn: 'একটা পাশের রান্নাঘর বন্ধ হয়' },
           simple: {
             en: 'Side kitchen 1 suddenly shuts down in the middle of its dishes. Its slip is lost with it.',
@@ -506,6 +603,13 @@ export const multiprocessingPools: Topic = {
           work: { node: 'main', kind: 'error' },
           state: { main: { en: 'BrokenProcessPool', bn: 'BrokenProcessPool' } },
           plainState: { main: { en: 'Dishes are lost', bn: 'পদ হারিয়েছে' } },
+          story: {
+            title: { en: 'Ruma waits for dishes', bn: 'রুমা পদের অপেক্ষায় থাকে' },
+            text: {
+              en: 'Ruma stands at the pickup window, waiting for four dishes that will never come. Nobody has told her the lights went out.',
+              bn: 'রুমা পিকআপ-জানালায় দাঁড়িয়ে চারটা পদের অপেক্ষা করে, যা আর আসবে না। কেউ তাকে বলেনি যে আলো চলে গেছে।'
+            }
+          },
           title: { en: 'The head chef loses its dishes', bn: 'হেড শেফ পদ হারায়' },
           simple: {
             en: 'The head chef may wait forever for dishes that never come back.',
