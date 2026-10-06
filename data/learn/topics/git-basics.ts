@@ -348,6 +348,60 @@ export const gitBasics: Topic = {
       ]
     },
     {
+      id: 'rebase',
+      label: { en: 'Rebase instead', bn: 'বদলে rebase' },
+      whatIf: {
+        en: 'What if you want one straight line instead of a join page?',
+        bn: 'জোড়া পাতার বদলে একটাই সোজা লাইন চাইলে?'
+      },
+      branchAfter: 'fetch',
+      steps: [
+        {
+          id: 'rebase',
+          moves: [ { edge: 'merge', label: 'git rebase origin/main', plain: { en: 'Replay my pages', bn: 'আমার পাতা নতুন করে' } } ],
+          state: { repo: { en: 'HEAD → main → 9a8b7c', bn: 'HEAD → main → 9a8b7c' } },
+          plainState: { repo: { en: 'Your page, on top', bn: 'আপনার পাতা ওপরে' } },
+          title: { en: 'You replay your page on theirs', bn: 'আপনার পাতা তাদের ওপরে বসান' },
+          simple: {
+            en: 'Rebase means replay. Git lifts your page off, sets their page down first, then lays yours back on top. One straight line, no join page.',
+            bn: 'Rebase মানে নতুন করে বসানো। Git আপনার পাতা তুলে নেয়, আগে তাদের পাতা রাখে, তারপর আপনারটা ওপরে বসায়। একটাই সোজা লাইন, জোড়া পাতা নেই।'
+          },
+          tech: {
+            en: '`git rebase origin/main` re-applies `d4e5f6` on top of `77d4e1` as a NEW commit, `9a8b7c`, with a new hash. History stays linear, with no merge commit.',
+            bn: '`git rebase origin/main` `d4e5f6`-কে `77d4e1`-এর ওপরে নতুন commit `9a8b7c` হিসেবে (নতুন hash-সহ) আবার প্রয়োগ করে। ইতিহাস সোজা থাকে, merge commit হয় না।'
+          }
+        },
+        {
+          id: 'rebased',
+          work: { node: 'repo', kind: 'result' },
+          title: { en: 'Your page has a new code', bn: 'আপনার পাতার নতুন কোড' },
+          simple: {
+            en: 'Your page now has a new code, 9a8b7c, because it is a fresh copy. Never replay pages you already shared: teammates still hold the old code.',
+            bn: 'আপনার পাতার এখন নতুন কোড 9a8b7c, কারণ এটা নতুন কপি। শেয়ার করা পাতা কখনো নতুন করে বসাবেন না: সহকর্মীদের কাছে এখনো পুরোনো কোড।'
+          },
+          tech: {
+            en: 'Rewriting published commits forces everyone who has the old ones to reconcile. Rebase only local work. Here `d4e5f6` was never pushed, so it is safe to rewrite.',
+            bn: 'প্রকাশিত commit নতুন করে লিখলে যাদের কাছে পুরোনোগুলো আছে সবাইকে মেলাতে হয়। শুধু লোকাল কাজ rebase করুন। এখানে `d4e5f6` কখনো push হয়নি, তাই বদলানো নিরাপদ।'
+          }
+        },
+        {
+          id: 'push-straight',
+          moves: [ { edge: 'push', label: 'git push', plain: { en: 'Upload page', bn: 'পাতা আপলোড' } } ],
+          state: { remote: { en: 'main → 9a8b7c', bn: 'main → 9a8b7c' } },
+          plainState: { remote: { en: 'Has your new page', bn: 'আপনার নতুন পাতা আছে' } },
+          title: { en: 'You upload the straight line', bn: 'আপনি সোজা লাইন আপলোড করেন' },
+          simple: {
+            en: 'You upload, and it just works. Your line is straight, so the cloud album only adds your page on the end.',
+            bn: 'আপনি আপলোড করেন, আর সেটা সহজেই হয়ে যায়। আপনার লাইন সোজা, তাই ক্লাউড অ্যালবাম শুধু শেষে আপনার পাতা জোড়ে।'
+          },
+          tech: {
+            en: 'The remote `main` moves from `77d4e1` to `9a8b7c`. This is a fast-forward push, so the remote accepts it without force.',
+            bn: 'remote-এর `main` `77d4e1` থেকে `9a8b7c`-এ যায়। এটা fast-forward push, তাই remote force ছাড়াই মেনে নেয়।'
+          }
+        }
+      ]
+    },
+    {
       id: 'conflict',
       label: { en: 'Clashing edits', bn: 'সংঘাতপূর্ণ বদল' },
       whatIf: {
