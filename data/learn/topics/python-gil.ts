@@ -13,6 +13,12 @@ export const pythonGil: Topic = {
     en: 'Python lets only one cook use the stove at a time, so hiring more cooks does not always make dinner faster.',
     bn: 'Python-এ একসময়ে একজন রাঁধুনিই স্টোভ ব্যবহার করতে পারে, তাই বেশি রাঁধুনি নিলেই রান্না সবসময় দ্রুত হয় না।'
   },
+  story: {
+    cast: {
+      en: 'Sumi and Joy are siblings cooking a family dinner in one tiny kitchen, with a single chef’s hat to share.',
+      bn: 'সুমি আর জয় ভাইবোন, একটা ছোট রান্নাঘরে পারিবারিক খাবার রাঁধছে, আর তাদের শেফের টুপি মাত্র একটা।'
+    }
+  },
   takeaway: {
     en: 'Only the cook wearing the hat can cook, and waiting at the door or using a rice cooker frees the hat.',
     bn: 'যার মাথায় টুপি, শুধু সে-ই রাঁধতে পারে, আর দরজায় অপেক্ষা বা রাইস কুকার ব্যবহার করলে টুপি খালি হয়।'
@@ -197,6 +203,13 @@ export const pythonGil: Topic = {
           t1: { en: 'Has the hat', bn: 'টুপি আছে' }
         },
         title: { en: 'Cook 1 puts on the hat', bn: 'রাঁধুনি ১ টুপি পরে' },
+        story: {
+          title: { en: 'Sumi puts on the hat', bn: 'সুমি টুপি পরে' },
+          text: {
+            en: 'Sumi and Joy share a tiny kitchen with one chef’s hat. Sumi pops the hat on her head first, so she is the one allowed to cook.',
+            bn: 'সুমি আর জয় একটা ছোট রান্নাঘর ভাগ করে, যেখানে শেফের টুপি একটাই। সুমি আগে টুপিটা মাথায় পরে, তাই এখন রাঁধার অনুমতি শুধু তার।'
+          }
+        },
         simple: {
           en: 'Python’s kitchen has one stove with several burners, but only one chef’s hat. Only the cook wearing the hat may cook. Cook 1 puts it on.',
           bn: 'Python-এর রান্নাঘরে একটা স্টোভে কয়েকটা চুলা, কিন্তু শেফের টুপি একটাই। যে রাঁধুনির মাথায় টুপি, শুধু সে-ই রাঁধতে পারে। রাঁধুনি ১ টুপিটা পরে।'
@@ -218,6 +231,13 @@ export const pythonGil: Topic = {
           interp: { en: 'Cook 1 cooking', bn: 'রাঁধুনি ১ রাঁধছে' }
         },
         title: { en: 'Cook 1 cooks on the stove', bn: 'রাঁধুনি ১ স্টোভে রাঁধে' },
+        story: {
+          title: { en: 'Sumi starts cooking', bn: 'সুমি রান্না শুরু করে' },
+          text: {
+            en: 'With the hat on, Sumi lights the stove and starts stirring her curry. The kitchen smells wonderful already.',
+            bn: 'টুপি পরে সুমি স্টোভ জ্বালিয়ে তরকারি নাড়তে শুরু করে। রান্নাঘরে এখনই দারুণ গন্ধ ছড়িয়েছে।'
+          }
+        },
         simple: {
           en: 'Wearing the hat, Cook 1 starts cooking on the stove.',
           bn: 'টুপি পরে রাঁধুনি ১ স্টোভে রান্না শুরু করে।'
@@ -232,6 +252,13 @@ export const pythonGil: Topic = {
         moves: [ { edge: 't2-gil', label: 'wants it', plain: { en: 'Wants it', bn: 'চায়' } } ],
         state: { t2: { en: 'Waiting', bn: 'অপেক্ষায়' } },
         title: { en: 'Cook 2 has to wait', bn: 'রাঁধুনি ২-কে অপেক্ষা করতে হয়' },
+        story: {
+          title: { en: 'Joy has to wait', bn: 'জয়কে অপেক্ষা করতে হয়' },
+          text: {
+            en: 'Joy wants to cook too, but the hat is on Sumi’s head. Joy folds his arms and stands by the wall, waiting.',
+            bn: 'জয়ও রাঁধতে চায়, কিন্তু টুপি সুমির মাথায়। জয় হাত গুটিয়ে দেয়ালের পাশে দাঁড়িয়ে অপেক্ষা করে।'
+          }
+        },
         simple: {
           en: 'Cook 2 wants to cook too, but the hat is taken. Cook 2 has to stand and wait.',
           bn: 'রাঁধুনি ২-ও রাঁধতে চায়, কিন্তু টুপি অন্যজনের মাথায়। তাকে দাঁড়িয়ে অপেক্ষা করতে হয়।'
@@ -247,6 +274,13 @@ export const pythonGil: Topic = {
         state: { gil: { en: 'T2 asked for it', bn: 'T2 চেয়েছে' } },
         plainState: { gil: { en: 'Cook 2 asked', bn: 'রাঁধুনি ২ চেয়েছে' } },
         title: { en: 'Cook 2 asks for the hat', bn: 'রাঁধুনি ২ টুপি চায়' },
+        story: {
+          title: { en: 'Joy asks for the hat', bn: 'জয় টুপি চায়' },
+          text: {
+            en: 'After a little while, Joy clears his throat and politely asks, “Sumi, may I have a turn with the hat?”',
+            bn: 'কিছুক্ষণ পর জয় গলা খাঁকারি দিয়ে ভদ্রভাবে বলে, “সুমি, আমি কি একটু টুপিটা পেতে পারি?”'
+          }
+        },
         simple: {
           en: 'After a short wait, Cook 2 politely asks for the hat.',
           bn: 'একটু অপেক্ষার পর রাঁধুনি ২ ভদ্রভাবে টুপিটা চায়।'
@@ -269,6 +303,13 @@ export const pythonGil: Topic = {
           interp: { en: 'Nobody cooking', bn: 'কেউ রাঁধছে না' }
         },
         title: { en: 'Cook 1 hangs the hat up', bn: 'রাঁধুনি ১ টুপি হুকে রাখে' },
+        story: {
+          title: { en: 'Sumi hangs the hat up', bn: 'সুমি টুপি হুকে রাখে' },
+          text: {
+            en: 'Sumi finishes her stirring, steps back, and hangs the hat on the hook by the door. The stove sits quiet for a moment.',
+            bn: 'সুমি নাড়া শেষ করে পিছিয়ে এসে দরজার পাশের হুকে টুপিটা ঝুলিয়ে রাখে। স্টোভটা একটু চুপচাপ থাকে।'
+          }
+        },
         simple: {
           en: 'Cook 1 stops and hangs the hat back on its hook.',
           bn: 'রাঁধুনি ১ থামে আর টুপিটা হুকে ঝুলিয়ে রাখে।'
@@ -292,6 +333,13 @@ export const pythonGil: Topic = {
           interp: { en: 'Cook 2 cooking', bn: 'রাঁধুনি ২ রাঁধছে' }
         },
         title: { en: 'Cook 2 puts on the hat', bn: 'রাঁধুনি ২ টুপি পরে' },
+        story: {
+          title: { en: 'Joy puts on the hat', bn: 'জয় টুপি পরে' },
+          text: {
+            en: 'Joy takes the hat from the hook, settles it on his head, and begins frying onions on the stove. Now he is the cook.',
+            bn: 'জয় হুক থেকে টুপিটা নিয়ে মাথায় বসায়, আর স্টোভে পেঁয়াজ ভাজতে শুরু করে। এখন রাঁধুনি সে।'
+          }
+        },
         simple: {
           en: 'Cook 2 takes the hat from the hook and starts cooking on the stove.',
           bn: 'রাঁধুনি ২ হুক থেকে টুপি নিয়ে স্টোভে রান্না শুরু করে।'
@@ -322,6 +370,13 @@ export const pythonGil: Topic = {
           io: { en: 'Parcel on its way', bn: 'পার্সেল আসছে' }
         },
         title: { en: 'Waiting at the door frees the hat', bn: 'দরজায় অপেক্ষা করলে টুপি খালি হয়' },
+        story: {
+          title: { en: 'Joy waits at the door', bn: 'জয় দরজায় অপেক্ষা করে' },
+          text: {
+            en: 'Joy’s spice parcel is late, so he waits at the front door. Standing there needs no hat, so he hangs it up and Sumi takes it.',
+            bn: 'জয়ের মসলার পার্সেল দেরি করছে, তাই সে সদর দরজায় অপেক্ষা করে। সেখানে টুপি লাগে না, তাই টুপি হুকে যায় আর সুমি সেটা নেয়।'
+          }
+        },
         simple: {
           en: 'Cook 2 waits at the delivery door for a parcel. That needs no hat, so Cook 2 hangs it up and Cook 1 takes it.',
           bn: 'রাঁধুনি ২ ডেলিভারির দরজায় পার্সেলের অপেক্ষা করে। তাতে টুপি লাগে না, তাই টুপি হুকে যায় আর রাঁধুনি ১ সেটা পরে।'
@@ -343,6 +398,13 @@ export const pythonGil: Topic = {
           io: { en: 'Where parcels arrive', bn: 'যেখানে পার্সেল আসে' }
         },
         title: { en: 'The parcel arrives', bn: 'পার্সেল পৌঁছায়' },
+        story: {
+          title: { en: 'The parcel arrives', bn: 'পার্সেল পৌঁছায়' },
+          text: {
+            en: 'The delivery man knocks, and Joy signs for the parcel. He rushes back to cook, but Sumi has the hat, so Joy lines up behind her.',
+            bn: 'ডেলিভারির লোক কড়া নাড়ে, আর জয় পার্সেলটা সই করে নেয়। সে রাঁধতে ছুটে আসে, কিন্তু টুপি সুমির মাথায়, তাই জয় তার পেছনে লাইনে দাঁড়ায়।'
+          }
+        },
         simple: {
           en: 'The parcel arrives. Cook 2 wants to cook again, but Cook 1 has the hat, so Cook 2 queues for it.',
           bn: 'পার্সেল এসে যায়। রাঁধুনি ২ আবার রাঁধতে চায়, কিন্তু টুপি রাঁধুনি ১-এর মাথায়, তাই তাকে লাইনে দাঁড়াতে হয়।'
@@ -368,6 +430,13 @@ export const pythonGil: Topic = {
           interp: { en: 'Nobody cooking', bn: 'কেউ রাঁধছে না' }
         },
         title: { en: 'A rice cooker needs no hat', bn: 'রাইস কুকারের টুপি লাগে না' },
+        story: {
+          title: { en: 'Sumi starts the rice cooker', bn: 'সুমি রাইস কুকার চালায়' },
+          text: {
+            en: 'Sumi pours a big pot of rice into the rice cooker and switches it on. It cooks all by itself, so she hangs up the hat.',
+            bn: 'সুমি অনেকটা চাল রাইস কুকারে ঢেলে সেটা চালু করে। ওটা নিজে নিজেই রাঁধে, তাই সুমি টুপিটা হুকে রাখে।'
+          }
+        },
         simple: {
           en: 'Cook 1 starts the rice cooker. This one cooks on its own without the hat, so the hat goes back on the hook.',
           bn: 'রাঁধুনি ১ রাইস কুকার চালু করে। এটা টুপি ছাড়াই নিজে রাঁধে, তাই টুপি হুকে ফিরে যায়।'
@@ -391,6 +460,13 @@ export const pythonGil: Topic = {
           interp: { en: 'Cook 2 cooking', bn: 'রাঁধুনি ২ রাঁধছে' }
         },
         title: { en: 'Cook 2 cooks meanwhile', bn: 'ততক্ষণে রাঁধুনি ২ রাঁধে' },
+        story: {
+          title: { en: 'Joy cooks meanwhile', bn: 'ততক্ষণে জয় রাঁধে' },
+          text: {
+            en: 'While the rice bubbles away, Joy takes the free hat and goes back to his onions. Both of them are busy at the same time.',
+            bn: 'ভাত যখন ফুটছে, জয় ফাঁকা টুপিটা নিয়ে আবার পেঁয়াজে ফিরে যায়। দুজনেই একই সময়ে ব্যস্ত।'
+          }
+        },
         simple: {
           en: 'While the rice cooker works, Cook 2 takes the hat and cooks. Both are busy at once.',
           bn: 'রাইস কুকার চলার সময় রাঁধুনি ২ টুপি নিয়ে রাঁধে। দুজনেই একসাথে ব্যস্ত।'
@@ -414,6 +490,13 @@ export const pythonGil: Topic = {
           t1: { en: 'Wants the hat', bn: 'টুপি চায়' }
         },
         title: { en: 'Cook 1 waits for the hat', bn: 'রাঁধুনি ১ টুপির জন্য অপেক্ষা করে' },
+        story: {
+          title: { en: 'Sumi waits for the hat', bn: 'সুমি টুপির অপেক্ষায়' },
+          text: {
+            en: 'The rice is ready and Sumi wants to cook again. But Joy is wearing the hat now, so Sumi waits her turn.',
+            bn: 'ভাত হয়ে গেছে, আর সুমি আবার রাঁধতে চায়। কিন্তু টুপি এখন জয়ের মাথায়, তাই সুমি নিজের পালার অপেক্ষা করে।'
+          }
+        },
         simple: {
           en: 'The rice cooker finishes, but Cook 2 has the hat, so Cook 1 waits.',
           bn: 'রাইস কুকারের কাজ শেষ, কিন্তু টুপি রাঁধুনি ২-এর মাথায়, তাই রাঁধুনি ১ অপেক্ষা করে।'
@@ -447,6 +530,13 @@ export const pythonGil: Topic = {
             t2: { en: 'Long dish', bn: 'লম্বা পদ' }
           },
           title: { en: 'Both cooks have a long dish', bn: 'দুজনেরই লম্বা পদ' },
+          story: {
+            title: { en: 'Both have a long dish', bn: 'দুজনেরই লম্বা পদ' },
+            text: {
+              en: 'For the big family dinner, Sumi and Joy each have a long dish that needs stirring non-stop. Both want the stove all evening.',
+              bn: 'বড় পারিবারিক খাবারের জন্য সুমি আর জয় দুজনেরই একটা করে লম্বা পদ, যা একটানা নাড়তে হয়। দুজনেই সারা সন্ধ্যা স্টোভ চায়।'
+            }
+          },
           simple: {
             en: 'Both cooks have a long dish that needs cooking non-stop. Both want the stove all the time.',
             bn: 'দুজনেরই একটা লম্বা পদ, যা একটানা রাঁধতে হয়। দুজনেই সারাক্ষণ স্টোভ চায়।'
@@ -462,6 +552,13 @@ export const pythonGil: Topic = {
           state: { gil: { en: 'T1 / T2 alternating', bn: 'T1 / T2 পালা করে' } },
           plainState: { gil: { en: 'Passed around', bn: 'হাতে হাতে ঘোরে' } },
           title: { en: 'They take turns', bn: 'তারা পালা করে রাঁধে' },
+          story: {
+            title: { en: 'They take turns', bn: 'তারা পালা করে' },
+            text: {
+              en: 'Sumi and Joy pass the hat back and forth. Whoever wears it stirs, and the other watches, so nobody stirs at the same time.',
+              bn: 'সুমি আর জয় টুপিটা হাতবদল করে। যে পরে আছে সে নাড়ে, অন্যজন দেখে, তাই একসাথে কেউ নাড়ে না।'
+            }
+          },
           simple: {
             en: 'They pass the hat back and forth. Only the cook wearing it cooks, so nobody cooks at the same time.',
             bn: 'তারা টুপিটা হাতবদল করে। যে পরে আছে শুধু সে-ই রাঁধে, তাই একসাথে কেউ রাঁধে না।'
@@ -480,6 +577,13 @@ export const pythonGil: Topic = {
           },
           plainState: { gil: { en: 'On the hook', bn: 'হুকে ঝুলছে' } },
           title: { en: 'Cook 2 hangs the hat up', bn: 'রাঁধুনি ২ টুপি হুকে রাখে' },
+          story: {
+            title: { en: 'Joy hangs the hat up', bn: 'জয় টুপি হুকে রাখে' },
+            text: {
+              en: 'After his turn, Joy hangs the hat on the hook, even though his dish still needs more stirring. It is only fair.',
+              bn: 'নিজের পালা শেষে জয় টুপি হুকে ঝুলিয়ে দেয়, যদিও তার পদে এখনও নাড়া বাকি। এটাই ন্যায্য।'
+            }
+          },
           simple: {
             en: 'Cook 2 hangs the hat up after a turn, even with cooking left to do.',
             bn: 'রান্না বাকি থাকলেও রাঁধুনি ২ নিজের পালা শেষে টুপি হুকে রাখে।'
@@ -503,6 +607,13 @@ export const pythonGil: Topic = {
             interp: { en: 'Cook 1 cooking', bn: 'রাঁধুনি ১ রাঁধছে' }
           },
           title: { en: 'Cook 1 takes a turn', bn: 'রাঁধুনি ১ নিজের পালা নেয়' },
+          story: {
+            title: { en: 'Sumi takes her turn', bn: 'সুমি নিজের পালা নেয়' },
+            text: {
+              en: 'Sumi puts the hat on and stirs her dish. Then she hands it back, and the turns keep going round and round.',
+              bn: 'সুমি টুপি পরে নিজের পদ নাড়ে। তারপর সে ফেরত দেয়, আর পালা ঘুরে ঘুরে চলতেই থাকে।'
+            }
+          },
           simple: {
             en: 'Cook 1 puts the hat on and cooks. Then it all repeats.',
             bn: 'রাঁধুনি ১ টুপি পরে রাঁধে। তারপর সবকিছু আবার ঘুরে আসে।'
@@ -518,6 +629,13 @@ export const pythonGil: Topic = {
           state: { interp: { en: 'Wall time = sum', bn: 'মোট সময় = যোগফল' } },
           plainState: { interp: { en: 'Times add up', bn: 'সময় যোগ হয়' } },
           title: { en: 'Two cooks, no faster dinner', bn: 'দুজন রাঁধুনি, তবু দ্রুত হয় না' },
+          story: {
+            title: { en: 'Two cooks, still slow', bn: 'দুজন রাঁধুনি, তবু ধীর' },
+            text: {
+              en: 'Dinner is ready very late. Two cooks with one hat took as long as Sumi cooking both dishes alone, one after the other.',
+              bn: 'খাবার তৈরি হতে অনেক দেরি হয়। একটা টুপিতে দুজন রাঁধুনির যতক্ষণ লাগল, সুমি একা পরপর দুটো পদ রাঁধলেও ততক্ষণই লাগত।'
+            }
+          },
           simple: {
             en: 'Two cooks take about as long as one cook doing both dishes, one after the other.',
             bn: 'দুজন রাঁধুনিতে সময় লাগে একজনের পরপর দুটো পদ রাঁধার মতোই।'
@@ -544,6 +662,13 @@ export const pythonGil: Topic = {
           state: { gil: { en: 'Disabled (3.14t)', bn: 'বন্ধ (3.14t)' } },
           plainState: { gil: { en: 'Put away', bn: 'সরিয়ে রাখা' } },
           title: { en: 'The hat is put away', bn: 'টুপি সরিয়ে রাখা হয়' },
+          story: {
+            title: { en: 'The hat goes in a drawer', bn: 'টুপি ড্রয়ারে যায়' },
+            text: {
+              en: 'Sumi and Joy move to a new kitchen with a new rule. The hat goes into a drawer, and anyone may cook whenever they like.',
+              bn: 'সুমি আর জয় নতুন নিয়মের একটা নতুন রান্নাঘরে যায়। টুপি ড্রয়ারে চলে যায়, আর যে কেউ যখন খুশি রাঁধতে পারে।'
+            }
+          },
           simple: {
             en: 'In this special kitchen there is no hat to wait for. Any cook may cook.',
             bn: 'এই বিশেষ রান্নাঘরে অপেক্ষা করার মতো কোনো টুপি নেই। যে কেউ রাঁধতে পারে।'
@@ -570,6 +695,13 @@ export const pythonGil: Topic = {
             interp: { en: 'Both cooking', bn: 'দুজনেই রাঁধছে' }
           },
           title: { en: 'Both cooks cook together', bn: 'দুজনে একসাথে রাঁধে' },
+          story: {
+            title: { en: 'Both cook together', bn: 'দুজনে একসাথে রাঁধে' },
+            text: {
+              en: 'Sumi and Joy each stand at their own burner and cook at the very same moment. Dinner is finally getting done twice as fast.',
+              bn: 'সুমি আর জয় প্রত্যেকে নিজের চুলায় দাঁড়িয়ে ঠিক একই সময়ে রাঁধে। শেষমেশ খাবার দ্বিগুণ দ্রুত হচ্ছে।'
+            }
+          },
           simple: {
             en: 'Both cooks cook at the same moment, each on their own burner.',
             bn: 'দুজন রাঁধুনি একই সময়ে রাঁধে, প্রত্যেকে নিজের চুলায়।'
@@ -591,6 +723,13 @@ export const pythonGil: Topic = {
             t2: { en: 'Needs own rule', bn: 'নিজের নিয়ম লাগে' }
           },
           title: { en: 'Cooks still need their own rules', bn: 'রাঁধুনিদের নিজের নিয়ম তবু লাগে' },
+          story: {
+            title: { en: 'They still need a rule', bn: 'তাদের নিয়ম তবু লাগে' },
+            text: {
+              en: 'Sumi and Joy both reach for the same salt jar and write on the same recipe note. They quickly agree on who goes first.',
+              bn: 'সুমি আর জয় দুজনেই একই নুনের কৌটো ধরতে যায় আর একই রেসিপির নোটে লেখে। তারা দ্রুত ঠিক করে নেয় কে আগে করবে।'
+            }
+          },
           simple: {
             en: 'Even with no hat, two cooks writing on the same note can clash. They still need a rule for taking turns.',
             bn: 'টুপি না থাকলেও একই নোটে দুজন রাঁধুনি লিখলে গোলমাল হতে পারে। তাদের পালা নেওয়ার নিয়ম তবু লাগে।'
@@ -612,6 +751,13 @@ export const pythonGil: Topic = {
             interp: { en: 'One cook at a time', bn: 'একসময়ে একজন রাঁধে' }
           },
           title: { en: 'An old rice cooker brings the hat back', bn: 'পুরনো রাইস কুকার টুপি ফিরিয়ে আনে' },
+          story: {
+            title: { en: 'The old rice cooker returns', bn: 'পুরনো রাইস কুকার ফেরে' },
+            text: {
+              en: 'Sumi plugs in her grandmother’s old rice cooker, which was never made for this kitchen. Suddenly the hat comes out of the drawer again.',
+              bn: 'সুমি তার দাদির পুরনো রাইস কুকার লাগায়, যেটা এই রান্নাঘরের জন্য বানানোই হয়নি। হঠাৎ টুপিটা আবার ড্রয়ার থেকে বেরিয়ে আসে।'
+            }
+          },
           simple: {
             en: 'Plug in an old rice cooker not made for this kitchen, and the hat can come back.',
             bn: 'এই রান্নাঘরের জন্য বানানো নয় এমন পুরনো রাইস কুকার লাগালে টুপিটা ফিরে আসতে পারে।'
