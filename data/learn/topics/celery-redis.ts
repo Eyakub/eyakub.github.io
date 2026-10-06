@@ -13,6 +13,12 @@ export const celeryRedis: Topic = {
     en: 'Slow jobs go to a back kitchen, so nobody waits at the counter.',
     bn: 'ধীর কাজ পেছনের রান্নাঘরে যায়, তাই কাউন্টারে কাউকে অপেক্ষা করতে হয় না।'
   },
+  story: {
+    cast: {
+      en: 'Nila orders a birthday cake at a small bakery, where Sami takes orders at the counter and Babul bakes in the back.',
+      bn: 'নিলা একটা ছোট বেকারিতে জন্মদিনের কেক চায়, যেখানে সামি কাউন্টারে অর্ডার নেয় আর বাবুল পেছনে কেক বানায়।'
+    }
+  },
   takeaway: {
     en: 'Take orders fast, cook elsewhere, collect when ready.',
     bn: 'দ্রুত অর্ডার নিন, অন্যখানে রান্না হোক, তৈরি হলে নিন।'
@@ -139,6 +145,13 @@ export const celeryRedis: Topic = {
       {
         id: 'request',
         moves: [ { edge: 'ua', label: 'POST /reports', plain: { en: 'Report order', bn: 'রিপোর্টের অর্ডার' } } ],
+        story: {
+          title: { en: 'Nila orders a cake', bn: 'নিলা একটা কেক চায়' },
+          text: {
+            en: 'Nila walks into the bakery and asks Sami at the counter for a big birthday cake. It takes half an hour to bake, so Nila should not stand there waiting.',
+            bn: 'নিলা বেকারিতে ঢুকে কাউন্টারে সামিকে একটা বড় জন্মদিনের কেক চায়। বানাতে আধ ঘণ্টা লাগে, তাই নিলার দাঁড়িয়ে থাকা ঠিক নয়।'
+          }
+        },
         title: { en: 'You order a report', bn: 'আপনি একটা রিপোর্ট চান' },
         simple: {
           en: 'You tap “Make my report”. The order reaches the waiter, the web app. Building it takes half a minute.',
@@ -152,6 +165,13 @@ export const celeryRedis: Topic = {
       {
         id: 'enqueue',
         moves: [ { edge: 'ab', label: 'task message', plain: { en: 'Order ticket', bn: 'অর্ডার টিকিট' } } ],
+        story: {
+          title: { en: 'Sami writes a slip', bn: 'সামি একটা চিরকুট লেখে' },
+          text: {
+            en: 'Sami does not bake. Sami writes the cake order on a small slip and clips it onto the hanging rail in the back of the shop.',
+            bn: 'সামি কেক বানায় না। সে কেকের অর্ডার একটা ছোট চিরকুটে লিখে দোকানের পেছনের ঝোলানো রেলে আটকে দেয়।'
+          }
+        },
         title: { en: 'The waiter writes a ticket', bn: 'ওয়েটার একটা টিকিট লেখে' },
         simple: {
           en: 'The waiter does not cook. They write a small ticket saying what to make and clip it onto the order rail, a waiting line called a queue.',
@@ -165,6 +185,13 @@ export const celeryRedis: Topic = {
       {
         id: 'instant-reply',
         moves: [ { edge: 'au', label: '202 + task id', plain: { en: 'OK, ticket #42', bn: 'ঠিক আছে, টিকিট #৪২' } } ],
+        story: {
+          title: { en: 'Nila gets a number', bn: 'নিলা একটা নম্বর পায়' },
+          text: {
+            en: 'Sami smiles at once and says, “Your slip number is 42.” Nila is free to sit by the window and read while the cake is made.',
+            bn: 'সামি সাথে সাথে হেসে বলে, “আপনার চিরকুট নম্বর ৪২।” কেক বানানোর সময় নিলা জানালার পাশে বসে বই পড়তে পারে।'
+          }
+        },
         title: { en: 'You get an instant reply', bn: 'আপনি সাথে সাথে উত্তর পেলেন' },
         simple: {
           en: 'The waiter answers at once: “Got it, your ticket number is 42.” You can keep using the page while the kitchen works.',
@@ -178,6 +205,13 @@ export const celeryRedis: Topic = {
       {
         id: 'pickup',
         moves: [ { edge: 'bw', label: 'task message', plain: { en: 'Order ticket', bn: 'অর্ডার টিকিট' } } ],
+        story: {
+          title: { en: 'Babul takes the slip', bn: 'বাবুল চিরকুটটা নেয়' },
+          text: {
+            en: 'Babul the baker keeps an eye on the rail. As soon as his hands are free, he takes the next slip and carries it to his table.',
+            bn: 'বাবুল কারিগর রেলের দিকে নজর রাখে। হাত খালি হতেই সে পরের চিরকুটটা নিয়ে নিজের টেবিলে যায়।'
+          }
+        },
         title: { en: 'A cook takes the ticket', bn: 'একজন রাঁধুনি টিকিটটা নেন' },
         simple: {
           en: 'A cook, the worker, keeps watching the order rail. As soon as they are free, they take the next ticket and carry it off.',
@@ -191,6 +225,13 @@ export const celeryRedis: Topic = {
       {
         id: 'work',
         work: { node: 'worker', kind: 'queue' },
+        story: {
+          title: { en: 'Babul bakes the cake', bn: 'বাবুল কেক বানায়' },
+          text: {
+            en: 'Babul is busy mixing and baking Nila’s cake in the back. From the front you see nothing moving. Sami is free to serve other customers.',
+            bn: 'বাবুল পেছনে নিলার কেক মেখে আর সেঁকে ব্যস্ত। সামনে থেকে কিছুই নড়তে দেখা যায় না। সামি ততক্ষণে অন্য ক্রেতাদের সামলায়।'
+          }
+        },
         title: { en: 'The cook makes the slow dish', bn: 'রাঁধুনি ধীর কাজটা করেন' },
         simple: {
           en: 'The cook lights up but nothing moves, because they are busy building your report. Meanwhile the waiter is free to serve other customers.',
@@ -204,6 +245,13 @@ export const celeryRedis: Topic = {
       {
         id: 'saved',
         moves: [ { edge: 'wr', label: 'SUCCESS + file url', plain: { en: 'Done + link', bn: 'শেষ + লিংক' } } ],
+        story: {
+          title: { en: 'The cake waits for Nila', bn: 'কেকটা নিলার জন্য অপেক্ষা করে' },
+          text: {
+            en: 'The cake is ready. Babul puts it on the pickup shelf with a “ready” card and slip number 42 next to it.',
+            bn: 'কেক তৈরি। বাবুল সেটা পিকআপ তাকে রাখে, পাশে একটা “তৈরি” কার্ড আর চিরকুট নম্বর ৪২।'
+          }
+        },
         title: { en: 'The result goes to the counter', bn: 'ফলাফল কাউন্টারে যায়' },
         simple: {
           en: 'When it is done, the cook puts the finished report and a “done” mark on the pickup counter, under your ticket number.',
@@ -217,6 +265,13 @@ export const celeryRedis: Topic = {
       {
         id: 'poll',
         moves: [ { edge: 'ua', label: 'GET /tasks/{id}', plain: { en: 'Is #42 ready?', bn: '#৪২ কি তৈরি?' } } ],
+        story: {
+          title: { en: 'Nila asks again', bn: 'নিলা আবার জিজ্ঞেস করে' },
+          text: {
+            en: 'After a little while Nila walks up to the counter and asks Sami, “Is number 42 ready yet?” Nila does this every few minutes.',
+            bn: 'একটু পরে নিলা কাউন্টারে গিয়ে সামিকে জিজ্ঞেস করে, “৪২ নম্বর কি তৈরি?” নিলা কয়েক মিনিট পরপর এটা করে।'
+          }
+        },
         title: { en: 'Your page checks back', bn: 'আপনার পেজ আবার খোঁজ নেয়' },
         simple: {
           en: 'Every few seconds your page asks the waiter: “Is ticket 42 ready yet?”',
@@ -230,6 +285,13 @@ export const celeryRedis: Topic = {
       {
         id: 'lookup',
         moves: [ { edge: 'ar', label: 'lookup id', plain: { en: 'Look up #42', bn: '#৪২ খোঁজা' } } ],
+        story: {
+          title: { en: 'Sami checks the shelf', bn: 'সামি তাকে দেখে' },
+          text: {
+            en: 'Sami walks over to the pickup shelf and looks for the cake with number 42.',
+            bn: 'সামি পিকআপ তাকের কাছে গিয়ে ৪২ নম্বরের কেকটা খোঁজে।'
+          }
+        },
         title: { en: 'The waiter checks the counter', bn: 'ওয়েটার কাউন্টারে দেখেন' },
         simple: {
           en: 'The waiter walks over to the pickup counter and looks for ticket 42.',
@@ -243,6 +305,13 @@ export const celeryRedis: Topic = {
       {
         id: 'answer',
         moves: [ { edge: 'ra', label: 'SUCCESS', plain: { en: 'Done + link', bn: 'শেষ + লিংক' } } ],
+        story: {
+          title: { en: 'The shelf has the cake', bn: 'তাকে কেকটা আছে' },
+          text: {
+            en: 'Sami finds the cake with its “ready” card. It is all done, and Sami heads back to the counter.',
+            bn: 'সামি “তৈরি” কার্ডসহ কেকটা খুঁজে পায়। সব কাজ শেষ, আর সামি কাউন্টারে ফিরে আসে।'
+          }
+        },
         title: { en: 'The counter has your dish', bn: 'কাউন্টারে আপনার খাবার আছে' },
         simple: {
           en: 'The counter answers: done, and here is the link. The answer goes back to the waiter.',
@@ -256,6 +325,13 @@ export const celeryRedis: Topic = {
       {
         id: 'download',
         moves: [ { edge: 'au', label: 'report link', plain: { en: 'Report link', bn: 'রিপোর্টের লিংক' } } ],
+        story: {
+          title: { en: 'Nila takes the cake home', bn: 'নিলা কেক নিয়ে বাড়ি যায়' },
+          text: {
+            en: 'Sami hands Nila the box. Nila never stood in a long wait, because Babul did the baking out of sight. Happy birthday!',
+            bn: 'সামি নিলার হাতে বাক্সটা তুলে দেয়। নিলাকে লম্বা সময় দাঁড়িয়ে থাকতে হয়নি, কারণ বাবুল আড়ালে কেক বানিয়েছে। শুভ জন্মদিন!'
+          }
+        },
         title: { en: 'You download the report', bn: 'আপনি রিপোর্ট ডাউনলোড করেন' },
         simple: {
           en: 'The waiter brings your download button. No frozen screen, because the cook worked out of sight.',
@@ -281,6 +357,13 @@ export const celeryRedis: Topic = {
         {
           id: 'crash',
           work: { node: 'worker', kind: 'error' },
+          story: {
+            title: { en: 'The oven goes cold', bn: 'ওভেন ঠান্ডা হয়ে যায়' },
+            text: {
+              en: 'Halfway through, Babul’s oven goes cold and he cannot finish Nila’s cake. This batch is spoiled.',
+              bn: 'মাঝপথে বাবুলের ওভেন ঠান্ডা হয়ে যায়, আর সে নিলার কেক শেষ করতে পারে না। এই দফাটা নষ্ট।'
+            }
+          },
           title: { en: 'The job goes wrong', bn: 'কাজটা ভুল হয়ে যায়' },
           simple: {
             en: 'Halfway through, the cook cannot reach the place where files are saved. The dish fails.',
@@ -294,6 +377,13 @@ export const celeryRedis: Topic = {
         {
           id: 'requeue',
           moves: [ { edge: 'wb', label: 'retry in 60 s', plain: { en: 'Try again soon', bn: 'একটু পরে আবার' } } ],
+          story: {
+            title: { en: 'The slip goes back', bn: 'চিরকুট আবার ফেরে' },
+            text: {
+              en: 'Babul clips Nila’s slip back onto the rail with a note: “try again in a minute”. Nila’s cake is not forgotten.',
+              bn: 'বাবুল নিলার চিরকুটটা একটা নোটসহ আবার রেলে আটকে দেয়: “এক মিনিট পরে আবার চেষ্টা করো”। নিলার কেক ভোলা হয়নি।'
+            }
+          },
           title: { en: 'The ticket goes back in line', bn: 'টিকিট আবার লাইনে ফেরে' },
           simple: {
             en: 'The cook clips the ticket back onto the order rail with a note: “try again in a minute”.',
@@ -307,6 +397,13 @@ export const celeryRedis: Topic = {
         {
           id: 'second-try',
           moves: [ { edge: 'bw', label: 'task message, try 2', plain: { en: 'Ticket, try 2', bn: 'টিকিট, ২য় বার' } } ],
+          story: {
+            title: { en: 'Babul tries again', bn: 'বাবুল আবার চেষ্টা করে' },
+            text: {
+              en: 'A minute later Babul takes Nila’s slip from the rail again and starts over, this time with the oven warm.',
+              bn: 'এক মিনিট পরে বাবুল রেল থেকে নিলার চিরকুটটা আবার নেয় আর নতুন করে শুরু করে, এবার ওভেন গরম।'
+            }
+          },
           title: { en: 'Second try', bn: 'দ্বিতীয় চেষ্টা' },
           simple: {
             en: 'A minute later a cook takes the ticket again.',
@@ -320,6 +417,13 @@ export const celeryRedis: Topic = {
         {
           id: 'works',
           moves: [ { edge: 'wr', label: 'SUCCESS', plain: { en: 'Done + link', bn: 'শেষ + লিংক' } } ],
+          story: {
+            title: { en: 'This time the cake is done', bn: 'এবার কেক তৈরি হয়' },
+            text: {
+              en: 'The cake comes out perfect and goes on the pickup shelf. Nila asks Sami like before, and gets the box. Nila only noticed a slightly longer wait.',
+              bn: 'কেকটা নিখুঁত হয়ে পিকআপ তাকে যায়। নিলা আগের মতোই সামিকে জিজ্ঞেস করে আর বাক্সটা পায়। নিলা শুধু একটু বেশি অপেক্ষা টের পেয়েছে।'
+            }
+          },
           title: { en: 'This time it works', bn: 'এবার কাজ হয়ে যায়' },
           simple: {
             en: 'This time it works. The report is built and put on the pickup counter, and checking back goes exactly as before.',
