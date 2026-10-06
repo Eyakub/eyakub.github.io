@@ -13,6 +13,12 @@ export const fastapiLifecycle: Topic = {
     en: 'Every click on a website follows one path, like an order through a restaurant, so you know where problems hide.',
     bn: 'ওয়েবসাইটের প্রতিটি ক্লিক রেস্টুরেন্টের অর্ডারের মতো একই পথে চলে, তাই আপনি জানেন সমস্যা কোথায় লুকোতে পারে।'
   },
+  story: {
+    cast: {
+      en: 'Nila is hungry and orders lunch at a busy restaurant, where Joy is the chef in the kitchen.',
+      bn: 'নীলার খিদে পেয়েছে, সে একটা ব্যস্ত রেস্টুরেন্টে লাঞ্চ অর্ডার করে, যেখানে জয় রান্নাঘরের শেফ।'
+    }
+  },
   takeaway: {
     en: 'Slow extras, like a receipt email, wait until the customer has been served.',
     bn: 'রসিদ ইমেইলের মতো ধীর বাড়তি কাজ অপেক্ষা করে, কাস্টমার খাবার পাওয়ার পরে।'
@@ -223,6 +229,13 @@ export const fastapiLifecycle: Topic = {
           en: 'The customer asks the website for item 42. The host at the door, a server, takes the order slip and reads it.',
           bn: 'কাস্টমার ওয়েবসাইটের কাছে ৪২ নম্বর আইটেম চায়। দরজার হোস্ট, মানে সার্ভার, অর্ডার স্লিপটা নিয়ে পড়ে।'
         },
+        story: {
+          title: { en: 'Nila places an order', bn: 'নীলা অর্ডার দেয়' },
+          text: {
+            en: 'Nila walks in and asks for her favourite dish from the menu. The host at the door takes her order slip and reads it carefully.',
+            bn: 'নীলা ঢুকে মেনু থেকে তার প্রিয় পদটা চায়। দরজার হোস্ট তার অর্ডার স্লিপ নিয়ে মন দিয়ে পড়ে।'
+          }
+        },
         tech: {
           en: 'Uvicorn parses the HTTP bytes (h11 or httptools) and builds an ASGI `scope` dict. It then calls `await app(scope, receive, send)`. FastAPI never touches the socket itself.',
           bn: 'Uvicorn HTTP বাইট পার্স করে (h11 বা httptools) একটা ASGI `scope` dict বানায়, তারপর `await app(scope, receive, send)` ডাকে। সকেট FastAPI নিজে কখনো ছোঁয় না।'
@@ -235,6 +248,13 @@ export const fastapiLifecycle: Topic = {
         simple: {
           en: 'The host hands the order slip into the app, first to the manager, who steps in if anything goes badly wrong.',
           bn: 'হোস্ট অর্ডার স্লিপ অ্যাপের ভেতরে দেয়, প্রথমে ম্যানেজারের হাতে। কিছু বড় গোলমাল হলে ম্যানেজারই সামলান।'
+        },
+        story: {
+          title: { en: 'The host calls the manager', bn: 'হোস্ট ম্যানেজারকে ডাকে' },
+          text: {
+            en: 'The host carries Nila’s slip inside and gives it to the manager first. If anything goes badly wrong in the restaurant, the manager is the one who steps in.',
+            bn: 'হোস্ট নীলার স্লিপ ভেতরে নিয়ে প্রথমে ম্যানেজারের হাতে দেয়। রেস্টুরেন্টে বড় কিছু গোলমাল হলে ম্যানেজারই এগিয়ে আসেন।'
+          }
         },
         tech: {
           en: 'FastAPI subclasses Starlette. `ServerErrorMiddleware` is always the outermost layer, so any unhandled exception ends up here and becomes a 500.',
@@ -249,6 +269,13 @@ export const fastapiLifecycle: Topic = {
           en: 'The slip reaches the security desk, your checkpoints. One asks if this website is allowed in, one checks the login, one starts a stopwatch.',
           bn: 'স্লিপ সিকিউরিটি ডেস্কে, মানে আপনার চেকপয়েন্টে পৌঁছায়। একজন দেখে এই ওয়েবসাইটের ঢোকার অনুমতি আছে কি না, একজন লগইন দেখে, একজন স্টপওয়াচ চালায়।'
         },
+        story: {
+          title: { en: 'Nila gets checked in', bn: 'নীলাকে যাচাই করা হয়' },
+          text: {
+            en: 'Nila’s slip reaches the security desk. One guard checks she is allowed in, one checks her membership card, and one starts a stopwatch to time her order.',
+            bn: 'নীলার স্লিপ সিকিউরিটি ডেস্কে পৌঁছায়। একজন দেখে সে ঢুকতে পারবে কি না, একজন তার মেম্বারশিপ কার্ড দেখে, আর একজন অর্ডারের সময় মাপতে স্টপওয়াচ চালায়।'
+          }
+        },
         tech: {
           en: 'With `add_middleware`, the last one added is the outermost, so it runs first on the way in. The request goes top to bottom, and the response goes back bottom to top.',
           bn: '`add_middleware`-এ সবশেষে যোগ করাটাই সবচেয়ে বাইরের, তাই ঢোকার পথে সেটাই আগে চলে। রিকোয়েস্ট যায় উপর থেকে নিচে, রেসপন্স ফেরে নিচ থেকে উপরে।'
@@ -261,6 +288,13 @@ export const fastapiLifecycle: Topic = {
         simple: {
           en: 'Next the slip reaches guest relations, who turn errors like “not found” or “not allowed” into polite, clear replies.',
           bn: 'এরপর স্লিপ পৌঁছায় গেস্ট সার্ভিসে। তারা “পাওয়া যায়নি” বা “অনুমতি নেই” ধরনের ভুলকে ভদ্র, পরিষ্কার উত্তরে বদলে দেয়।'
+        },
+        story: {
+          title: { en: 'Guest relations waits', bn: 'গেস্ট সার্ভিস তৈরি থাকে' },
+          text: {
+            en: 'The slip moves on to guest relations. If Joy cannot make something, they are ready to tell Nila kindly, so she never sits there confused.',
+            bn: 'স্লিপটা গেস্ট সার্ভিসে যায়। জয় কিছু বানাতে না পারলে তারা নীলাকে ভদ্রভাবে জানাতে তৈরি, যাতে সে ধোঁয়াশায় না বসে থাকে।'
+          }
         },
         tech: {
           en: '`ExceptionMiddleware` sits innermost, right around the router. It turns `HTTPException` and your registered exception handlers into responses.',
@@ -275,6 +309,13 @@ export const fastapiLifecycle: Topic = {
           en: 'The seating host reads the order and finds its route, the address it matches. That decides which chef will cook it.',
           bn: 'সিট দেখানো হোস্ট অর্ডার পড়ে তার রুট, মানে যে ঠিকানার সাথে মেলে সেটা খুঁজে নেয়। তাতেই ঠিক হয় কোন শেফ রান্না করবে।'
         },
+        story: {
+          title: { en: 'The seating host finds Joy', bn: 'সিট দেখানো হোস্ট জয়কে খোঁজে' },
+          text: {
+            en: 'The seating host reads Nila’s dish name and works out which kitchen corner makes it. That decides that Joy is the chef who will cook for her.',
+            bn: 'সিট দেখানো হোস্ট নীলার পদের নাম পড়ে বুঝে নেয় রান্নাঘরের কোন কোণে সেটা বানানো হয়। তাতেই ঠিক হয়, নীলার জন্য রান্না করবে জয়।'
+          }
+        },
         tech: {
           en: 'Starlette’s `Router` matches path and method and extracts path params like `item_id`. A missing path becomes 404, a wrong method becomes 405, and mounted sub-apps are resolved here.',
           bn: 'Starlette-এর `Router` path আর method মেলায়, আর `item_id`-র মতো path param বের করে। path না মিললে 404, method ভুল হলে 405, আর mounted sub-app এখানেই ঠিক হয়।'
@@ -287,6 +328,13 @@ export const fastapiLifecycle: Topic = {
         simple: {
           en: 'Before any cooking, the order desk checks the form is filled in properly, such as the item number really being a number.',
           bn: 'রান্নার আগে অর্ডার ডেস্ক দেখে ফর্ম ঠিকমতো ভরা কি না, যেমন আইটেম নম্বরটা সত্যিই সংখ্যা কি না।'
+        },
+        story: {
+          title: { en: 'The order desk checks the form', bn: 'অর্ডার ডেস্ক ফর্ম দেখে' },
+          text: {
+            en: 'Before Joy lights the stove, the order desk checks Nila’s form. Her name is there and the dish number is a real number, so everything looks fine.',
+            bn: 'জয় চুলা জ্বালানোর আগে অর্ডার ডেস্ক নীলার ফর্ম দেখে। তার নাম আছে, আর পদের নম্বরটা সত্যিই একটা সংখ্যা, তাই সব ঠিক দেখাচ্ছে।'
+          }
         },
         tech: {
           en: '`solve_dependencies` runs each `Depends` (sub-dependencies first, cached per request) and the setup half of `yield` dependencies. Pydantic validates path, query and body here.',
@@ -301,6 +349,13 @@ export const fastapiLifecycle: Topic = {
           en: 'The chef gets a clean, checked order and does the real work, such as fetching item 42 from the database.',
           bn: 'শেফ পরিষ্কার, যাচাই করা অর্ডার হাতে পায় আর আসল কাজটা করে, যেমন ডেটাবেস থেকে ৪২ নম্বর আইটেম আনে।'
         },
+        story: {
+          title: { en: 'Joy starts cooking', bn: 'জয় রান্না শুরু করে' },
+          text: {
+            en: 'Joy receives the clean, checked order. She fetches the ingredients from the pantry shelf and cooks Nila’s dish, which is the real work of the whole restaurant.',
+            bn: 'জয় পরিষ্কার, যাচাই করা অর্ডার হাতে পায়। সে ভাঁড়ার তাক থেকে উপকরণ এনে নীলার খাবার রান্না করে, যেটাই পুরো রেস্টুরেন্টের আসল কাজ।'
+          }
+        },
         tech: {
           en: 'A `def` handler runs in a threadpool (AnyIO worker thread). An `async def` handler runs directly on the event loop, so a blocking call inside it freezes every request.',
           bn: '`def` হ্যান্ডলার চলে threadpool-এ (AnyIO worker thread)। `async def` হ্যান্ডলার সরাসরি event loop-এ চলে, তাই ভেতরে blocking কল থাকলে সব রিকোয়েস্ট আটকে যায়।'
@@ -313,6 +368,13 @@ export const fastapiLifecycle: Topic = {
         simple: {
           en: 'The chef plates the dish with only the parts you promised; secrets, like a stored password, stay in the kitchen. It starts back toward the door.',
           bn: 'শেফ শুধু আপনার প্রতিশ্রুত অংশ দিয়ে খাবার সাজায়; সংরক্ষিত পাসওয়ার্ডের মতো গোপন জিনিস রান্নাঘরেই থাকে। খাবার দরজার দিকে ফিরতি পথ ধরে।'
+        },
+        story: {
+          title: { en: 'Joy plates only the right parts', bn: 'জয় শুধু ঠিক অংশ সাজায়' },
+          text: {
+            en: 'Joy plates the dish with only what the menu promised. The secret family recipe card stays in the kitchen. Then the plate starts its trip back toward the door.',
+            bn: 'জয় মেনুতে যা কথা দেওয়া ছিল শুধু সেটুকু দিয়ে খাবার সাজায়। পারিবারিক গোপন রেসিপির কার্ড রান্নাঘরেই থাকে। তারপর প্লেট দরজার দিকে ফিরতি পথ ধরে।'
+          }
         },
         tech: {
           en: '`response_model` validation and filtering happen as the value leaves: Pydantic converts it, drops extra fields, then it is serialized into a `JSONResponse`. ORM objects need `from_attributes=True`.',
@@ -330,6 +392,13 @@ export const fastapiLifecycle: Topic = {
           en: 'The plated dish retraces the slip’s path in reverse: past the seating host, then on to guest relations.',
           bn: 'সাজানো খাবার স্লিপের পথেই উল্টো দিকে ফেরে: সিট দেখানো হোস্ট পেরিয়ে গেস্ট সার্ভিসে।'
         },
+        story: {
+          title: { en: 'The plate heads back out', bn: 'প্লেট ফিরতি পথে রওনা দেয়' },
+          text: {
+            en: 'Nila’s plate retraces the slip’s path in reverse. It goes past the seating host first, then reaches guest relations, who have nothing to fix and wave it through.',
+            bn: 'নীলার প্লেট স্লিপের পথেই উল্টো দিকে ফেরে। আগে সিট দেখানো হোস্ট, তারপর গেস্ট সার্ভিস। ঠিক করার কিছু নেই বলে তারা হাত নেড়ে এগিয়ে দেয়।'
+          }
+        },
         tech: {
           en: 'The response flows back out through the router and `ExceptionMiddleware`. That layer only steps in if an exception was raised; otherwise it passes the response along untouched.',
           bn: 'রেসপন্স router আর `ExceptionMiddleware`-এর ভেতর দিয়ে বেরিয়ে আসে। এই স্তর শুধু exception উঠলেই হস্তক্ষেপ করে; নইলে রেসপন্স যেমন আছে তেমনই এগিয়ে দেয়।'
@@ -345,6 +414,13 @@ export const fastapiLifecycle: Topic = {
         simple: {
           en: 'The dish passes the security desk, which can stamp it, pack it smaller or time the trip, then reaches the manager.',
           bn: 'খাবার সিকিউরিটি ডেস্ক পেরোয়, যারা সিল দিতে, ছোট করে মুড়তে বা সময় মাপতে পারে। তারপর ম্যানেজারের কাছে পৌঁছায়।'
+        },
+        story: {
+          title: { en: 'Past the desk and manager', bn: 'ডেস্ক আর ম্যানেজার পেরিয়ে' },
+          text: {
+            en: 'The plate passes the security desk, who stop the stopwatch and add a little thank-you sticker. Then it reaches the manager, who nods and lets it carry on.',
+            bn: 'প্লেট সিকিউরিটি ডেস্ক পেরোয়। তারা স্টপওয়াচ থামায় আর একটা ছোট ধন্যবাদের স্টিকার লাগায়। তারপর প্লেট ম্যানেজারের কাছে পৌঁছায়, তিনি মাথা নেড়ে এগোতে দেন।'
+          }
         },
         tech: {
           en: 'The response then passes your middleware from bottom to top, then `ServerErrorMiddleware`. CORS and GZip add their headers or compression on this leg.',
@@ -362,6 +438,13 @@ export const fastapiLifecycle: Topic = {
           en: 'The host at the door carries the dish to the customer, who now has their answer: OK, here is item 42.',
           bn: 'দরজার হোস্ট খাবারটা কাস্টমারের কাছে পৌঁছে দেয়। কাস্টমার এখন উত্তর পেয়েছে: OK, এই নিন ৪২ নম্বর আইটেম।'
         },
+        story: {
+          title: { en: 'Nila gets her lunch', bn: 'নীলা তার লাঞ্চ পায়' },
+          text: {
+            en: 'The host at the door carries the plate to Nila’s table. She smiles, since her answer is simply: here is your dish. Her part of the story is done.',
+            bn: 'দরজার হোস্ট প্লেটটা নীলার টেবিলে পৌঁছে দেয়। সে হাসে, কারণ তার উত্তর সহজ: এই নিন আপনার খাবার। গল্পে নীলার অংশ এখানেই শেষ।'
+          }
+        },
         tech: {
           en: 'Uvicorn sends the ASGI messages `http.response.start` and `http.response.body`. Status, headers and body go on the wire. The client is done at this point.',
           bn: 'Uvicorn ASGI মেসেজ `http.response.start` আর `http.response.body` পাঠায়। স্ট্যাটাস, হেডার আর বডি তারে চলে যায়। ক্লায়েন্টের কাজ এখানেই শেষ।'
@@ -374,6 +457,13 @@ export const fastapiLifecycle: Topic = {
         simple: {
           en: 'Now the chef hands slow extras, like a receipt email, to the courier.',
           bn: 'পরিবেশনের পর শেফ রসিদ ইমেইলের মতো ধীর কাজ কুরিয়ারকে দেয়।'
+        },
+        story: {
+          title: { en: 'The courier brings the receipt', bn: 'কুরিয়ার রসিদ আনে' },
+          text: {
+            en: 'While Nila happily eats, Joy hands a slow extra job to the courier. The courier takes the receipt to her email later, so Nila never has to wait for it.',
+            bn: 'নীলা মনের সুখে খাওয়ার সময় জয় একটা ধীর বাড়তি কাজ কুরিয়ারকে দেয়। কুরিয়ার পরে নীলার ইমেইলে রসিদ পৌঁছে দেয়, তাই নীলাকে অপেক্ষা করতে হয় না।'
+          }
         },
         tech: {
           en: '`BackgroundTasks` run after the response is sent, in the same process, with no retries. If the process dies, the task is lost. `yield` dependency teardown also runs after, by default in current FastAPI.',
@@ -400,6 +490,13 @@ export const fastapiLifecycle: Topic = {
             en: 'The customer asked for item “abc”, but an item number must be a number. The order desk spots the mistake.',
             bn: 'কাস্টমার চেয়েছে “abc” আইটেম, কিন্তু আইটেম নম্বর তো সংখ্যা হওয়ার কথা। অর্ডার ডেস্ক ভুলটা ধরে ফেলে।'
           },
+          story: {
+            title: { en: 'Nila writes the wrong thing', bn: 'নীলা ভুল কিছু লেখে' },
+            text: {
+              en: 'Next day Nila orders again, but writes a word where the dish number should go. The order desk looks at the form and spots the mistake before anyone cooks.',
+              bn: 'পরের দিন নীলা আবার অর্ডার দেয়, কিন্তু পদের নম্বরের জায়গায় একটা শব্দ লিখে ফেলে। কেউ রান্না শুরুর আগেই অর্ডার ডেস্ক ফর্ম দেখে ভুলটা ধরে ফেলে।'
+            }
+          },
           tech: {
             en: 'Pydantic cannot parse `abc` as an `int`, so FastAPI raises `RequestValidationError` with a `loc`, `msg` and `type` for each bad field.',
             bn: 'Pydantic `abc`-কে `int` হিসেবে পার্স করতে পারে না, তাই FastAPI প্রতিটি ভুল ফিল্ডের জন্য `loc`, `msg` আর `type`-সহ `RequestValidationError` তোলে।'
@@ -412,6 +509,13 @@ export const fastapiLifecycle: Topic = {
           simple: {
             en: 'The order desk sends the problem straight to guest relations. The chef never saw the order, so nothing was cooked.',
             bn: 'অর্ডার ডেস্ক সমস্যাটা সোজা গেস্ট সার্ভিসে পাঠায়। শেফ অর্ডারটা দেখেইনি, তাই কিছু রান্না হয়নি।'
+          },
+          story: {
+            title: { en: 'Guest relations steps in', bn: 'গেস্ট সার্ভিস এগিয়ে আসে' },
+            text: {
+              en: 'The order desk sends the problem straight to guest relations. Joy never even saw Nila’s order, so no food was cooked and nothing in the kitchen was wasted.',
+              bn: 'অর্ডার ডেস্ক সমস্যাটা সোজা গেস্ট সার্ভিসে পাঠায়। জয় নীলার অর্ডারটা দেখেইনি, তাই কিছু রান্না হয়নি আর রান্নাঘরে কিছু নষ্টও হয়নি।'
+            }
           },
           tech: {
             en: 'FastAPI registers a handler for `RequestValidationError` in ExceptionMiddleware’s table. You can override it with `@app.exception_handler(RequestValidationError)`.',
@@ -429,6 +533,13 @@ export const fastapiLifecycle: Topic = {
             en: 'Guest relations writes a clear note saying which part of the form was wrong and why. It heads out past the security desk.',
             bn: 'গেস্ট সার্ভিস পরিষ্কার একটা নোট লেখে, ফর্মের কোন অংশ কেন ভুল। নোটটা সিকিউরিটি ডেস্ক পেরিয়ে বেরিয়ে যায়।'
           },
+          story: {
+            title: { en: 'A clear note is written', bn: 'পরিষ্কার একটা নোট লেখা হয়' },
+            text: {
+              en: 'Guest relations writes Nila a clear note saying which line of her form was wrong and why. The note then walks out past the security desk like any other reply.',
+              bn: 'গেস্ট সার্ভিস নীলার জন্য পরিষ্কার একটা নোট লেখে, তার ফর্মের কোন লাইন কেন ভুল। নোটটা অন্য যেকোনো উত্তরের মতোই সিকিউরিটি ডেস্ক পেরিয়ে বেরিয়ে যায়।'
+            }
+          },
           tech: {
             en: 'The body is `{"detail": [{"loc", "msg", "type"}]}` with status 422, not 400. It then goes out through your middleware like any normal response.',
             bn: 'বডি হলো `{"detail": [{"loc", "msg", "type"}]}`, স্ট্যাটাস 422, 400 নয়। তারপর অন্য যেকোনো স্বাভাবিক রেসপন্সের মতোই আপনার middleware পেরিয়ে যায়।'
@@ -444,6 +555,13 @@ export const fastapiLifecycle: Topic = {
           simple: {
             en: 'The host hands the customer the note, so they know what to fix. Nothing was cooked, so nothing changed.',
             bn: 'হোস্ট নোটটা কাস্টমারের হাতে দেয়, তাই সে জানে কী ঠিক করতে হবে। কিছু রান্না হয়নি, তাই কিছুই বদলায়নি।'
+          },
+          story: {
+            title: { en: 'Nila learns what to fix', bn: 'নীলা জানে কী ঠিক করতে হবে' },
+            text: {
+              en: 'The host gives Nila the note. She laughs, fixes the dish number and is ready to order again. Nothing was cooked, so nothing needs to be thrown away.',
+              bn: 'হোস্ট নীলাকে নোটটা দেয়। সে হেসে ফেলে, পদের নম্বর ঠিক করে আবার অর্ডার দেওয়ার জন্য তৈরি হয়। কিছু রান্না হয়নি, তাই ফেলে দেওয়ার মতোও কিছু নেই।'
+            }
           },
           tech: {
             en: 'Validation runs during dependency solving, before the handler is entered. That is why a bad request can never reach your code with bad types.',
@@ -469,6 +587,13 @@ export const fastapiLifecycle: Topic = {
             en: 'A mistake in your own instructions sends the chef looking for an ingredient that does not exist. The dish is dropped halfway.',
             bn: 'আপনার নিজের নির্দেশে একটা ভুলের জন্য শেফ এমন উপকরণ খোঁজে যা নেই। খাবার মাঝপথেই পড়ে যায়।'
           },
+          story: {
+            title: { en: 'Joy drops the dish', bn: 'জয় খাবার ফেলে দেয়' },
+            text: {
+              en: 'On another day, a mistake in the recipe notes sends Joy hunting for an ingredient that is not in the pantry at all. In the confusion, the dish slips and falls.',
+              bn: 'আরেকদিন রেসিপির নোটে একটা ভুলের জন্য জয় এমন উপকরণ খুঁজতে থাকে যা ভাঁড়ারে নেই। গোলমালের মধ্যে খাবারটা হাত থেকে পড়ে যায়।'
+            }
+          },
           tech: {
             en: 'The handler raises `KeyError`, which is not an `HTTPException` and has no registered handler. Nothing between here and the outermost layer will catch it.',
             bn: 'হ্যান্ডলার `KeyError` তোলে, যা `HTTPException` নয়, আর এর কোনো রেজিস্টার করা handler-ও নেই। এখান থেকে সবচেয়ে বাইরের স্তর পর্যন্ত কেউ এটা ধরবে না।'
@@ -481,6 +606,13 @@ export const fastapiLifecycle: Topic = {
           simple: {
             en: 'Guest relations and the security desk cannot fix this, so the mishap rushes past them, straight to the manager.',
             bn: 'গেস্ট সার্ভিস আর সিকিউরিটি ডেস্ক এটা সারাতে পারে না, তাই গোলমালটা তাদের পাশ কাটিয়ে সোজা ম্যানেজারের কাছে যায়।'
+          },
+          story: {
+            title: { en: 'The mishap reaches the manager', bn: 'গোলমাল ম্যানেজারের কাছে যায়' },
+            text: {
+              en: 'Guest relations and the security desk cannot fix a fallen dish. The news rushes right past them and goes straight to the manager, who hurries over to take charge.',
+              bn: 'পড়ে যাওয়া খাবার গেস্ট সার্ভিস বা সিকিউরিটি ডেস্ক কেউ সারাতে পারে না। খবরটা তাদের পাশ কাটিয়ে সোজা ম্যানেজারের কাছে যায়, আর তিনি তাড়াতাড়ি এসে সামলান।'
+            }
           },
           tech: {
             en: 'The exception passes through ExceptionMiddleware and your middleware unhandled. `ServerErrorMiddleware` returns a plain 500, then re-raises so the server can log the traceback.',
@@ -497,6 +629,13 @@ export const fastapiLifecycle: Topic = {
           simple: {
             en: 'The customer only hears a plain “something went wrong”. The security desk never saw the reply, so it added nothing.',
             bn: 'কাস্টমার শুধু একটা সাদামাটা “কিছু একটা গোলমাল হয়েছে” শোনে। সিকিউরিটি ডেস্ক উত্তরটা দেখেইনি, তাই কিছু জুড়তে পারেনি।'
+          },
+          story: {
+            title: { en: 'A bare apology for Nila', bn: 'নীলার জন্য সাদামাটা দুঃখপ্রকাশ' },
+            text: {
+              en: 'Nila only hears a plain “sorry, something went wrong”. The security desk never saw the reply, so no thank-you sticker was added, and Nila has no idea why.',
+              bn: 'নীলা শুধু সাদামাটা একটা “দুঃখিত, কিছু একটা গোলমাল হয়েছে” শোনে। সিকিউরিটি ডেস্ক উত্তরটা দেখেইনি, তাই ধন্যবাদের স্টিকার লাগেনি, আর নীলা কারণটাও জানে না।'
+            }
           },
           tech: {
             en: 'CORSMiddleware sees an exception, not a response, so it never adds its headers to the 500. The browser then reports a CORS error that hides the real 500. Check the server logs.',
@@ -522,6 +661,13 @@ export const fastapiLifecycle: Topic = {
             en: 'Before any customer arrives, the host tells the chef to get ready. Setup runs once, such as opening the database.',
             bn: 'কোনো কাস্টমার আসার আগেই হোস্ট শেফকে তৈরি হতে বলে। সেটআপ একবার চলে, যেমন ডেটাবেস খোলা।'
           },
+          story: {
+            title: { en: 'Before the doors open', bn: 'দরজা খোলার আগে' },
+            text: {
+              en: 'Rewind to early morning, before Nila arrives. The host tells Joy to get ready, and Joy switches on the stove and unlocks the pantry once, for the whole day.',
+              bn: 'একদম সকালে ফিরে যাই, নীলা আসার আগে। হোস্ট জয়কে তৈরি হতে বলে, আর জয় পুরো দিনের জন্য একবারই চুলা জ্বালায় আর ভাঁড়ার খোলে।'
+            }
+          },
           tech: {
             en: 'Uvicorn sends `lifespan.startup`. Code before `yield` in your `lifespan` async context manager runs now, such as creating a DB pool or loading an ML model.',
             bn: 'Uvicorn `lifespan.startup` পাঠায়। আপনার `lifespan` async context manager-এর `yield`-এর আগের কোড এখন চলে, যেমন DB pool বানানো বা ML মডেল লোড করা।'
@@ -536,6 +682,13 @@ export const fastapiLifecycle: Topic = {
           simple: {
             en: 'Setup is done. The host unlocks the door and starts taking orders.',
             bn: 'সেটআপ শেষ। হোস্ট দরজা খুলে দেয় আর অর্ডার নেওয়া শুরু করে।'
+          },
+          story: {
+            title: { en: 'The doors open', bn: 'দরজা খুলে যায়' },
+            text: {
+              en: 'Everything is ready. The host unlocks the front door, turns the sign to open, and starts welcoming the first guests of the day, just before Nila walks in.',
+              bn: 'সব তৈরি। হোস্ট সামনের দরজা খোলে, সাইনবোর্ড খোলা দিকে ঘোরায়, আর নীলা ঢোকার ঠিক আগে দিনের প্রথম অতিথিদের স্বাগত জানাতে শুরু করে।'
+            }
           },
           tech: {
             en: 'The app now serves traffic. The pool and model live in the same scope as their cleanup. Do not mix `lifespan` with `on_event`; handlers are ignored once `lifespan` is set.',
@@ -552,6 +705,13 @@ export const fastapiLifecycle: Topic = {
             en: 'Much later, the restaurant is told to close. The host warns the chef first, so the kitchen can be tidied up.',
             bn: 'অনেক পরে রেস্টুরেন্টকে বন্ধ করতে বলা হয়। হোস্ট আগে শেফকে জানায়, যাতে রান্নাঘর গুছিয়ে নেওয়া যায়।'
           },
+          story: {
+            title: { en: 'Closing time', bn: 'বন্ধের সময়' },
+            text: {
+              en: 'Late at night, the last guests leave. The host warns Joy that the restaurant is about to close, so the kitchen can be tidied up properly before everyone goes home.',
+              bn: 'গভীর রাতে শেষ অতিথিরা চলে যায়। হোস্ট জয়কে জানায় রেস্টুরেন্ট এখনই বন্ধ হচ্ছে, যাতে সবাই বাড়ি যাওয়ার আগে রান্নাঘর ঠিকমতো গোছানো যায়।'
+            }
+          },
           tech: {
             en: 'Uvicorn sends `lifespan.shutdown`. Code after `yield` runs now. Lifespan does not run for mounted sub-apps, and `TestClient` only triggers it when used as a context manager.',
             bn: 'Uvicorn `lifespan.shutdown` পাঠায়। `yield`-এর পরের কোড এখন চলে। mounted sub-app-এর lifespan চলে না, আর `TestClient` শুধু context manager হিসেবে ব্যবহার করলেই এটা চালায়।'
@@ -566,6 +726,13 @@ export const fastapiLifecycle: Topic = {
           simple: {
             en: 'The chef closes the database connections neatly, and the host locks the door. Nothing is left hanging.',
             bn: 'শেফ ডেটাবেস কানেকশনগুলো ঠিকঠাক বন্ধ করে, আর হোস্ট দরজায় তালা দেয়। কিছু ঝুলে থাকে না।'
+          },
+          story: {
+            title: { en: 'Everything is tidied up', bn: 'সব গুছিয়ে ফেলা হলো' },
+            text: {
+              en: 'Joy turns off the stove and locks the pantry neatly, and the host locks the front door. Nothing is left hanging, and tomorrow Nila can come back to a clean place.',
+              bn: 'জয় চুলা বন্ধ করে ভাঁড়ার ঠিকমতো তালা দেয়, আর হোস্ট সামনের দরজায় তালা লাগায়। কিছু ঝুলে থাকে না, আর কাল নীলা পরিষ্কার জায়গায় ফিরে আসতে পারবে।'
+            }
           },
           tech: {
             en: 'Code after `yield` closes the pool. Lifespan runs once in each worker process. Startup code at module top level would run at import and could not be awaited.',
