@@ -4,6 +4,7 @@ import { celeryRedis } from './topics/celery-redis'
 import { concurrencyVsParallelism } from './topics/concurrency-vs-parallelism'
 import { fastapiLifecycle } from './topics/fastapi-lifecycle'
 import { gitBasics } from './topics/git-basics'
+import { httpJourney } from './topics/http-journey'
 import { multiprocessingPools } from './topics/multiprocessing-pools'
 import { processesVsThreads } from './topics/processes-vs-threads'
 import { pythonGil } from './topics/python-gil'
@@ -15,6 +16,7 @@ export const TOPICS: Record<string, Topic> = {
   [concurrencyVsParallelism.slug]: concurrencyVsParallelism,
   [fastapiLifecycle.slug]: fastapiLifecycle,
   [gitBasics.slug]: gitBasics,
+  [httpJourney.slug]: httpJourney,
   [multiprocessingPools.slug]: multiprocessingPools,
   [processesVsThreads.slug]: processesVsThreads,
   [pythonGil.slug]: pythonGil,

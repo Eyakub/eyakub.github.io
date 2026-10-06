@@ -26,7 +26,7 @@ export interface Line {
 export const PHASE_KEY: Record<Exclude<Phase, 1>, UiKey> = { 2: 'p2', 3: 'p3', 4: 'p4' }
 
 export const STATIONS: Record<string, Station> = {
-  'http-journey': { x: 120, y: 110, lab: 'up', phase: 3, line: 'backend', name: { en: 'HTTP journey', bn: 'HTTP-র যাত্রা' } },
+  'http-journey': { x: 120, y: 110, lab: 'up', phase: 3, line: 'backend', name: { en: 'HTTP journey', bn: 'HTTP-র যাত্রা' }, blurb: { en: 'Follow one click to a company’s computers and back.', bn: 'একটা ক্লিক কোম্পানির কম্পিউটার পর্যন্ত গিয়ে কীভাবে ফিরে আসে, দেখুন।' }, level: 'beginner' },
   'rest-basics': { x: 300, y: 110, lab: 'up', phase: 4, line: 'backend', name: { en: 'REST basics', bn: 'REST-এর মূল কথা' } },
   'fastapi-lifecycle': { x: 480, y: 110, lab: 'up', phase: 1, line: 'backend', interchange: true, name: { en: 'FastAPI lifecycle', bn: 'FastAPI-র জীবনচক্র' }, blurb: { en: 'Everything between a click and the reply.', bn: 'ক্লিক থেকে উত্তর আসা পর্যন্ত মাঝের সবকিছু।' }, level: 'intermediate' },
   'django-lifecycle': { x: 660, y: 110, lab: 'up', phase: 3, line: 'backend', name: { en: 'Django lifecycle', bn: 'Django-র জীবনচক্র' } },
