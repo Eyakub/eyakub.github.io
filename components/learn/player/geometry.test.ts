@@ -92,6 +92,12 @@ describe('placePill', () => {
   it('searches only inside the span', () => {
     expect(placePill(line, [20, 10], [], [200, 100], [0.5, 1]).t).toBeCloseTo(0.75)
   })
+  it('samples the direction inside the span, never across a corner beyond it', () => {
+    const bend: [number, number][] = [[50, 50], [52, 50], [52, 350]]
+    const spot = placePill(bend, [20, 10], [{ x: 0, y: 44, w: 100, h: 12 }], [400, 400], [0, 2 / 302])
+    expect(spot.dx).toBe(0)
+    expect(spot.dy).toBeGreaterThan(0)
+  })
 })
 
 describe('polyLen', () => {

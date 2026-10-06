@@ -120,6 +120,15 @@ describe('trips', () => {
     expect(out[0]).toMatchObject({ edges: ['ab', 'bc'], to: 'c', kind: 'result' })
     expect(out[0].move.label).toBe('200 OK')
   })
+  it('chains three hops of one kind into one trip, edges in order', () => {
+    const chain = {
+      edges: { ab: { from: 'a', to: 'b', kind: 'request' }, bc: { from: 'b', to: 'c', kind: 'request' }, cd: { from: 'c', to: 'd', kind: 'request' } },
+    } as unknown as Topic
+    const out = trips(chain, [{ edge: 'ab', label: '1' }, { edge: 'bc', label: '2' }, { edge: 'cd', label: '3' }])
+    expect(out).toHaveLength(1)
+    expect(out[0]).toMatchObject({ edges: ['ab', 'bc', 'cd'], to: 'd', kind: 'request' })
+    expect(out[0].move.label).toBe('3')
+  })
   it('keeps unrelated or different-kind moves apart', () => {
     expect(trips(t, [{ edge: 'ab', label: '1' }, { edge: 'xy', label: '2' }])).toHaveLength(2)
     expect(trips(t, [{ edge: 'bc', label: '1' }, { edge: 'cd', label: '2' }])).toHaveLength(2)

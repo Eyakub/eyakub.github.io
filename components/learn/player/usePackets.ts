@@ -28,6 +28,7 @@ export function usePackets({ topic, trips, animate, mode, lang, layout, bidir, r
   const nodeRefs = useRef<Record<string, SVGGElement | null>>({})
   const packetRefs = useRef<(SVGGElement | null)[]>([])
   const cometRefs = useRef<(SVGCircleElement | null)[]>([])
+  const lastRidden = useRef<Trip[] | null>(null)
 
   useLayoutEffect(() => {
     const svg = svgRef.current!
@@ -65,11 +66,14 @@ export function usePackets({ topic, trips, animate, mode, lang, layout, bidir, r
       el.setAttribute('transform', `translate(${(x + spot.dx * off).toFixed(1)} ${(y + spot.dy * off).toFixed(1)})`)
     }
 
+    // Mode, language and layout changes re-place the pill at rest; only a new stop rides.
+    const newStop = lastRidden.current !== trips
+    lastRidden.current = trips
     let raf = 0
     let arriveTimer: ReturnType<typeof setTimeout> | undefined
     let arrived: SVGGElement[] = []
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (!animate || reduce) {
+    if (!animate || !newStop || reduce) {
       packets.forEach((pk, i) => {
         if (!pk) return
         place(pk, i, geo[i].spot.t, 1)

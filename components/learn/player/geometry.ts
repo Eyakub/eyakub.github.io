@@ -113,8 +113,8 @@ export function placePill(pts: Pt[], [w, h]: [number, number], obstacles: Box[],
       const [x, y] = pointAt(pts, t)
       let spot: Spot = { t, dx: 0, dy: 0 }
       if (side) {
-        const [x1, y1] = pointAt(pts, Math.max(0, t - 0.01))
-        const [x2, y2] = pointAt(pts, Math.min(1, t + 0.01))
+        const [x1, y1] = pointAt(pts, Math.max(span[0], t - 0.01))
+        const [x2, y2] = pointAt(pts, Math.min(span[1], t + 0.01))
         spot = Math.abs(y2 - y1) > Math.abs(x2 - x1) ? { t, dx: side * (w / 2 + 10), dy: 0 } : { t, dx: 0, dy: side * (h / 2 + 10) }
       }
       const box = { x: x + spot.dx - w / 2, y: y + spot.dy - h / 2, w, h }
