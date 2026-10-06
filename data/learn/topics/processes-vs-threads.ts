@@ -13,6 +13,12 @@ export const processesVsThreads: Topic = {
     en: 'Cooks in one kitchen share a fridge, which is fast but risky, while separate kitchens are safer but must pass slips.',
     bn: 'এক রান্নাঘরের রাঁধুনিরা একই ফ্রিজ ভাগ করে, যা দ্রুত কিন্তু ঝুঁকির, আর আলাদা রান্নাঘর নিরাপদ হলেও স্লিপ পাঠাতে হয়।'
   },
+  story: {
+    cast: {
+      en: 'Tania and Arif are cooking a big party order together in one kitchen, with a neighbour’s kitchen right next door.',
+      bn: 'তানিয়া আর আরিফ একটা রান্নাঘরে একসাথে পার্টির বড় অর্ডার রাঁধছে, আর ঠিক পাশেই প্রতিবেশীর রান্নাঘর।'
+    }
+  },
   takeaway: {
     en: 'A shared fridge is fast but risky; separate kitchens are safe, but they must pass slips.',
     bn: 'ভাগের ফ্রিজ দ্রুত কিন্তু ঝুঁকির; আলাদা রান্নাঘর নিরাপদ, তবে স্লিপ পাঠাতে হয়।'
@@ -185,6 +191,13 @@ export const processesVsThreads: Topic = {
         moves: [ { edge: 'a_t1-a_mem', label: 'set x=1', plain: { en: 'Writes a number', bn: 'সংখ্যা লেখে' } } ],
         state: { a_mem: { en: 'x = 1', bn: 'x = 1' } },
         plainState: { a_mem: { en: 'Number is 1', bn: 'সংখ্যা ১' } },
+        story: {
+          title: { en: 'Tania leaves a number in the fridge', bn: 'তানিয়া ফ্রিজে একটা সংখ্যা রাখে' },
+          text: {
+            en: 'Tania and Arif are cooking a big party order in their kitchen, and they share one fridge. Tania writes a number on a card and puts it inside. The neighbour’s kitchen is next door.',
+            bn: 'তানিয়া আর আরিফ নিজেদের রান্নাঘরে পার্টির বড় অর্ডার রাঁধছে, তাদের ফ্রিজ একটাই। তানিয়া একটা কার্ডে সংখ্যা লিখে সেটা ভেতরে রাখে। পাশেই প্রতিবেশীর রান্নাঘর।'
+          }
+        },
         title: { en: 'Cook 1 puts a number in the fridge', bn: 'রাঁধুনি ১ ফ্রিজে একটা সংখ্যা রাখে' },
         simple: {
           en: 'Kitchen A has two cooks who share one fridge. Cook 1 puts a number in it. Kitchen B is next door; slips pass through the window.',
@@ -200,6 +213,13 @@ export const processesVsThreads: Topic = {
         moves: [ { edge: 'a_mem-a_t2', label: 'read x', plain: { en: 'Reads the number', bn: 'সংখ্যা পড়ে' } } ],
         state: { a_t2: { en: 'Sees x = 1', bn: 'x = 1 দেখে' } },
         plainState: { a_t2: { en: 'Sees the number 1', bn: 'সংখ্যা ১ দেখে' } },
+        story: {
+          title: { en: 'Arif reads the card', bn: 'আরিফ কার্ডটা পড়ে' },
+          text: {
+            en: 'Arif opens the same fridge and sees Tania’s number right away. Nobody had to copy anything or carry it over.',
+            bn: 'আরিফ একই ফ্রিজ খুলে সাথে সাথে তানিয়ার লেখা সংখ্যাটা দেখে। কিছু কপি করতে হয়নি, কাউকে বয়ে আনতেও হয়নি।'
+          }
+        },
         title: { en: 'Cook 2 reads it', bn: 'রাঁধুনি ২ সেটা পড়ে' },
         simple: {
           en: 'Cook 2 opens the same fridge and sees the number at once. Nothing was copied.',
@@ -221,6 +241,13 @@ export const processesVsThreads: Topic = {
           a_mem: { en: 'Number is 2', bn: 'সংখ্যা ২' },
           a_t2: { en: 'Changed it to 2', bn: '২ করে দিয়েছে' }
         },
+        story: {
+          title: { en: 'Arif changes the number', bn: 'আরিফ সংখ্যাটা বদলায়' },
+          text: {
+            en: 'Arif crosses out the number and writes a new one. Tania will see it too. Sharing is quick, but if Arif makes a mess, Tania pays for it as well.',
+            bn: 'আরিফ সংখ্যাটা কেটে নতুন একটা লেখে। তানিয়াও সেটাই দেখবে। ভাগাভাগি দ্রুত, কিন্তু আরিফ গোলমাল করলে তানিয়াকেও তার ফল ভুগতে হয়।'
+          }
+        },
         title: { en: 'Either cook can change it', bn: 'যেকোনো রাঁধুনি বদলাতে পারে' },
         simple: {
           en: 'Cook 2 changes the number, and Cook 1 would see it too. Sharing is fast, but one cook’s mess spoils it for all.',
@@ -236,6 +263,13 @@ export const processesVsThreads: Topic = {
         moves: [ { edge: 'a_t1-pipe', label: 'pickle(x)', plain: { en: 'Writes a slip', bn: 'স্লিপ লেখে' } } ],
         state: { pipe: { en: 'Bytes in flight', bn: 'bytes যাচ্ছে' } },
         plainState: { pipe: { en: 'Slip in the window', bn: 'জানালায় স্লিপ' } },
+        story: {
+          title: { en: 'Tania writes a slip for next door', bn: 'তানিয়া পাশের জন্য স্লিপ লেখে' },
+          text: {
+            en: 'Tania wants the neighbour to know the number too. Their fridge is separate, so she copies it onto a slip and puts the slip in the pass window.',
+            bn: 'তানিয়া চায় প্রতিবেশীও সংখ্যাটা জানুক। তাদের ফ্রিজ আলাদা, তাই সে সংখ্যাটা একটা স্লিপে কপি করে পাস-জানালায় রাখে।'
+          }
+        },
         title: { en: 'To reach Kitchen B, send a slip', bn: 'রান্নাঘর B-তে পৌঁছাতে স্লিপ পাঠাতে হয়' },
         simple: {
           en: 'Kitchen B has its own fridge, so Cook 1 writes the number on a slip and puts it in the pass window.',
@@ -256,6 +290,13 @@ export const processesVsThreads: Topic = {
         plainState: {
           pipe: { en: 'Slip delivered', bn: 'স্লিপ পৌঁছে গেছে' },
           b_main: { en: 'Receiving', bn: 'নিচ্ছে' }
+        },
+        story: {
+          title: { en: 'The slip reaches the neighbour', bn: 'স্লিপ প্রতিবেশীর কাছে পৌঁছায়' },
+          text: {
+            en: 'The slip slides through the window to the neighbour’s cook. Only the slip travels. Tania’s fridge stays right where it is.',
+            bn: 'স্লিপটা জানালা দিয়ে প্রতিবেশীর রাঁধুনির কাছে পৌঁছায়। শুধু স্লিপটাই যায়। তানিয়ার ফ্রিজ নিজের জায়গাতেই থাকে।'
+          }
         },
         title: { en: 'The slip arrives', bn: 'স্লিপ পৌঁছায়' },
         simple: {
@@ -278,6 +319,13 @@ export const processesVsThreads: Topic = {
           b_main: { en: 'Read the slip', bn: 'স্লিপ পড়েছে' },
           b_mem: { en: 'Number is 2, a copy', bn: 'সংখ্যা ২, একটা কপি' }
         },
+        story: {
+          title: { en: 'The neighbour copies it down', bn: 'প্রতিবেশী নিজের কপি লেখে' },
+          text: {
+            en: 'The neighbour’s cook reads the slip and writes the number on a card in the neighbour’s own fridge. It is only a copy, not Tania’s card.',
+            bn: 'প্রতিবেশীর রাঁধুনি স্লিপ পড়ে সংখ্যাটা নিজেদের ফ্রিজের একটা কার্ডে লেখে। এটা শুধু কপি, তানিয়ার কার্ড নয়।'
+          }
+        },
         title: { en: 'Kitchen B makes its own copy', bn: 'রান্নাঘর B নিজের কপি বানায়' },
         simple: {
           en: 'Kitchen B’s cook reads the slip and writes the number in Kitchen B’s own fridge. It is a copy.',
@@ -299,6 +347,13 @@ export const processesVsThreads: Topic = {
           b_mem: { en: 'Number is 99', bn: 'সংখ্যা ৯৯' },
           b_main: { en: 'Cooks on its own', bn: 'নিজের মতো রাঁধে' }
         },
+        story: {
+          title: { en: 'The neighbour changes their card', bn: 'প্রতিবেশী নিজের কার্ড বদলায়' },
+          text: {
+            en: 'The neighbour’s cook crosses out the number and writes a very big one on the card in their own fridge. Nobody in Tania’s kitchen can see it.',
+            bn: 'প্রতিবেশীর রাঁধুনি নিজেদের ফ্রিজের কার্ডে সংখ্যাটা কেটে একটা অনেক বড় সংখ্যা লেখে। তানিয়াদের রান্নাঘর থেকে কেউ সেটা দেখতে পায় না।'
+          }
+        },
         title: { en: 'Kitchen B changes its copy', bn: 'রান্নাঘর B নিজের কপি বদলায়' },
         simple: {
           en: 'Kitchen B’s cook changes the number in Kitchen B’s own fridge to 99.',
@@ -314,6 +369,13 @@ export const processesVsThreads: Topic = {
         work: { node: 'a_mem', kind: 'result' },
         state: { a_mem: { en: 'x = 2, unchanged', bn: 'x = 2, অপরিবর্তিত' } },
         plainState: { a_mem: { en: 'Still 2, untouched', bn: 'এখনও ২, ঠিকই আছে' } },
+        story: {
+          title: { en: 'Tania’s fridge is still the same', bn: 'তানিয়ার ফ্রিজ আগের মতোই' },
+          text: {
+            en: 'Tania opens her fridge and finds the number just as Arif left it. With separate fridges, the neighbour cannot spoil Tania and Arif’s food.',
+            bn: 'তানিয়া নিজের ফ্রিজ খুলে দেখে আরিফের রেখে যাওয়া সংখ্যাটা ঠিকই আছে। ফ্রিজ আলাদা, তাই প্রতিবেশী তানিয়া আর আরিফের কিছু নষ্ট করতে পারে না।'
+          }
+        },
         title: { en: 'Kitchen A’s fridge is untouched', bn: 'রান্নাঘর A-র ফ্রিজ ঠিকই আছে' },
         simple: {
           en: 'Kitchen A’s fridge still says 2. Separate fridges mean one kitchen cannot spoil another.',
@@ -329,6 +391,13 @@ export const processesVsThreads: Topic = {
         moves: [ { edge: 'b_main-pipe', label: 'result', plain: { en: 'Reply slip', bn: 'উত্তরের স্লিপ' } } ],
         state: { pipe: { en: 'Bytes in flight', bn: 'bytes যাচ্ছে' } },
         plainState: { pipe: { en: 'Reply in the window', bn: 'জানালায় উত্তর' } },
+        story: {
+          title: { en: 'The neighbour writes back', bn: 'প্রতিবেশী উত্তর লেখে' },
+          text: {
+            en: 'The neighbour’s cook writes an answer on a fresh slip and puts it in the pass window for Tania.',
+            bn: 'প্রতিবেশীর রাঁধুনি একটা নতুন স্লিপে উত্তর লিখে তানিয়ার জন্য পাস-জানালায় রাখে।'
+          }
+        },
         title: { en: 'Kitchen B sends a reply', bn: 'রান্নাঘর B উত্তর পাঠায়' },
         simple: {
           en: 'Kitchen B’s cook writes a reply on a new slip and puts it in the pass window.',
@@ -349,6 +418,13 @@ export const processesVsThreads: Topic = {
         plainState: {
           pipe: { en: 'Reply delivered', bn: 'উত্তর পৌঁছে গেছে' },
           a_t1: { en: 'Got a copy', bn: 'কপি পেয়েছে' }
+        },
+        story: {
+          title: { en: 'Tania gets a copy of the answer', bn: 'তানিয়া উত্তরের কপি পায়' },
+          text: {
+            en: 'The answer reaches Tania as a copy. Each fridge stays in its own kitchen, and Tania and Arif get back to the party order.',
+            bn: 'উত্তরটা কপি হয়ে তানিয়ার কাছে আসে। প্রতিটি ফ্রিজ নিজের রান্নাঘরেই থাকে, আর তানিয়া আর আরিফ আবার পার্টির অর্ডারে মন দেয়।'
+          }
         },
         title: { en: 'Cook 1 gets a copy', bn: 'রাঁধুনি ১ একটা কপি পায়' },
         simple: {
@@ -380,6 +456,13 @@ export const processesVsThreads: Topic = {
             b_main: { en: 'Kitchen on fire', bn: 'রান্নাঘরে আগুন' },
             b_mem: { en: 'Lost', bn: 'নষ্ট' }
           },
+          story: {
+            title: { en: 'A fire starts next door', bn: 'পাশের রান্নাঘরে আগুন লাগে' },
+            text: {
+              en: 'A fire breaks out in the neighbour’s kitchen. Their fridge and everything in it are lost. Tania and Arif’s kitchen is not touched.',
+              bn: 'প্রতিবেশীর রান্নাঘরে আগুন লাগে। তাদের ফ্রিজ আর ভেতরের সব নষ্ট হয়ে যায়। তানিয়া আর আরিফের রান্নাঘরে আঁচও লাগে না।'
+            }
+          },
           title: { en: 'Kitchen B catches fire', bn: 'রান্নাঘর B-তে আগুন লাগে' },
           simple: {
             en: 'Kitchen B catches fire. Its fridge and everything in it are lost, but nothing outside is touched.',
@@ -394,6 +477,13 @@ export const processesVsThreads: Topic = {
           id: 'a-survives',
           work: { node: 'a_t1', kind: 'result' },
           state: { a_t1: { en: 'Alive, unaffected', bn: 'বেঁচে, ঠিকই আছে' } },
+          story: {
+            title: { en: 'Tania and Arif carry on', bn: 'তানিয়া আর আরিফ রেঁধে চলে' },
+            text: {
+              en: 'Tania and Arif keep cooking as before. Tania only notices that the pass window has gone quiet, with no answer from next door.',
+              bn: 'তানিয়া আর আরিফ আগের মতোই রাঁধতে থাকে। তানিয়া শুধু টের পায় পাস-জানালা চুপ হয়ে গেছে, পাশ থেকে আর কোনো উত্তর আসছে না।'
+            }
+          },
           title: { en: 'Kitchen A carries on', bn: 'রান্নাঘর A চলতে থাকে' },
           simple: {
             en: 'Kitchen A is fine. Cook 1 only notices that Kitchen B has stopped answering.',
@@ -417,6 +507,13 @@ export const processesVsThreads: Topic = {
           work: { node: 'a_t2', kind: 'error' },
           state: { a_t2: { en: 'SIGSEGV', bn: 'SIGSEGV' } },
           plainState: { a_t2: { en: 'Started a fire', bn: 'আগুন ধরিয়েছে' } },
+          story: {
+            title: { en: 'Arif starts a fire', bn: 'আরিফ আগুন ধরিয়ে ফেলে' },
+            text: {
+              en: 'Arif is in a rush and makes a bad mistake. He knocks over the oil, and a fire starts on their stove.',
+              bn: 'আরিফ তাড়াহুড়োয় বড় একটা ভুল করে বসে। তেল উল্টে গিয়ে তাদের চুলায় আগুন ধরে যায়।'
+            }
+          },
           title: { en: 'A cook starts a fire', bn: 'একজন রাঁধুনি আগুন ধরায়' },
           simple: {
             en: 'Cook 2 makes a bad mistake and starts a fire in Kitchen A.',
@@ -437,6 +534,13 @@ export const processesVsThreads: Topic = {
           plainState: {
             a_t1: { en: 'Kitchen shut down', bn: 'রান্নাঘর বন্ধ' },
             a_mem: { en: 'Food ruined', bn: 'খাবার নষ্ট' }
+          },
+          story: {
+            title: { en: 'The whole kitchen is lost', bn: 'পুরো রান্নাঘর শেষ' },
+            text: {
+              en: 'The fire spreads through the whole kitchen. Tania has to stop cooking, and the fridge they shared is ruined. Sharing everything meant losing everything.',
+              bn: 'আগুন পুরো রান্নাঘরে ছড়িয়ে পড়ে। তানিয়াকে রান্না থামাতে হয়, আর তাদের ভাগের ফ্রিজ নষ্ট হয়ে যায়। সবকিছু ভাগ করার মানে ছিল সবকিছু একসাথে হারানো।'
+            }
           },
           title: { en: 'The whole kitchen goes', bn: 'পুরো রান্নাঘর শেষ' },
           simple: {
