@@ -15,8 +15,8 @@ export const fastapiLifecycle: Topic = {
   },
   story: {
     cast: {
-      en: 'Nila is hungry and orders lunch at a busy restaurant, where Joy is the chef in the kitchen.',
-      bn: 'নীলার খিদে পেয়েছে, সে একটা ব্যস্ত রেস্টুরেন্টে লাঞ্চ অর্ডার করে, যেখানে জয় রান্নাঘরের শেফ।'
+      en: 'Rupa is hungry and orders lunch at a busy restaurant, where Kamal is the chef in the kitchen.',
+      bn: 'রূপার খিদে পেয়েছে, সে একটা ব্যস্ত রেস্টুরেন্টে লাঞ্চ অর্ডার করে, যেখানে কামাল রান্নাঘরের শেফ।'
     }
   },
   takeaway: {
@@ -230,10 +230,10 @@ export const fastapiLifecycle: Topic = {
           bn: 'কাস্টমার ওয়েবসাইটের কাছে ৪২ নম্বর আইটেম চায়। দরজার হোস্ট, মানে সার্ভার, অর্ডার স্লিপটা নিয়ে পড়ে।'
         },
         story: {
-          title: { en: 'Nila places an order', bn: 'নীলা অর্ডার দেয়' },
+          title: { en: 'Rupa places an order', bn: 'রূপা অর্ডার দেয়' },
           text: {
-            en: 'Nila walks in and asks for her favourite dish from the menu. The host at the door takes her order slip and reads it carefully.',
-            bn: 'নীলা ঢুকে মেনু থেকে তার প্রিয় পদটা চায়। দরজার হোস্ট তার অর্ডার স্লিপ নিয়ে মন দিয়ে পড়ে।'
+            en: 'Rupa walks in and asks for her favourite dish from the menu. The host at the door takes her order slip and reads it carefully.',
+            bn: 'রূপা ঢুকে মেনু থেকে তার প্রিয় পদটা চায়। দরজার হোস্ট তার অর্ডার স্লিপ নিয়ে মন দিয়ে পড়ে।'
           }
         },
         tech: {
@@ -252,8 +252,8 @@ export const fastapiLifecycle: Topic = {
         story: {
           title: { en: 'The host calls the manager', bn: 'হোস্ট ম্যানেজারকে ডাকে' },
           text: {
-            en: 'The host carries Nila’s slip inside and gives it to the manager first. If anything goes badly wrong in the restaurant, the manager is the one who steps in.',
-            bn: 'হোস্ট নীলার স্লিপ ভেতরে নিয়ে প্রথমে ম্যানেজারের হাতে দেয়। রেস্টুরেন্টে বড় কিছু গোলমাল হলে ম্যানেজারই এগিয়ে আসেন।'
+            en: 'The host carries Rupa’s slip inside and gives it to the manager first. If anything goes badly wrong in the restaurant, the manager is the one who steps in.',
+            bn: 'হোস্ট রূপার স্লিপ ভেতরে নিয়ে প্রথমে ম্যানেজারের হাতে দেয়। রেস্টুরেন্টে বড় কিছু গোলমাল হলে ম্যানেজারই এগিয়ে আসেন।'
           }
         },
         tech: {
@@ -270,10 +270,10 @@ export const fastapiLifecycle: Topic = {
           bn: 'স্লিপ সিকিউরিটি ডেস্কে, মানে আপনার চেকপয়েন্টে পৌঁছায়। একজন দেখে এই ওয়েবসাইটের ঢোকার অনুমতি আছে কি না, একজন লগইন দেখে, একজন স্টপওয়াচ চালায়।'
         },
         story: {
-          title: { en: 'Nila gets checked in', bn: 'নীলাকে যাচাই করা হয়' },
+          title: { en: 'Rupa gets checked in', bn: 'রূপাকে যাচাই করা হয়' },
           text: {
-            en: 'Nila’s slip reaches the security desk. One guard checks she is allowed in, one checks her membership card, and one starts a stopwatch to time her order.',
-            bn: 'নীলার স্লিপ সিকিউরিটি ডেস্কে পৌঁছায়। একজন দেখে সে ঢুকতে পারবে কি না, একজন তার মেম্বারশিপ কার্ড দেখে, আর একজন অর্ডারের সময় মাপতে স্টপওয়াচ চালায়।'
+            en: 'Rupa’s slip reaches the security desk. One guard checks she is allowed in, one checks her membership card, and one starts a stopwatch to time her order.',
+            bn: 'রূপার স্লিপ সিকিউরিটি ডেস্কে পৌঁছায়। একজন দেখে সে ঢুকতে পারবে কি না, একজন তার মেম্বারশিপ কার্ড দেখে, আর একজন অর্ডারের সময় মাপতে স্টপওয়াচ চালায়।'
           }
         },
         tech: {
@@ -292,8 +292,8 @@ export const fastapiLifecycle: Topic = {
         story: {
           title: { en: 'Guest relations waits', bn: 'গেস্ট সার্ভিস তৈরি থাকে' },
           text: {
-            en: 'The slip moves on to guest relations. If Joy cannot make something, they are ready to tell Nila kindly, so she never sits there confused.',
-            bn: 'স্লিপটা গেস্ট সার্ভিসে যায়। জয় কিছু বানাতে না পারলে তারা নীলাকে ভদ্রভাবে জানাতে তৈরি, যাতে সে ধোঁয়াশায় না বসে থাকে।'
+            en: 'The slip moves on to guest relations. If Kamal cannot make something, they are ready to tell Rupa kindly, so she never sits there confused.',
+            bn: 'স্লিপটা গেস্ট সার্ভিসে যায়। কামাল কিছু বানাতে না পারলে তারা রূপাকে ভদ্রভাবে জানাতে তৈরি, যাতে সে ধোঁয়াশায় না বসে থাকে।'
           }
         },
         tech: {
@@ -310,10 +310,10 @@ export const fastapiLifecycle: Topic = {
           bn: 'সিট দেখানো হোস্ট অর্ডার পড়ে তার রুট, মানে যে ঠিকানার সাথে মেলে সেটা খুঁজে নেয়। তাতেই ঠিক হয় কোন শেফ রান্না করবে।'
         },
         story: {
-          title: { en: 'The seating host finds Joy', bn: 'সিট দেখানো হোস্ট জয়কে খোঁজে' },
+          title: { en: 'The seating host finds Kamal', bn: 'সিট দেখানো হোস্ট কামালকে খোঁজে' },
           text: {
-            en: 'The seating host reads Nila’s dish name and works out which kitchen corner makes it. That decides that Joy is the chef who will cook for her.',
-            bn: 'সিট দেখানো হোস্ট নীলার পদের নাম পড়ে বুঝে নেয় রান্নাঘরের কোন কোণে সেটা বানানো হয়। তাতেই ঠিক হয়, নীলার জন্য রান্না করবে জয়।'
+            en: 'The seating host reads Rupa’s dish name and works out which kitchen corner makes it. That decides that Kamal is the chef who will cook for her.',
+            bn: 'সিট দেখানো হোস্ট রূপার পদের নাম পড়ে বুঝে নেয় রান্নাঘরের কোন কোণে সেটা বানানো হয়। তাতেই ঠিক হয়, রূপার জন্য রান্না করবে কামাল।'
           }
         },
         tech: {
@@ -332,8 +332,8 @@ export const fastapiLifecycle: Topic = {
         story: {
           title: { en: 'The order desk checks the form', bn: 'অর্ডার ডেস্ক ফর্ম দেখে' },
           text: {
-            en: 'Before Joy lights the stove, the order desk checks Nila’s form. Her name is there and the dish number is a real number, so everything looks fine.',
-            bn: 'জয় চুলা জ্বালানোর আগে অর্ডার ডেস্ক নীলার ফর্ম দেখে। তার নাম আছে, আর পদের নম্বরটা সত্যিই একটা সংখ্যা, তাই সব ঠিক দেখাচ্ছে।'
+            en: 'Before Kamal lights the stove, the order desk checks Rupa’s form. Her name is there and the dish number is a real number, so everything looks fine.',
+            bn: 'কামাল চুলা জ্বালানোর আগে অর্ডার ডেস্ক রূপার ফর্ম দেখে। তার নাম আছে, আর পদের নম্বরটা সত্যিই একটা সংখ্যা, তাই সব ঠিক দেখাচ্ছে।'
           }
         },
         tech: {
@@ -350,10 +350,10 @@ export const fastapiLifecycle: Topic = {
           bn: 'শেফ পরিষ্কার, যাচাই করা অর্ডার হাতে পায় আর আসল কাজটা করে, যেমন ডেটাবেস থেকে ৪২ নম্বর আইটেম আনে।'
         },
         story: {
-          title: { en: 'Joy starts cooking', bn: 'জয় রান্না শুরু করে' },
+          title: { en: 'Kamal starts cooking', bn: 'কামাল রান্না শুরু করে' },
           text: {
-            en: 'Joy receives the clean, checked order. She fetches the ingredients from the pantry shelf and cooks Nila’s dish, which is the real work of the whole restaurant.',
-            bn: 'জয় পরিষ্কার, যাচাই করা অর্ডার হাতে পায়। সে ভাঁড়ার তাক থেকে উপকরণ এনে নীলার খাবার রান্না করে, যেটাই পুরো রেস্টুরেন্টের আসল কাজ।'
+            en: 'Kamal receives the clean, checked order. She fetches the ingredients from the pantry shelf and cooks Rupa’s dish, which is the real work of the whole restaurant.',
+            bn: 'কামাল পরিষ্কার, যাচাই করা অর্ডার হাতে পায়। সে ভাঁড়ার তাক থেকে উপকরণ এনে রূপার খাবার রান্না করে, যেটাই পুরো রেস্টুরেন্টের আসল কাজ।'
           }
         },
         tech: {
@@ -370,10 +370,10 @@ export const fastapiLifecycle: Topic = {
           bn: 'শেফ শুধু আপনার প্রতিশ্রুত অংশ দিয়ে খাবার সাজায়; সংরক্ষিত পাসওয়ার্ডের মতো গোপন জিনিস রান্নাঘরেই থাকে। খাবার দরজার দিকে ফিরতি পথ ধরে।'
         },
         story: {
-          title: { en: 'Joy plates only the right parts', bn: 'জয় শুধু ঠিক অংশ সাজায়' },
+          title: { en: 'Kamal plates only the right parts', bn: 'কামাল শুধু ঠিক অংশ সাজায়' },
           text: {
-            en: 'Joy plates the dish with only what the menu promised. The secret family recipe card stays in the kitchen. Then the plate starts its trip back toward the door.',
-            bn: 'জয় মেনুতে যা কথা দেওয়া ছিল শুধু সেটুকু দিয়ে খাবার সাজায়। পারিবারিক গোপন রেসিপির কার্ড রান্নাঘরেই থাকে। তারপর প্লেট দরজার দিকে ফিরতি পথ ধরে।'
+            en: 'Kamal plates the dish with only what the menu promised. The secret family recipe card stays in the kitchen. Then the plate starts its trip back toward the door.',
+            bn: 'কামাল মেনুতে যা কথা দেওয়া ছিল শুধু সেটুকু দিয়ে খাবার সাজায়। পারিবারিক গোপন রেসিপির কার্ড রান্নাঘরেই থাকে। তারপর প্লেট দরজার দিকে ফিরতি পথ ধরে।'
           }
         },
         tech: {
@@ -395,8 +395,8 @@ export const fastapiLifecycle: Topic = {
         story: {
           title: { en: 'The plate heads back out', bn: 'প্লেট ফিরতি পথে রওনা দেয়' },
           text: {
-            en: 'Nila’s plate retraces the slip’s path in reverse. It goes past the seating host first, then reaches guest relations, who have nothing to fix and wave it through.',
-            bn: 'নীলার প্লেট স্লিপের পথেই উল্টো দিকে ফেরে। আগে সিট দেখানো হোস্ট, তারপর গেস্ট সার্ভিস। ঠিক করার কিছু নেই বলে তারা হাত নেড়ে এগিয়ে দেয়।'
+            en: 'Rupa’s plate retraces the slip’s path in reverse. It goes past the seating host first, then reaches guest relations, who have nothing to fix and wave it through.',
+            bn: 'রূপার প্লেট স্লিপের পথেই উল্টো দিকে ফেরে। আগে সিট দেখানো হোস্ট, তারপর গেস্ট সার্ভিস। ঠিক করার কিছু নেই বলে তারা হাত নেড়ে এগিয়ে দেয়।'
           }
         },
         tech: {
@@ -439,10 +439,10 @@ export const fastapiLifecycle: Topic = {
           bn: 'দরজার হোস্ট খাবারটা কাস্টমারের কাছে পৌঁছে দেয়। কাস্টমার এখন উত্তর পেয়েছে: OK, এই নিন ৪২ নম্বর আইটেম।'
         },
         story: {
-          title: { en: 'Nila gets her lunch', bn: 'নীলা তার লাঞ্চ পায়' },
+          title: { en: 'Rupa gets her lunch', bn: 'রূপা তার লাঞ্চ পায়' },
           text: {
-            en: 'The host at the door carries the plate to Nila’s table. She smiles, since her answer is simply: here is your dish. Her part of the story is done.',
-            bn: 'দরজার হোস্ট প্লেটটা নীলার টেবিলে পৌঁছে দেয়। সে হাসে, কারণ তার উত্তর সহজ: এই নিন আপনার খাবার। গল্পে নীলার অংশ এখানেই শেষ।'
+            en: 'The host at the door carries the plate to Rupa’s table. She smiles, since her answer is simply: here is your dish. Her part of the story is done.',
+            bn: 'দরজার হোস্ট প্লেটটা রূপার টেবিলে পৌঁছে দেয়। সে হাসে, কারণ তার উত্তর সহজ: এই নিন আপনার খাবার। গল্পে রূপার অংশ এখানেই শেষ।'
           }
         },
         tech: {
@@ -461,8 +461,8 @@ export const fastapiLifecycle: Topic = {
         story: {
           title: { en: 'The courier brings the receipt', bn: 'কুরিয়ার রসিদ আনে' },
           text: {
-            en: 'While Nila happily eats, Joy hands a slow extra job to the courier. The courier takes the receipt to her email later, so Nila never has to wait for it.',
-            bn: 'নীলা মনের সুখে খাওয়ার সময় জয় একটা ধীর বাড়তি কাজ কুরিয়ারকে দেয়। কুরিয়ার পরে নীলার ইমেইলে রসিদ পৌঁছে দেয়, তাই নীলাকে অপেক্ষা করতে হয় না।'
+            en: 'While Rupa happily eats, Kamal hands a slow extra job to the courier. The courier takes the receipt to her email later, so Rupa never has to wait for it.',
+            bn: 'রূপা মনের সুখে খাওয়ার সময় কামাল একটা ধীর বাড়তি কাজ কুরিয়ারকে দেয়। কুরিয়ার পরে রূপার ইমেইলে রসিদ পৌঁছে দেয়, তাই রূপাকে অপেক্ষা করতে হয় না।'
           }
         },
         tech: {
@@ -491,10 +491,10 @@ export const fastapiLifecycle: Topic = {
             bn: 'কাস্টমার চেয়েছে “abc” আইটেম, কিন্তু আইটেম নম্বর তো সংখ্যা হওয়ার কথা। অর্ডার ডেস্ক ভুলটা ধরে ফেলে।'
           },
           story: {
-            title: { en: 'Nila writes the wrong thing', bn: 'নীলা ভুল কিছু লেখে' },
+            title: { en: 'Rupa writes the wrong thing', bn: 'রূপা ভুল কিছু লেখে' },
             text: {
-              en: 'Next day Nila orders again, but writes a word where the dish number should go. The order desk looks at the form and spots the mistake before anyone cooks.',
-              bn: 'পরের দিন নীলা আবার অর্ডার দেয়, কিন্তু পদের নম্বরের জায়গায় একটা শব্দ লিখে ফেলে। কেউ রান্না শুরুর আগেই অর্ডার ডেস্ক ফর্ম দেখে ভুলটা ধরে ফেলে।'
+              en: 'Next day Rupa orders again, but writes a word where the dish number should go. The order desk looks at the form and spots the mistake before anyone cooks.',
+              bn: 'পরের দিন রূপা আবার অর্ডার দেয়, কিন্তু পদের নম্বরের জায়গায় একটা শব্দ লিখে ফেলে। কেউ রান্না শুরুর আগেই অর্ডার ডেস্ক ফর্ম দেখে ভুলটা ধরে ফেলে।'
             }
           },
           tech: {
@@ -513,8 +513,8 @@ export const fastapiLifecycle: Topic = {
           story: {
             title: { en: 'Guest relations steps in', bn: 'গেস্ট সার্ভিস এগিয়ে আসে' },
             text: {
-              en: 'The order desk sends the problem straight to guest relations. Joy never even saw Nila’s order, so no food was cooked and nothing in the kitchen was wasted.',
-              bn: 'অর্ডার ডেস্ক সমস্যাটা সোজা গেস্ট সার্ভিসে পাঠায়। জয় নীলার অর্ডারটা দেখেইনি, তাই কিছু রান্না হয়নি আর রান্নাঘরে কিছু নষ্টও হয়নি।'
+              en: 'The order desk sends the problem straight to guest relations. Kamal never even saw Rupa’s order, so no food was cooked and nothing in the kitchen was wasted.',
+              bn: 'অর্ডার ডেস্ক সমস্যাটা সোজা গেস্ট সার্ভিসে পাঠায়। কামাল রূপার অর্ডারটা দেখেইনি, তাই কিছু রান্না হয়নি আর রান্নাঘরে কিছু নষ্টও হয়নি।'
             }
           },
           tech: {
@@ -536,8 +536,8 @@ export const fastapiLifecycle: Topic = {
           story: {
             title: { en: 'A clear note is written', bn: 'পরিষ্কার একটা নোট লেখা হয়' },
             text: {
-              en: 'Guest relations writes Nila a clear note saying which line of her form was wrong and why. The note then walks out past the security desk like any other reply.',
-              bn: 'গেস্ট সার্ভিস নীলার জন্য পরিষ্কার একটা নোট লেখে, তার ফর্মের কোন লাইন কেন ভুল। নোটটা অন্য যেকোনো উত্তরের মতোই সিকিউরিটি ডেস্ক পেরিয়ে বেরিয়ে যায়।'
+              en: 'Guest relations writes Rupa a clear note saying which line of her form was wrong and why. The note then walks out past the security desk like any other reply.',
+              bn: 'গেস্ট সার্ভিস রূপার জন্য পরিষ্কার একটা নোট লেখে, তার ফর্মের কোন লাইন কেন ভুল। নোটটা অন্য যেকোনো উত্তরের মতোই সিকিউরিটি ডেস্ক পেরিয়ে বেরিয়ে যায়।'
             }
           },
           tech: {
@@ -557,10 +557,10 @@ export const fastapiLifecycle: Topic = {
             bn: 'হোস্ট নোটটা কাস্টমারের হাতে দেয়, তাই সে জানে কী ঠিক করতে হবে। কিছু রান্না হয়নি, তাই কিছুই বদলায়নি।'
           },
           story: {
-            title: { en: 'Nila learns what to fix', bn: 'নীলা জানে কী ঠিক করতে হবে' },
+            title: { en: 'Rupa learns what to fix', bn: 'রূপা জানে কী ঠিক করতে হবে' },
             text: {
-              en: 'The host gives Nila the note. She laughs, fixes the dish number and is ready to order again. Nothing was cooked, so nothing needs to be thrown away.',
-              bn: 'হোস্ট নীলাকে নোটটা দেয়। সে হেসে ফেলে, পদের নম্বর ঠিক করে আবার অর্ডার দেওয়ার জন্য তৈরি হয়। কিছু রান্না হয়নি, তাই ফেলে দেওয়ার মতোও কিছু নেই।'
+              en: 'The host gives Rupa the note. She laughs, fixes the dish number and is ready to order again. Nothing was cooked, so nothing needs to be thrown away.',
+              bn: 'হোস্ট রূপাকে নোটটা দেয়। সে হেসে ফেলে, পদের নম্বর ঠিক করে আবার অর্ডার দেওয়ার জন্য তৈরি হয়। কিছু রান্না হয়নি, তাই ফেলে দেওয়ার মতোও কিছু নেই।'
             }
           },
           tech: {
@@ -588,10 +588,10 @@ export const fastapiLifecycle: Topic = {
             bn: 'আপনার নিজের নির্দেশে একটা ভুলের জন্য শেফ এমন উপকরণ খোঁজে যা নেই। খাবার মাঝপথেই পড়ে যায়।'
           },
           story: {
-            title: { en: 'Joy drops the dish', bn: 'জয় খাবার ফেলে দেয়' },
+            title: { en: 'Kamal drops the dish', bn: 'কামাল খাবার ফেলে দেয়' },
             text: {
-              en: 'On another day, a mistake in the recipe notes sends Joy hunting for an ingredient that is not in the pantry at all. In the confusion, the dish slips and falls.',
-              bn: 'আরেকদিন রেসিপির নোটে একটা ভুলের জন্য জয় এমন উপকরণ খুঁজতে থাকে যা ভাঁড়ারে নেই। গোলমালের মধ্যে খাবারটা হাত থেকে পড়ে যায়।'
+              en: 'On another day, a mistake in the recipe notes sends Kamal hunting for an ingredient that is not in the pantry at all. In the confusion, the dish slips and falls.',
+              bn: 'আরেকদিন রেসিপির নোটে একটা ভুলের জন্য কামাল এমন উপকরণ খুঁজতে থাকে যা ভাঁড়ারে নেই। গোলমালের মধ্যে খাবারটা হাত থেকে পড়ে যায়।'
             }
           },
           tech: {
@@ -631,10 +631,10 @@ export const fastapiLifecycle: Topic = {
             bn: 'কাস্টমার শুধু একটা সাদামাটা “কিছু একটা গোলমাল হয়েছে” শোনে। সিকিউরিটি ডেস্ক উত্তরটা দেখেইনি, তাই কিছু জুড়তে পারেনি।'
           },
           story: {
-            title: { en: 'A bare apology for Nila', bn: 'নীলার জন্য সাদামাটা দুঃখপ্রকাশ' },
+            title: { en: 'A bare apology for Rupa', bn: 'রূপার জন্য সাদামাটা দুঃখপ্রকাশ' },
             text: {
-              en: 'Nila only hears a plain “sorry, something went wrong”. The security desk never saw the reply, so no thank-you sticker was added, and Nila has no idea why.',
-              bn: 'নীলা শুধু সাদামাটা একটা “দুঃখিত, কিছু একটা গোলমাল হয়েছে” শোনে। সিকিউরিটি ডেস্ক উত্তরটা দেখেইনি, তাই ধন্যবাদের স্টিকার লাগেনি, আর নীলা কারণটাও জানে না।'
+              en: 'Rupa only hears a plain “sorry, something went wrong”. The security desk never saw the reply, so no thank-you sticker was added, and Rupa has no idea why.',
+              bn: 'রূপা শুধু সাদামাটা একটা “দুঃখিত, কিছু একটা গোলমাল হয়েছে” শোনে। সিকিউরিটি ডেস্ক উত্তরটা দেখেইনি, তাই ধন্যবাদের স্টিকার লাগেনি, আর রূপা কারণটাও জানে না।'
             }
           },
           tech: {
@@ -664,8 +664,8 @@ export const fastapiLifecycle: Topic = {
           story: {
             title: { en: 'Before the doors open', bn: 'দরজা খোলার আগে' },
             text: {
-              en: 'Rewind to early morning, before Nila arrives. The host tells Joy to get ready, and Joy switches on the stove and unlocks the pantry once, for the whole day.',
-              bn: 'একদম সকালে ফিরে যাই, নীলা আসার আগে। হোস্ট জয়কে তৈরি হতে বলে, আর জয় পুরো দিনের জন্য একবারই চুলা জ্বালায় আর ভাঁড়ার খোলে।'
+              en: 'Rewind to early morning, before Rupa arrives. The host tells Kamal to get ready, and Kamal switches on the stove and unlocks the pantry once, for the whole day.',
+              bn: 'একদম সকালে ফিরে যাই, রূপা আসার আগে। হোস্ট কামালকে তৈরি হতে বলে, আর কামাল পুরো দিনের জন্য একবারই চুলা জ্বালায় আর ভাঁড়ার খোলে।'
             }
           },
           tech: {
@@ -686,8 +686,8 @@ export const fastapiLifecycle: Topic = {
           story: {
             title: { en: 'The doors open', bn: 'দরজা খুলে যায়' },
             text: {
-              en: 'Everything is ready. The host unlocks the front door, turns the sign to open, and starts welcoming the first guests of the day, just before Nila walks in.',
-              bn: 'সব তৈরি। হোস্ট সামনের দরজা খোলে, সাইনবোর্ড খোলা দিকে ঘোরায়, আর নীলা ঢোকার ঠিক আগে দিনের প্রথম অতিথিদের স্বাগত জানাতে শুরু করে।'
+              en: 'Everything is ready. The host unlocks the front door, turns the sign to open, and starts welcoming the first guests of the day, just before Rupa walks in.',
+              bn: 'সব তৈরি। হোস্ট সামনের দরজা খোলে, সাইনবোর্ড খোলা দিকে ঘোরায়, আর রূপা ঢোকার ঠিক আগে দিনের প্রথম অতিথিদের স্বাগত জানাতে শুরু করে।'
             }
           },
           tech: {
@@ -708,8 +708,8 @@ export const fastapiLifecycle: Topic = {
           story: {
             title: { en: 'Closing time', bn: 'বন্ধের সময়' },
             text: {
-              en: 'Late at night, the last guests leave. The host warns Joy that the restaurant is about to close, so the kitchen can be tidied up properly before everyone goes home.',
-              bn: 'গভীর রাতে শেষ অতিথিরা চলে যায়। হোস্ট জয়কে জানায় রেস্টুরেন্ট এখনই বন্ধ হচ্ছে, যাতে সবাই বাড়ি যাওয়ার আগে রান্নাঘর ঠিকমতো গোছানো যায়।'
+              en: 'Late at night, the last guests leave. The host warns Kamal that the restaurant is about to close, so the kitchen can be tidied up properly before everyone goes home.',
+              bn: 'গভীর রাতে শেষ অতিথিরা চলে যায়। হোস্ট কামালকে জানায় রেস্টুরেন্ট এখনই বন্ধ হচ্ছে, যাতে সবাই বাড়ি যাওয়ার আগে রান্নাঘর ঠিকমতো গোছানো যায়।'
             }
           },
           tech: {
@@ -730,8 +730,8 @@ export const fastapiLifecycle: Topic = {
           story: {
             title: { en: 'Everything is tidied up', bn: 'সব গুছিয়ে ফেলা হলো' },
             text: {
-              en: 'Joy turns off the stove and locks the pantry neatly, and the host locks the front door. Nothing is left hanging, and tomorrow Nila can come back to a clean place.',
-              bn: 'জয় চুলা বন্ধ করে ভাঁড়ার ঠিকমতো তালা দেয়, আর হোস্ট সামনের দরজায় তালা লাগায়। কিছু ঝুলে থাকে না, আর কাল নীলা পরিষ্কার জায়গায় ফিরে আসতে পারবে।'
+              en: 'Kamal turns off the stove and locks the pantry neatly, and the host locks the front door. Nothing is left hanging, and tomorrow Rupa can come back to a clean place.',
+              bn: 'কামাল চুলা বন্ধ করে ভাঁড়ার ঠিকমতো তালা দেয়, আর হোস্ট সামনের দরজায় তালা লাগায়। কিছু ঝুলে থাকে না, আর কাল রূপা পরিষ্কার জায়গায় ফিরে আসতে পারবে।'
             }
           },
           tech: {

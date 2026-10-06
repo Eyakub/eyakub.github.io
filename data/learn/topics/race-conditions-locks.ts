@@ -15,8 +15,8 @@ export const raceConditionsLocks: Topic = {
   },
   story: {
     cast: {
-      en: 'Nila and Jamal are two cooks in one small kitchen, keeping count of served plates on a shared whiteboard.',
-      bn: 'নীলা আর জামাল একটা ছোট রান্নাঘরের দুই রাঁধুনি, একটা ভাগ করা বোর্ডে পরিবেশন করা প্লেটের হিসাব রাখে।'
+      en: 'Mitu and Jamal are two cooks in one small kitchen, keeping count of served plates on a shared whiteboard.',
+      bn: 'মিতু আর জামাল একটা ছোট রান্নাঘরের দুই রাঁধুনি, একটা ভাগ করা বোর্ডে পরিবেশন করা প্লেটের হিসাব রাখে।'
     }
   },
   takeaway: {
@@ -171,10 +171,10 @@ export const raceConditionsLocks: Topic = {
         state: { t1: { en: 'Has 0', bn: 'হাতে ০' } },
         plainState: { t1: { en: 'Remembers 0', bn: '০ মনে আছে' } },
         story: {
-          title: { en: "Nila checks the board", bn: "নীলা বোর্ড দেখে" },
+          title: { en: "Mitu checks the board", bn: "মিতু বোর্ড দেখে" },
           text: {
-            en: "Nila and Jamal count the plates they serve on one kitchen whiteboard. It says 0. Nila reads it and keeps the number in her head.",
-            bn: "নীলা আর জামাল রান্নাঘরের একটা বোর্ডে পরিবেশন করা প্লেটের হিসাব রাখে। বোর্ডে ০। নীলা সেটা পড়ে মনে রাখে।"
+            en: "Mitu and Jamal count the plates they serve on one kitchen whiteboard. It says 0. Mitu reads it and keeps the number in her head.",
+            bn: "মিতু আর জামাল রান্নাঘরের একটা বোর্ডে পরিবেশন করা প্লেটের হিসাব রাখে। বোর্ডে ০। মিতু সেটা পড়ে মনে রাখে।"
           }
         },
         title: { en: 'Cook 1 reads the tally', bn: 'রাঁধুনি ১ হিসাব পড়ে' },
@@ -195,8 +195,8 @@ export const raceConditionsLocks: Topic = {
         story: {
           title: { en: "Jamal checks it too", bn: "জামালও বোর্ড দেখে" },
           text: {
-            en: "Before Nila writes anything, Jamal glances at the board too. It still says 0, so he remembers 0 as well.",
-            bn: "নীলা কিছু লেখার আগেই জামালও বোর্ডে চোখ বোলায়। তখনো ০, তাই সেও ০ মনে রাখে।"
+            en: "Before Mitu writes anything, Jamal glances at the board too. It still says 0, so he remembers 0 as well.",
+            bn: "মিতু কিছু লেখার আগেই জামালও বোর্ডে চোখ বোলায়। তখনো ০, তাই সেও ০ মনে রাখে।"
           }
         },
         title: { en: 'Cook 2 reads the same 0', bn: 'রাঁধুনি ২-ও একই ০ পড়ে' },
@@ -215,10 +215,10 @@ export const raceConditionsLocks: Topic = {
         state: { t1: { en: 'Has 1', bn: 'হাতে ১' } },
         plainState: { t1: { en: 'Remembers 1', bn: '১ মনে আছে' } },
         story: {
-          title: { en: "Nila counts her plate", bn: "নীলা নিজের প্লেট গোনে" },
+          title: { en: "Mitu counts her plate", bn: "মিতু নিজের প্লেট গোনে" },
           text: {
-            en: "Nila serves her plate and adds one in her head. Now she thinks the number is 1, but the board has not changed.",
-            bn: "নীলা নিজের প্লেট পরিবেশন করে মনে মনে এক যোগ করে। এখন তার মনে ১, কিন্তু বোর্ড এখনো বদলায়নি।"
+            en: "Mitu serves her plate and adds one in her head. Now she thinks the number is 1, but the board has not changed.",
+            bn: "মিতু নিজের প্লেট পরিবেশন করে মনে মনে এক যোগ করে। এখন তার মনে ১, কিন্তু বোর্ড এখনো বদলায়নি।"
           }
         },
         title: { en: 'Cook 1 adds one', bn: 'রাঁধুনি ১ এক যোগ করে' },
@@ -240,10 +240,10 @@ export const raceConditionsLocks: Topic = {
         },
         plainState: { counter: { en: 'Shows 1', bn: '১ লেখা আছে' } },
         story: {
-          title: { en: "Nila writes 1", bn: "নীলা ১ লেখে" },
+          title: { en: "Mitu writes 1", bn: "মিতু ১ লেখে" },
           text: {
-            en: "Nila walks to the board and writes 1. All good so far, but Jamal does not see her do it.",
-            bn: "নীলা বোর্ডের কাছে গিয়ে ১ লেখে। এ পর্যন্ত ঠিক আছে, কিন্তু জামাল তাকে লিখতে দেখেনি।"
+            en: "Mitu walks to the board and writes 1. All good so far, but Jamal does not see her do it.",
+            bn: "মিতু বোর্ডের কাছে গিয়ে ১ লেখে। এ পর্যন্ত ঠিক আছে, কিন্তু জামাল তাকে লিখতে দেখেনি।"
           }
         },
         title: { en: 'Cook 1 writes 1', bn: 'রাঁধুনি ১ ১ লেখে' },
@@ -267,8 +267,8 @@ export const raceConditionsLocks: Topic = {
         story: {
           title: { en: "Jamal erases her number", bn: "জামাল তার সংখ্যা মুছে দেয়" },
           text: {
-            en: "Jamal serves his plate and writes 1 too, wiping out Nila's number. Two plates went out, but the board says one.",
-            bn: "জামালও নিজের প্লেট পরিবেশন করে ১ লেখে, আর নীলার লেখা মুছে যায়। প্লেট গেছে দুটো, কিন্তু বোর্ডে একটা।"
+            en: "Jamal serves his plate and writes 1 too, wiping out Mitu's number. Two plates went out, but the board says one.",
+            bn: "জামালও নিজের প্লেট পরিবেশন করে ১ লেখে, আর মিতুর লেখা মুছে যায়। প্লেট গেছে দুটো, কিন্তু বোর্ডে একটা।"
           }
         },
         title: { en: 'Cook 2 wipes it out', bn: 'রাঁধুনি ২ মুছে দেয়' },
@@ -299,8 +299,8 @@ export const raceConditionsLocks: Topic = {
         story: {
           title: { en: "A marker pen for turns", bn: "পালার জন্য একটা মার্কার কলম" },
           text: {
-            en: "They wipe the board back to 0 and try again. This time only whoever holds the one marker pen may write, and Nila grabs it first.",
-            bn: "বোর্ড মুছে আবার ০ করে ওরা নতুন করে শুরু করে। এবার শুধু যার হাতে একমাত্র মার্কার কলম, সে-ই লিখতে পারবে, আর নীলা আগে সেটা নেয়।"
+            en: "They wipe the board back to 0 and try again. This time only whoever holds the one marker pen may write, and Mitu grabs it first.",
+            bn: "বোর্ড মুছে আবার ০ করে ওরা নতুন করে শুরু করে। এবার শুধু যার হাতে একমাত্র মার্কার কলম, সে-ই লিখতে পারবে, আর মিতু আগে সেটা নেয়।"
           }
         },
         title: { en: 'Replay with a marker pen', bn: 'মার্কার কলম নিয়ে আবার চালানো' },
@@ -321,8 +321,8 @@ export const raceConditionsLocks: Topic = {
         story: {
           title: { en: "Jamal waits his turn", bn: "জামাল পালার অপেক্ষায়" },
           text: {
-            en: "Jamal reaches for the pen, but Nila is holding it. He stands by the board and waits for her to finish.",
-            bn: "জামাল কলমের দিকে হাত বাড়ায়, কিন্তু সেটা নীলার হাতে। সে বোর্ডের পাশে দাঁড়িয়ে নীলার শেষ হওয়ার অপেক্ষা করে।"
+            en: "Jamal reaches for the pen, but Mitu is holding it. He stands by the board and waits for her to finish.",
+            bn: "জামাল কলমের দিকে হাত বাড়ায়, কিন্তু সেটা মিতুর হাতে। সে বোর্ডের পাশে দাঁড়িয়ে মিতুর শেষ হওয়ার অপেক্ষা করে।"
           }
         },
         title: { en: 'Cook 2 has to wait', bn: 'রাঁধুনি ২-কে অপেক্ষা করতে হয়' },
@@ -344,10 +344,10 @@ export const raceConditionsLocks: Topic = {
         },
         plainState: { counter: { en: 'Shows 1', bn: '১ লেখা আছে' } },
         story: {
-          title: { en: "Nila updates alone", bn: "নীলা একা হিসাব বদলায়" },
+          title: { en: "Mitu updates alone", bn: "মিতু একা হিসাব বদলায়" },
           text: {
-            en: "With the pen in hand, Nila reads the board, adds her plate and writes 1, all in one go. Nobody can cut in.",
-            bn: "কলম হাতে নীলা বোর্ড পড়ে, নিজের প্লেট যোগ করে ১ লেখে, সবই এক টানে। মাঝখানে কেউ ঢুকতে পারে না।"
+            en: "With the pen in hand, Mitu reads the board, adds her plate and writes 1, all in one go. Nobody can cut in.",
+            bn: "কলম হাতে মিতু বোর্ড পড়ে, নিজের প্লেট যোগ করে ১ লেখে, সবই এক টানে। মাঝখানে কেউ ঢুকতে পারে না।"
           }
         },
         title: { en: 'Cook 1 updates alone', bn: 'রাঁধুনি ১ একা আপডেট করে' },
@@ -375,8 +375,8 @@ export const raceConditionsLocks: Topic = {
         story: {
           title: { en: "The pen goes to Jamal", bn: "কলম জামালের হাতে যায়" },
           text: {
-            en: "Nila puts the pen down on the table. Jamal picks it up right away, and now it is his turn.",
-            bn: "নীলা কলমটা টেবিলে নামিয়ে রাখে। জামাল সঙ্গে সঙ্গে সেটা তোলে, এখন তার পালা।"
+            en: "Mitu puts the pen down on the table. Jamal picks it up right away, and now it is his turn.",
+            bn: "মিতু কলমটা টেবিলে নামিয়ে রাখে। জামাল সঙ্গে সঙ্গে সেটা তোলে, এখন তার পালা।"
           }
         },
         title: { en: 'The pen passes to Cook 2', bn: 'কলম রাঁধুনি ২-এর কাছে যায়' },
@@ -453,8 +453,8 @@ export const raceConditionsLocks: Topic = {
           story: {
             title: { en: "Each grabs a different tool", bn: "দুজন দুটো আলাদা জিনিস ধরে" },
             text: {
-              en: "Now a new dish needs both the pen and the knife. Nila grabs the pen while Jamal grabs the knife at the same moment.",
-              bn: "এবার নতুন একটা পদে কলম আর ছুরি দুটোই লাগে। নীলা কলম ধরে, ঠিক তখনই জামাল ছুরি ধরে।"
+              en: "Now a new dish needs both the pen and the knife. Mitu grabs the pen while Jamal grabs the knife at the same moment.",
+              bn: "এবার নতুন একটা পদে কলম আর ছুরি দুটোই লাগে। মিতু কলম ধরে, ঠিক তখনই জামাল ছুরি ধরে।"
             }
           },
           title: { en: 'Each cook grabs a different tool', bn: 'প্রতিটা রাঁধুনি আলাদা জিনিস ধরে' },
@@ -484,8 +484,8 @@ export const raceConditionsLocks: Topic = {
           story: {
             title: { en: "Each wants the other's tool", bn: "দুজনেই অন্যজনের জিনিস চায়" },
             text: {
-              en: "Nila now needs the knife in Jamal's hand. Jamal needs the pen in Nila's hand. Each waits for the other to let go.",
-              bn: "নীলার এখন জামালের হাতের ছুরি লাগে। জামালের লাগে নীলার হাতের কলম। দুজনেই অন্যজনের ছেড়ে দেওয়ার অপেক্ষা করে।"
+              en: "Mitu now needs the knife in Jamal's hand. Jamal needs the pen in Mitu's hand. Each waits for the other to let go.",
+              bn: "মিতুর এখন জামালের হাতের ছুরি লাগে। জামালের লাগে মিতুর হাতের কলম। দুজনেই অন্যজনের ছেড়ে দেওয়ার অপেক্ষা করে।"
             }
           },
           title: { en: 'Each wants the other’s tool', bn: 'প্রত্যেকে অন্যজনের জিনিস চায়' },
@@ -546,8 +546,8 @@ export const raceConditionsLocks: Topic = {
           story: {
             title: { en: "One rule for the tools", bn: "জিনিস নেওয়ার একটাই নিয়ম" },
             text: {
-              en: "Nila and Jamal agree on a rule: always take the pen first, then the knife. Now nobody holds one and waits for the other.",
-              bn: "নীলা আর জামাল একটা নিয়ম ঠিক করে: সবসময় আগে কলম, তারপর ছুরি। এখন কেউ একটা ধরে অন্যটার জন্য আটকে থাকে না।"
+              en: "Mitu and Jamal agree on a rule: always take the pen first, then the knife. Now nobody holds one and waits for the other.",
+              bn: "মিতু আর জামাল একটা নিয়ম ঠিক করে: সবসময় আগে কলম, তারপর ছুরি। এখন কেউ একটা ধরে অন্যটার জন্য আটকে থাকে না।"
             }
           },
           title: { en: 'Fix: one order for tools', bn: 'সমাধান: জিনিস নেওয়ার একটাই ক্রম' },
@@ -577,10 +577,10 @@ export const raceConditionsLocks: Topic = {
           state: { t1: { en: 'Asks A again', bn: 'আবার A চায়' } },
           plainState: { t1: { en: 'Wants pen again', bn: 'আবার কলম চায়' } },
           story: {
-            title: { en: "Nila asks for the pen again", bn: "নীলা আবার কলম চায়" },
+            title: { en: "Mitu asks for the pen again", bn: "মিতু আবার কলম চায়" },
             text: {
-              en: "Nila already holds the pen. Halfway through her work, another small task of hers asks for the pen again.",
-              bn: "নীলার হাতে তো কলম আছেই। কাজের মাঝপথে তার আরেকটা ছোট কাজ আবার কলম চায়।"
+              en: "Mitu already holds the pen. Halfway through her work, another small task of hers asks for the pen again.",
+              bn: "মিতুর হাতে তো কলম আছেই। কাজের মাঝপথে তার আরেকটা ছোট কাজ আবার কলম চায়।"
             }
           },
           title: { en: 'Cook 1 asks for the pen again', bn: 'রাঁধুনি ১ আবার কলম চায়' },
@@ -601,8 +601,8 @@ export const raceConditionsLocks: Topic = {
           story: {
             title: { en: "She waits for herself", bn: "সে নিজের জন্যই অপেক্ষা করে" },
             text: {
-              en: "The pen is taken, so Nila waits for it to be free. But she is the one holding it, so she waits forever.",
-              bn: "কলম নেওয়া, তাই নীলা সেটা খালি হওয়ার অপেক্ষা করে। কিন্তু সেটা তো তার নিজেরই হাতে, তাই অপেক্ষা আর শেষ হয় না।"
+              en: "The pen is taken, so Mitu waits for it to be free. But she is the one holding it, so she waits forever.",
+              bn: "কলম নেওয়া, তাই মিতু সেটা খালি হওয়ার অপেক্ষা করে। কিন্তু সেটা তো তার নিজেরই হাতে, তাই অপেক্ষা আর শেষ হয় না।"
             }
           },
           title: { en: 'It waits for itself', bn: 'নিজের জন্যই অপেক্ষা' },
@@ -626,8 +626,8 @@ export const raceConditionsLocks: Topic = {
           story: {
             title: { en: "A pen that remembers", bn: "যে কলম মনে রাখে" },
             text: {
-              en: "They swap in a special pen that remembers who holds it. Nila may take it again, and Jamal still has to wait.",
-              bn: "ওরা এমন একটা বিশেষ কলম আনে যেটা মনে রাখে কার হাতে আছে। নীলা আবার ধরতে পারে, আর জামালকে তখনো অপেক্ষা করতে হয়।"
+              en: "They swap in a special pen that remembers who holds it. Mitu may take it again, and Jamal still has to wait.",
+              bn: "ওরা এমন একটা বিশেষ কলম আনে যেটা মনে রাখে কার হাতে আছে। মিতু আবার ধরতে পারে, আর জামালকে তখনো অপেক্ষা করতে হয়।"
             }
           },
           title: { en: 'Use a pen that remembers', bn: 'যে কলম মনে রাখে সেটা নিন' },

@@ -15,8 +15,8 @@ export const asyncioEventLoop: Topic = {
   },
   story: {
     cast: {
-      en: 'Nila runs a tiny snack stall alone, and her cousin Joy helps out in the back room.',
-      bn: 'নীলা একাই ছোট একটা নাস্তার দোকান চালায়, আর তার ভাই জয় পেছনের ঘরে সাহায্য করে।'
+      en: 'Shila runs a tiny snack stall alone, and her cousin Rakib helps out in the back room.',
+      bn: 'শিলা একাই ছোট একটা নাস্তার দোকান চালায়, আর তার ভাই রাকিব পেছনের ঘরে সাহায্য করে।'
     }
   },
   takeaway: {
@@ -210,10 +210,10 @@ export const asyncioEventLoop: Topic = {
           tasks: { en: 'A, B on the rack', bn: 'A, B তাকে' }
         },
         story: {
-          title: { en: 'Nila gets two orders', bn: 'নীলা দুটো অর্ডার পায়' },
+          title: { en: 'Shila gets two orders', bn: 'শিলা দুটো অর্ডার পায়' },
           text: {
-            en: 'Nila runs a tiny snack stall by herself. Two orders come in, rice pudding and an omelette, and she puts both on the ready rack. She knows a dish that must wait can step aside.',
-            bn: 'নীলা একাই ছোট একটা নাস্তার দোকান চালায়। দুটো অর্ডার আসে, পায়েস আর ওমলেট, আর সে দুটোই তৈরি তাকে রাখে। সে জানে অপেক্ষার পদ সরে দাঁড়াতে পারে।'
+            en: 'Shila runs a tiny snack stall by herself. Two orders come in, rice pudding and an omelette, and she puts both on the ready rack. She knows a dish that must wait can step aside.',
+            bn: 'শিলা একাই ছোট একটা নাস্তার দোকান চালায়। দুটো অর্ডার আসে, পায়েস আর ওমলেট, আর সে দুটোই তৈরি তাকে রাখে। সে জানে অপেক্ষার পদ সরে দাঁড়াতে পারে।'
           }
         },
         title: { en: 'Two dishes go on the rack', bn: 'দুটো পদ তাকে ওঠে' },
@@ -239,10 +239,10 @@ export const asyncioEventLoop: Topic = {
           tasks: { en: 'A cooking, B on rack', bn: 'A রান্নায়, B তাকে' }
         },
         story: {
-          title: { en: 'Nila starts the pudding', bn: 'নীলা পায়েস শুরু করে' },
+          title: { en: 'Shila starts the pudding', bn: 'শিলা পায়েস শুরু করে' },
           text: {
-            en: 'Nila takes the rice pudding off the rack and starts cooking it. While her hands are busy with it, the omelette just waits its turn.',
-            bn: 'নীলা তাক থেকে পায়েস নিয়ে রাঁধতে শুরু করে। তার হাত যতক্ষণ পায়েসে ব্যস্ত, ওমলেট নিজের পালার অপেক্ষায় থাকে।'
+            en: 'Shila takes the rice pudding off the rack and starts cooking it. While her hands are busy with it, the omelette just waits its turn.',
+            bn: 'শিলা তাক থেকে পায়েস নিয়ে রাঁধতে শুরু করে। তার হাত যতক্ষণ পায়েসে ব্যস্ত, ওমলেট নিজের পালার অপেক্ষায় থাকে।'
           }
         },
         title: { en: 'The cook takes dish A', bn: 'রাঁধুনি পদ A নেয়' },
@@ -271,8 +271,8 @@ export const asyncioEventLoop: Topic = {
         story: {
           title: { en: 'The pudding needs milk', bn: 'পায়েসের দুধ লাগে' },
           text: {
-            en: 'The pudding needs fresh milk, and the milkman is slow. Nila sets the pot aside and asks the bell by the door to ring when the milk comes.',
-            bn: 'পায়েসের জন্য টাটকা দুধ লাগে, কিন্তু দুধওয়ালা দেরি করছে। নীলা হাঁড়িটা সরিয়ে রাখে আর দুধ এলে দরজার ঘণ্টা বাজাতে বলে।'
+            en: 'The pudding needs fresh milk, and the milkman is slow. Shila sets the pot aside and asks the bell by the door to ring when the milk comes.',
+            bn: 'পায়েসের জন্য টাটকা দুধ লাগে, কিন্তু দুধওয়ালা দেরি করছে। শিলা হাঁড়িটা সরিয়ে রাখে আর দুধ এলে দরজার ঘণ্টা বাজাতে বলে।'
           }
         },
         title: { en: 'Dish A steps aside to wait', bn: 'পদ A অপেক্ষায় সরে দাঁড়ায়' },
@@ -298,10 +298,10 @@ export const asyncioEventLoop: Topic = {
           tasks: { en: 'B cooking, A waits', bn: 'B রান্নায়, A অপেক্ষায়' }
         },
         story: {
-          title: { en: 'Nila moves to the omelette', bn: 'নীলা ওমলেটে যায়' },
+          title: { en: 'Shila moves to the omelette', bn: 'শিলা ওমলেটে যায়' },
           text: {
-            en: 'Nila does not stand around waiting for the milk. She picks up the omelette from the rack and starts cooking it at once.',
-            bn: 'নীলা দুধের জন্য দাঁড়িয়ে থাকে না। সে তাক থেকে ওমলেট নিয়ে সঙ্গে সঙ্গে রাঁধতে শুরু করে।'
+            en: 'Shila does not stand around waiting for the milk. She picks up the omelette from the rack and starts cooking it at once.',
+            bn: 'শিলা দুধের জন্য দাঁড়িয়ে থাকে না। সে তাক থেকে ওমলেট নিয়ে সঙ্গে সঙ্গে রাঁধতে শুরু করে।'
           }
         },
         title: { en: 'The cook moves on to B', bn: 'রাঁধুনি B-তে যায়' },
@@ -329,8 +329,8 @@ export const asyncioEventLoop: Topic = {
         story: {
           title: { en: 'The omelette needs eggs', bn: 'ওমলেটের ডিম লাগে' },
           text: {
-            en: 'The omelette needs fresh eggs from the farm, and they are late too. Nila sets it aside, and the bell now watches for both deliveries.',
-            bn: 'ওমলেটের জন্যও খামার থেকে টাটকা ডিম লাগে, আর সেটাও দেরি করছে। নীলা ওটাও সরিয়ে রাখে, আর ঘণ্টা এখন দুটো ডেলিভারির দিকেই নজর রাখে।'
+            en: 'The omelette needs fresh eggs from the farm, and they are late too. Shila sets it aside, and the bell now watches for both deliveries.',
+            bn: 'ওমলেটের জন্যও খামার থেকে টাটকা ডিম লাগে, আর সেটাও দেরি করছে। শিলা ওটাও সরিয়ে রাখে, আর ঘণ্টা এখন দুটো ডেলিভারির দিকেই নজর রাখে।'
           }
         },
         title: { en: 'Dish B steps aside too', bn: 'পদ B-ও সরে দাঁড়ায়' },
@@ -355,10 +355,10 @@ export const asyncioEventLoop: Topic = {
           selector: { en: 'Waiting to ding', bn: 'ডিংয়ের অপেক্ষায়' }
         },
         story: {
-          title: { en: 'Nila sips her tea', bn: 'নীলা চায়ে চুমুক দেয়' },
+          title: { en: 'Shila sips her tea', bn: 'শিলা চায়ে চুমুক দেয়' },
           text: {
-            en: 'Both pots are waiting, and nothing is ready to cook. Nila sits down with a cup of tea and rests until the bell rings.',
-            bn: 'দুটো হাঁড়িই অপেক্ষায়, রাঁধার মতো কিছু নেই। নীলা এক কাপ চা নিয়ে বসে, ঘণ্টা না বাজা পর্যন্ত বিশ্রাম নেয়।'
+            en: 'Both pots are waiting, and nothing is ready to cook. Shila sits down with a cup of tea and rests until the bell rings.',
+            bn: 'দুটো হাঁড়িই অপেক্ষায়, রাঁধার মতো কিছু নেই। শিলা এক কাপ চা নিয়ে বসে, ঘণ্টা না বাজা পর্যন্ত বিশ্রাম নেয়।'
           }
         },
         title: { en: 'The cook rests', bn: 'রাঁধুনি বিশ্রাম নেয়' },
@@ -417,8 +417,8 @@ export const asyncioEventLoop: Topic = {
         story: {
           title: { en: 'The bell rings for the pudding', bn: 'ঘণ্টা বাজে পায়েসের জন্য' },
           text: {
-            en: 'The bell rings, and Nila puts the pudding pot back on the ready rack. She has not touched it yet, but it is first in line.',
-            bn: 'ঘণ্টা বাজে, আর নীলা পায়েসের হাঁড়ি আবার তৈরি তাকে রাখে। এখনো হাত দেয়নি, কিন্তু ওটাই লাইনের প্রথমে।'
+            en: 'The bell rings, and Shila puts the pudding pot back on the ready rack. She has not touched it yet, but it is first in line.',
+            bn: 'ঘণ্টা বাজে, আর শিলা পায়েসের হাঁড়ি আবার তৈরি তাকে রাখে। এখনো হাত দেয়নি, কিন্তু ওটাই লাইনের প্রথমে।'
           }
         },
         title: { en: 'The board calls A back', bn: 'বোর্ড A-কে ডাকে' },
@@ -444,10 +444,10 @@ export const asyncioEventLoop: Topic = {
           tasks: { en: 'A cooking, B waits', bn: 'A রান্নায়, B অপেক্ষায়' }
         },
         story: {
-          title: { en: 'Nila carries on with the pudding', bn: 'নীলা আবার পায়েসে ফেরে' },
+          title: { en: 'Shila carries on with the pudding', bn: 'শিলা আবার পায়েসে ফেরে' },
           text: {
-            en: 'Nila lifts the pot and carries on from the exact spot where she stopped. She pours in the new milk and stirs.',
-            bn: 'নীলা হাঁড়িটা তুলে ঠিক যেখানে থেমেছিল সেখান থেকেই শুরু করে। সে নতুন দুধ ঢেলে নাড়তে থাকে।'
+            en: 'Shila lifts the pot and carries on from the exact spot where she stopped. She pours in the new milk and stirs.',
+            bn: 'শিলা হাঁড়িটা তুলে ঠিক যেখানে থেমেছিল সেখান থেকেই শুরু করে। সে নতুন দুধ ঢেলে নাড়তে থাকে।'
           }
         },
         title: { en: 'The cook picks A back up', bn: 'রাঁধুনি A আবার ধরে' },
@@ -473,8 +473,8 @@ export const asyncioEventLoop: Topic = {
         story: {
           title: { en: 'The pudding is ready', bn: 'পায়েস তৈরি' },
           text: {
-            en: 'The pudding is done and goes to the table. Nila did it all alone, and the omelette will carry on when its eggs arrive.',
-            bn: 'পায়েস হয়ে যায়, আর টেবিলে যায়। নীলা সবটা একাই সামলেছে, আর ডিম এলে ওমলেট আবার চলবে।'
+            en: 'The pudding is done and goes to the table. Shila did it all alone, and the omelette will carry on when its eggs arrive.',
+            bn: 'পায়েস হয়ে যায়, আর টেবিলে যায়। শিলা সবটা একাই সামলেছে, আর ডিম এলে ওমলেট আবার চলবে।'
           }
         },
         title: { en: 'Dish A is done', bn: 'পদ A শেষ' },
@@ -508,10 +508,10 @@ export const asyncioEventLoop: Topic = {
             tasks: { en: 'A stuck, B waits', bn: 'A আটকে, B অপেক্ষায়' }
           },
           story: {
-            title: { en: 'Nila stares at the pot', bn: 'নীলা হাঁড়ির দিকে তাকিয়ে থাকে' },
+            title: { en: 'Shila stares at the pot', bn: 'শিলা হাঁড়ির দিকে তাকিয়ে থাকে' },
             text: {
-              en: 'This time Nila does not step away from the pudding. She just stands and stares at the pot for ages, and she cannot cook anything else.',
-              bn: 'এবার নীলা পায়েসের কাছ থেকে সরে না। সে অনেকক্ষণ শুধু হাঁড়ির দিকে তাকিয়ে দাঁড়িয়ে থাকে, আর অন্য কিছুই রাঁধতে পারে না।'
+              en: 'This time Shila does not step away from the pudding. She just stands and stares at the pot for ages, and she cannot cook anything else.',
+              bn: 'এবার শিলা পায়েসের কাছ থেকে সরে না। সে অনেকক্ষণ শুধু হাঁড়ির দিকে তাকিয়ে দাঁড়িয়ে থাকে, আর অন্য কিছুই রাঁধতে পারে না।'
             }
           },
           title: { en: 'The cook gets stuck', bn: 'রাঁধুনি আটকে যায়' },
@@ -538,8 +538,8 @@ export const asyncioEventLoop: Topic = {
           story: {
             title: { en: 'The whole stall waits', bn: 'পুরো দোকান অপেক্ষা করে' },
             text: {
-              en: 'The omelette sits on the rack, and new customers pile up at the door. Everyone is waiting for Nila to move, and some give up and leave.',
-              bn: 'ওমলেট তাকে পড়ে থাকে, আর দরজায় নতুন খদ্দের জমতে থাকে। সবাই নীলার নড়ার অপেক্ষায়, আর কেউ কেউ হাল ছেড়ে চলে যায়।'
+              en: 'The omelette sits on the rack, and new customers pile up at the door. Everyone is waiting for Shila to move, and some give up and leave.',
+              bn: 'ওমলেট তাকে পড়ে থাকে, আর দরজায় নতুন খদ্দের জমতে থাকে। সবাই শিলার নড়ার অপেক্ষায়, আর কেউ কেউ হাল ছেড়ে চলে যায়।'
             }
           },
           title: { en: 'Everything else waits', bn: 'বাকি সব অপেক্ষা করে' },
@@ -568,10 +568,10 @@ export const asyncioEventLoop: Topic = {
             tasks: { en: 'A waits, B cooking', bn: 'A অপেক্ষায়, B রান্নায়' }
           },
           story: {
-            title: { en: 'Nila steps away from the pot', bn: 'নীলা হাঁড়ির কাছ থেকে সরে আসে' },
+            title: { en: 'Shila steps away from the pot', bn: 'শিলা হাঁড়ির কাছ থেকে সরে আসে' },
             text: {
-              en: 'Nila learns her lesson. She leaves the pudding to simmer, steps away, and goes to cook the omelette while she waits.',
-              bn: 'নীলা শিক্ষা পায়। সে পায়েস ফুটতে দিয়ে সরে আসে, আর অপেক্ষার ফাঁকে ওমলেট রাঁধতে যায়।'
+              en: 'Shila learns her lesson. She leaves the pudding to simmer, steps away, and goes to cook the omelette while she waits.',
+              bn: 'শিলা শিক্ষা পায়। সে পায়েস ফুটতে দিয়ে সরে আসে, আর অপেক্ষার ফাঁকে ওমলেট রাঁধতে যায়।'
             }
           },
           title: { en: 'Step aside instead of standing', bn: 'দাঁড়িয়ে না থেকে সরে দাঁড়ান' },
@@ -606,10 +606,10 @@ export const asyncioEventLoop: Topic = {
             tasks: { en: 'A waits, B on rack', bn: 'A অপেক্ষায়, B তাকে' }
           },
           story: {
-            title: { en: 'Nila calls her cousin Joy', bn: 'নীলা জয়কে ডাকে' },
+            title: { en: 'Shila calls her cousin Rakib', bn: 'শিলা রাকিবকে ডাকে' },
             text: {
-              en: 'The pudding needs a slow job, grinding spices by hand. Nila hands it to her cousin Joy out back and sets the pot aside.',
-              bn: 'পায়েসের জন্য একটা ধীর কাজ লাগে, হাতে মশলা বাটা। নীলা সেটা পেছনে তার ভাই জয়ের হাতে দেয় আর হাঁড়ি সরিয়ে রাখে।'
+              en: 'The pudding needs a slow job, grinding spices by hand. Shila hands it to her cousin Rakib out back and sets the pot aside.',
+              bn: 'পায়েসের জন্য একটা ধীর কাজ লাগে, হাতে মশলা বাটা। শিলা সেটা পেছনে তার ভাই রাকিবের হাতে দেয় আর হাঁড়ি সরিয়ে রাখে।'
             }
           },
           title: { en: 'A’s slow job goes out back', bn: 'A-র ধীর কাজ পেছনে যায়' },
@@ -635,10 +635,10 @@ export const asyncioEventLoop: Topic = {
             tasks: { en: 'B cooking, A waits', bn: 'B রান্নায়, A অপেক্ষায়' }
           },
           story: {
-            title: { en: 'Nila keeps cooking', bn: 'নীলা রাঁধতেই থাকে' },
+            title: { en: 'Shila keeps cooking', bn: 'শিলা রাঁধতেই থাকে' },
             text: {
-              en: 'While Joy grinds away out back, Nila is free. She keeps cooking the omelette and other orders as if nothing is slowing her down.',
-              bn: 'জয় পেছনে বাটতে থাকে, আর নীলা ফাঁকা। সে ওমলেট আর অন্য অর্ডার রাঁধতে থাকে, যেন কিছুই তাকে আটকাচ্ছে না।'
+              en: 'While Rakib grinds away out back, Shila is free. She keeps cooking the omelette and other orders as if nothing is slowing her down.',
+              bn: 'রাকিব পেছনে বাটতে থাকে, আর শিলা ফাঁকা। সে ওমলেট আর অন্য অর্ডার রাঁধতে থাকে, যেন কিছুই তাকে আটকাচ্ছে না।'
             }
           },
           title: { en: 'The cook keeps cooking B', bn: 'রাঁধুনি B রাঁধতে থাকে' },
@@ -659,10 +659,10 @@ export const asyncioEventLoop: Topic = {
             ready: { en: 'A', bn: 'A' }
           },
           story: {
-            title: { en: 'Joy finishes grinding', bn: 'জয় বাটা শেষ করে' },
+            title: { en: 'Rakib finishes grinding', bn: 'রাকিব বাটা শেষ করে' },
             text: {
-              en: 'Joy finishes the spices and brings them in. Nila puts the pudding pot back on the ready rack, ready to carry on.',
-              bn: 'জয় মশলা বাটা শেষ করে ভেতরে নিয়ে আসে। নীলা পায়েসের হাঁড়ি আবার তৈরি তাকে রাখে, এবার চালিয়ে যাওয়ার জন্য।'
+              en: 'Rakib finishes the spices and brings them in. Shila puts the pudding pot back on the ready rack, ready to carry on.',
+              bn: 'রাকিব মশলা বাটা শেষ করে ভেতরে নিয়ে আসে। শিলা পায়েসের হাঁড়ি আবার তৈরি তাকে রাখে, এবার চালিয়ে যাওয়ার জন্য।'
             }
           },
           title: { en: 'The helper cooks finish', bn: 'সহকারী রাঁধুনিরা শেষ করে' },
@@ -687,10 +687,10 @@ export const asyncioEventLoop: Topic = {
             loop: { en: 'Free', bn: 'ফাঁকা' }
           },
           story: {
-            title: { en: 'Joy cannot do everything', bn: 'জয় সব পারে না' },
+            title: { en: 'Rakib cannot do everything', bn: 'রাকিব সব পারে না' },
             text: {
-              en: 'Joy is great at waiting for slow things. But when a huge pile of bills needs adding up, the two of them just take turns at the same till. That needs a second stall.',
-              bn: 'ধীর কাজের অপেক্ষায় জয় খুব ভালো। কিন্তু বিশাল এক গাদা বিল যোগ করতে হলে দুজনকে একই ক্যাশে পালা করে বসতে হয়। তার জন্য আরেকটা দোকান লাগে।'
+              en: 'Rakib is great at waiting for slow things. But when a huge pile of bills needs adding up, the two of them just take turns at the same till. That needs a second stall.',
+              bn: 'ধীর কাজের অপেক্ষায় রাকিব খুব ভালো। কিন্তু বিশাল এক গাদা বিল যোগ করতে হলে দুজনকে একই ক্যাশে পালা করে বসতে হয়। তার জন্য আরেকটা দোকান লাগে।'
             }
           },
           title: { en: 'Helpers fix waiting, not sums', bn: 'সহকারীরা অপেক্ষা মেটায়, হিসাব নয়' },
@@ -724,10 +724,10 @@ export const asyncioEventLoop: Topic = {
             tasks: { en: 'A visitor’s dish', bn: 'দর্শকের পদ' }
           },
           story: {
-            title: { en: 'Nila reads a polite slip', bn: 'নীলা ভদ্র চিরকুট পড়ে' },
+            title: { en: 'Shila reads a polite slip', bn: 'শিলা ভদ্র চিরকুট পড়ে' },
             text: {
-              en: 'A customer sends an order slip that says it will step aside when it has to wait. Nila handles it herself, but anything slow in it would hold up every other order.',
-              bn: 'এক খদ্দের একটা অর্ডার চিরকুট পাঠায়, যেটা অপেক্ষার সময় সরে দাঁড়াবে বলে লেখা। নীলা নিজেই সেটা সামলায়, কিন্তু তাতে ধীর কিছু থাকলে বাকি সব অর্ডার আটকে যেত।'
+              en: 'A customer sends an order slip that says it will step aside when it has to wait. Shila handles it herself, but anything slow in it would hold up every other order.',
+              bn: 'এক খদ্দের একটা অর্ডার চিরকুট পাঠায়, যেটা অপেক্ষার সময় সরে দাঁড়াবে বলে লেখা। শিলা নিজেই সেটা সামলায়, কিন্তু তাতে ধীর কিছু থাকলে বাকি সব অর্ডার আটকে যেত।'
             }
           },
           title: { en: 'A polite page runs on the cook', bn: 'ভদ্র পাতা রাঁধুনিই চালায়' },
@@ -751,10 +751,10 @@ export const asyncioEventLoop: Topic = {
             pool: { en: 'Helper cooks busy', bn: 'সহকারীরা ব্যস্ত' }
           },
           story: {
-            title: { en: 'Nila hands a plain slip to Joy', bn: 'নীলা সাধারণ চিরকুট জয়কে দেয়' },
+            title: { en: 'Shila hands a plain slip to Rakib', bn: 'শিলা সাধারণ চিরকুট রাকিবকে দেয়' },
             text: {
-              en: 'Another slip is written in the plain way. Nila passes it straight to Joy out back, so she stays free for the next customer.',
-              bn: 'আরেকটা চিরকুট সাধারণভাবে লেখা। নীলা সেটা সোজা পেছনে জয়ের কাছে পাঠায়, তাই পরের খদ্দেরের জন্য সে ফাঁকা থাকে।'
+              en: 'Another slip is written in the plain way. Shila passes it straight to Rakib out back, so she stays free for the next customer.',
+              bn: 'আরেকটা চিরকুট সাধারণভাবে লেখা। শিলা সেটা সোজা পেছনে রাকিবের কাছে পাঠায়, তাই পরের খদ্দেরের জন্য সে ফাঁকা থাকে।'
             }
           },
           title: { en: 'A plain page goes to helpers', bn: 'সাধারণ পাতা সহকারীদের কাছে যায়' },
