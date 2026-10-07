@@ -84,6 +84,7 @@ const TOPIC_CASES = [
   { slug: 'nginx', total: 9, altStop: 'Stop 6 of 7', taught: true },
   { slug: 'ci-cd', total: 10, altStop: 'Stop 4 of 5', step3Packets: 0, taught: true },
   { slug: 'docker-compose', total: 10, altStop: 'Stop 7 of 8', taught: true, step3Packets: 0 },
+  { slug: 'docker', total: 9, altStop: 'Stop 7 of 8', taught: true, step3Packets: 0 },
 ]
 // SMOKE_TOPICS=a,b limits the per-topic loops to those slugs, for quick runs while authoring one topic.
 const onlyTopics = process.env.SMOKE_TOPICS?.split(',').map((t) => t.trim()).filter(Boolean)
@@ -143,7 +144,7 @@ const checks = [
     await page.waitForSelector('.network-svg .st')
     const count = await page.locator('.network-svg .st').count()
     await shot(page, 'hub-map')
-    await page.locator('.network-svg .st[data-id="docker"]').click()
+    await page.locator('.network-svg .st[data-id="kubernetes"]').click()
     await page.waitForSelector('.toast')
     const toast = await page.textContent('.toast')
     await page.locator('.network-svg .st[data-id="celery-redis"]').click()
@@ -151,7 +152,7 @@ const checks = [
     await page.waitForLoadState('networkidle')
     await context.close()
     assert(count === 21, `expected 21 stations, got ${count}`)
-    assert(toast?.includes('Phase 3'), `toast missing Phase 3: ${toast}`)
+    assert(toast?.includes('Phase 4'), `toast missing Phase 4: ${toast}`)
     noProblems(problems)
   }],
   ['hub-concurrency-open', async () => {

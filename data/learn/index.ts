@@ -4,6 +4,7 @@ import { celeryRedis } from './topics/celery-redis'
 import { ciCd } from './topics/ci-cd'
 import { concurrencyVsParallelism } from './topics/concurrency-vs-parallelism'
 import { dockerCompose } from './topics/docker-compose'
+import { docker } from './topics/docker'
 import { fastapiLifecycle } from './topics/fastapi-lifecycle'
 import { gitBasics } from './topics/git-basics'
 import { httpJourney } from './topics/http-journey'
@@ -19,6 +20,7 @@ export const TOPICS: Record<string, Topic> = {
   [ciCd.slug]: ciCd,
   [concurrencyVsParallelism.slug]: concurrencyVsParallelism,
   [dockerCompose.slug]: dockerCompose,
+  [docker.slug]: docker,
   [fastapiLifecycle.slug]: fastapiLifecycle,
   [gitBasics.slug]: gitBasics,
   [httpJourney.slug]: httpJourney,
