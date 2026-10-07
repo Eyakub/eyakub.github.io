@@ -6,6 +6,7 @@ import { fastapiLifecycle } from './topics/fastapi-lifecycle'
 import { gitBasics } from './topics/git-basics'
 import { httpJourney } from './topics/http-journey'
 import { multiprocessingPools } from './topics/multiprocessing-pools'
+import { nginx } from './topics/nginx'
 import { processesVsThreads } from './topics/processes-vs-threads'
 import { pythonGil } from './topics/python-gil'
 import { raceConditionsLocks } from './topics/race-conditions-locks'
@@ -18,6 +19,7 @@ export const TOPICS: Record<string, Topic> = {
   [gitBasics.slug]: gitBasics,
   [httpJourney.slug]: httpJourney,
   [multiprocessingPools.slug]: multiprocessingPools,
+  [nginx.slug]: nginx,
   [processesVsThreads.slug]: processesVsThreads,
   [pythonGil.slug]: pythonGil,
   [raceConditionsLocks.slug]: raceConditionsLocks
