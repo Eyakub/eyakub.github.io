@@ -5,6 +5,7 @@ import { ciCd } from './topics/ci-cd'
 import { concurrencyVsParallelism } from './topics/concurrency-vs-parallelism'
 import { dockerCompose } from './topics/docker-compose'
 import { docker } from './topics/docker'
+import { djangoLifecycle } from './topics/django-lifecycle'
 import { fastapiLifecycle } from './topics/fastapi-lifecycle'
 import { gitBasics } from './topics/git-basics'
 import { httpJourney } from './topics/http-journey'
@@ -21,6 +22,7 @@ export const TOPICS: Record<string, Topic> = {
   [concurrencyVsParallelism.slug]: concurrencyVsParallelism,
   [dockerCompose.slug]: dockerCompose,
   [docker.slug]: docker,
+  [djangoLifecycle.slug]: djangoLifecycle,
   [fastapiLifecycle.slug]: fastapiLifecycle,
   [gitBasics.slug]: gitBasics,
   [httpJourney.slug]: httpJourney,

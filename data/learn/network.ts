@@ -29,7 +29,7 @@ export const STATIONS: Record<string, Station> = {
   'http-journey': { x: 120, y: 110, lab: 'up', phase: 3, line: 'backend', name: { en: 'HTTP journey', bn: 'HTTP-র যাত্রা' }, blurb: { en: 'Follow one click to a company’s computers and back.', bn: 'একটা ক্লিক কোম্পানির কম্পিউটার পর্যন্ত গিয়ে কীভাবে ফিরে আসে, দেখুন।' }, level: 'beginner' },
   'rest-basics': { x: 300, y: 110, lab: 'up', phase: 4, line: 'backend', name: { en: 'REST basics', bn: 'REST-এর মূল কথা' } },
   'fastapi-lifecycle': { x: 480, y: 110, lab: 'up', phase: 1, line: 'backend', interchange: true, name: { en: 'FastAPI lifecycle', bn: 'FastAPI-র জীবনচক্র' }, blurb: { en: 'Everything between a click and the reply.', bn: 'ক্লিক থেকে উত্তর আসা পর্যন্ত মাঝের সবকিছু।' }, level: 'intermediate' },
-  'django-lifecycle': { x: 660, y: 110, lab: 'up', phase: 3, line: 'backend', name: { en: 'Django lifecycle', bn: 'Django-র জীবনচক্র' } },
+  'django-lifecycle': { x: 660, y: 110, lab: 'up', phase: 3, line: 'backend', name: { en: 'Django lifecycle', bn: 'Django-র জীবনচক্র' }, blurb: { en: 'Follow a filled-in form through every checkpoint and back.', bn: 'ভরা একটা ফর্মকে প্রতিটি চেকপয়েন্ট পেরিয়ে ফিরে আসতে দেখুন।' }, level: 'intermediate' },
   'auth-jwt-oauth': { x: 840, y: 110, lab: 'up', phase: 4, line: 'backend', name: { en: 'Auth: JWT & OAuth', bn: 'অথ: JWT ও OAuth' } },
   'celery-redis': { x: 610, y: 240, lab: 'down', phase: 1, line: 'async', name: { en: 'Celery + Redis', bn: 'Celery + Redis' }, blurb: { en: 'Hand slow jobs to a background cook so nobody waits.', bn: 'ধীর কাজ পেছনের রাঁধুনিকে দিন, যাতে কাউকে অপেক্ষা করতে না হয়।' }, level: 'beginner' },
   'redis-deep-dive': { x: 760, y: 240, lab: 'down', phase: 4, line: 'async', name: { en: 'Redis deep-dive', bn: 'Redis গভীরে' } },
