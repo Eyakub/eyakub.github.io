@@ -38,7 +38,7 @@ export const STATIONS: Record<string, Station> = {
   'github-pull-requests': { x: 300, y: 240, lab: 'down', phase: 4, line: 'git', name: { en: 'Pull requests', bn: 'পুল রিকোয়েস্ট' } },
   docker: { x: 120, y: 370, lab: 'down', phase: 3, line: 'devops', name: { en: 'Docker', bn: 'Docker' } },
   'docker-compose': { x: 300, y: 370, lab: 'down', phase: 3, line: 'devops', name: { en: 'Docker Compose', bn: 'Docker Compose' } },
-  'ci-cd': { x: 480, y: 370, lab: 'down', phase: 3, line: 'devops', interchange: true, name: { en: 'CI/CD', bn: 'CI/CD' } },
+  'ci-cd': { x: 480, y: 370, lab: 'down', phase: 3, line: 'devops', interchange: true, name: { en: 'CI/CD', bn: 'CI/CD' }, blurb: { en: 'An assembly line that checks, boxes and ships every change.', bn: 'একটা অ্যাসেম্বলি লাইন, যা প্রতিটি পরিবর্তন যাচাই করে, বাক্সে ভরে আর পাঠিয়ে দেয়।' }, level: 'intermediate' },
   nginx: { x: 660, y: 370, lab: 'down', phase: 3, line: 'devops', name: { en: 'Nginx', bn: 'Nginx' }, blurb: { en: 'Hands out simple mail, and shares the rest between desks.', bn: 'সহজ ডাক নিজে দেয়, বাকিটা কয়েকটা ডেস্কে ভাগ করে দেয়।' }, level: 'intermediate' },
   kubernetes: { x: 840, y: 370, lab: 'down', phase: 4, line: 'devops', name: { en: 'Kubernetes', bn: 'Kubernetes' } },
   'concurrency-vs-parallelism': { x: 120, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'Concurrency vs parallelism', bn: 'কনকারেন্সি বনাম প্যারালেলিজম' }, blurb: { en: 'Juggling many jobs, or doing them at the same moment.', bn: 'অনেক কাজ পালা করে সামলানো, নয়তো একই মুহূর্তে করা।' }, level: 'beginner' },

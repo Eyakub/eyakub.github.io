@@ -82,6 +82,7 @@ const TOPIC_CASES = [
   { slug: 'race-conditions-locks', total: 10, altStop: 'Stop 7 of 9', altBtn: 2, step3Packets: 0, taught: true },
   { slug: 'http-journey', total: 11, altStop: 'Stop 7 of 8', taught: true },
   { slug: 'nginx', total: 9, altStop: 'Stop 6 of 7', taught: true },
+  { slug: 'ci-cd', total: 10, altStop: 'Stop 4 of 5', step3Packets: 0, taught: true },
 ]
 // SMOKE_TOPICS=a,b limits the per-topic loops to those slugs, for quick runs while authoring one topic.
 const onlyTopics = process.env.SMOKE_TOPICS?.split(',').map((t) => t.trim()).filter(Boolean)
