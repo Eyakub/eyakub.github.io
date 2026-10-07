@@ -3,6 +3,7 @@ import { asyncioEventLoop } from './topics/asyncio-event-loop'
 import { celeryRedis } from './topics/celery-redis'
 import { ciCd } from './topics/ci-cd'
 import { concurrencyVsParallelism } from './topics/concurrency-vs-parallelism'
+import { dockerCompose } from './topics/docker-compose'
 import { fastapiLifecycle } from './topics/fastapi-lifecycle'
 import { gitBasics } from './topics/git-basics'
 import { httpJourney } from './topics/http-journey'
@@ -17,6 +18,7 @@ export const TOPICS: Record<string, Topic> = {
   [celeryRedis.slug]: celeryRedis,
   [ciCd.slug]: ciCd,
   [concurrencyVsParallelism.slug]: concurrencyVsParallelism,
+  [dockerCompose.slug]: dockerCompose,
   [fastapiLifecycle.slug]: fastapiLifecycle,
   [gitBasics.slug]: gitBasics,
   [httpJourney.slug]: httpJourney,
