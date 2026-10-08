@@ -73,7 +73,7 @@ export const dockerCompose: Topic = {
     result: { en: 'A check that passed', bn: 'পাস করা পরীক্ষা' },
     error: { en: 'Something went wrong', bn: 'কিছু গোলমাল হয়েছে' }
   },
-  view: { wide: [ 1000, 440 ], narrow: [ 400, 540 ] },
+  view: { wide: [ 1000, 430 ], narrow: [ 400, 540 ] },
   nodeR: { narrow: 20 },
   nodes: {
     dev: {
@@ -84,8 +84,8 @@ export const dockerCompose: Topic = {
         name: { en: 'Director', bn: 'পরিচালক' },
         sub: { en: 'Calls the shots', bn: 'সবকিছুর ডাক দেয়' }
       },
-      wide: [ 70, 65, 'up' ],
-      narrow: [ 150, 45, 'right' ]
+      wide: [ 100, 320, 'down' ],
+      narrow: [ 110, 121, 'right' ]
     },
     compose: {
       icon: 'task',
@@ -95,8 +95,8 @@ export const dockerCompose: Topic = {
         name: { en: 'Call sheet', bn: 'কল শিট' },
         sub: { en: 'Lists every job', bn: 'প্রতিটি কাজ লেখা' }
       },
-      wide: [ 365, 65, 'up' ],
-      narrow: [ 150, 121, 'right' ]
+      wide: [ 100, 130, 'up' ],
+      narrow: [ 110, 45, 'right' ]
     },
     worker: {
       icon: 'worker',
@@ -106,8 +106,8 @@ export const dockerCompose: Topic = {
         name: { en: 'Back-room crew', bn: 'পেছনের ঘরের ক্রু' },
         sub: { en: 'Does slow jobs', bn: 'ধীর কাজ করে' }
       },
-      wide: [ 200, 230, 'down' ],
-      narrow: [ 150, 197, 'right' ]
+      wide: [ 640, 130, 'up' ],
+      narrow: [ 110, 349, 'right' ]
     },
     redis: {
       icon: 'queue',
@@ -117,8 +117,8 @@ export const dockerCompose: Topic = {
         name: { en: 'Job board', bn: 'কাজের বোর্ড' },
         sub: { en: 'Jobs wait here', bn: 'কাজ এখানে অপেক্ষা করে' }
       },
-      wide: [ 365, 230, 'down' ],
-      narrow: [ 150, 273, 'right' ]
+      wide: [ 380, 130, 'up' ],
+      narrow: [ 110, 273, 'right' ]
     },
     api: {
       icon: 'server',
@@ -128,8 +128,8 @@ export const dockerCompose: Topic = {
         name: { en: 'Camera crew', bn: 'ক্যামেরা ক্রু' },
         sub: { en: 'Faces outward', bn: 'বাইরের দিকে মুখ' }
       },
-      wide: [ 530, 230, 'right' ],
-      narrow: [ 150, 349, 'right' ]
+      wide: [ 380, 320, 'down' ],
+      narrow: [ 110, 197, 'right' ]
     },
     db: {
       icon: 'store',
@@ -139,8 +139,8 @@ export const dockerCompose: Topic = {
         name: { en: 'Lighting crew', bn: 'আলোর ক্রু' },
         sub: { en: 'Ready first', bn: 'আগে তৈরি হয়' }
       },
-      wide: [ 740, 310, 'down' ],
-      narrow: [ 150, 425, 'right' ]
+      wide: [ 640, 320, 'down' ],
+      narrow: [ 110, 425, 'right' ]
     },
     volume: {
       icon: 'archive',
@@ -150,8 +150,8 @@ export const dockerCompose: Topic = {
         name: { en: 'Footage drive', bn: 'ফুটেজ ড্রাইভ' },
         sub: { en: 'Keeps the records', bn: 'রেকর্ড ধরে রাখে' }
       },
-      wide: [ 940, 310, 'down' ],
-      narrow: [ 150, 501, 'right' ]
+      wide: [ 900, 320, 'down' ],
+      narrow: [ 110, 501, 'right' ]
     }
   },
   groups: [
@@ -159,41 +159,21 @@ export const dockerCompose: Topic = {
       id: 'net',
       label: { en: 'Project network', bn: 'Project network' },
       plain: { en: 'The set', bn: 'শুটিং সেট' },
-      wide: [ 110, 190, 690, 200 ],
-      narrow: [ 110, 165, 275, 310 ]
+      wide: [ 310, 40, 416, 360 ],
+      narrow: [ 30, 160, 355, 304 ]
     }
   ],
   corridors: {
-    'dev-compose': { wide: [ [ 70, 65 ], [ 365, 65 ] ], narrow: [ [ 150, 45 ], [ 150, 121 ] ] },
-    'dev-api': {
-      wide: [ [ 70, 65 ], [ 70, 415 ], [ 530, 415 ], [ 530, 230 ] ],
-      narrow: [ [ 150, 45 ], [ 25, 45 ], [ 25, 349 ], [ 150, 349 ] ]
-    },
-    'compose-db': {
-      wide: [ [ 365, 65 ], [ 840, 65 ], [ 840, 210 ], [ 740, 310 ] ],
-      narrow: [ [ 150, 121 ], [ 120, 91 ], [ 50, 91 ], [ 50, 355 ], [ 120, 425 ], [ 150, 425 ] ]
-    },
-    'compose-redis': {
-      wide: [ [ 365, 65 ], [ 365, 230 ] ],
-      narrow: [ [ 150, 121 ], [ 100, 171 ], [ 100, 223 ], [ 150, 273 ] ]
-    },
-    'compose-api': {
-      wide: [ [ 365, 65 ], [ 530, 230 ] ],
-      narrow: [ [ 150, 121 ], [ 75, 121 ], [ 75, 274 ], [ 150, 349 ] ]
-    },
-    'compose-worker': { wide: [ [ 365, 65 ], [ 200, 230 ] ], narrow: [ [ 150, 121 ], [ 150, 197 ] ] },
-    'api-db': { wide: [ [ 530, 230 ], [ 610, 310 ], [ 740, 310 ] ], narrow: [ [ 150, 349 ], [ 150, 425 ] ] },
-    'api-redis': { wide: [ [ 530, 230 ], [ 365, 230 ] ], narrow: [ [ 150, 349 ], [ 150, 273 ] ] },
-    'redis-worker': { wide: [ [ 365, 230 ], [ 200, 230 ] ], narrow: [ [ 150, 273 ], [ 150, 197 ] ] },
-    'db-volume': { wide: [ [ 740, 310 ], [ 940, 310 ] ], narrow: [ [ 150, 425 ], [ 150, 501 ] ] }
+    'dev-compose': { wide: [ [ 100, 320 ], [ 100, 130 ] ], narrow: [ [ 110, 121 ], [ 110, 45 ] ] },
+    'dev-api': { wide: [ [ 100, 320 ], [ 380, 320 ] ], narrow: [ [ 110, 121 ], [ 110, 197 ] ] },
+    'api-db': { wide: [ [ 380, 320 ], [ 640, 320 ] ], narrow: [ [ 110, 197 ], [ 60, 197 ], [ 60, 425 ], [ 110, 425 ] ] },
+    'api-redis': { wide: [ [ 380, 320 ], [ 380, 130 ] ], narrow: [ [ 110, 197 ], [ 110, 273 ] ] },
+    'redis-worker': { wide: [ [ 380, 130 ], [ 640, 130 ] ], narrow: [ [ 110, 273 ], [ 110, 349 ] ] },
+    'db-volume': { wide: [ [ 640, 320 ], [ 900, 320 ] ], narrow: [ [ 110, 425 ], [ 110, 501 ] ] }
   },
   edges: {
     'dev-compose': { from: 'dev', to: 'compose', kind: 'request' },
     'dev-api': { from: 'dev', to: 'api', kind: 'request' },
-    'compose-db': { from: 'compose', to: 'db', kind: 'request' },
-    'compose-redis': { from: 'compose', to: 'redis', kind: 'request' },
-    'compose-api': { from: 'compose', to: 'api', kind: 'request' },
-    'compose-worker': { from: 'compose', to: 'worker', kind: 'request' },
     'api-db': { from: 'api', to: 'db', kind: 'request' },
     'api-redis': { from: 'api', to: 'redis', kind: 'queue' },
     'redis-worker': { from: 'redis', to: 'worker', kind: 'queue' },
@@ -224,14 +204,12 @@ export const dockerCompose: Topic = {
       },
       {
         id: 'start-deps',
-        moves: [
-          { edge: 'compose-db', label: 'start db', plain: { en: 'Set the lights', bn: 'আলো সাজান' } },
-          { edge: 'compose-redis', label: 'start redis', plain: { en: 'Hang the board', bn: 'বোর্ড টাঙান' } }
-        ],
+        work: { node: [ 'db', 'redis' ], kind: 'queue' },
+        state: { db: { en: 'Starting…', bn: 'শুরু হচ্ছে…' } },
         title: { en: 'The lights and the board go first', bn: 'আলো আর বোর্ড আগে শুরু হয়' },
         simple: {
-          en: 'The call sheet wakes the lighting crew and the job board first, because the others will need them. Neither depends on the other, so they can start together.',
-          bn: 'কল শিট আগে আলোর ক্রু আর কাজের বোর্ডকে জাগায়, কারণ বাকিদের এদের দরকার হবে। একজন আরেকজনের ওপর নির্ভর করে না, তাই দুজন একসাথেই শুরু করতে পারে।'
+          en: 'Following the call sheet, the lighting crew and the job board start first, because the others will need them. Neither depends on the other, so they can begin together.',
+          bn: 'কল শিট অনুযায়ী আগে আলোর ক্রু আর কাজের বোর্ড শুরু হয়, কারণ বাকিদের এদের দরকার হবে। একজন আরেকজনের ওপর নির্ভর করে না, তাই দুজন একসাথেই শুরু করতে পারে।'
         },
         story: {
           title: { en: 'Lights and board wake first', bn: 'আলো আর বোর্ড আগে জাগে' },
@@ -269,17 +247,17 @@ export const dockerCompose: Topic = {
       },
       {
         id: 'start-api',
-        moves: [ { edge: 'compose-api', label: 'start api', plain: { en: 'Your turn', bn: 'এবার আপনার পালা' } } ],
+        work: { node: 'api', kind: 'result' },
         title: { en: 'The camera crew starts', bn: 'ক্যামেরা ক্রু শুরু করে' },
         simple: {
-          en: 'Now that the lights are ready, the call sheet calls the camera crew. This is the crew that will face the outside world.',
-          bn: 'আলো তৈরি, তাই কল শিট এবার ক্যামেরা ক্রুকে ডাকে। এই ক্রুই বাইরের দুনিয়ার মুখোমুখি হবে।'
+          en: 'The lights are ready, so the camera crew can start now, as the call sheet says. This is the crew that will face the outside world.',
+          bn: 'আলো তৈরি, তাই কল শিটের কথামতো ক্যামেরা ক্রু এবার শুরু করতে পারে। এই ক্রুই বাইরের দুনিয়ার মুখোমুখি হবে।'
         },
         story: {
           title: { en: 'Ayesha takes her position', bn: 'আয়েশা নিজের জায়গায় দাঁড়ায়' },
           text: {
-            en: 'With the lights ready, Lubna calls the camera crew. Ayesha picks up her camera and takes her place. Hers is the only crew the outside world will meet.',
-            bn: 'আলো তৈরি, তাই লুবনা ক্যামেরা ক্রুকে ডাকে। আয়েশা ক্যামেরা তুলে নিজের জায়গায় দাঁড়ায়। বাইরের দুনিয়া শুধু তার ক্রুর সাথেই দেখা করবে।'
+            en: 'With the lights ready, it is the camera crew’s turn. Ayesha picks up her camera and takes her place. Hers is the only crew the outside world will meet.',
+            bn: 'আলো তৈরি, তাই এবার ক্যামেরা ক্রুর পালা। আয়েশা ক্যামেরা তুলে নিজের জায়গায় দাঁড়ায়। বাইরের দুনিয়া শুধু তার ক্রুর সাথেই দেখা করবে।'
           }
         },
         tech: {
@@ -289,7 +267,7 @@ export const dockerCompose: Topic = {
       },
       {
         id: 'start-worker',
-        moves: [ { edge: 'compose-worker', label: 'start worker', plain: { en: 'Back room, go', bn: 'পেছনের ঘর, শুরু' } } ],
+        work: { node: 'worker', kind: 'result' },
         state: { worker: { en: 'Same code, own command', bn: 'একই code, নিজের command' } },
         plainState: { worker: { en: 'Same code, other job', bn: 'একই কোড, অন্য কাজ' } },
         title: { en: 'The back room starts too', bn: 'পেছনের ঘরও শুরু করে' },
@@ -482,7 +460,7 @@ export const dockerCompose: Topic = {
       steps: [
         {
           id: 'api-early',
-          moves: [ { edge: 'compose-api', label: 'start api', plain: { en: 'Your turn', bn: 'এবার আপনার পালা' } } ],
+          work: { node: 'api', kind: 'queue' },
           state: { db: { en: 'Still starting', bn: 'এখনো শুরু হচ্ছে' } },
           plainState: { db: { en: 'Still setting up', bn: 'এখনো সাজানো চলছে' } },
           title: { en: 'The camera crew starts too soon', bn: 'ক্যামেরা ক্রু বড্ড আগে শুরু করে' },
