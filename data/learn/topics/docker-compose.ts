@@ -76,7 +76,7 @@ export const dockerCompose: Topic = {
     result: { en: 'Ready', bn: 'তৈরি' },
     error: { en: 'A call that failed', bn: 'একটা ডাক ব্যর্থ' }
   },
-  view: { wide: [ 1000, 460 ], narrow: [ 400, 494 ] },
+  view: { wide: [ 1000, 600 ], narrow: [ 400, 494 ] },
   nodeR: { narrow: 20 },
   nodes: {
     compose: {
@@ -87,7 +87,7 @@ export const dockerCompose: Topic = {
         name: { en: 'The plan', bn: 'পরিকল্পনা' },
         sub: { en: 'Names every room', bn: 'প্রতিটি ঘরের নাম' }
       },
-      wide: [ 70, 72, 'up' ],
+      wide: [ 720, 72, 'up' ],
       narrow: [ 188, 26, 'right' ]
     },
     dev: {
@@ -98,7 +98,7 @@ export const dockerCompose: Topic = {
         name: { en: 'You', bn: 'আপনি' },
         sub: { en: 'On the street', bn: 'রাস্তায় আছেন' }
       },
-      wide: [ 70, 330, 'down' ],
+      wide: [ 260, 72, 'up' ],
       narrow: [ 188, 98, 'right' ]
     },
     redis: {
@@ -109,7 +109,7 @@ export const dockerCompose: Topic = {
         name: { en: 'Notice board', bn: 'নোটিশ বোর্ড' },
         sub: { en: 'Notes wait here', bn: 'নোট এখানে অপেক্ষা করে' }
       },
-      wide: [ 420, 185, 'up' ],
+      wide: [ 260, 490, 'down' ],
       narrow: [ 188, 238, 'right' ]
     },
     worker: {
@@ -120,7 +120,7 @@ export const dockerCompose: Topic = {
         name: { en: 'Back room', bn: 'পেছনের ঘর' },
         sub: { en: 'Does slow jobs', bn: 'ধীর কাজ করে' }
       },
-      wide: [ 660, 185, 'up' ],
+      wide: [ 540, 490, 'down' ],
       narrow: [ 188, 318, 'right' ]
     },
     api: {
@@ -131,7 +131,7 @@ export const dockerCompose: Topic = {
         name: { en: 'Front desk', bn: 'ফ্রন্ট ডেস্ক' },
         sub: { en: 'The street door', bn: 'রাস্তার দরজা' }
       },
-      wide: [ 420, 330, 'down' ],
+      wide: [ 260, 330, 'left' ],
       narrow: [ 188, 170, 'right' ]
     },
     db: {
@@ -142,7 +142,7 @@ export const dockerCompose: Topic = {
         name: { en: 'Records room', bn: 'রেকর্ডের ঘর' },
         sub: { en: 'Keeps the records', bn: 'রেকর্ড রাখে' }
       },
-      wide: [ 660, 330, 'down' ],
+      wide: [ 540, 330, 'down' ],
       narrow: [ 188, 386, 'right' ]
     },
     volume: {
@@ -153,7 +153,7 @@ export const dockerCompose: Topic = {
         name: { en: 'Filing cabinet', bn: 'ফাইলের আলমারি' },
         sub: { en: 'Outside the rooms', bn: 'ঘরগুলোর বাইরে' }
       },
-      wide: [ 910, 330, 'down' ],
+      wide: [ 880, 330, 'down' ],
       narrow: [ 188, 458, 'right' ]
     }
   },
@@ -162,17 +162,17 @@ export const dockerCompose: Topic = {
       id: 'net',
       label: { en: 'Project network', bn: 'Project network' },
       plain: { en: 'Private hallway', bn: 'ব্যক্তিগত হলঘর' },
-      wide: [ 250, 108, 530, 312 ],
+      wide: [ 120, 250, 540, 320 ],
       narrow: [ 24, 148, 356, 276 ]
     }
   ],
   corridors: {
-    'dev-compose': { wide: [ [ 70, 330 ], [ 70, 72 ] ], narrow: [ [ 188, 98 ], [ 188, 26 ] ] },
-    'dev-api': { wide: [ [ 70, 330 ], [ 420, 330 ] ], narrow: [ [ 188, 98 ], [ 188, 170 ] ] },
-    'api-db': { wide: [ [ 420, 330 ], [ 660, 330 ] ], narrow: [ [ 188, 170 ], [ 78, 170 ], [ 78, 386 ], [ 188, 386 ] ] },
-    'api-redis': { wide: [ [ 420, 330 ], [ 420, 185 ] ], narrow: [ [ 188, 170 ], [ 78, 170 ], [ 78, 238 ], [ 188, 238 ] ] },
-    'redis-worker': { wide: [ [ 420, 185 ], [ 660, 185 ] ], narrow: [ [ 188, 238 ], [ 188, 318 ] ] },
-    'db-volume': { wide: [ [ 660, 330 ], [ 910, 330 ] ], narrow: [ [ 188, 386 ], [ 188, 458 ] ] }
+    'dev-compose': { wide: [ [ 260, 72 ], [ 720, 72 ] ], narrow: [ [ 188, 98 ], [ 188, 26 ] ] },
+    'dev-api': { wide: [ [ 260, 72 ], [ 260, 330 ] ], narrow: [ [ 188, 98 ], [ 188, 170 ] ] },
+    'api-db': { wide: [ [ 260, 330 ], [ 540, 330 ] ], narrow: [ [ 188, 170 ], [ 78, 170 ], [ 78, 386 ], [ 188, 386 ] ] },
+    'api-redis': { wide: [ [ 260, 330 ], [ 260, 490 ] ], narrow: [ [ 188, 170 ], [ 78, 170 ], [ 78, 238 ], [ 188, 238 ] ] },
+    'redis-worker': { wide: [ [ 260, 490 ], [ 540, 490 ] ], narrow: [ [ 188, 238 ], [ 188, 318 ] ] },
+    'db-volume': { wide: [ [ 540, 330 ], [ 880, 330 ] ], narrow: [ [ 188, 386 ], [ 188, 458 ] ] }
   },
   edges: {
     'dev-compose': { from: 'dev', to: 'compose', kind: 'request' },
