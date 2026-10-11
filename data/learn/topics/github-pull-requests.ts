@@ -397,5 +397,12 @@ export const githubPullRequests: Topic = {
     { label: 'About protected branches', url: 'https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches' },
     { label: 'Using secrets in GitHub Actions', url: 'https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions' },
     { label: 'Linking a pull request to an issue', url: 'https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue' }
-  ]
+  ],
+  film: {
+    src: '/learn/github-pull-requests.mp4',
+    note: {
+      en: 'git pull updates local main after the merge. It does not merge the pull request.',
+      bn: 'git pull মার্জের পরে লোকাল main আপডেট করে। এটা পুল রিকোয়েস্ট মার্জ করে না।'
+    }
+  }
 }
