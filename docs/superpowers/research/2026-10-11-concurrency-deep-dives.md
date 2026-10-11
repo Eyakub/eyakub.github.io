@@ -1,6 +1,6 @@
 # Concurrency internals — Phase 4 outlines
 
-Dated 2026-10-11. Four stations on the second row of the concurrency line. Same status as Redis deep-dive: on the map, toast says Phase 4, no topic page yet.
+Dated 2026-10-11. Four stations on the second row of the concurrency line. `concurrency-deep-dive` is a page. The other three are still Phase 4 stations with no page yet.
 
 These sit under the Phase 2 kitchen pages. Do not retell those rides. Phase 2 already shows juggling versus two cooks (`concurrency-vs-parallelism`), shared fridge versus a slip next door (`processes-vs-threads`), the GIL hat (`python-gil`), pools (`multiprocessing-pools`), and the lost tally (`race-conditions-locks`). These outlines are the interview layer underneath: who decides the next turn, why extra cores stop helping, what one thread is, and what goes wrong when several share memory.
 

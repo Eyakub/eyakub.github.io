@@ -478,7 +478,7 @@ The research notes already hold nodes, steps, analogies, Q&A, cheats and sources
   - REST
   - GitHub pull requests
   - Kubernetes
-  - Concurrency deep-dive, parallelism deep-dive, threading deep-dive, multithreading deep-dive (outlines in `docs/superpowers/research/2026-10-11-concurrency-deep-dives.md`; stations only until a later plan writes the pages)
+  - Concurrency deep-dive (page), parallelism deep-dive, threading deep-dive, multithreading deep-dive (outlines in `docs/superpowers/research/2026-10-11-concurrency-deep-dives.md`; the last three are still stations only)
 
 Items the research marked "(knowledge)" are re-verified against primary docs when each file is written. Each phase is data-only and gets its own plan.
 

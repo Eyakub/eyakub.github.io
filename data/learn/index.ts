@@ -2,6 +2,7 @@ import type { Topic } from './types'
 import { asyncioEventLoop } from './topics/asyncio-event-loop'
 import { celeryRedis } from './topics/celery-redis'
 import { ciCd } from './topics/ci-cd'
+import { concurrencyDeepDive } from './topics/concurrency-deep-dive'
 import { concurrencyVsParallelism } from './topics/concurrency-vs-parallelism'
 import { dockerCompose } from './topics/docker-compose'
 import { docker } from './topics/docker'
@@ -19,6 +20,7 @@ export const TOPICS: Record<string, Topic> = {
   [asyncioEventLoop.slug]: asyncioEventLoop,
   [celeryRedis.slug]: celeryRedis,
   [ciCd.slug]: ciCd,
+  [concurrencyDeepDive.slug]: concurrencyDeepDive,
   [concurrencyVsParallelism.slug]: concurrencyVsParallelism,
   [dockerCompose.slug]: dockerCompose,
   [docker.slug]: docker,
