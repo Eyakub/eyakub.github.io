@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 22px 40px 18px;
+      }
+      h1 { text-align: center; font-size: 48px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 4px; text-align: center; color: #c5d0e0; font-size: 22px; }
+      .stage { position: relative; width: 1480px; height: 700px; margin: 12px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 700px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; width: 280px; height: 112px;
+        border-radius: 16px; background: #10192b; border: 2px solid #243044;
+        padding: 12px 16px;
+      }
+      .k {
+        font-family: ui-monospace, Menlo, monospace; font-size: 13px;
+        letter-spacing: 0.14em; color: #c5d0e0;
+      }
+      .who { margin-top: 2px; font-size: 18px; font-weight: 700; }
+      .row { position: relative; height: 32px; margin-top: 8px; }
+      .row b {
+        position: absolute; left: 0; top: 0; white-space: nowrap;
+        font-size: 22px; font-weight: 700;
+      }
+      .ok { color: #3ee0a2; }
+      .warn { color: #f0b429; }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .cmd {
+        position: absolute; white-space: nowrap;
+        font-family: ui-monospace, Menlo, monospace; font-size: 16px; color: #c5d0e0;
+      }
+      #cmd-push { left: 318px; top: 136px; }
+      #cmd-on { left: 820px; top: 136px; }
+      #cmd-image { left: 620px; top: 188px; }
+      #cmd-gate { left: 1088px; top: 260px; }
+      #cmd-deploy { left: 820px; top: 500px; }
+      #cmd-pull { left: 560px; top: 360px; }
+      #cmd-check { left: 250px; top: 250px; }
+      #dev { left: 20px; top: 16px; }
+      #repo { left: 460px; top: 16px; width: 300px; }
+      #runner { left: 1040px; top: 16px; width: 400px; height: 128px; }
+      #registry { left: 700px; top: 230px; width: 300px; }
+      #gate { left: 1090px; top: 400px; width: 300px; }
+      #prod { left: 360px; top: 430px; width: 300px; }
+      #pkt-push { left: 300px; top: 72px; }
+      #pkt-on { left: 760px; top: 72px; }
+      #pkt-image { left: 1100px; top: 144px; background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      #pkt-gate { left: 1240px; top: 144px; background: #f0b429; box-shadow: 0 0 0 6px rgba(240, 180, 41, 0.22), 0 0 16px rgba(240, 180, 41, 0.8); }
+      #pkt-deploy { left: 1090px; top: 456px; background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      #pkt-pull { left: 850px; top: 342px; background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      #pkt-check { left: 400px; top: 430px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt span {
+        position: absolute; left: 20px; top: -22px; white-space: nowrap;
+        font-family: ui-monospace, Menlo, monospace; font-size: 16px; color: #f4f7fb;
+      }
+      .never {
+        position: absolute; left: 20px; top: 620px;
+        color: #c5d0e0; font-size: 18px;
+      }
+      .said { position: relative; height: 78px; margin-top: 4px; }
+      .said p {
+        position: absolute; left: 28px; right: 28px; top: 6px; text-align: center;
+        font-size: 26px; line-height: 1.25;
+      }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="32" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="32" data-track-index="0">
+        <h1>CI/CD</h1>
+        <p class="sub">push, test, image, approval, then deploy</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 700">
+            <path class="idle" d="M300 72 H460" />
+            <path class="idle" d="M760 72 H1040" />
+            <path class="idle" d="M1100 144 C1100 210 850 190 850 230" />
+            <path class="idle" d="M1240 144 V400" />
+            <path class="idle" d="M1090 456 C900 520 760 486 660 486" />
+            <path class="idle" d="M850 342 C850 390 510 390 510 430" />
+            <path class="idle" d="M400 430 C200 300 460 220 610 128" />
+            <path id="hot-push" class="hot" pathLength="100" d="M300 72 H460" stroke="#5b8cff" />
+            <path id="hot-on" class="hot" pathLength="100" d="M760 72 H1040" stroke="#5b8cff" />
+            <path id="hot-image" class="hot" pathLength="100" d="M1100 144 C1100 210 850 190 850 230" stroke="#3ee0a2" />
+            <path id="hot-gate" class="hot" pathLength="100" d="M1240 144 V400" stroke="#f0b429" />
+            <path id="hot-deploy" class="hot" pathLength="100" d="M1090 456 C900 520 760 486 660 486" stroke="#3ee0a2" />
+            <path id="hot-pull" class="hot" pathLength="100" d="M850 342 C850 390 510 390 510 430" stroke="#3ee0a2" />
+            <path id="hot-check" class="hot" pathLength="100" d="M400 430 C200 300 460 220 610 128" stroke="#5b8cff" />
+          </svg>
+
+          <div id="dev" class="card">
+            <div class="k">DEVELOPER</div>
+            <div class="who">local clone</div>
+            <div class="row"><b>git push</b></div>
+          </div>
+          <div id="repo" class="card">
+            <div class="k">GITHUB</div>
+            <div class="who">.github/workflows</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="repo-idle" class="muted">idle</b>
+              <b id="repo-push" class="hide">push received</b>
+              <b id="repo-green" class="hide ok">green check</b>
+            </div>
+          </div>
+          <div id="runner" class="card">
+            <div class="k">RUNNER</div>
+            <div class="who">ubuntu-latest</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="run-idle" class="muted">no job</b>
+              <b id="run-vm" class="hide">fresh VM</b>
+              <b id="run-co" class="hide">checkout</b>
+              <b id="run-ok" class="hide ok">tests passed</b>
+            </div>
+          </div>
+          <div id="registry" class="card">
+            <div class="k">REGISTRY</div>
+            <div class="who">ghcr.io</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="reg-empty" class="muted">no image</b>
+              <b id="reg-tag" class="hide ok">app:3f9c2a1</b>
+            </div>
+          </div>
+          <div id="gate" class="card">
+            <div class="k">APPROVAL</div>
+            <div class="who">environment: production</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="gate-idle" class="muted">not asked</b>
+              <b id="gate-wait" class="hide warn">waiting</b>
+              <b id="gate-yes" class="hide ok">approved</b>
+            </div>
+          </div>
+          <div id="prod" class="card">
+            <div class="k">PRODUCTION</div>
+            <div class="who">live servers</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="prod-old" class="muted">previous tag</b>
+              <b id="prod-new" class="hide ok">app:3f9c2a1</b>
+            </div>
+          </div>
+
+          <div id="pkt-push" class="pkt" data-layout-allow-overflow><span>push</span></div>
+          <div id="pkt-on" class="pkt" data-layout-allow-overflow><span>job</span></div>
+          <div id="pkt-image" class="pkt" data-layout-allow-overflow><span>app:3f9c2a1</span></div>
+          <div id="pkt-gate" class="pkt" data-layout-allow-overflow><span>deploy</span></div>
+          <div id="pkt-deploy" class="pkt" data-layout-allow-overflow><span>3f9c2a1</span></div>
+          <div id="pkt-pull" class="pkt" data-layout-allow-overflow><span>docker pull</span></div>
+          <div id="pkt-check" class="pkt" data-layout-allow-overflow><span>pass</span></div>
+
+          <p id="cmd-push" class="cmd">git push</p>
+          <p id="cmd-on" class="cmd">on: push</p>
+          <p id="cmd-image" class="cmd">ghcr.io</p>
+          <p id="cmd-gate" class="cmd">environment</p>
+          <p id="cmd-deploy" class="cmd">deploy</p>
+          <p id="cmd-pull" class="cmd">docker pull</p>
+          <p id="cmd-check" class="cmd">check</p>
+          <p class="never">A failed test skips the image and the deploy. Never deploy latest.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">git push starts a workflow with on: push. pull_request can start one too.</p>
+          <p id="line-2" class="hide">ubuntu-latest is a fresh virtual machine. Each job gets its own.</p>
+          <p id="line-3" class="hide">actions/checkout downloads the commit. Then install. A cache can skip the download.</p>
+          <p id="line-4" class="hide">A nonzero test exit fails the step. Later steps are skipped.</p>
+          <p id="line-5" class="hide">The job pushes app:3f9c2a1 to ghcr.io. The tag is the commit SHA, never latest.</p>
+          <p id="line-6" class="hide">The deploy job needs the build, then waits on environment: production.</p>
+          <p id="line-7" class="hide">Approve and deploy, or reject and fail the run. Secrets come after the yes.</p>
+          <p id="line-8" class="hide">Production pulls app:3f9c2a1. The tested bytes are the bytes that run.</p>
+          <p id="line-9" class="hide">The run ends green. Rollback is one deploy of the previous SHA.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#hot-push", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.7, ease: "power1.inOut" }, 1.0);
+      tl.fromTo("#pkt-push", { x: 0, opacity: 0 }, { x: 90, opacity: 1, duration: 0.7, ease: "power1.inOut" }, 1.0);
+      tl.fromTo("#pkt-push", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 1.75);
+      tl.fromTo("#repo", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 1.7);
+      tl.fromTo("#repo-idle", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 1.7);
+      tl.fromTo("#repo-push", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 1.8);
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 1.0);
+
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 3.9);
+      tl.fromTo("#hot-on", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.7, ease: "power1.inOut" }, 4.0);
+      tl.fromTo("#pkt-on", { x: 0, opacity: 0 }, { x: 180, opacity: 1, duration: 0.7, ease: "power1.inOut" }, 4.0);
+      tl.fromTo("#pkt-on", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 4.75);
+      tl.fromTo("#runner", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 4.7);
+      tl.fromTo("#run-idle", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 4.7);
+      tl.fromTo("#run-vm", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.8);
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.0);
+
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 6.9);
+      tl.fromTo("#run-vm", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 7.05);
+      tl.fromTo("#run-co", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 7.15);
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 7.0);
+
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 9.9);
+      tl.fromTo("#runner", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 10.05);
+      tl.fromTo("#run-co", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 10.05);
+      tl.fromTo("#run-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 10.15);
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 10.0);
+
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 12.9);
+      tl.fromTo("#hot-image", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.8, ease: "power1.inOut" }, 13.0);
+      tl.fromTo("#pkt-image", { x: 0, y: 0, opacity: 0 }, { x: -250, y: 66, opacity: 1, duration: 0.8, ease: "power1.inOut" }, 13.0);
+      tl.fromTo("#pkt-image", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 13.85);
+      tl.fromTo("#registry", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 13.8);
+      tl.fromTo("#reg-empty", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 13.8);
+      tl.fromTo("#reg-tag", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 13.9);
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 13.0);
+
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 16.1);
+      tl.fromTo("#hot-gate", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.75, ease: "power1.inOut" }, 16.2);
+      tl.fromTo("#pkt-gate", { y: 0, opacity: 0 }, { y: 210, opacity: 1, duration: 0.75, ease: "power1.inOut" }, 16.2);
+      tl.fromTo("#pkt-gate", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 17.0);
+      tl.fromTo("#gate", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 16.95);
+      tl.fromTo("#gate-idle", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 16.95);
+      tl.fromTo("#gate-wait", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 17.05);
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 16.2);
+
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 18.9);
+      tl.fromTo("#gate", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 19.05);
+      tl.fromTo("#gate-wait", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 19.05);
+      tl.fromTo("#gate-yes", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 19.15);
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 19.0);
+
+      tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 21.9);
+      tl.fromTo("#hot-deploy", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.85, ease: "none" }, 22.0);
+      tl.fromTo("#pkt-deploy", { x: 0, y: 0, opacity: 0 }, { x: -200, y: 30, opacity: 1, duration: 0.4, ease: "none" }, 22.0);
+      tl.fromTo("#pkt-deploy", { x: -200, y: 30 }, { x: -380, y: 30, duration: 0.4, ease: "power1.out", immediateRender: false }, 22.44);
+      tl.fromTo("#pkt-deploy", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 22.88);
+      tl.fromTo("#hot-pull", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.8, ease: "power1.inOut" }, 22.1);
+      tl.fromTo("#pkt-pull", { x: 0, y: 0, opacity: 0 }, { x: -250, y: 68, opacity: 1, duration: 0.8, ease: "power1.inOut" }, 22.1);
+      tl.fromTo("#pkt-pull", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 22.95);
+      tl.fromTo("#prod", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 22.9);
+      tl.fromTo("#prod-old", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 22.9);
+      tl.fromTo("#prod-new", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 23.0);
+      tl.fromTo("#line-8", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 22.0);
+
+      tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 25.5);
+      tl.fromTo("#hot-check", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.9, ease: "none" }, 25.6);
+      tl.fromTo("#pkt-check", { x: 0, y: 0, opacity: 0 }, { x: 80, y: -140, opacity: 1, duration: 0.42, ease: "none" }, 25.6);
+      tl.fromTo("#pkt-check", { x: 80, y: -140 }, { x: 180, y: -270, duration: 0.44, ease: "power1.out", immediateRender: false }, 26.06);
+      tl.fromTo("#pkt-check", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 26.54);
+      tl.fromTo("#repo", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 26.5);
+      tl.fromTo("#repo-push", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 26.5);
+      tl.fromTo("#repo-green", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 26.6);
+      tl.fromTo("#line-9", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 25.6);
+
+      tl.set({}, {}, 32);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

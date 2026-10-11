@@ -784,5 +784,12 @@ export const ciCd: Topic = {
     { label: 'GitHub CLI: gh run watch', url: 'https://cli.github.com/manual/gh_run_watch' },
     { label: 'GitHub CLI: gh run list', url: 'https://cli.github.com/manual/gh_run_list' },
     { label: 'GitHub CLI: gh workflow run', url: 'https://cli.github.com/manual/gh_workflow_run' }
-  ]
+  ],
+  film: {
+    src: '/learn/ci-cd.mp4',
+    note: {
+      en: 'The reviewer gate is continuous delivery. A failed test never pushes the image.',
+      bn: 'reviewer gate মানে continuous delivery। ব্যর্থ test image কখনো push করে না।'
+    }
+  }
 }
