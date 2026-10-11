@@ -83,6 +83,7 @@ const TOPIC_CASES = [
   { slug: 'databases', total: 7, altStop: 'Stop 5 of 6', taught: true },
   { slug: 'auth-jwt-oauth', total: 7, altStop: 'Stop 5 of 6', taught: true },
   { slug: 'rest-basics', total: 7, altStop: 'Stop 4 of 5', taught: true },
+  { slug: 'github-pull-requests', total: 7, altStop: 'Stop 4 of 5', taught: true, step3Packets: 0 },
   { slug: 'processes-vs-threads', total: 10, altStop: 'Stop 4 of 5', altBtn: 2, taught: true },
   { slug: 'python-gil', total: 11, altStop: 'Stop 7 of 11', taught: true, altFail: false },
   { slug: 'multiprocessing-pools', total: 8, altStop: 'Stop 2 of 3', altBtn: 2, taught: true },

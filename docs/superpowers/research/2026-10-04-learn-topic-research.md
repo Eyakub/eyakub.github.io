@@ -894,7 +894,9 @@ Control plane = head office (API server = reception, etcd = records, scheduler =
 
 ---------------------------------------------------------------------
 
-# 14. GitHub PR flow (OUTLINE)
+# 14. GitHub PR flow
+
+Status: a page at `/learn/github-pull-requests` on the git line. The outline below was the brief. GitHub docs override it where they disagree: the merge method is chosen per repository (a merge commit keeps the commits and adds a merge point with `--no-ff`; squash is one commit; rebase and merge always writes new commit identities and new committer info, and adds no merge commit); dismissing a stale review is optional; required status checks must be successful, skipped, or neutral; a fork pull request does not receive Actions secrets and its `GITHUB_TOKEN` is read-only; closing keywords work only when the pull request targets the default branch; deleting the head branch is optional.
 
 ## Nodes
 Your fork/branch (local); GitHub remote; Pull Request; CI checks; Reviewer; main branch.

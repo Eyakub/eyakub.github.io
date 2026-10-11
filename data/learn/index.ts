@@ -12,6 +12,7 @@ import { docker } from './topics/docker'
 import { djangoLifecycle } from './topics/django-lifecycle'
 import { fastapiLifecycle } from './topics/fastapi-lifecycle'
 import { gitBasics } from './topics/git-basics'
+import { githubPullRequests } from './topics/github-pull-requests'
 import { httpJourney } from './topics/http-journey'
 import { multiprocessingPools } from './topics/multiprocessing-pools'
 import { multithreadingDeepDive } from './topics/multithreading-deep-dive'
@@ -38,6 +39,7 @@ export const TOPICS: Record<string, Topic> = {
   [djangoLifecycle.slug]: djangoLifecycle,
   [fastapiLifecycle.slug]: fastapiLifecycle,
   [gitBasics.slug]: gitBasics,
+  [githubPullRequests.slug]: githubPullRequests,
   [httpJourney.slug]: httpJourney,
   [multiprocessingPools.slug]: multiprocessingPools,
   [multithreadingDeepDive.slug]: multithreadingDeepDive,
