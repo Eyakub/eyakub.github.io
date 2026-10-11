@@ -1,6 +1,6 @@
 # Auto scaling — plan only
 
-**Status:** not on the map, no topic page, no player change. Dated 2026-10-11.
+**Status:** unlinked English film at `/learn/auto-scaling`. Not on the map, not in `TOPICS`, no player change. Station stays off until this page has been looked at. Dated 2026-10-11.
 
 **Source:** [Phạm Tùng reel 1602540408325059](https://www.facebook.com/reel/1602540408325059/). Caption: “CPU chạm 99%, chính sách kích hoạt, hai instance mới được tạo.” Playback sits behind a login wall. The lesson below is taken from the two frames supplied with that link.
 
@@ -18,9 +18,9 @@ The ride on screen is step scaling (a threshold, then add two). The second frame
 
 The frame-1 fleet tile already says “4 running” while two cards are still empty. Copy that in the experiment, because the point of the experiment is the same board. On a real topic page, split desired and serving so the tile does not claim the new two are up.
 
-## Wireframe experiment (next, when asked)
+## Wireframe experiment
 
-One unlinked page in the site chrome. English only. Two states and a control that moves from frame 1 to frame 2. Same board, top to bottom:
+Shipped as one unlinked page, `pages/learn/auto-scaling.tsx`, in the site chrome. English only. The picture is a 24s HyperFrames film (`public/learn/auto-scaling.mp4`, source in `docs/superpowers/specs/assets/autoscaling-hyperframes/`). It walks calm, spike, wanted-but-not-serving, the four chips, boot, then four serving. The fleet tile says 2 serving, then 4 wanted, then 4 serving. Same board, top to bottom:
 
 1. Title “Auto Scaling” and the line “two servers, one threshold, two more servers”.
 2. Policy strip: CPU above 70% adds two instances.

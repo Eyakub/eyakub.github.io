@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 300px; top: 28px; width: 1320px; height: 1024px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 28px 44px 24px;
+      }
+      h1 { text-align: center; font-size: 52px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 4px; text-align: center; color: #c5d0e0; font-size: 22px; }
+      .policy { margin-top: 22px; display: flex; justify-content: space-between; align-items: flex-start; }
+      .policy-line {
+        color: #f0b429; font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        font-size: 20px;
+      }
+      .right { text-align: right; font-family: ui-monospace, Menlo, monospace; font-size: 18px; }
+      .fleet { color: #c5d0e0; }
+      .counts { margin-top: 6px; display: flex; gap: 18px; justify-content: flex-end; }
+      .slot { position: relative; width: 110px; height: 24px; }
+      .slot span { position: absolute; right: 0; white-space: nowrap; }
+      .bad { color: #ff5b6a; }
+      .good { color: #3ee0a2; }
+      .hot-count, .done-count { opacity: 0; }
+      .stage { position: relative; height: 312px; margin-top: 6px; }
+      .requests {
+        position: absolute; left: 0; right: 0; top: 0; text-align: center;
+        letter-spacing: 0.16em; color: #c5d0e0;
+        font-family: ui-monospace, Menlo, monospace; font-size: 14px;
+      }
+      .stem {
+        position: absolute; left: 50%; top: 26px; width: 2px; height: 48px;
+        background: #5b8cff; transform: translateX(-50%);
+      }
+      .drop {
+        position: absolute; left: 50%; top: 22px; width: 8px; height: 8px;
+        margin-left: -4px; border-radius: 50%; background: #5b8cff; opacity: 0;
+      }
+      .lb {
+        position: absolute; left: 50%; top: 78px; width: 28px; height: 28px;
+        margin-left: -14px; border-radius: 50%; background: #5b8cff;
+        box-shadow: 0 0 0 8px rgba(91, 140, 255, 0.22), 0 0 24px rgba(91, 140, 255, 0.7);
+      }
+      .lb-label {
+        position: absolute; left: calc(50% + 28px); top: 82px;
+        font-family: ui-monospace, Menlo, monospace; font-size: 14px;
+        letter-spacing: 0.14em; color: #c5d0e0;
+      }
+      svg.wires { position: absolute; inset: 0; width: 100%; height: 100%; }
+      #wires-hot, #wires-ok { opacity: 0; }
+      .servers {
+        position: absolute; left: 20px; right: 20px; top: 156px;
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+      }
+      .card {
+        height: 136px; border-radius: 16px; border: 2px solid #3ee0a2;
+        background: #10261c; padding: 14px 16px 12px;
+      }
+      .card.empty { border-color: #243044; background: #121a2c; opacity: 0.72; }
+      .name { font-size: 22px; font-weight: 700; }
+      .track { margin-top: 14px; height: 8px; border-radius: 99px; background: #1c263a; overflow: hidden; }
+      .bar { height: 100%; width: 100%; border-radius: inherit; transform-origin: left center; background: #3ee0a2; }
+      .card.up .bar { transform: scaleX(0.42); }
+      .card.empty .bar { transform: scaleX(0.05); background: #243044; }
+      .cpu { position: relative; height: 24px; margin-top: 12px; }
+      .cpu span {
+        position: absolute; left: 0; white-space: nowrap;
+        font-family: ui-monospace, Menlo, monospace; font-size: 18px;
+      }
+      .calm-label { color: #3ee0a2; }
+      .ok-label { color: #3ee0a2; opacity: 0; }
+      .hot-label { color: #ff5b6a; opacity: 0; }
+      .dash { color: #c5d0e0; }
+      .boot { color: #f0b429; opacity: 0; }
+      .scaler {
+        margin-top: 14px; height: 58px; border-radius: 14px; background: #10192b;
+        border: 1px solid #243044; display: flex; align-items: center;
+        justify-content: space-between; padding: 0 20px;
+      }
+      .scaler strong { font-size: 20px; }
+      .lag { color: #f0b429; font-family: ui-monospace, Menlo, monospace; font-size: 20px; }
+      .chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 14px; }
+      .chip {
+        height: 70px; border-radius: 12px; background: #10192b; border: 1.5px solid #243044;
+        padding: 10px 16px;
+      }
+      .chip .k { color: #c5d0e0; font-family: ui-monospace, Menlo, monospace; font-size: 13px; letter-spacing: 0.08em; }
+      .chip .v { margin-top: 4px; font-size: 22px; font-weight: 700; }
+      .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+      .tile { background: #10192b; border: 1px solid #1d2940; border-radius: 14px; padding: 12px 16px; height: 84px; }
+      .tile span { display: block; color: #c5d0e0; font-family: ui-monospace, Menlo, monospace; font-size: 13px; letter-spacing: 0.12em; }
+      .tile .stack { position: relative; height: 32px; margin-top: 6px; }
+      .tile b { position: absolute; left: 0; font-size: 24px; white-space: nowrap; }
+      #wanted, #serving4 { opacity: 0; }
+      .said { position: relative; height: 36px; margin-top: 16px; }
+      .said p {
+        position: absolute; left: 0; right: 0; text-align: center;
+        color: #f4f7fb; font-size: 22px;
+      }
+      #line-hot, #line-wait, #line-done { opacity: 0; }
+      .ideas {
+        margin-top: 14px; text-align: center; font-size: 18px; letter-spacing: 0.04em;
+        color: #c5d0e0; opacity: 0;
+      }
+      .ideas b { color: #f0b429; font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="24" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="24" data-track-index="0">
+        <h1>Auto Scaling</h1>
+        <p class="sub">two servers, one threshold, two more servers</p>
+        <div class="policy">
+          <div class="policy-line">SCALE-OUT&nbsp;&nbsp;cpu &gt; 70%&nbsp;&nbsp;→&nbsp;&nbsp;add two</div>
+          <div class="right">
+            <div class="fleet">FLEET&nbsp;&nbsp;2 → 4</div>
+            <div class="counts">
+              <div class="slot bad" data-layout-allow-overlap>
+                <span id="bad-calm">503: 0</span>
+                <span id="bad-hot" class="hot-count">503: 8</span>
+              </div>
+              <div class="slot good" data-layout-allow-overlap>
+                <span id="good-calm">ok: 6</span>
+                <span id="good-hot" class="hot-count">ok: 4</span>
+                <span id="good-done" class="done-count">ok: 12</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="stage">
+          <div class="requests">REQUESTS</div>
+          <div class="stem"></div>
+          <div id="drop-0" class="drop"></div>
+          <div id="drop-1" class="drop"></div>
+          <div id="drop-2" class="drop"></div>
+          <div class="lb"></div>
+          <div class="lb-label">LOAD BALANCER</div>
+          <svg id="wires-calm" class="wires" viewBox="0 0 1200 312" fill="none">
+            <path d="M600 108 C460 150 240 175 168 188" stroke="#3ee0a2" stroke-width="3" />
+            <path d="M600 108 C540 150 430 175 428 188" stroke="#3ee0a2" stroke-width="3" />
+          </svg>
+          <svg id="wires-hot" class="wires" viewBox="0 0 1200 312" fill="none">
+            <path d="M600 108 C460 150 240 175 168 188" stroke="#ff5b6a" stroke-width="3" />
+            <path d="M600 108 C540 150 430 175 428 188" stroke="#ff5b6a" stroke-width="3" />
+            <path d="M600 108 C660 150 770 175 772 188" stroke="#3ee0a2" stroke-width="3" opacity="0.4" />
+            <path d="M600 108 C760 150 980 175 1032 188" stroke="#3ee0a2" stroke-width="3" opacity="0.4" />
+          </svg>
+          <svg id="wires-ok" class="wires" viewBox="0 0 1200 312" fill="none">
+            <path d="M600 108 C460 150 240 175 168 188" stroke="#3ee0a2" stroke-width="3" />
+            <path d="M600 108 C540 150 430 175 428 188" stroke="#3ee0a2" stroke-width="3" />
+            <path d="M600 108 C660 150 770 175 772 188" stroke="#3ee0a2" stroke-width="3" />
+            <path d="M600 108 C760 150 980 175 1032 188" stroke="#3ee0a2" stroke-width="3" />
+          </svg>
+          <div class="servers">
+            <div id="card-0" class="card up">
+              <div class="name">web-1</div>
+              <div class="track"><div id="bar-0" class="bar"></div></div>
+              <div class="cpu" data-layout-allow-overlap>
+                <span class="calm-label">cpu 42%</span>
+                <span class="hot-label">cpu 99%</span>
+                <span class="ok-label">cpu 52%</span>
+              </div>
+            </div>
+            <div id="card-1" class="card up">
+              <div class="name">web-2</div>
+              <div class="track"><div id="bar-1" class="bar"></div></div>
+              <div class="cpu" data-layout-allow-overlap>
+                <span class="calm-label">cpu 42%</span>
+                <span class="hot-label">cpu 99%</span>
+                <span class="ok-label">cpu 52%</span>
+              </div>
+            </div>
+            <div id="card-2" class="card empty">
+              <div class="name">web-3</div>
+              <div class="track"><div id="bar-2" class="bar"></div></div>
+              <div class="cpu" data-layout-allow-overlap>
+                <span class="dash">—</span>
+                <span class="boot">boot</span>
+                <span class="ok-label">cpu 52%</span>
+              </div>
+            </div>
+            <div id="card-3" class="card empty">
+              <div class="name">web-4</div>
+              <div class="track"><div id="bar-3" class="bar"></div></div>
+              <div class="cpu" data-layout-allow-overlap>
+                <span class="dash">—</span>
+                <span class="boot">boot</span>
+                <span class="ok-label">cpu 52%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scaler">
+          <strong>AUTOSCALER</strong>
+          <div class="lag">LAG&nbsp;&nbsp;4:00</div>
+        </div>
+        <div class="chips">
+          <div id="chip-0" class="chip"><div class="k">METRIC</div><div class="v">66s</div></div>
+          <div id="chip-1" class="chip"><div class="k">ALARM</div><div class="v">66s</div></div>
+          <div id="chip-2" class="chip"><div class="k">BOOT</div><div class="v">75s</div></div>
+          <div id="chip-3" class="chip"><div class="k">HEALTH</div><div class="v">45s</div></div>
+        </div>
+        <div class="tiles">
+          <div class="tile">
+            <span>FLEET</span>
+            <div class="stack" data-layout-allow-overlap>
+              <b id="serving2">2 serving</b>
+              <b id="wanted">4 wanted</b>
+              <b id="serving4">4 serving</b>
+            </div>
+          </div>
+          <div class="tile"><span>THRESHOLD</span><div class="stack"><b>cpu &gt; 70%</b></div></div>
+          <div class="tile"><span>SCALE-OUT LAG</span><div class="stack"><b>4:00</b></div></div>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-calm">Two serving. Both under the line.</p>
+          <p id="line-hot">CPU is at 99%. The rule asks for two more.</p>
+          <p id="line-wait">Wanted is not serving. This reel waits 4:00.</p>
+          <p id="line-done">Four serving at 52%. The new two were late.</p>
+        </div>
+        <p id="ideas" class="ideas">target tracking · <b>step scaling</b> · predictive · warm pools</p>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const later = { immediateRender: false };
+
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      ["#drop-0", "#drop-1", "#drop-2"].forEach((id, i) => {
+        tl.to(id, {
+          keyframes: [
+            { y: 0, opacity: 0, duration: 0 },
+            { y: 16, opacity: 1, duration: 0.2 },
+            { y: 52, opacity: 0, duration: 0.65 },
+          ],
+          ease: "none",
+          repeat: 18,
+        }, 0.15 + i * 0.28);
+      });
+
+      const spike = 2.8;
+      tl.fromTo(["#card-0", "#card-1"],
+        { borderColor: "#3ee0a2", backgroundColor: "#10261c" },
+        { borderColor: "#ff5b6a", backgroundColor: "#2a1520", duration: 0.8, ease: "power2.inOut" },
+        spike);
+      tl.fromTo(["#bar-0", "#bar-1"],
+        { scaleX: 0.42, backgroundColor: "#3ee0a2" },
+        { scaleX: 0.96, backgroundColor: "#ff5b6a", duration: 0.8, ease: "power2.inOut" },
+        spike);
+      tl.fromTo("#card-0 .calm-label, #card-1 .calm-label", { opacity: 1 }, { opacity: 0, duration: 0.25 }, spike);
+      tl.fromTo("#card-0 .hot-label, #card-1 .hot-label", { opacity: 0 }, { opacity: 1, duration: 0.25 }, spike + 0.15);
+      tl.fromTo("#wires-calm", { opacity: 1 }, { opacity: 0, duration: 0.35 }, spike);
+      tl.fromTo("#wires-hot", { opacity: 0 }, { opacity: 1, duration: 0.35 }, spike);
+      tl.fromTo("#bad-calm, #good-calm", { opacity: 1 }, { opacity: 0, duration: 0.25 }, spike);
+      tl.fromTo(".hot-count", { opacity: 0 }, { opacity: 1, duration: 0.25 }, spike + 0.1);
+      tl.fromTo("#line-calm", { opacity: 1 }, { opacity: 0, duration: 0.25 }, spike);
+      tl.fromTo("#line-hot", { opacity: 0 }, { opacity: 1, duration: 0.3 }, spike + 0.15);
+
+      const ask = 5.2;
+      tl.fromTo("#serving2", { opacity: 1 }, { opacity: 0, duration: 0.25 }, ask);
+      tl.fromTo("#wanted", { opacity: 0 }, { opacity: 1, duration: 0.3 }, ask + 0.1);
+      tl.fromTo("#line-hot", { opacity: 1 }, { opacity: 0, duration: 0.25, ...later }, ask);
+      tl.fromTo("#line-wait", { opacity: 0 }, { opacity: 1, duration: 0.3 }, ask + 0.12);
+
+      ["#chip-0", "#chip-1", "#chip-2", "#chip-3"].forEach((id, i) => {
+        const at = 6.4 + i * 1.15;
+        tl.fromTo(id, { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, at);
+        tl.fromTo(id + " .k", { color: "#c5d0e0" }, { color: "#f0b429", duration: 0.25 }, at);
+      });
+
+      const boot = 8.7;
+      tl.fromTo(["#card-2", "#card-3"],
+        { opacity: 0.72, borderColor: "#243044" },
+        { opacity: 1, borderColor: "#f0b429", duration: 0.3 },
+        boot);
+      tl.fromTo("#card-2 .dash, #card-3 .dash", { opacity: 1 }, { opacity: 0, duration: 0.2 }, boot);
+      tl.fromTo("#card-2 .boot, #card-3 .boot", { opacity: 0 }, { opacity: 1, duration: 0.2 }, boot);
+
+      const settle = 12.2;
+      tl.fromTo(["#card-0", "#card-1"],
+        { borderColor: "#ff5b6a", backgroundColor: "#2a1520" },
+        { borderColor: "#3ee0a2", backgroundColor: "#10261c", duration: 0.8, ease: "power2.inOut", ...later },
+        settle);
+      tl.fromTo(["#card-2", "#card-3"],
+        { borderColor: "#f0b429", backgroundColor: "#121a2c", opacity: 1 },
+        { borderColor: "#3ee0a2", backgroundColor: "#10261c", opacity: 1, duration: 0.8, ease: "power2.inOut", ...later },
+        settle);
+      tl.fromTo(["#bar-0", "#bar-1"],
+        { scaleX: 0.96, backgroundColor: "#ff5b6a" },
+        { scaleX: 0.52, backgroundColor: "#3ee0a2", duration: 0.8, ease: "power2.inOut", ...later },
+        settle);
+      tl.fromTo(["#bar-2", "#bar-3"],
+        { scaleX: 0.05, backgroundColor: "#243044" },
+        { scaleX: 0.52, backgroundColor: "#3ee0a2", duration: 0.8, ease: "power2.inOut" },
+        settle);
+      tl.fromTo("#card-0 .hot-label, #card-1 .hot-label", { opacity: 1 }, { opacity: 0, duration: 0.25, ...later }, settle);
+      tl.fromTo("#card-0 .ok-label, #card-1 .ok-label", { opacity: 0 }, { opacity: 1, duration: 0.3 }, settle + 0.2);
+      tl.fromTo("#card-2 .boot, #card-3 .boot", { opacity: 1 }, { opacity: 0, duration: 0.2, ...later }, settle);
+      tl.fromTo("#card-2 .ok-label, #card-3 .ok-label", { opacity: 0 }, { opacity: 1, duration: 0.3 }, settle + 0.2);
+      tl.fromTo("#wires-hot", { opacity: 1 }, { opacity: 0, duration: 0.4, ...later }, settle);
+      tl.fromTo("#wires-ok", { opacity: 0 }, { opacity: 1, duration: 0.4 }, settle);
+      tl.fromTo(".hot-count", { opacity: 1 }, { opacity: 0, duration: 0.25, ...later }, settle);
+      tl.fromTo("#bad-calm", { opacity: 0 }, { opacity: 1, duration: 0.25, ...later }, settle + 0.1);
+      tl.fromTo("#good-done", { opacity: 0 }, { opacity: 1, duration: 0.25 }, settle + 0.1);
+      tl.fromTo("#wanted", { opacity: 1 }, { opacity: 0, duration: 0.25, ...later }, settle);
+      tl.fromTo("#serving4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, settle + 0.12);
+      tl.fromTo("#line-wait", { opacity: 1 }, { opacity: 0, duration: 0.25, ...later }, settle);
+      tl.fromTo("#line-done", { opacity: 0 }, { opacity: 1, duration: 0.3 }, settle + 0.15);
+      tl.fromTo("#ideas", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 16.5);
+      tl.set({}, {}, 24);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
