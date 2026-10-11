@@ -11,6 +11,7 @@ import { fastapiLifecycle } from './topics/fastapi-lifecycle'
 import { gitBasics } from './topics/git-basics'
 import { httpJourney } from './topics/http-journey'
 import { multiprocessingPools } from './topics/multiprocessing-pools'
+import { multithreadingDeepDive } from './topics/multithreading-deep-dive'
 import { nginx } from './topics/nginx'
 import { parallelismDeepDive } from './topics/parallelism-deep-dive'
 import { processesVsThreads } from './topics/processes-vs-threads'
@@ -31,6 +32,7 @@ export const TOPICS: Record<string, Topic> = {
   [gitBasics.slug]: gitBasics,
   [httpJourney.slug]: httpJourney,
   [multiprocessingPools.slug]: multiprocessingPools,
+  [multithreadingDeepDive.slug]: multithreadingDeepDive,
   [nginx.slug]: nginx,
   [parallelismDeepDive.slug]: parallelismDeepDive,
   [processesVsThreads.slug]: processesVsThreads,

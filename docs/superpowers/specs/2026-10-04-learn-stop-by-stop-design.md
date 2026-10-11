@@ -478,7 +478,7 @@ The research notes already hold nodes, steps, analogies, Q&A, cheats and sources
   - REST
   - GitHub pull requests
   - Kubernetes
-  - Concurrency deep-dive (page), parallelism deep-dive (page), threading deep-dive (page), multithreading deep-dive (outline in `docs/superpowers/research/2026-10-11-concurrency-deep-dives.md`; still a station only)
+  - Concurrency deep-dive, parallelism deep-dive, threading deep-dive, and multithreading deep-dive are pages (outlines in `docs/superpowers/research/2026-10-11-concurrency-deep-dives.md`)
   - Auto scaling (plan only, slug `auto-scaling`, no station yet). The wireframe experiment is `docs/superpowers/plans/2026-10-11-auto-scaling-wireframe.md`
 
 Items the research marked "(knowledge)" are re-verified against primary docs when each file is written. Each phase is data-only and gets its own plan.

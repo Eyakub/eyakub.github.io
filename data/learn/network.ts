@@ -50,7 +50,7 @@ export const STATIONS: Record<string, Station> = {
   'concurrency-deep-dive': { x: 120, y: 620, lab: 'down', phase: 4, line: 'concurrency', name: { en: 'Concurrency deep-dive', bn: 'কনকারেন্সি গভীরে' }, blurb: { en: 'Who gets the one cashier next, and what a swap costs.', bn: 'এক ক্যাশিয়ারের পরের পালা কে পায়, আর পালা বদলাতে কী খরচ।' }, level: 'intermediate' },
   'parallelism-deep-dive': { x: 370, y: 620, lab: 'down', phase: 4, line: 'concurrency', name: { en: 'Parallelism deep-dive', bn: 'প্যারালেলিজম গভীরে' }, blurb: { en: 'Two cashiers, one count, and the ceiling on speedup.', bn: 'দুই ক্যাশিয়ার, একটা গোনা, আর গতির ছাদ।' }, level: 'intermediate' },
   'threading-deep-dive': { x: 620, y: 620, lab: 'down', phase: 4, line: 'concurrency', name: { en: 'Threading deep-dive', bn: 'থ্রেডিং গভীরে' }, blurb: { en: 'One cook: the contract, the counter, the door, and the pass.', bn: 'এক রাঁধুনি: চুক্তি, কাউন্টার, দরজা, আর পাস।' }, level: 'intermediate' },
-  'multithreading-deep-dive': { x: 870, y: 620, lab: 'down', phase: 4, line: 'concurrency', name: { en: 'Multithreading deep-dive', bn: 'মাল্টিথ্রেডিং গভীরে' } },
+  'multithreading-deep-dive': { x: 870, y: 620, lab: 'down', phase: 4, line: 'concurrency', name: { en: 'Multithreading deep-dive', bn: 'মাল্টিথ্রেডিং গভীরে' }, blurb: { en: 'Two cooks, one fridge, and a crew that can wait on itself.', bn: 'দুই রাঁধুনি, এক ফ্রিজ, আর এক ক্রু যে নিজের জন্য অপেক্ষা করতে পারে।' }, level: 'intermediate' },
 }
 
 export const LINES: Line[] = [
