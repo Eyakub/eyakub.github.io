@@ -172,9 +172,16 @@ html[lang="bn"] .learn-root .lede{line-height:1.65}
 .learn-root .flow-svg .node.on .nm{font-weight:750}
 @keyframes learn-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
 @keyframes learn-arrive{0%{opacity:.45;transform:scale(.85)}100%{opacity:.16;transform:scale(1.12)}}
-.learn-root .flow-svg .packet rect{fill:var(--pk)}
-.learn-root .flow-svg .packet text{fill:var(--pk-on);font-size:13.5px;font-weight:650;dominant-baseline:central;text-anchor:middle}
-.learn-root .flow-svg .comet{fill:var(--pk)}
+.learn-root .flow-svg .packet rect{fill:var(--pk);filter:drop-shadow(0 0 7px var(--pk))}
+.learn-root .flow-svg .packet text{fill:var(--pk-on);font-size:16px;font-weight:750;dominant-baseline:central;text-anchor:middle}
+.learn-root .flow-svg .comet{fill:var(--pk);opacity:.9;filter:drop-shadow(0 0 10px var(--pk))}
+.learn-root .ridebar{display:flex;align-items:center;gap:10px;margin:6px 8px 2px;min-width:0}
+.learn-root .ridebar-k{flex:none;font-size:11px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;color:var(--k,var(--k-request))}
+.learn-root .ridebar-who{min-width:0;max-width:46%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13.5px;font-weight:650;color:var(--ink)}
+.learn-root .ridebar-track{flex:1;height:7px;border-radius:99px;background:var(--track);overflow:hidden}
+.learn-root .ridebar-fill{display:block;height:100%;width:100%;border-radius:inherit;background:var(--k,var(--k-request));box-shadow:0 0 10px color-mix(in srgb,var(--k,var(--k-request)) 65%,transparent)}
+.learn-root .ridebar[data-ride] .ridebar-fill{width:0;animation:learn-ride var(--ride) linear forwards}
+@keyframes learn-ride{to{width:100%}}
 html[lang="bn"] .learn-root .flow-svg text,html[lang="bn"] .learn-root .network-svg text{font-family:var(--f-bn)}
 
 .learn-root .kind-key{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;margin:10px 6px 0;padding:0;font-size:var(--t-xs);color:var(--ink-2)}
@@ -279,6 +286,7 @@ html[lang="bn"] .learn-root .flow-svg text,html[lang="bn"] .learn-root .network-
 }
 @media (prefers-reduced-motion:reduce){
   .learn-root *,.learn-root *::before,.learn-root *::after{animation:none!important;transition:none!important}
+  .learn-root .ridebar-fill{width:100%}
 }
 
 .learn-root .seg.chips{flex-wrap:wrap;border-radius:18px}

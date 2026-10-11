@@ -5,9 +5,10 @@ import type { Mode } from '../../../lib/learn/prefs'
 import { packetText, type Trip } from './flow'
 import { edgePoints, placePill, pointAt, polyLen, type Box, type Spot } from './geometry'
 
-const D1 = 750
-const D2 = 520
-const PILL_H = 28
+/** How long the label rides the whole wire. The time bar uses the same duration. */
+export const RIDE_MS = 1200
+const SETTLE_MS = 260
+const PILL_H = 34
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
 interface Opts {
@@ -22,7 +23,7 @@ interface Opts {
   r: number
 }
 
-/** Rides each trip's packet from its source to a clear resting spot, then runs a comet to the destination and flashes it. */
+/** Rides each trip's label the full wire, comet ahead of it, then eases the label aside so it stays readable. */
 export function usePackets({ topic, trips, animate, mode, lang, layout, bidir, r }: Opts) {
   const svgRef = useRef<SVGSVGElement>(null)
   const nodeRefs = useRef<Record<string, SVGGElement | null>>({})
@@ -49,7 +50,7 @@ export function usePackets({ topic, trips, animate, mode, lang, layout, bidir, r
         const rect = pk.querySelector('rect')!
         text.textContent = packetText(trip.move, mode, lang)
         pk.removeAttribute('hidden')
-        const w = text.getComputedTextLength() + 26
+        const w = text.getComputedTextLength() + 32
         rect.setAttribute('width', String(w))
         rect.setAttribute('x', String(-w / 2))
         const total = polyLen(pts)
@@ -81,37 +82,41 @@ export function usePackets({ topic, trips, animate, mode, lang, layout, bidir, r
       })
     } else {
       const t0 = performance.now()
+      let flashed = false
+      const flash = () => {
+        if (flashed) return
+        flashed = true
+        arrived = [...new Set(geo.map((g) => g.to))].flatMap((d) => { const g = nodeRefs.current[d]; return g ? [g] : [] })
+        arrived.forEach((g) => { g.classList.remove('arrive'); void g.getBoundingClientRect(); g.classList.add('arrive') })
+        if (arrived.length) arriveTimer = setTimeout(() => arrived.forEach((g) => g.classList.remove('arrive')), 600)
+      }
       const tick = (now: number) => {
         const el = now - t0
-        if (el < D1) {
-          const k = ease(el / D1)
+        if (el < RIDE_MS) {
+          const k = ease(el / RIDE_MS)
+          packets.forEach((pk, i) => {
+            if (!pk) return
+            const t = 0.02 + 0.98 * k
+            place(pk, i, t, 0)
+            pk.style.opacity = String(Math.min(1, el / 140))
+            const c = comets[i]
+            if (!c) return
+            const [x, y] = pointAt(geo[i].pts, Math.min(1, t + 0.08))
+            c.removeAttribute('hidden')
+            c.setAttribute('cx', x.toFixed(1))
+            c.setAttribute('cy', y.toFixed(1))
+          })
+        } else {
+          const k = Math.min((el - RIDE_MS) / SETTLE_MS, 1)
+          comets.forEach((c) => c?.setAttribute('hidden', ''))
           packets.forEach((pk, i) => {
             if (!pk) return
             const rest = geo[i].spot.t
-            const from = Math.min(0.04, rest)
-            place(pk, i, from + (rest - from) * k, k)
-            pk.style.opacity = String(Math.min(1, el / 200))
-          })
-        } else {
-          const k = Math.min((el - D1) / D2, 1)
-          packets.forEach((pk, i) => {
-            const c = comets[i]
-            if (!pk || !c) return
-            const { pts, spot } = geo[i]
-            place(pk, i, spot.t, 1)
+            place(pk, i, 1 + (rest - 1) * ease(k), ease(k))
             pk.style.opacity = '1'
-            const [x, y] = pointAt(pts, spot.t + (1 - spot.t) * ease(k))
-            c.removeAttribute('hidden')
-            c.setAttribute('cx', String(x))
-            c.setAttribute('cy', String(y))
           })
-          if (k >= 1) {
-            comets.forEach((c) => c?.setAttribute('hidden', ''))
-            arrived = [...new Set(geo.map((g) => g.to))].flatMap((d) => { const g = nodeRefs.current[d]; return g ? [g] : [] })
-            arrived.forEach((g) => { g.classList.remove('arrive'); void g.getBoundingClientRect(); g.classList.add('arrive') })
-            if (arrived.length) arriveTimer = setTimeout(() => arrived.forEach((g) => g.classList.remove('arrive')), 600)
-            return
-          }
+          flash()
+          if (k >= 1) return
         }
         raf = requestAnimationFrame(tick)
       }

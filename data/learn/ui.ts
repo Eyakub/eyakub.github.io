@@ -34,6 +34,7 @@ export const UI = {
   routeMain: { en: 'Everything works', bn: 'সব ঠিক থাকলে' },
   routeFail: { en: 'A job fails', bn: 'কাজ ব্যর্থ হলে' },
   stopOf: { en: 'Stop {n} of {total}', bn: 'স্টপ {n} / {total}' },
+  busy: { en: 'Busy', bn: 'ব্যস্ত' },
   nextStop: { en: 'Next stop: {t}', bn: 'পরের স্টপ: {t}' },
   wordsTitle: { en: 'Words to know', bn: 'যে শব্দগুলো জানা দরকার' },
   remember: { en: 'Remember', bn: 'মনে রাখুন' },

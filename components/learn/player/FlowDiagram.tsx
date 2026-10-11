@@ -4,7 +4,7 @@ import { ICON } from '../../../data/learn/icons'
 import type { Kind, LayoutKey, Topic, Side, Step } from '../../../data/learn/types'
 import { effectiveMode, focusNodes, isPlain, nodeLabels, nodeSubAt, stepKind, trips, visitedEdges, workNodes } from './flow'
 import { bidirectionalCorridors, edgePoints, pathD } from './geometry'
-import { usePackets } from './usePackets'
+import { RIDE_MS, usePackets } from './usePackets'
 
 interface Props { topic: Topic; layout: LayoutKey; steps: Step[]; index: number; animate: boolean }
 
@@ -23,7 +23,7 @@ function labelPos(x: number, y: number, side: Side, r: number) {
 }
 
 export default function FlowDiagram({ topic, layout, steps, index, animate }: Props) {
-  const { t, mode: stored, lang } = useLearnPrefs()
+  const { t, ui, mode: stored, lang } = useLearnPrefs()
   const mode = effectiveMode(stored, topic)
   const bidir = useMemo(() => bidirectionalCorridors(topic), [topic])
   const step = steps[index]
@@ -40,8 +40,11 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
   const { svgRef, nodeRefs, packetRefs, cometRefs } = usePackets({ topic, trips: tripList, animate, mode, lang, layout, bidir, r })
 
   const kindStyle = (k: Kind) => ({ '--pk': `var(--k-${k})`, '--pk-on': `var(--k-${k}-on)` } as CSSProperties)
+  const busyIds = working.size ? [...working] : [...new Set(tripList.map((tr) => tr.to))]
+  const busy = busyIds.map((id) => t(nodeLabels(topic, id, mode).name)).join(' · ')
 
   return (
+    <>
     <svg ref={svgRef} className="flow-svg" id="flow" viewBox={`0 0 ${w} ${h}`} style={{ maxWidth: `${w}px` }} role="img" aria-labelledby="step-title">
       <defs>
         {KINDS.map((k) => (
@@ -68,9 +71,6 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
           d={pathD(edgePoints(topic, id, layout, bidir, r))}
         />
       ))}
-      {tripList.map((tr, i) => (
-        <circle key={`c${i}`} ref={(el) => { cometRefs.current[i] = el }} className="comet" r="6.5" {...HIDDEN} style={kindStyle(tr.kind)} />
-      ))}
       {Object.entries(topic.nodes).map(([id, n]) => {
         const [x, y, side] = n[layout]
         const lp = labelPos(x, y, side, r)
@@ -88,11 +88,22 @@ export default function FlowDiagram({ topic, layout, steps, index, animate }: Pr
         )
       })}
       {tripList.map((tr, i) => (
+        <circle key={`c${i}`} ref={(el) => { cometRefs.current[i] = el }} className="comet" r="13" {...HIDDEN} style={kindStyle(tr.kind)} />
+      ))}
+      {tripList.map((tr, i) => (
         <g key={`p${i}`} ref={(el) => { packetRefs.current[i] = el }} className="packet" {...HIDDEN} style={kindStyle(tr.kind)}>
-          <rect y="-14" height="28" rx="14" />
+          <rect y="-17" height="34" rx="17" />
           <text x="0" y="0" />
         </g>
       ))}
     </svg>
+    {busy && (
+      <div className="ridebar" data-ride={animate ? '' : undefined} style={{ '--k': `var(--k-${kind})`, '--ride': `${RIDE_MS}ms` } as CSSProperties} aria-hidden="true">
+        <span className="ridebar-k">{ui('busy')}</span>
+        <span className="ridebar-who" title={busy}>{busy}</span>
+        <span className="ridebar-track"><span key={index} className="ridebar-fill" /></span>
+      </div>
+    )}
+    </>
   )
 }

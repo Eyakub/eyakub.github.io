@@ -28,11 +28,11 @@ export default function FlowPlayer({ topic }: { topic: Topic }) {
     return () => ro.disconnect()
   }, [])
 
-  // First paint and layout swaps place the packet at rest; usePackets also rests it on mode/language changes, so only step changes animate.
-  const seen = useRef<{ layout: LayoutKey } | null>(null)
-  const animate = seen.current !== null && seen.current.layout === layout
+  // First paint and layout swaps place the packet at rest. A later render of the same stop (prefs hydrating) must not restart the ride.
+  const seen = useRef<{ layout: LayoutKey; step: number } | null>(null)
+  const animate = seen.current !== null && seen.current.layout === layout && seen.current.step !== state.step
   useEffect(() => {
-    seen.current = { layout }
+    seen.current = { layout, step: state.step }
   })
 
   const step = steps[state.step]
