@@ -2,6 +2,7 @@ import type { Topic } from './types'
 import { asyncioEventLoop } from './topics/asyncio-event-loop'
 import { autoScaling } from './topics/auto-scaling'
 import { celeryRedis } from './topics/celery-redis'
+import { databases } from './topics/databases'
 import { ciCd } from './topics/ci-cd'
 import { concurrencyDeepDive } from './topics/concurrency-deep-dive'
 import { concurrencyVsParallelism } from './topics/concurrency-vs-parallelism'
@@ -28,6 +29,7 @@ export const TOPICS: Record<string, Topic> = {
   [ciCd.slug]: ciCd,
   [concurrencyDeepDive.slug]: concurrencyDeepDive,
   [concurrencyVsParallelism.slug]: concurrencyVsParallelism,
+  [databases.slug]: databases,
   [dockerCompose.slug]: dockerCompose,
   [docker.slug]: docker,
   [djangoLifecycle.slug]: djangoLifecycle,

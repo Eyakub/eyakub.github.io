@@ -80,6 +80,7 @@ const TOPIC_CASES = [
   { slug: 'threading-deep-dive', total: 6, altStop: 'Stop 4 of 5', taught: true },
   { slug: 'multithreading-deep-dive', total: 6, altStop: 'Stop 7 of 8', taught: true, step3Packets: 0 },
   { slug: 'redis-deep-dive', total: 8, altStop: 'Stop 3 of 4', taught: true },
+  { slug: 'databases', total: 7, altStop: 'Stop 5 of 6', taught: true },
   { slug: 'processes-vs-threads', total: 10, altStop: 'Stop 4 of 5', altBtn: 2, taught: true },
   { slug: 'python-gil', total: 11, altStop: 'Stop 7 of 11', taught: true, altFail: false },
   { slug: 'multiprocessing-pools', total: 8, altStop: 'Stop 2 of 3', altBtn: 2, taught: true },

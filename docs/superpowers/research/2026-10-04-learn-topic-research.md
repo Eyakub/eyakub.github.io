@@ -535,7 +535,9 @@ Redis = the counter where frequently used ingredients sit; DB = the pantry; cach
 
 ---------------------------------------------------------------------
 
-# 8. Databases: indexes, transactions, N+1 (OUTLINE)
+# 8. Databases: indexes, transactions, N+1
+
+Status: a page at `/learn/databases` on the async line. The outline below was the brief. PostgreSQL 18 docs override it where they disagree: Repeatable Read also refuses phantoms, and both Repeatable Read and Serializable can abort a conflicting transaction.
 
 ## Nodes
 App/ORM; Query planner; Index (B-tree); Table (heap); Transaction/WAL.
