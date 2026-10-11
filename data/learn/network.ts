@@ -47,6 +47,10 @@ export const STATIONS: Record<string, Station> = {
   'multiprocessing-pools': { x: 570, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'Multiprocessing pools', bn: 'মাল্টিপ্রসেসিং পুল' }, blurb: { en: 'Send heavy work to a row of side kitchens.', bn: 'ভারী কাজ পাঠান পাশের সারি সারি রান্নাঘরে।' }, level: 'intermediate' },
   'asyncio-event-loop': { x: 720, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'asyncio event loop', bn: 'asyncio ইভেন্ট লুপ' }, blurb: { en: 'One cook, many dishes, a timer that says what\'s ready.', bn: 'একজন রাঁধুনি, অনেক পদ, আর টাইমার বলে দেয় কোনটা তৈরি।' }, level: 'intermediate' },
   'race-conditions-locks': { x: 870, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'Race conditions & locks', bn: 'রেস কন্ডিশন ও লক' }, blurb: { en: 'Two cooks, one tally, and why you need one pen.', bn: 'দুই রাঁধুনি, একটাই হিসাবের খাতা, আর কেন একটাই কলম লাগে।' }, level: 'intermediate' },
+  'concurrency-deep-dive': { x: 120, y: 620, lab: 'down', phase: 4, line: 'concurrency', name: { en: 'Concurrency deep-dive', bn: 'কনকারেন্সি গভীরে' } },
+  'parallelism-deep-dive': { x: 370, y: 620, lab: 'down', phase: 4, line: 'concurrency', name: { en: 'Parallelism deep-dive', bn: 'প্যারালেলিজম গভীরে' } },
+  'threading-deep-dive': { x: 620, y: 620, lab: 'down', phase: 4, line: 'concurrency', name: { en: 'Threading deep-dive', bn: 'থ্রেডিং গভীরে' } },
+  'multithreading-deep-dive': { x: 870, y: 620, lab: 'down', phase: 4, line: 'concurrency', name: { en: 'Multithreading deep-dive', bn: 'মাল্টিথ্রেডিং গভীরে' } },
 }
 
 export const LINES: Line[] = [
@@ -54,7 +58,7 @@ export const LINES: Line[] = [
   { id: 'async', color: '--l-async', name: 'lineAsync', pts: [[480, 110], [610, 240], [900, 240]], stops: ['fastapi-lifecycle', 'celery-redis', 'redis-deep-dive', 'databases'] },
   { id: 'devops', color: '--l-devops', name: 'lineDevops', pts: [[120, 370], [840, 370]], stops: ['docker', 'docker-compose', 'ci-cd', 'nginx', 'kubernetes'] },
   { id: 'git', color: '--l-git', name: 'lineGit', pts: [[120, 240], [350, 240], [480, 370]], stops: ['git-basics', 'github-pull-requests', 'ci-cd'] },
-  { id: 'concurrency', color: '--l-concurrency', name: 'lineConcurrency', pts: [[120, 490], [870, 490]], stops: ['concurrency-vs-parallelism', 'processes-vs-threads', 'python-gil', 'multiprocessing-pools', 'asyncio-event-loop', 'race-conditions-locks'] },
+  { id: 'concurrency', color: '--l-concurrency', name: 'lineConcurrency', pts: [[120, 490], [870, 490], [120, 490], [120, 620], [870, 620]], stops: ['concurrency-vs-parallelism', 'processes-vs-threads', 'python-gil', 'multiprocessing-pools', 'asyncio-event-loop', 'race-conditions-locks', 'concurrency-deep-dive', 'parallelism-deep-dive', 'threading-deep-dive', 'multithreading-deep-dive'] },
 ]
 
 // Optional `via` points elbow a walkway so it never passes through an unrelated station or label.

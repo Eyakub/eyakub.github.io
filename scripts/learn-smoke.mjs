@@ -152,7 +152,7 @@ const checks = [
     await page.waitForURL('**/learn/celery-redis')
     await page.waitForLoadState('networkidle')
     await context.close()
-    assert(count === 21, `expected 21 stations, got ${count}`)
+    assert(count === 25, `expected 25 stations, got ${count}`)
     assert(toast?.includes('Phase 4'), `toast missing Phase 4: ${toast}`)
     noProblems(problems)
   }],
