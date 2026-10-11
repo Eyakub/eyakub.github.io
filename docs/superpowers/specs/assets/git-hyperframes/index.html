@@ -48,8 +48,17 @@
         padding: 3px 10px; border-radius: 99px;
         background: #3a2d12; color: #f0b429;
         font-family: ui-monospace, Menlo, monospace; font-size: 14px;
-        letter-spacing: 0.08em; opacity: 0;
+        letter-spacing: 0.08em;
       }
+      .cmd {
+        position: absolute; white-space: nowrap;
+        font-family: ui-monospace, Menlo, monospace; font-size: 16px; color: #c5d0e0;
+      }
+      #cmd-add { left: 24px; top: 146px; }
+      #cmd-commit { left: 24px; top: 334px; }
+      #cmd-push { left: 680px; top: 300px; }
+      #cmd-rafi { left: 1088px; top: 148px; }
+      #cmd-fetch { left: 980px; top: 420px; }
       #desk { left: 20px; top: 8px; }
       #tray { left: 20px; top: 196px; }
       #album { left: 20px; top: 384px; }
@@ -90,7 +99,7 @@
     <div id="root" data-composition-id="main" data-start="0" data-duration="24" data-width="1920" data-height="1080">
       <section id="board" class="clip" data-start="0" data-duration="24" data-track-index="0">
         <h1>Git basics</h1>
-        <p class="sub">the page travels the wire. the dashed line is never used</p>
+        <p class="sub">git add, commit, push, fetch, then merge</p>
         <div class="stage">
           <svg class="wires" viewBox="0 0 1480 660">
             <path class="idle" d="M170 120 V196" />
@@ -107,76 +116,83 @@
           </svg>
 
           <div id="desk" class="card">
-            <div class="k">DESK</div>
-            <div class="who">Mina</div>
+            <div class="k">WORKING TREE</div>
+            <div class="who">your files</div>
             <div class="row" data-layout-allow-overlap>
-              <b id="desk-dark">one photo, too dark</b>
-              <b id="desk-clear" class="hide">desk is clear</b>
+              <b id="desk-dark">app.py modified</b>
+              <b id="desk-clear" class="hide">file still here</b>
+              <b id="desk-clean" class="hide muted">clean</b>
             </div>
           </div>
           <div id="tray" class="card">
-            <div class="k">TRAY</div>
-            <div class="who">picked</div>
+            <div class="k">INDEX</div>
+            <div class="who">.git/index</div>
             <div class="row" data-layout-allow-overlap>
               <b id="tray-empty">empty</b>
-              <b id="tray-photo" class="hide">brightened photo</b>
-              <b id="tray-after" class="hide muted">empty again</b>
+              <b id="tray-photo" class="hide">app.py staged</b>
+              <b id="tray-after" class="hide muted">nothing staged</b>
             </div>
           </div>
           <div id="album" class="card">
-            <div class="k">ALBUM</div>
-            <div class="who">saved pages</div>
-            <span id="sticky" class="sticky">main</span>
+            <div class="k">LOCAL MAIN</div>
+            <div class="who">refs/heads/main</div>
+            <span id="sticky" class="sticky">HEAD</span>
             <div class="row" data-layout-allow-overlap>
-              <b id="album-none">nothing glued yet</b>
+              <b id="album-none">no commits</b>
               <b id="album-a" class="hide ok" data-layout-allow-overlap>a1b2c3</b>
               <b id="album-d" class="hide ok" data-layout-allow-overlap>d4e5f6</b>
-              <b id="album-join" class="hide warn" data-layout-allow-overlap>both → 5c6d7e</b>
+              <b id="album-join" class="hide warn" data-layout-allow-overlap>5c6d7e</b>
             </div>
           </div>
 
           <div id="rafi" class="card">
-            <div class="k">RAFI</div>
-            <div class="who">teammate</div>
+            <div class="k">TEAMMATE</div>
+            <div class="who">their clone</div>
             <div class="row" data-layout-allow-overlap>
-              <b id="rafi-wait">a page at home</b>
-              <b id="rafi-sent" class="hide rafi">sent 77d4e1</b>
+              <b id="rafi-wait">commit ready</b>
+              <b id="rafi-sent" class="hide rafi">pushed 77d4e1</b>
             </div>
           </div>
           <div id="github" class="card">
-            <div class="k">CLOUD ALBUM</div>
-            <div class="who">GitHub</div>
+            <div class="k">REMOTE MAIN</div>
+            <div class="who">origin</div>
             <div class="row" data-layout-allow-overlap>
-              <b id="gh-empty">no page yet</b>
-              <b id="gh-a" class="hide ok" data-layout-allow-overlap>Mina · a1b2c3</b>
-              <b id="gh-r" class="hide rafi" data-layout-allow-overlap>Rafi · 77d4e1</b>
+              <b id="gh-empty">no commits</b>
+              <b id="gh-a" class="hide ok" data-layout-allow-overlap>a1b2c3</b>
+              <b id="gh-r" class="hide rafi" data-layout-allow-overlap>77d4e1</b>
             </div>
           </div>
           <div id="note" class="card">
-            <div class="k">CLOUD NOTE</div>
+            <div class="k">ORIGIN/MAIN</div>
+            <div class="who">remote-tracking ref</div>
             <div class="row" data-layout-allow-overlap>
-              <b id="note-none" class="muted">not written</b>
-              <b id="note-a" class="hide ok" data-layout-allow-overlap>saw a1b2c3</b>
-              <b id="note-stale" class="hide warn" data-layout-allow-overlap>still a1b2c3</b>
-              <b id="note-new" class="hide ok" data-layout-allow-overlap>saw 77d4e1</b>
+              <b id="note-none" class="muted">not set</b>
+              <b id="note-a" class="hide ok" data-layout-allow-overlap>a1b2c3</b>
+              <b id="note-stale" class="hide warn" data-layout-allow-overlap>stale a1b2c3</b>
+              <b id="note-new" class="hide ok" data-layout-allow-overlap>77d4e1</b>
             </div>
           </div>
 
-          <div id="pkt-add" class="pkt"><span>photo</span></div>
-          <div id="pkt-commit" class="pkt"><span>page</span></div>
+          <div id="pkt-add" class="pkt"><span>app.py</span></div>
+          <div id="pkt-commit" class="pkt"><span>a1b2c3</span></div>
           <div id="pkt-push" class="pkt"><span>a1b2c3</span></div>
           <div id="pkt-rafi" class="pkt"><span>77d4e1</span></div>
-          <div id="pkt-fetch" class="pkt"><span>note</span></div>
-          <p class="never">the dashed wire never reaches the album</p>
+          <div id="pkt-fetch" class="pkt"><span>77d4e1</span></div>
+          <p id="cmd-add" class="cmd">git add</p>
+          <p id="cmd-commit" class="cmd">git commit</p>
+          <p id="cmd-push" class="cmd">git push</p>
+          <p id="cmd-rafi" class="cmd">git push</p>
+          <p id="cmd-fetch" class="cmd">git fetch</p>
+          <p class="never">git fetch does not move local main</p>
         </div>
         <div class="said" data-layout-allow-overlap>
-          <p id="line-1" class="hide">One photo on the tray. Nothing is saved yet.</p>
-          <p id="line-2" class="hide">A saved page. The note named main follows it.</p>
-          <p id="line-3" class="hide">Uploaded. The cloud note matches.</p>
-          <p id="line-4" class="hide">Another page at home. The cloud does not have it.</p>
-          <p id="line-5" class="hide">Rafi added a page. The note is still the old one.</p>
-          <p id="line-6" class="hide">Fetched. Her album did not change.</p>
-          <p id="line-7" class="hide">Joined. One page now holds both stories.</p>
+          <p id="line-1" class="hide">git add stages app.py in the index. The working tree keeps the file.</p>
+          <p id="line-2" class="hide">git commit writes a1b2c3. main moves. HEAD still points at main.</p>
+          <p id="line-3" class="hide">git push fast-forwards the remote. origin/main updates too.</p>
+          <p id="line-4" class="hide">Local main is now d4e5f6. The remote and origin/main stay at a1b2c3.</p>
+          <p id="line-5" class="hide">The remote main moved to 77d4e1. origin/main is still a1b2c3.</p>
+          <p id="line-6" class="hide">git fetch updates origin/main only. Local main does not move.</p>
+          <p id="line-7" class="hide">git merge writes 5c6d7e on local main. Nothing is pushed.</p>
         </div>
       </section>
     </div>
@@ -202,10 +218,12 @@
       tl.fromTo("#tray-photo", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 4.3);
       tl.fromTo("#tray-after", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.4);
       tl.fromTo("#tray", { borderColor: "#5b8cff" }, { borderColor: "#31445f", duration: 0.25, immediateRender: false }, 4.3);
+      tl.fromTo("#desk-clear", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 4.35);
+      tl.fromTo("#desk-clean", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.45);
       tl.fromTo("#album", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.3 }, 4.4);
       tl.fromTo("#album-none", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 4.4);
       tl.fromTo("#album-a", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.5);
-      tl.fromTo("#sticky", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.55);
+
       tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 3.45);
       tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 3.55);
 
@@ -224,7 +242,7 @@
 
       tl.fromTo("#album-a", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 10.0);
       tl.fromTo("#album-d", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 10.1);
-      tl.fromTo("#sticky", { scale: 1 }, { scale: 1.18, duration: 0.18, immediateRender: false }, 10.05);
+      tl.fromTo("#sticky", { scale: 1 }, { scale: 1.18, duration: 0.18 }, 10.05);
       tl.fromTo("#sticky", { scale: 1.18 }, { scale: 1, duration: 0.22, immediateRender: false }, 10.25);
       tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 9.9);
       tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 10.05);

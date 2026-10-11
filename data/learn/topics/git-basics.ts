@@ -926,8 +926,8 @@ export const gitBasics: Topic = {
   film: {
     src: '/learn/git-basics.mp4',
     note: {
-      en: 'Fetch only updates the cloud note. The album changes when the pages are joined.',
-      bn: 'ডাউনলোড শুধু ক্লাউড নোট বদলায়। অ্যালবাম বদলায় যখন পাতাগুলো জোড়া লাগে।'
+      en: 'git fetch only moves origin/main. git merge moves local main, and it does not push.',
+      bn: 'git fetch শুধু origin/main সরায়। git merge লোকাল main সরায়, আর push করে না।'
     }
   }
 }
