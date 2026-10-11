@@ -32,7 +32,7 @@ export const STATIONS: Record<string, Station> = {
   'django-lifecycle': { x: 660, y: 110, lab: 'up', phase: 3, line: 'backend', name: { en: 'Django lifecycle', bn: 'Django-র জীবনচক্র' }, blurb: { en: 'Follow a filled-in form through every checkpoint and back.', bn: 'ভরা একটা ফর্মকে প্রতিটি চেকপয়েন্ট পেরিয়ে ফিরে আসতে দেখুন।' }, level: 'intermediate' },
   'auth-jwt-oauth': { x: 840, y: 110, lab: 'up', phase: 4, line: 'backend', name: { en: 'Auth: JWT & OAuth', bn: 'অথ: JWT ও OAuth' } },
   'celery-redis': { x: 610, y: 240, lab: 'down', phase: 1, line: 'async', name: { en: 'Celery + Redis', bn: 'Celery + Redis' }, blurb: { en: 'Hand slow jobs to a background cook so nobody waits.', bn: 'ধীর কাজ পেছনের রাঁধুনিকে দিন, যাতে কাউকে অপেক্ষা করতে না হয়।' }, level: 'beginner' },
-  'redis-deep-dive': { x: 760, y: 240, lab: 'down', phase: 4, line: 'async', name: { en: 'Redis deep-dive', bn: 'Redis গভীরে' } },
+  'redis-deep-dive': { x: 760, y: 240, lab: 'down', phase: 4, line: 'async', name: { en: 'Redis deep-dive', bn: 'Redis গভীরে' }, blurb: { en: 'A shelf in front of the storeroom, with a timer and a shout.', bn: 'গুদামের সামনে একটা তাক, সময়সীমাসহ, আর একটা চিৎকার।' }, level: 'intermediate' },
   databases: { x: 900, y: 240, lab: 'down', phase: 4, line: 'async', name: { en: 'Databases', bn: 'ডেটাবেস' } },
   'git-basics': { x: 120, y: 240, lab: 'down', phase: 1, line: 'git', name: { en: 'Git basics', bn: 'Git-এর শুরু' }, blurb: { en: 'Save points for your files, and sharing them.', bn: 'ফাইলের সেভ পয়েন্ট রাখা, আর অন্যদের সাথে ভাগ করা।' }, level: 'beginner' },
   'github-pull-requests': { x: 300, y: 240, lab: 'down', phase: 4, line: 'git', name: { en: 'Pull requests', bn: 'পুল রিকোয়েস্ট' } },

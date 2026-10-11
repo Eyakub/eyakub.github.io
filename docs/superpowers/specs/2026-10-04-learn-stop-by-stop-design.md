@@ -472,7 +472,7 @@ The research notes already hold nodes, steps, analogies, Q&A, cheats and sources
   - Nginx reverse proxy
   - CI/CD (GitHub Actions)
 - **Phase 4:**
-  - Redis deep-dive
+  - Redis deep-dive (page)
   - Databases
   - Auth (JWT, OAuth 2.0 + PKCE)
   - REST

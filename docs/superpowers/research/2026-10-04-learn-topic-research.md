@@ -472,7 +472,7 @@ You (user) vouch at the front desk (authZ server) with ID; desk gives a key card
 
 ---------------------------------------------------------------------
 
-# 7. Redis deep-dive (OUTLINE)
+# 7. Redis deep-dive (page)
 
 ## Nodes
 App; Redis (in-memory); Database (source of truth); Disk (RDB/AOF); Subscriber(s).
