@@ -922,5 +922,12 @@ export const gitBasics: Topic = {
     { label: 'Pro Git: Git References', url: 'https://git-scm.com/book/en/v2/Git-Internals-Git-References' },
     { label: 'Pro Git: Rebasing', url: 'https://git-scm.com/book/en/v2/Git-Branching-Rebasing' },
     { label: 'git-pull documentation', url: 'https://git-scm.com/docs/git-pull' }
-  ]
+  ],
+  film: {
+    src: '/learn/git-basics.mp4',
+    note: {
+      en: 'Fetch only updates the cloud note. The album changes when the pages are joined.',
+      bn: 'ডাউনলোড শুধু ক্লাউড নোট বদলায়। অ্যালবাম বদলায় যখন পাতাগুলো জোড়া লাগে।'
+    }
+  }
 }

@@ -38,7 +38,7 @@ export default function TopicPage({ topic }: { topic: Topic }) {
       </header>
       <WordsFirst topic={topic} />
       </div>
-      {topic.film && <FilmButton src={topic.film.src} />}
+      {topic.film && <FilmButton src={topic.film.src} note={topic.film.note} />}
       <FlowPlayer key={topic.slug} topic={topic} />
       <AnalogyTwins topic={topic} />
       <div className="read-pair">

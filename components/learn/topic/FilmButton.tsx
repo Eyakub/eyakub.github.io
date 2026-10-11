@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLearnPrefs } from '../../../contexts/LearnPrefsContext'
+import type { L10n } from '../../../lib/learn/l10n'
 
-export default function FilmButton({ src }: { src: string }) {
-  const { ui } = useLearnPrefs()
+export default function FilmButton({ src, note }: { src: string; note?: L10n }) {
+  const { ui, t } = useLearnPrefs()
   const [open, setOpen] = useState(false)
   const openBtn = useRef<HTMLButtonElement>(null)
   const closeBtn = useRef<HTMLButtonElement>(null)
@@ -63,7 +64,7 @@ export default function FilmButton({ src }: { src: string }) {
               <button ref={closeBtn} type="button" className="btn" onClick={() => setOpen(false)}>{ui('close')}</button>
             </div>
             <video ref={videoRef} src={src} controls playsInline autoPlay muted />
-            <p>{ui('motionClock')}</p>
+            <p>{note ? t(note) : ui('motionClock')}</p>
           </div>
         </div>
       )}
