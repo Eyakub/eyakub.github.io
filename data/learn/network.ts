@@ -48,7 +48,7 @@ export const STATIONS: Record<string, Station> = {
   'asyncio-event-loop': { x: 720, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'asyncio event loop', bn: 'asyncio ইভেন্ট লুপ' }, blurb: { en: 'One cook, many dishes, a timer that says what\'s ready.', bn: 'একজন রাঁধুনি, অনেক পদ, আর টাইমার বলে দেয় কোনটা তৈরি।' }, level: 'intermediate' },
   'race-conditions-locks': { x: 870, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'Race conditions & locks', bn: 'রেস কন্ডিশন ও লক' }, blurb: { en: 'Two cooks, one tally, and why you need one pen.', bn: 'দুই রাঁধুনি, একটাই হিসাবের খাতা, আর কেন একটাই কলম লাগে।' }, level: 'intermediate' },
   'concurrency-deep-dive': { x: 120, y: 620, lab: 'down', phase: 4, line: 'concurrency', name: { en: 'Concurrency deep-dive', bn: 'কনকারেন্সি গভীরে' }, blurb: { en: 'Who gets the one cashier next, and what a swap costs.', bn: 'এক ক্যাশিয়ারের পরের পালা কে পায়, আর পালা বদলাতে কী খরচ।' }, level: 'intermediate' },
-  'parallelism-deep-dive': { x: 370, y: 620, lab: 'down', phase: 4, line: 'concurrency', name: { en: 'Parallelism deep-dive', bn: 'প্যারালেলিজম গভীরে' } },
+  'parallelism-deep-dive': { x: 370, y: 620, lab: 'down', phase: 4, line: 'concurrency', name: { en: 'Parallelism deep-dive', bn: 'প্যারালেলিজম গভীরে' }, blurb: { en: 'Two cashiers, one count, and the ceiling on speedup.', bn: 'দুই ক্যাশিয়ার, একটা গোনা, আর গতির ছাদ।' }, level: 'intermediate' },
   'threading-deep-dive': { x: 620, y: 620, lab: 'down', phase: 4, line: 'concurrency', name: { en: 'Threading deep-dive', bn: 'থ্রেডিং গভীরে' } },
   'multithreading-deep-dive': { x: 870, y: 620, lab: 'down', phase: 4, line: 'concurrency', name: { en: 'Multithreading deep-dive', bn: 'মাল্টিথ্রেডিং গভীরে' } },
 }
