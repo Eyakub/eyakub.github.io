@@ -84,6 +84,7 @@ const TOPIC_CASES = [
   { slug: 'auth-jwt-oauth', total: 7, altStop: 'Stop 5 of 6', taught: true },
   { slug: 'rest-basics', total: 7, altStop: 'Stop 4 of 5', taught: true },
   { slug: 'github-pull-requests', total: 7, altStop: 'Stop 4 of 5', taught: true, step3Packets: 0 },
+  { slug: 'kubernetes', total: 7, altStop: 'Stop 6 of 7', taught: true },
   { slug: 'processes-vs-threads', total: 10, altStop: 'Stop 4 of 5', altBtn: 2, taught: true },
   { slug: 'python-gil', total: 11, altStop: 'Stop 7 of 11', taught: true, altFail: false },
   { slug: 'multiprocessing-pools', total: 8, altStop: 'Stop 2 of 3', altBtn: 2, taught: true },
@@ -156,14 +157,12 @@ const checks = [
     const count = await page.locator('.network-svg .st').count()
     await shot(page, 'hub-map')
     await page.locator('.network-svg .st[data-id="kubernetes"]').click()
-    await page.waitForSelector('.toast')
-    const toast = await page.textContent('.toast')
-    await page.locator('.network-svg .st[data-id="celery-redis"]').click()
-    await page.waitForURL('**/learn/celery-redis')
-    await page.waitForLoadState('networkidle')
+    await page.waitForURL('**/learn/kubernetes')
+    const rendered = await page.waitForFunction(() => document.querySelector('h1')?.textContent?.includes('Kubernetes'), null, { timeout: 10000 }).then(() => true, () => false)
+    const h1 = await page.textContent('h1')
     await context.close()
     assert(count === 26, `expected 26 stations, got ${count}`)
-    assert(toast?.includes('Phase 4'), `toast missing Phase 4: ${toast}`)
+    assert(rendered, `topic page never rendered; h1: ${h1}`)
     noProblems(problems)
   }],
   ['hub-concurrency-open', async () => {

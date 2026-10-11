@@ -834,7 +834,9 @@ Nginx = receptionist who also hands out brochures (static) herself; app servers 
 
 ---------------------------------------------------------------------
 
-# 13. Kubernetes basics (OUTLINE)
+# 13. Kubernetes basics
+
+Status: a page at `/learn/kubernetes` on the DevOps line. The outline below was the brief. Kubernetes docs override it where they disagree: kube-proxy is optional; the container runtime is not pinned to containerd; DNS is an addon, not a control-plane component; the cloud controller manager is optional; a Deployment creates the ReplicaSet, and a rollout starts only when the Pod template changes (scaling does not); rolling-update defaults are maxUnavailable 25% and maxSurge 25%; revisionHistoryLimit defaults to 10, and a deleted ReplicaSet cannot be rolled back; the label selector is immutable; a Pod is scheduled once and a replacement is a new Pod; CrashLoopBackOff is a waiting status, with backoff from 10 seconds capped at 300 seconds, not a restart policy; restartPolicy defaults to Always and a Deployment allows only Always; a failing readiness probe removes the Pod from EndpointSlices without a restart; liveness restarts the container; a startup probe holds liveness and readiness until it succeeds; Ingress is not a Service type, does nothing without a controller, is frozen and still generally available, and Gateway API is what the project recommends for new work; Kubernetes does not itself provide a LoadBalancer.
 
 ## Nodes
 kubectl/User; Control plane (API server, etcd, scheduler, controller-manager); Deployment -> ReplicaSet -> Pods; Node (kubelet, kube-proxy, runtime); Service; Ingress.
@@ -890,7 +892,10 @@ Control plane = head office (API server = reception, etcd = records, scheduler =
 
 ## Sources
 - https://kubernetes.io/docs/concepts/overview/components/ (verified)
-- https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ , .../services-networking/service/ , .../ingress/ (knowledge)
+- https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ (verified)
+- https://kubernetes.io/docs/concepts/services-networking/service/ (verified)
+- https://kubernetes.io/docs/concepts/services-networking/ingress/ (verified)
+- https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/ (verified)
 
 ---------------------------------------------------------------------
 
