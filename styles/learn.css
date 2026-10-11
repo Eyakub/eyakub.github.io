@@ -100,6 +100,11 @@ html[lang="bn"] .learn-root .lede{line-height:1.65}
 .learn-root .strip{background:var(--surface);border:1px solid var(--rule);border-radius:18px;padding:18px 18px 10px;min-width:0}
 .learn-root .strip h3{display:flex;align-items:center;gap:10px;font-size:var(--t-lg);font-weight:700;font-stretch:87.5%;margin-bottom:6px}
 .learn-root .strip h3 i{width:26px;height:8px;border-radius:4px;background:var(--c)}
+.learn-root .strip-split{display:grid;gap:0 28px}
+@media (min-width:760px){
+  .learn-root .strip.many{grid-column:1 / -1}
+  .learn-root .strip-split{grid-template-columns:minmax(0,520px) minmax(0,520px);align-items:start;justify-content:start}
+}
 .learn-root .strip ol{list-style:none;margin:0;padding:0;position:relative}
 .learn-root .strip ol::before{content:"";position:absolute;left:13px;top:22px;bottom:22px;width:6px;border-radius:3px;background:var(--c)}
 .learn-root .strip li button{position:relative;display:grid;grid-template-columns:32px 1fr auto;align-items:center;gap:10px;width:100%;min-height:48px;padding:6px 0;border:0;background:transparent;text-align:left}
