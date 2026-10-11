@@ -358,7 +358,9 @@ Browser = you; DNS = directory assistance giving the street address; TCP/TLS = p
 
 ---------------------------------------------------------------------
 
-# 5. REST basics (OUTLINE)
+# 5. REST basics
+
+Status: a page at `/learn/rest-basics` on the backend line. The outline below was the brief. RFC 9110 and RFC 5789 override it where they disagree: idempotency is about intended state, not an identical reply; a created POST should answer 201 with Location; PUT on a missing representation must answer 201 and a replacement must answer 200 or 204; DELETE should answer 202, 204, or 200; PATCH is not guaranteed idempotent and applies entirely or not at all; 401 must send WWW-Authenticate; 422 is Unprocessable Content.
 
 ## Nodes
 Client; Resource URL; Server/API; Data store; Status code response.

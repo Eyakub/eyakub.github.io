@@ -21,6 +21,7 @@ import { processesVsThreads } from './topics/processes-vs-threads'
 import { pythonGil } from './topics/python-gil'
 import { raceConditionsLocks } from './topics/race-conditions-locks'
 import { redisDeepDive } from './topics/redis-deep-dive'
+import { restBasics } from './topics/rest-basics'
 import { threadingDeepDive } from './topics/threading-deep-dive'
 
 export const TOPICS: Record<string, Topic> = {
@@ -46,5 +47,6 @@ export const TOPICS: Record<string, Topic> = {
   [pythonGil.slug]: pythonGil,
   [raceConditionsLocks.slug]: raceConditionsLocks,
   [redisDeepDive.slug]: redisDeepDive,
+  [restBasics.slug]: restBasics,
   [threadingDeepDive.slug]: threadingDeepDive
 }

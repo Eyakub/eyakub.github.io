@@ -27,7 +27,7 @@ export const PHASE_KEY: Record<Exclude<Phase, 1>, UiKey> = { 2: 'p2', 3: 'p3', 4
 
 export const STATIONS: Record<string, Station> = {
   'http-journey': { x: 120, y: 110, lab: 'up', phase: 3, line: 'backend', name: { en: 'HTTP journey', bn: 'HTTP-র যাত্রা' }, blurb: { en: 'Follow one click to a company’s computers and back.', bn: 'একটা ক্লিক কোম্পানির কম্পিউটার পর্যন্ত গিয়ে কীভাবে ফিরে আসে, দেখুন।' }, level: 'beginner' },
-  'rest-basics': { x: 300, y: 110, lab: 'up', phase: 4, line: 'backend', name: { en: 'REST basics', bn: 'REST-এর মূল কথা' } },
+  'rest-basics': { x: 300, y: 110, lab: 'up', phase: 4, line: 'backend', name: { en: 'REST basics', bn: 'REST-এর মূল কথা' }, blurb: { en: 'The slip names the parcel. The verb says what the clerk should do.', bn: 'স্লিপ পার্সেলের নাম বলে। ক্রিয়া বলে ক্লার্ক কী করবে।' }, level: 'intermediate' },
   'fastapi-lifecycle': { x: 480, y: 110, lab: 'up', phase: 1, line: 'backend', interchange: true, name: { en: 'FastAPI lifecycle', bn: 'FastAPI-র জীবনচক্র' }, blurb: { en: 'Everything between a click and the reply.', bn: 'ক্লিক থেকে উত্তর আসা পর্যন্ত মাঝের সবকিছু।' }, level: 'intermediate' },
   'django-lifecycle': { x: 660, y: 110, lab: 'up', phase: 3, line: 'backend', name: { en: 'Django lifecycle', bn: 'Django-র জীবনচক্র' }, blurb: { en: 'Follow a filled-in form through every checkpoint and back.', bn: 'ভরা একটা ফর্মকে প্রতিটি চেকপয়েন্ট পেরিয়ে ফিরে আসতে দেখুন।' }, level: 'intermediate' },
   'auth-jwt-oauth': { x: 840, y: 110, lab: 'up', phase: 4, line: 'backend', name: { en: 'Auth: JWT & OAuth', bn: 'অথ: JWT ও OAuth' }, blurb: { en: 'The desk keeps the passport. The valet carries only a key card.', bn: 'ডেস্ক পাসপোর্ট রাখে। ভ্যালে শুধু একটা চাবির কার্ড বহন করে।' }, level: 'intermediate' },
