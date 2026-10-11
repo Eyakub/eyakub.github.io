@@ -414,7 +414,9 @@ Resources = books with call numbers (URLs); GET = read at the desk; POST = donat
 
 ---------------------------------------------------------------------
 
-# 6. Auth: JWT and OAuth 2.0 Authorization Code (+PKCE) (OUTLINE)
+# 6. Auth: JWT and OAuth 2.0 Authorization Code (+PKCE)
+
+Status: a page at `/learn/auth-jwt-oauth` on the backend line. The outline below was the brief. RFC 9700 and RFC 6749 override it where they disagree: public clients must use PKCE and confidential clients are recommended to; the spec fixes no access-token lifetime; a ten-minute code lifetime is a recommendation; refresh tokens are optional; a JWT may be signed or encrypted; redirect comparison is exact string matching (RFC 9700); the password grant must not be used.
 
 ## Nodes
 User (resource owner); Client app; Authorization server; Resource server (API); Browser.

@@ -1,5 +1,6 @@
 import type { Topic } from './types'
 import { asyncioEventLoop } from './topics/asyncio-event-loop'
+import { authJwtOauth } from './topics/auth-jwt-oauth'
 import { autoScaling } from './topics/auto-scaling'
 import { celeryRedis } from './topics/celery-redis'
 import { databases } from './topics/databases'
@@ -24,6 +25,7 @@ import { threadingDeepDive } from './topics/threading-deep-dive'
 
 export const TOPICS: Record<string, Topic> = {
   [asyncioEventLoop.slug]: asyncioEventLoop,
+  [authJwtOauth.slug]: authJwtOauth,
   [autoScaling.slug]: autoScaling,
   [celeryRedis.slug]: celeryRedis,
   [ciCd.slug]: ciCd,
