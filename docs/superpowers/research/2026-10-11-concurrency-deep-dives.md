@@ -1,6 +1,6 @@
 # Concurrency internals — Phase 4 outlines
 
-Dated 2026-10-11. Four stations on the second row of the concurrency line. `concurrency-deep-dive` and `parallelism-deep-dive` are pages. Threading and multithreading are still Phase 4 stations with no page yet.
+Dated 2026-10-11. Four stations on the second row of the concurrency line. `concurrency-deep-dive`, `parallelism-deep-dive`, and `threading-deep-dive` are pages. Multithreading is still a Phase 4 station with no page yet.
 
 These sit under the Phase 2 kitchen pages. Do not retell those rides. Phase 2 already shows juggling versus two cooks (`concurrency-vs-parallelism`), shared fridge versus a slip next door (`processes-vs-threads`), the GIL hat (`python-gil`), pools (`multiprocessing-pools`), and the lost tally (`race-conditions-locks`). These outlines are the interview layer underneath: who decides the next turn, why extra cores stop helping, what one thread is, and what goes wrong when several share memory.
 

@@ -16,6 +16,7 @@ import { parallelismDeepDive } from './topics/parallelism-deep-dive'
 import { processesVsThreads } from './topics/processes-vs-threads'
 import { pythonGil } from './topics/python-gil'
 import { raceConditionsLocks } from './topics/race-conditions-locks'
+import { threadingDeepDive } from './topics/threading-deep-dive'
 
 export const TOPICS: Record<string, Topic> = {
   [asyncioEventLoop.slug]: asyncioEventLoop,
@@ -34,5 +35,6 @@ export const TOPICS: Record<string, Topic> = {
   [parallelismDeepDive.slug]: parallelismDeepDive,
   [processesVsThreads.slug]: processesVsThreads,
   [pythonGil.slug]: pythonGil,
-  [raceConditionsLocks.slug]: raceConditionsLocks
+  [raceConditionsLocks.slug]: raceConditionsLocks,
+  [threadingDeepDive.slug]: threadingDeepDive
 }
