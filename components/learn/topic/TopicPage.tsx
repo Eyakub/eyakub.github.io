@@ -3,6 +3,7 @@ import { useLearnPrefs } from '../../../contexts/LearnPrefsContext'
 import { LINES } from '../../../data/learn/network'
 import type { Topic } from '../../../data/learn/types'
 import { effectiveMode, isPlain } from '../player/flow'
+import FilmButton from './FilmButton'
 import FlowPlayer from '../player/FlowPlayer'
 import AnalogyTwins from '../sections/AnalogyTwins'
 import CheatSheet from '../sections/CheatSheet'
@@ -37,6 +38,7 @@ export default function TopicPage({ topic }: { topic: Topic }) {
       </header>
       <WordsFirst topic={topic} />
       </div>
+      {topic.film && <FilmButton src={topic.film.src} />}
       <FlowPlayer key={topic.slug} topic={topic} />
       <AnalogyTwins topic={topic} />
       <div className="read-pair">

@@ -1,6 +1,6 @@
 # Auto scaling — plan only
 
-**Status:** unlinked English film at `/learn/auto-scaling`. Not on the map, not in `TOPICS`, no player change. Station stays off until this page has been looked at. Dated 2026-10-11.
+**Status:** a normal stop at `/learn/auto-scaling`, on the DevOps line after Kubernetes. The 24s film opens from Play the motion and always starts at the beginning. The player engine is unchanged. Dated 2026-10-11.
 
 **Source:** [Phạm Tùng reel 1602540408325059](https://www.facebook.com/reel/1602540408325059/). Caption: “CPU chạm 99%, chính sách kích hoạt, hai instance mới được tạo.” Playback sits behind a login wall. The lesson below is taken from the two frames supplied with that link.
 

@@ -41,6 +41,7 @@ export const STATIONS: Record<string, Station> = {
   'ci-cd': { x: 480, y: 370, lab: 'down', phase: 3, line: 'devops', interchange: true, name: { en: 'CI/CD', bn: 'CI/CD' }, blurb: { en: 'An assembly line that checks, boxes and ships every change.', bn: 'একটা অ্যাসেম্বলি লাইন, যা প্রতিটি পরিবর্তন যাচাই করে, বাক্সে ভরে আর পাঠিয়ে দেয়।' }, level: 'intermediate' },
   nginx: { x: 660, y: 370, lab: 'down', phase: 3, line: 'devops', name: { en: 'Nginx', bn: 'Nginx' }, blurb: { en: 'Hands out simple mail, and shares the rest between desks.', bn: 'সহজ ডাক নিজে দেয়, বাকিটা কয়েকটা ডেস্কে ভাগ করে দেয়।' }, level: 'intermediate' },
   kubernetes: { x: 840, y: 370, lab: 'down', phase: 4, line: 'devops', name: { en: 'Kubernetes', bn: 'Kubernetes' } },
+  'auto-scaling': { x: 1020, y: 370, lab: 'down', phase: 4, line: 'devops', name: { en: 'Auto scaling', bn: 'অটো স্কেলিং' }, blurb: { en: 'The rule calls two more cooks, and they cannot serve until the check.', bn: 'নিয়ম আরও দুই রাঁধুনি ডাকে, আর চেকের আগে তারা সার্ভ করতে পারে না।' }, level: 'intermediate' },
   'concurrency-vs-parallelism': { x: 120, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'Concurrency vs parallelism', bn: 'কনকারেন্সি বনাম প্যারালেলিজম' }, blurb: { en: 'Juggling many jobs, or doing them at the same moment.', bn: 'অনেক কাজ পালা করে সামলানো, নয়তো একই মুহূর্তে করা।' }, level: 'beginner' },
   'processes-vs-threads': { x: 270, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'Processes vs threads', bn: 'প্রসেস বনাম থ্রেড' }, blurb: { en: 'Separate kitchens, or cooks sharing one kitchen.', bn: 'আলাদা রান্নাঘর, নাকি এক রান্নাঘরে ভাগ করে রাঁধুনিরা।' }, level: 'beginner' },
   'python-gil': { x: 420, y: 490, lab: 'down', phase: 2, line: 'concurrency', name: { en: 'The Python GIL', bn: 'Python GIL' }, blurb: { en: 'Why Python cooks take turns, and when they don\'t.', bn: 'Python-এর রাঁধুনিরা কেন পালা করে কাজ করে, আর কখন করে না।' }, level: 'intermediate' },
@@ -56,7 +57,7 @@ export const STATIONS: Record<string, Station> = {
 export const LINES: Line[] = [
   { id: 'backend', color: '--l-backend', name: 'lineBackend', pts: [[120, 110], [840, 110]], stops: ['http-journey', 'rest-basics', 'fastapi-lifecycle', 'django-lifecycle', 'auth-jwt-oauth'] },
   { id: 'async', color: '--l-async', name: 'lineAsync', pts: [[480, 110], [610, 240], [900, 240]], stops: ['fastapi-lifecycle', 'celery-redis', 'redis-deep-dive', 'databases'] },
-  { id: 'devops', color: '--l-devops', name: 'lineDevops', pts: [[120, 370], [840, 370]], stops: ['docker', 'docker-compose', 'ci-cd', 'nginx', 'kubernetes'] },
+  { id: 'devops', color: '--l-devops', name: 'lineDevops', pts: [[120, 370], [1020, 370]], stops: ['docker', 'docker-compose', 'ci-cd', 'nginx', 'kubernetes', 'auto-scaling'] },
   { id: 'git', color: '--l-git', name: 'lineGit', pts: [[120, 240], [350, 240], [480, 370]], stops: ['git-basics', 'github-pull-requests', 'ci-cd'] },
   { id: 'concurrency', color: '--l-concurrency', name: 'lineConcurrency', pts: [[120, 490], [870, 490], [120, 490], [120, 620], [870, 620]], stops: ['concurrency-vs-parallelism', 'processes-vs-threads', 'python-gil', 'multiprocessing-pools', 'asyncio-event-loop', 'race-conditions-locks', 'concurrency-deep-dive', 'parallelism-deep-dive', 'threading-deep-dive', 'multithreading-deep-dive'] },
 ]

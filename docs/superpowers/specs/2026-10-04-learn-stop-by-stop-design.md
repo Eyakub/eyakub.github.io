@@ -44,7 +44,7 @@
 | **1** | Engine, hub, topic template, EN/BN, progress | FastAPI request lifecycle, Celery + Redis, Git basics |
 | **2** | Engine additions: groups, parallel moves (see §7.9) | **Concurrency line:** concurrency vs parallelism, processes vs threads, the Python GIL, multiprocessing pools, asyncio event loop, race conditions and locks |
 | **3** | Data only | HTTP request journey, Docker, Docker Compose, Nginx reverse proxy, CI/CD pipeline |
-| **4** | Data only | Redis deep-dive, databases (indexes, transactions, N+1), auth (JWT, OAuth 2.0 + PKCE), REST basics, GitHub pull requests, Kubernetes basics, concurrency internals (concurrency, parallelism, threading, multithreading deep-dives), and auto scaling. Auto scaling is plan-only until its wireframe experiment: `docs/superpowers/plans/2026-10-11-auto-scaling-wireframe.md` |
+| **4** | Data only | Redis deep-dive, databases (indexes, transactions, N+1), auth (JWT, OAuth 2.0 + PKCE), REST basics, GitHub pull requests, Kubernetes basics, concurrency internals (concurrency, parallelism, threading, multithreading deep-dives), and auto scaling. Auto scaling is a page on the DevOps line, with the reel film behind a button: `docs/superpowers/plans/2026-10-11-auto-scaling-wireframe.md` |
 
 Concurrency is Phase 2 because it is high-value for backend interviews and it explains two Phase 1 stops: FastAPI's `def` vs `async def` threadpool behaviour and Celery's prefork pool.
 
@@ -61,7 +61,7 @@ Concurrency is Phase 2 because it is high-value for backend interviews and it ex
 
 Phase 1 slugs: `fastapi-lifecycle`, `celery-redis`, `git-basics`.
 
-Later slugs (reserved, used as station ids on the map): `concurrency-vs-parallelism`, `processes-vs-threads`, `python-gil`, `multiprocessing-pools`, `asyncio-event-loop`, `race-conditions-locks`, `concurrency-deep-dive`, `parallelism-deep-dive`, `threading-deep-dive`, `multithreading-deep-dive`, `http-journey`, `docker`, `docker-compose`, `nginx`, `ci-cd`, `redis-deep-dive`, `databases`, `auth-jwt-oauth`, `rest-basics`, `github-pull-requests`, `kubernetes`, `auto-scaling`. `auto-scaling` is reserved only. It is not a station yet.
+Later slugs (reserved, used as station ids on the map): `concurrency-vs-parallelism`, `processes-vs-threads`, `python-gil`, `multiprocessing-pools`, `asyncio-event-loop`, `race-conditions-locks`, `concurrency-deep-dive`, `parallelism-deep-dive`, `threading-deep-dive`, `multithreading-deep-dive`, `http-journey`, `docker`, `docker-compose`, `nginx`, `ci-cd`, `redis-deep-dive`, `databases`, `auth-jwt-oauth`, `rest-basics`, `github-pull-requests`, `kubernetes`, `auto-scaling`. `auto-scaling` is a page and a station after Kubernetes.
 
 **Prerequisite fix: `assetPrefix: './'` in `next.config.js` must go.** With a relative asset prefix, `/learn/celery-redis` resolves `./_next/...` to `/learn/_next/...` and every script 404s. Today only single-segment routes exist (`/projects`), which is why it has not bitten yet. The site is the root user site `eyakub.github.io`, so no prefix is needed. Verify by serving `out/` locally and loading a nested route.
 
@@ -479,7 +479,7 @@ The research notes already hold nodes, steps, analogies, Q&A, cheats and sources
   - GitHub pull requests
   - Kubernetes
   - Concurrency deep-dive, parallelism deep-dive, threading deep-dive, and multithreading deep-dive are pages (outlines in `docs/superpowers/research/2026-10-11-concurrency-deep-dives.md`)
-  - Auto scaling (plan only, slug `auto-scaling`, no station yet). The wireframe experiment is `docs/superpowers/plans/2026-10-11-auto-scaling-wireframe.md`
+  - Auto scaling (page, slug `auto-scaling`, station after Kubernetes). The film opens from a button. Write-up: `docs/superpowers/plans/2026-10-11-auto-scaling-wireframe.md`
 
 Items the research marked "(knowledge)" are re-verified against primary docs when each file is written. Each phase is data-only and gets its own plan.
 

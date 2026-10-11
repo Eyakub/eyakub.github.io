@@ -22,7 +22,7 @@ export default function NetworkMap({ openSlugs, learned, onStation }: Props) {
   return (
     <>
       <div className="map-card">
-        <svg className="network-svg" viewBox="40 58 920 640" role="group" aria-labelledby="map-h">
+        <svg className="network-svg" viewBox="40 58 1100 640" role="group" aria-labelledby="map-h">
           {WALKWAYS.map(({ from, to, via = [] }) => (
             <path
               key={`${from}-${to}`}

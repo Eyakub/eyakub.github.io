@@ -78,6 +78,14 @@ export const UI = {
   },
   backToPortfolio: { en: 'Back to portfolio', bn: 'পোর্টফোলিওতে ফিরুন' },
   sourcesH: { en: 'Sources', bn: 'সূত্র' },
+  playMotion: { en: 'Play the motion', bn: 'মোশন চালান' },
+  motionNote: { en: 'Stops explain each step. The film plays the whole ride.', bn: 'স্টপগুলো প্রতিটি ধাপ বলে। ফিল্ম পুরো যাত্রা দেখায়।' },
+  motionTitle: { en: 'The whole ride', bn: 'পুরো যাত্রা' },
+  motionClock: {
+    en: 'The 4:00 clock on this film is the reel’s, not the 300 second default cooldown.',
+    bn: 'এই ফিল্মের ৪:০০ ঘড়ি রিলের, ৩০০ সেকেন্ডের ডিফল্ট কুলডাউন নয়।'
+  },
+  close: { en: 'Close', bn: 'বন্ধ' },
   lineConcurrency: { en: 'Concurrency line', bn: 'কনকারেন্সি লাইন' },
   p4: { en: 'Phase 4', bn: 'ধাপ ৪' }
 } satisfies Record<string, L10n>

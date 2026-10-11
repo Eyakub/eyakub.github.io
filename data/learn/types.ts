@@ -57,4 +57,5 @@ export interface Topic {
   qa: QA[]
   cheats: Cheat[]
   sources: { label: string; url: string }[]
+  film?: { src: string }
 }

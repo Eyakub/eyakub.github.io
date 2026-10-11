@@ -87,6 +87,7 @@ const TOPIC_CASES = [
   { slug: 'race-conditions-locks', total: 10, altStop: 'Stop 7 of 9', altBtn: 2, step3Packets: 0, taught: true },
   { slug: 'http-journey', total: 11, altStop: 'Stop 7 of 8', taught: true },
   { slug: 'nginx', total: 9, altStop: 'Stop 6 of 7', taught: true },
+  { slug: 'auto-scaling', total: 7, altStop: 'Stop 6 of 7', taught: true },
   { slug: 'ci-cd', total: 10, altStop: 'Stop 4 of 5', step3Packets: 0, taught: true },
   { slug: 'docker-compose', total: 11, altStop: 'Stop 8 of 9', taught: true, step3Packets: 0 },
   { slug: 'docker', total: 9, altStop: 'Stop 7 of 8', taught: true, step3Packets: 0 },
@@ -157,7 +158,7 @@ const checks = [
     await page.waitForURL('**/learn/celery-redis')
     await page.waitForLoadState('networkidle')
     await context.close()
-    assert(count === 25, `expected 25 stations, got ${count}`)
+    assert(count === 26, `expected 26 stations, got ${count}`)
     assert(toast?.includes('Phase 4'), `toast missing Phase 4: ${toast}`)
     noProblems(problems)
   }],

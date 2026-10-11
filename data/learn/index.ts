@@ -1,5 +1,6 @@
 import type { Topic } from './types'
 import { asyncioEventLoop } from './topics/asyncio-event-loop'
+import { autoScaling } from './topics/auto-scaling'
 import { celeryRedis } from './topics/celery-redis'
 import { ciCd } from './topics/ci-cd'
 import { concurrencyDeepDive } from './topics/concurrency-deep-dive'
@@ -22,6 +23,7 @@ import { threadingDeepDive } from './topics/threading-deep-dive'
 
 export const TOPICS: Record<string, Topic> = {
   [asyncioEventLoop.slug]: asyncioEventLoop,
+  [autoScaling.slug]: autoScaling,
   [celeryRedis.slug]: celeryRedis,
   [ciCd.slug]: ciCd,
   [concurrencyDeepDive.slug]: concurrencyDeepDive,
