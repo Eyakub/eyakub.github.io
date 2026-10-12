@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 22px 36px 18px;
+      }
+      h1 { text-align: center; font-size: 48px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 22px; }
+      .stage { position: relative; width: 1480px; height: 640px; margin: 12px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 640px; }
+      .pool { fill: none; stroke: #4d6284; stroke-width: 1.5; stroke-dasharray: 6 5; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 12px 16px;
+      }
+      .k {
+        font-family: ui-monospace, Menlo, monospace; font-size: 13px;
+        letter-spacing: 0.14em; color: #c5d0e0;
+      }
+      .who { margin-top: 2px; font-size: 20px; font-weight: 700; }
+      .row { position: relative; height: 30px; margin-top: 8px; }
+      .row b {
+        position: absolute; left: 0; top: 0; white-space: nowrap;
+        font-size: 20px; font-weight: 700;
+      }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      .pathb { font-size: 16px; color: #9db7ff; }
+      #browser { left: 20px; top: 220px; width: 280px; height: 118px; }
+      #nginx { left: 500px; top: 200px; width: 380px; height: 140px; }
+      #static { left: 520px; top: 16px; width: 360px; height: 118px; }
+      #app1 { left: 1120px; top: 16px; width: 340px; height: 126px; }
+      #app2 { left: 1120px; top: 470px; width: 340px; height: 126px; }
+      #pool-l { position: absolute; left: 1160px; top: 250px; width: 260px; }
+      #pool-l .who { font-size: 22px; }
+      #pool-l .sm { margin-top: 4px; font-size: 16px; color: #c5d0e0; }
+      .cmd {
+        position: absolute; white-space: nowrap;
+        font-family: ui-monospace, Menlo, monospace; font-size: 16px; color: #c5d0e0;
+      }
+      #cmd-root { left: 250px; top: 158px; }
+      #cmd-get { left: 300px; top: 352px; }
+      #cmd-tls { left: 560px; top: 352px; }
+      #cmd-pass { left: 500px; top: 388px; }
+      #cmd-host { left: 500px; top: 414px; }
+      #cmd-buf { left: 500px; top: 440px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt span {
+        position: absolute; left: 50%; top: -26px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 16px; color: #f4f7fb;
+      }
+      .pkt span.side { left: 20px; top: 8px; transform: none; }
+      .pkt span.back { left: auto; right: 18px; top: -26px; transform: none; }
+      #pkt-https { left: 360px; top: 279px; }
+      #pkt-static { left: 710px; top: 188px; }
+      #pkt-file { left: 710px; top: 162px; }
+      #pkt-logo { left: 440px; top: 279px; }
+      #pkt-api { left: 370px; top: 279px; }
+      #pkt-api2 { left: 370px; top: 279px; }
+      #pkt-app1 { left: 970px; top: 200px; }
+      #pkt-json1 { left: 1000px; top: 170px; }
+      #pkt-back1 { left: 440px; top: 279px; }
+      #pkt-app2 { left: 980px; top: 420px; }
+      #pkt-json2 { left: 1000px; top: 450px; }
+      .never { position: absolute; left: 20px; top: 600px; color: #c5d0e0; font-size: 18px; }
+      .said { position: relative; height: 88px; margin-top: 6px; }
+      .said p {
+        position: absolute; left: 24px; right: 24px; top: 8px; text-align: center;
+        font-size: 26px; line-height: 1.28;
+      }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="28" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="28" data-track-index="0">
+        <h1>Nginx</h1>
+        <p class="sub">HTTPS, static files, then round-robin</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 640">
+            <rect class="pool" x="1096" y="4" width="380" height="604" rx="18" />
+            <path class="idle" d="M300 279 H500" />
+            <path class="idle" d="M690 210 V134" />
+            <path class="idle" d="M880 250 C1000 200 1060 81 1120 81" />
+            <path class="idle" d="M880 330 C1000 400 1060 533 1120 533" />
+            <path id="hot-https" class="hot" pathLength="100" d="M300 279 H500" stroke="#5b8cff" />
+            <path id="hot-static" class="hot" pathLength="100" d="M690 210 V134" stroke="#5b8cff" />
+            <path id="hot-file" class="hot" pathLength="100" d="M690 150 V210" stroke="#3ee0a2" />
+            <path id="hot-logo" class="hot" pathLength="100" d="M500 279 H300" stroke="#3ee0a2" />
+            <path id="hot-app1" class="hot" pathLength="100" d="M880 250 C1000 200 1060 81 1120 81" stroke="#5b8cff" />
+            <path id="hot-back1" class="hot" pathLength="100" d="M1120 81 C1060 81 1000 200 880 250" stroke="#3ee0a2" />
+            <path id="hot-app2" class="hot" pathLength="100" d="M880 330 C1000 400 1060 533 1120 533" stroke="#5b8cff" />
+            <path id="hot-back2" class="hot" pathLength="100" d="M1120 533 C1060 533 1000 400 880 330" stroke="#3ee0a2" />
+          </svg>
+
+          <div id="browser" class="card">
+            <div class="k">BROWSER</div>
+            <div class="who">sends the request</div>
+            <div class="row" data-layout-allow-overlap><b class="muted">HTTPS :443</b></div>
+          </div>
+          <div id="nginx" class="card">
+            <div class="k">NGINX</div>
+            <div class="who">reverse proxy</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="nx-wait" class="muted">picks a location</b>
+              <b id="nx-tls" class="ok hide">TLS ended</b>
+              <b id="nx-loc" class="hotc hide">location /</b>
+              <b id="nx-rr1" class="hotc hide">round-robin: app 1</b>
+              <b id="nx-rr2" class="hotc hide">round-robin: app 2</b>
+            </div>
+          </div>
+          <div id="static" class="card">
+            <div class="k">STATIC FILES</div>
+            <div class="who">read from disk</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="st-idle" class="muted">on disk</b>
+              <b id="st-path" class="pathb hide">/var/www/static/logo.png</b>
+              <b id="st-ok" class="ok hide">200 OK</b>
+            </div>
+          </div>
+          <div id="app1" class="card">
+            <div class="k">APP SERVER 1</div>
+            <div class="who">uvicorn :8001</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="a1-w" class="muted">weight=1</b>
+              <b id="a1-ok" class="ok hide">200 JSON</b>
+            </div>
+          </div>
+          <div id="app2" class="card">
+            <div class="k">APP SERVER 2</div>
+            <div class="who">uvicorn :8002</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="a2-w" class="muted">weight=1</b>
+              <b id="a2-ok" class="ok hide">200 JSON</b>
+            </div>
+          </div>
+          <div id="pool-l">
+            <div class="k">UPSTREAM</div>
+            <div class="who">backend</div>
+            <div class="sm">round-robin · weight=1</div>
+          </div>
+
+          <p id="cmd-root" class="cmd">root /var/www</p>
+          <p id="cmd-get" class="cmd">GET /static/logo.png</p>
+          <p id="cmd-tls" class="cmd">listen 443 ssl</p>
+          <p id="cmd-pass" class="cmd">proxy_pass http://backend</p>
+          <p id="cmd-host" class="cmd">Connection: close</p>
+          <p id="cmd-buf" class="cmd">proxy_buffering on</p>
+
+          <div id="pkt-https" class="pkt"><span data-layout-allow-overflow>HTTPS</span></div>
+          <div id="pkt-static" class="pkt"><span class="side" data-layout-allow-overflow>logo.png</span></div>
+          <div id="pkt-file" class="pkt go"><span class="side" data-layout-allow-overflow>200 OK</span></div>
+          <div id="pkt-logo" class="pkt go"><span data-layout-allow-overflow>200 OK</span></div>
+          <div id="pkt-api" class="pkt"><span data-layout-allow-overflow>/api/items</span></div>
+          <div id="pkt-api2" class="pkt"><span data-layout-allow-overflow>/api/items</span></div>
+          <div id="pkt-app1" class="pkt"><span data-layout-allow-overflow>proxy_pass</span></div>
+          <div id="pkt-json1" class="pkt go"><span data-layout-allow-overflow>200 JSON</span></div>
+          <div id="pkt-back1" class="pkt go"><span data-layout-allow-overflow>200 JSON</span></div>
+          <div id="pkt-app2" class="pkt"><span data-layout-allow-overflow>proxy_pass</span></div>
+          <div id="pkt-json2" class="pkt go"><span data-layout-allow-overflow>200 JSON</span></div>
+
+          <p class="never">A refused upstream is 502. A timeout is 504.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">GET /static/logo.png arrives on HTTPS port 443. Nginx matches listen, server_name, then location /static/.</p>
+          <p id="line-2" class="hide">TLS ends here: listen 443 ssl, with ssl_certificate and ssl_certificate_key. The upstream stays plain HTTP.</p>
+          <p id="line-3" class="hide">root /var/www turns /static/logo.png into /var/www/static/logo.png. expires 30d can cache it.</p>
+          <p id="line-4" class="hide">Nginx answers 200 OK from disk. Static files skip the app servers.</p>
+          <p id="line-5" class="hide">GET /api/items misses /static/. location / does proxy_pass http://backend, an upstream pool.</p>
+          <p id="line-6" class="hide">Round-robin picks app server 1, weight=1. Host is rewritten. Connection: close. proxy_set_header can override both.</p>
+          <p id="line-7" class="hide">App server 1 returns 200 and JSON. proxy_buffering on, so a slow browser does not hold the app.</p>
+          <p id="line-8" class="hide">The next GET /api/items goes to app server 2. ip_hash would keep one client on one server.</p>
+          <p id="line-9" class="hide">App server 2 answers the same way. Add a server line, then nginx -t and nginx -s reload.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.8);
+      tl.fromTo("#hot-https", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.7, ease: "power1.inOut" }, 0.8);
+      tl.fromTo("#pkt-https", { x: 0, opacity: 0 }, { x: 60, opacity: 1, duration: 0.7, ease: "power1.inOut" }, 0.8);
+      tl.fromTo("#pkt-https", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 1.55);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 3.35);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 3.5);
+      tl.fromTo("#nginx", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.3 }, 3.5);
+      tl.fromTo("#nx-wait", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 3.5);
+      tl.fromTo("#nx-tls", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 3.6);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 6.05);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 6.2);
+      tl.fromTo("#hot-static", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.65, ease: "power1.inOut" }, 6.2);
+      tl.fromTo("#pkt-static", { y: 0, opacity: 0 }, { y: -24, opacity: 1, duration: 0.65, ease: "power1.inOut" }, 6.2);
+      tl.fromTo("#pkt-static", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 6.9);
+      tl.fromTo("#st-idle", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 6.85);
+      tl.fromTo("#st-path", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 6.95);
+      tl.fromTo("#static", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 6.85);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 8.75);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 8.9);
+      tl.fromTo("#hot-file", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.45, ease: "power1.inOut" }, 8.9);
+      tl.fromTo("#pkt-file", { y: 0, opacity: 0 }, { y: 24, opacity: 1, duration: 0.45, ease: "power1.inOut" }, 8.9);
+      tl.fromTo("#pkt-file", { opacity: 1 }, { opacity: 0, duration: 0.15, immediateRender: false }, 9.4);
+      tl.fromTo("#st-path", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 8.95);
+      tl.fromTo("#st-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 9.05);
+      tl.fromTo("#static", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 9.0);
+      tl.fromTo("#hot-logo", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 9.5);
+      tl.fromTo("#pkt-logo", { x: 0, opacity: 0 }, { x: -60, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 9.5);
+      tl.fromTo("#pkt-logo", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 10.05);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 11.45);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 11.6);
+      tl.fromTo("#pkt-api", { x: 0, opacity: 0 }, { x: 50, opacity: 1, duration: 0.6, ease: "power1.inOut" }, 11.6);
+      tl.fromTo("#pkt-api", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 12.25);
+      tl.fromTo("#nx-tls", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 12.15);
+      tl.fromTo("#nx-loc", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 12.3);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 14.15);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 14.3);
+      tl.fromTo("#hot-app1", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.7, ease: "power1.inOut" }, 14.3);
+      tl.fromTo("#pkt-app1", { x: 0, y: 0, opacity: 0 }, { x: 30, y: -16, opacity: 1, duration: 0.7, ease: "power1.inOut" }, 14.3);
+      tl.fromTo("#pkt-app1", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 15.05);
+      tl.fromTo("#nx-loc", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 14.95);
+      tl.fromTo("#nx-rr1", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 15.1);
+      tl.fromTo("#app1", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 15.05);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 16.85);
+
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 17.0);
+      tl.fromTo("#hot-back1", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 17.0);
+      tl.fromTo("#pkt-json1", { x: 0, y: 0, opacity: 0 }, { x: -30, y: 24, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 17.0);
+      tl.fromTo("#pkt-json1", { opacity: 1 }, { opacity: 0, duration: 0.15, immediateRender: false }, 17.6);
+      tl.fromTo("#a1-w", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 17.55);
+      tl.fromTo("#a1-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 17.7);
+      tl.fromTo("#app1", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 17.65);
+      tl.fromTo("#pkt-back1", { x: 0, opacity: 0 }, { x: -60, opacity: 1, duration: 0.45, ease: "power1.inOut" }, 17.75);
+      tl.fromTo("#pkt-back1", { opacity: 1 }, { opacity: 0, duration: 0.15, immediateRender: false }, 18.25);
+      tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 19.55);
+
+      tl.fromTo("#line-8", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 19.7);
+      tl.fromTo("#pkt-api2", { x: 0, opacity: 0 }, { x: 50, opacity: 1, duration: 0.4, ease: "power1.inOut" }, 19.7);
+      tl.fromTo("#pkt-api2", { opacity: 1 }, { opacity: 0, duration: 0.15, immediateRender: false }, 20.15);
+      tl.fromTo("#hot-app2", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.6, ease: "power1.inOut" }, 20.25);
+      tl.fromTo("#pkt-app2", { x: 0, y: 0, opacity: 0 }, { x: 30, y: 16, opacity: 1, duration: 0.6, ease: "power1.inOut" }, 20.25);
+      tl.fromTo("#pkt-app2", { opacity: 1 }, { opacity: 0, duration: 0.15, immediateRender: false }, 20.9);
+      tl.fromTo("#nx-rr1", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 20.25);
+      tl.fromTo("#nx-rr2", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 20.4);
+      tl.fromTo("#app2", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 20.85);
+      tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 22.25);
+
+      tl.fromTo("#line-9", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 22.4);
+      tl.fromTo("#hot-back2", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 22.4);
+      tl.fromTo("#pkt-json2", { x: 0, y: 0, opacity: 0 }, { x: -30, y: -16, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 22.4);
+      tl.fromTo("#pkt-json2", { opacity: 1 }, { opacity: 0, duration: 0.15, immediateRender: false }, 23.0);
+      tl.fromTo("#a2-w", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 22.95);
+      tl.fromTo("#a2-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 23.1);
+      tl.fromTo("#app2", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 23.05);
+
+      tl.set({}, {}, 28);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

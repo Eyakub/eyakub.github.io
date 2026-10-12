@@ -808,5 +808,12 @@ export const nginx: Topic = {
     { label: 'NGINX docs: terminating SSL/TLS', url: 'https://docs.nginx.com/nginx/admin-guide/security-controls/terminating-ssl-http/' },
     { label: 'Uvicorn: deployment', url: 'https://uvicorn.dev/deployment/' },
     { label: 'Uvicorn: settings', url: 'https://uvicorn.dev/settings/' }
-  ]
+  ],
+  film: {
+    src: '/learn/nginx.mp4',
+    note: {
+      en: 'A refused upstream is 502. A timeout is 504. Static files skip the apps.',
+      bn: 'প্রত্যাখ্যাত upstream মানে 502। timeout মানে 504। static file app-কে এড়িয়ে যায়।'
+    }
+  }
 }
