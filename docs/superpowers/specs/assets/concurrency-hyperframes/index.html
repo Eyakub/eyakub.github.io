@@ -19,7 +19,7 @@
       }
       h1 { text-align: center; font-size: 40px; font-weight: 700; letter-spacing: -0.04em; }
       .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 18px; }
-      .stage { position: relative; width: 1480px; height: 640px; margin: 6px auto 0; }
+      .stage { position: relative; width: 1480px; height: 640px; margin: 8px auto 0; }
       svg.wires { position: absolute; inset: 0; width: 1480px; height: 640px; }
       .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
       .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
@@ -30,15 +30,16 @@
       .k { font-family: ui-monospace, Menlo, monospace; font-size: 12px; letter-spacing: 0.12em; color: #c5d0e0; }
       .who { margin-top: 1px; font-size: 18px; font-weight: 700; line-height: 1.12; }
       .sm { margin-top: 3px; font-size: 14px; color: #c5d0e0; white-space: nowrap; }
-      .row { position: relative; height: 22px; margin-top: 4px; }
+      .row { position: relative; height: 24px; margin-top: 6px; }
       .row b { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 15px; font-weight: 700; }
       .muted { color: #c5d0e0; font-weight: 600; }
       .ok { color: #3ee0a2; }
       .hotc { color: #9db7ff; }
-      .warn { color: #f0b429; }
-      #ready { left: 40px; top: 48px; width: 280px; height: 112px; }
-      #core { left: 600px; top: 48px; width: 280px; height: 112px; }
-      #blocked { left: 1160px; top: 48px; width: 280px; height: 112px; }
+      #queue { left: 0; top: 48px; width: 200px; height: 112px; }
+      #core1 { left: 360px; top: 48px; width: 230px; height: 112px; }
+      #core2 { left: 780px; top: 48px; width: 230px; height: 112px; }
+      #wait { left: 360px; top: 270px; width: 230px; height: 112px; }
+      #done { left: 780px; top: 270px; width: 230px; height: 112px; }
       .pkt {
         position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
         border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
@@ -52,99 +53,139 @@
         font-size: 15px; color: #f4f7fb;
       }
       .pkt.low span { top: -22px; }
-      .pkt.under span { top: 12px; }
-      #pkt-a { left: 460px; top: 104px; }
-      #pkt-wait { left: 1020px; top: 104px; }
-      #pkt-b { left: 460px; top: 104px; }
-      #pkt-back { left: 740px; top: 220px; }
-      #pkt-pause { left: 460px; top: 14px; }
-      #pkt-resume { left: 460px; top: 104px; }
-      .cmds { position: absolute; color: #c5d0e0; font-size: 14px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+      .pkt.vert span { left: auto; right: 20px; top: -8px; transform: none; }
+      #pkt-a { left: 280px; top: 96px; }
+      #pkt-b { left: 280px; top: 96px; }
+      #pkt-c { left: 280px; top: 96px; }
+      #pkt-block { left: 475px; top: 215px; }
+      #pkt-resume { left: 530px; top: 215px; }
+      #pkt-done { left: 680px; top: 200px; }
+      #pkt-bdone { left: 680px; top: 200px; }
+      #pkt-cdone { left: 680px; top: 200px; }
+      #pkt-d { left: 420px; top: 230px; }
+      #pkt-d2 { left: 895px; top: 215px; }
+      .cmds { position: absolute; color: #c5d0e0; font-size: 15px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
       .c0 { left: 0; }
-      .c1 { left: 780px; }
-      #cmd-1, #cmd-4 { top: 268px; }
-      #cmd-2, #cmd-5 { top: 294px; }
-      #cmd-3 { top: 320px; }
-      .never { position: absolute; left: 0; top: 370px; width: 1460px; color: #c5d0e0; font-size: 15px; line-height: 1.35; }
-      .said { position: relative; height: 170px; margin-top: 2px; }
+      .c1 { left: 820px; }
+      #cmd-1 { top: 430px; }
+      #cmd-2 { top: 454px; }
+      #cmd-3 { top: 478px; }
+      #cmd-4 { top: 502px; }
+      #cmd-5 { top: 430px; }
+      #cmd-6 { top: 454px; }
+      #cmd-7 { top: 478px; }
+      .never { position: absolute; left: 0; top: 548px; width: 1460px; color: #c5d0e0; font-size: 15px; line-height: 1.3; }
+      .said { position: relative; height: 120px; margin-top: 4px; }
       .said p { position: absolute; left: 8px; right: 8px; top: 0; text-align: center; font-size: 20px; line-height: 1.28; }
       .hide { opacity: 0; }
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="38" data-width="1920" data-height="1080">
-      <section id="board" class="clip" data-start="0" data-duration="38" data-track-index="0">
-        <h1>Concurrency deep-dive</h1>
-        <p class="sub">ready queue · core · blocked · context switch · scheduler</p>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="41" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="41" data-track-index="0">
+        <h1>Concurrency and parallelism</h1>
+        <p class="sub">task · CPU core · thread · waiting · concurrency · parallelism</p>
         <div class="stage">
           <svg class="wires" viewBox="0 0 1480 640">
-            <path class="idle" d="M320 104 H600" />
-            <path class="idle" d="M880 104 H1160" />
-            <path class="idle" d="M1300 160 V220 H180 V160" />
-            <path class="idle" d="M740 48 V14 H180 V48" />
-            <path id="hot-run" class="hot" pathLength="100" d="M320 104 H600" stroke="#5b8cff" />
-            <path id="hot-wait" class="hot" pathLength="100" d="M880 104 H1160" stroke="#f0b429" />
-            <path id="hot-back" class="hot" pathLength="100" d="M1300 160 V220 H180 V160" stroke="#3ee0a2" />
-            <path id="hot-pause" class="hot" pathLength="100" d="M740 48 V14 H180 V48" stroke="#5b8cff" />
+            <path class="idle" d="M200 96 H360" />
+            <path class="idle" d="M475 160 V270" />
+            <path class="idle" d="M530 270 V160" />
+            <path class="idle" d="M590 200 H780 V270" />
+            <path class="idle" d="M100 160 V230 H760 V96 H780" />
+            <path class="idle" d="M895 160 V270" />
+            <path id="hot-a" class="hot" pathLength="100" d="M200 96 H360" stroke="#5b8cff" />
+            <path id="hot-block" class="hot" pathLength="100" d="M475 160 V270" stroke="#f0b429" />
+            <path id="hot-resume" class="hot" pathLength="100" d="M530 270 V160" stroke="#3ee0a2" />
+            <path id="hot-done" class="hot" pathLength="100" d="M590 200 H780 V270" stroke="#3ee0a2" />
+            <path id="hot-d" class="hot" pathLength="100" d="M100 160 V230 H760 V96 H780" stroke="#5b8cff" />
+            <path id="hot-d2" class="hot" pathLength="100" d="M895 160 V270" stroke="#3ee0a2" />
           </svg>
-          <div id="ready" class="card">
+          <div id="queue" class="card">
             <div class="k">QUEUE</div>
-            <div class="who">Ready queue</div>
-            <div class="sm">runnable tasks</div>
+            <div class="who">Task queue</div>
+            <div class="sm">run queue</div>
             <div class="row" data-layout-allow-overlap>
-              <b id="ready-idle" class="muted">waiting</b>
-              <b id="ready-b" class="warn hide">B waiting</b>
-              <b id="ready-empty" class="muted hide">empty</b>
-              <b id="ready-a" class="ok hide">A is back</b>
-              <b id="ready-both" class="warn hide">B paused, A waiting</b>
-              <b id="ready-b2" class="warn hide">B waiting</b>
+              <b id="q-idle" class="muted">tasks waiting</b>
+              <b id="q-a" class="hotc hide">task A</b>
+              <b id="q-b" class="hotc hide">task B</b>
+              <b id="q-cd" class="ok hide">tasks C and D</b>
             </div>
           </div>
-          <div id="core" class="card">
-            <div class="k">CPU</div>
-            <div class="who">Core</div>
-            <div class="sm">one task at a time</div>
+          <div id="core1" class="card">
+            <div class="k">CORE</div>
+            <div class="who">CPU core 1</div>
+            <div class="sm">one thread at a time</div>
             <div class="row" data-layout-allow-overlap>
-              <b id="core-free" class="muted">free</b>
-              <b id="core-a" class="hotc hide">running A</b>
-              <b id="core-free2" class="muted hide">free</b>
-              <b id="core-b" class="hotc hide">running B</b>
-              <b id="core-save" class="warn hide">saving B</b>
-              <b id="core-a2" class="hotc hide">running A</b>
-              <b id="core-ask" class="warn hide">switch requested</b>
+              <b id="c1-idle" class="muted">idle</b>
+              <b id="c1-a" class="hotc hide">running A</b>
+              <b id="c1-free" class="hotc hide">released</b>
+              <b id="c1-b" class="hotc hide">running B</b>
+              <b id="c1-back" class="ok hide">resumes A</b>
+              <b id="c1-b2" class="hotc hide">back to B</b>
+              <b id="c1-c" class="ok hide">running C</b>
+              <b id="c1-end" class="ok hide">concurrency</b>
             </div>
           </div>
-          <div id="blocked" class="card">
-            <div class="k">WAIT</div>
-            <div class="who">Blocked</div>
-            <div class="sm">parked, core is free</div>
+          <div id="core2" class="card">
+            <div class="k">CORE</div>
+            <div class="who">CPU core 2</div>
+            <div class="sm">second core</div>
             <div class="row" data-layout-allow-overlap>
-              <b id="blk-empty" class="muted">empty</b>
-              <b id="blk-a" class="warn hide">A waiting</b>
-              <b id="blk-empty2" class="muted hide">empty</b>
+              <b id="c2-idle" class="muted">idle</b>
+              <b id="c2-d" class="ok hide">running D</b>
+              <b id="c2-end" class="ok hide">parallelism</b>
             </div>
           </div>
-          <div id="pkt-a" class="pkt low"><span data-layout-allow-overflow>task A</span></div>
-          <div id="pkt-wait" class="pkt job low"><span data-layout-allow-overflow>A waits</span></div>
-          <div id="pkt-b" class="pkt low"><span data-layout-allow-overflow>task B</span></div>
-          <div id="pkt-back" class="pkt go low"><span data-layout-allow-overflow>A ready</span></div>
-          <div id="pkt-pause" class="pkt under"><span data-layout-allow-overflow>B paused</span></div>
-          <div id="pkt-resume" class="pkt low"><span data-layout-allow-overflow>A resumes</span></div>
-          <p id="cmd-1" class="cmds c0">import sys; print(sys.getswitchinterval())</p>
-          <p id="cmd-2" class="cmds c0">sys.setswitchinterval(0.001)</p>
-          <p id="cmd-3" class="cmds c0">async def spin(): while True: pass  # never awaits</p>
-          <p id="cmd-4" class="cmds c1">await asyncio.sleep(0)</p>
-          <p id="cmd-5" class="cmds c1">DEFAULT_INTERVAL 5000  # microseconds, ceval_gil.c</p>
-          <p class="never" data-layout-allow-overlap>Off this path: A scheduler can keep picking the same task, so a ready task starves. An asyncio task that never awaits never returns to the loop. await asyncio.sleep(0) is enough to suspend.</p>
+          <div id="wait" class="card">
+            <div class="k">I/O</div>
+            <div class="who">Waiting</div>
+            <div class="sm">blocked, not spinning</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="w-idle" class="muted">empty</b>
+              <b id="w-a" class="hotc hide">A on I/O</b>
+              <b id="w-free" class="ok hide">I/O done</b>
+            </div>
+          </div>
+          <div id="done" class="card">
+            <div class="k">DONE</div>
+            <div class="who">Finished</div>
+            <div class="sm">results</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="d-idle" class="muted">none yet</b>
+              <b id="d-1" class="ok hide">1 result</b>
+              <b id="d-2" class="ok hide">2 results</b>
+              <b id="d-4" class="ok hide">4 results</b>
+            </div>
+          </div>
+          <div id="pkt-a" class="pkt"><span data-layout-allow-overflow>task A</span></div>
+          <div id="pkt-b" class="pkt"><span data-layout-allow-overflow>task B</span></div>
+          <div id="pkt-c" class="pkt go"><span data-layout-allow-overflow>task C</span></div>
+          <div id="pkt-block" class="pkt job vert"><span data-layout-allow-overflow>block</span></div>
+          <div id="pkt-resume" class="pkt go vert"><span data-layout-allow-overflow>resume</span></div>
+          <div id="pkt-done" class="pkt go low"><span data-layout-allow-overflow>task A</span></div>
+          <div id="pkt-bdone" class="pkt go low"><span data-layout-allow-overflow>task B</span></div>
+          <div id="pkt-cdone" class="pkt go low"><span data-layout-allow-overflow>task C</span></div>
+          <div id="pkt-d" class="pkt low"><span data-layout-allow-overflow>task D</span></div>
+          <div id="pkt-d2" class="pkt go vert"><span data-layout-allow-overflow>task D</span></div>
+          <p id="cmd-1" class="cmds c0">import os; print(os.process_cpu_count())</p>
+          <p id="cmd-2" class="cmds c0">with ThreadPoolExecutor() as ex: list(ex.map(fetch, urls))</p>
+          <p id="cmd-3" class="cmds c0">with ProcessPoolExecutor() as ex: list(ex.map(crunch, jobs, chunksize=50))</p>
+          <p id="cmd-4" class="cmds c0">await asyncio.gather(*(fetch(u) for u in urls))</p>
+          <p id="cmd-5" class="cmds c1">import sys; sys._is_gil_enabled()</p>
+          <p id="cmd-6" class="cmds c1">python -VV</p>
+          <p id="cmd-7" class="cmds c1">t = time.perf_counter(); work(); print(time.perf_counter() - t)</p>
+          <p class="never" data-layout-allow-overlap>Off this path: On a GIL build, CPU-bound threads take turns, so both finish near 2t, not t. Use processes for that work.</p>
         </div>
         <div class="said" data-layout-allow-overlap>
-          <p id="line-1" class="hide">One core takes task A from the ready queue and runs it. Other ready tasks are in progress, not running. Only one task executes on a core at a given instant.</p>
-          <p id="line-2" class="hide">A blocking call parks A. The core is released instead of spinning, which is the gap interleaving uses. Waiting on a disk, a socket, or a lock all look like this.</p>
-          <p id="line-3" class="hide">The core runs B during A's wait. Two tasks are in progress and only one executes. That is concurrency. Parallelism would be both executing at the same instant, which needs another core.</p>
-          <p id="line-4" class="hide">The wait ends and the scheduler puts A back on the ready queue. A does not seize the core. Something still has to pick A.</p>
-          <p id="line-5" class="hide">A context switch saves B's program counter, registers, and stack pointer, then can restore another task. That save is why tiny slices can cost more than they save.</p>
-          <p id="line-6" class="hide">A is restored and runs again. B is ready, not gone. One core made progress on two tasks by interleaving. It never ran both at once.</p>
-          <p id="line-7" class="hide">Cooperative tasks run until an await that suspends. Preemptive: the OS interrupts a thread. A GIL build asks to switch between bytecodes. setswitchinterval sets the ideal slice, 5000 µs in CPython 3.14, often longer. The OS, not Python, picks who runs next.</p>
+          <p id="line-1" class="hide">One core takes task A from the run queue and executes it. At any single instant a core runs only one thing.</p>
+          <p id="line-2" class="hide">Task A blocks on slow I/O. The core is released instead of spinning, and that is what makes interleaving possible.</p>
+          <p id="line-3" class="hide">The core runs B during A’s wait. Two tasks are in progress but only one executes at a time: that is concurrency.</p>
+          <p id="line-4" class="hide">A’s I/O completes, so A can resume. The switch is a context switch for OS threads, or a resume at await in asyncio.</p>
+          <p id="line-5" class="hide">A completes and B continues on the same core. Total time beats running A then B, because B used A’s idle time.</p>
+          <p id="line-6" class="hide">One core progressed two tasks by interleaving. Concurrency does not need more than one core.</p>
+          <p id="line-7" class="hide">Two cores execute two instruction streams at the same instant: parallelism. It needs more than one core and a runtime that can use them.</p>
+          <p id="line-8" class="hide">Two equal CPU-bound jobs take about half the wall-clock time, minus overhead. Interleaving alone only helps when tasks wait.</p>
+          <p id="line-9" class="hide">Concurrency is how work is structured and scheduled. Parallelism is simultaneous execution, which needs several execution units.</p>
         </div>
       </section>
     </div>
@@ -153,80 +194,105 @@
       tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
 
       tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.35);
-      tl.fromTo("#hot-run", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 0.35);
+      tl.fromTo("#hot-a", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 0.35);
       tl.fromTo("#pkt-a", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0.35);
-      tl.fromTo("#pkt-a", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 4.05);
-      tl.fromTo("#ready-idle", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 0.5);
-      tl.fromTo("#ready-b", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 0.7);
-      tl.fromTo("#core-free", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 0.5);
-      tl.fromTo("#core-a", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 0.7);
-      tl.fromTo("#core", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.5);
-      tl.fromTo("#ready", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 0.5);
-      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 4.6);
+      tl.fromTo("#pkt-a", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 3.9);
+      tl.fromTo("#q-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.5);
+      tl.fromTo("#q-a", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.7);
+      tl.fromTo("#c1-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.55);
+      tl.fromTo("#c1-a", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.75);
+      tl.fromTo("#core1", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.55);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 4.2);
 
-      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.9);
-      tl.fromTo("#hot-wait", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 4.9);
-      tl.fromTo("#pkt-wait", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 4.9);
-      tl.fromTo("#pkt-wait", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 8.6);
-      tl.fromTo("#core-a", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 5.05);
-      tl.fromTo("#core-free2", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 5.25);
-      tl.fromTo("#blk-empty", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 5.05);
-      tl.fromTo("#blk-a", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 5.25);
-      tl.fromTo("#core", { borderColor: "#5b8cff" }, { borderColor: "#243044", duration: 0.25, immediateRender: false }, 5.05);
-      tl.fromTo("#blocked", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 5.05);
-      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 9.15);
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.45);
+      tl.fromTo("#hot-block", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 4.45);
+      tl.fromTo("#pkt-block", { y: 0, opacity: 0 }, { y: 8, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 4.45);
+      tl.fromTo("#pkt-block", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 7.9);
+      tl.fromTo("#c1-a", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 4.6);
+      tl.fromTo("#c1-free", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.8);
+      tl.fromTo("#core1", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 4.6);
+      tl.fromTo("#w-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 4.65);
+      tl.fromTo("#w-a", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.85);
+      tl.fromTo("#wait", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 4.65);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 8.2);
 
-      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 9.45);
-      tl.fromTo("#pkt-b", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 9.45);
-      tl.fromTo("#pkt-b", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 13.15);
-      tl.fromTo("#core-free2", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 9.6);
-      tl.fromTo("#core-b", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 9.8);
-      tl.fromTo("#ready-b", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 9.6);
-      tl.fromTo("#ready-empty", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 9.8);
-      tl.fromTo("#core", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25, immediateRender: false }, 9.6);
-      tl.fromTo("#ready", { borderColor: "#f0b429" }, { borderColor: "#243044", duration: 0.25, immediateRender: false }, 9.6);
-      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 13.7);
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 8.45);
+      tl.fromTo("#pkt-b", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 8.45);
+      tl.fromTo("#pkt-b", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 12.05);
+      tl.fromTo("#q-a", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 8.6);
+      tl.fromTo("#q-b", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 8.8);
+      tl.fromTo("#c1-free", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 8.65);
+      tl.fromTo("#c1-b", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 8.85);
+      tl.fromTo("#core1", { borderColor: "#f0b429" }, { borderColor: "#5b8cff", duration: 0.25, immediateRender: false }, 8.65);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 12.4);
 
-      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 14.0);
-      tl.fromTo("#hot-back", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 14.0);
-      tl.fromTo("#pkt-back", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 14.0);
-      tl.fromTo("#pkt-back", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 17.7);
-      tl.fromTo("#blk-a", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 14.15);
-      tl.fromTo("#blk-empty2", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 14.35);
-      tl.fromTo("#ready-empty", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 14.15);
-      tl.fromTo("#ready-a", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 14.35);
-      tl.fromTo("#blocked", { borderColor: "#f0b429" }, { borderColor: "#243044", duration: 0.25, immediateRender: false }, 14.15);
-      tl.fromTo("#ready", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 14.15);
-      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 18.25);
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 12.65);
+      tl.fromTo("#hot-resume", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 12.65);
+      tl.fromTo("#pkt-resume", { y: 0, opacity: 0 }, { y: -8, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 12.65);
+      tl.fromTo("#pkt-resume", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 16.45);
+      tl.fromTo("#w-a", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 12.8);
+      tl.fromTo("#w-free", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 13.0);
+      tl.fromTo("#wait", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 12.8);
+      tl.fromTo("#c1-b", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 12.85);
+      tl.fromTo("#c1-back", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 13.05);
+      tl.fromTo("#core1", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 12.85);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 16.8);
 
-      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 18.55);
-      tl.fromTo("#hot-pause", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 18.55);
-      tl.fromTo("#pkt-pause", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 18.55);
-      tl.fromTo("#pkt-pause", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 22.25);
-      tl.fromTo("#core-b", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 18.7);
-      tl.fromTo("#core-save", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 18.9);
-      tl.fromTo("#ready-a", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 18.7);
-      tl.fromTo("#ready-both", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 18.9);
-      tl.fromTo("#core", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 18.7);
-      tl.fromTo("#ready", { borderColor: "#3ee0a2" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 18.7);
-      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 22.8);
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 17.05);
+      tl.fromTo("#hot-done", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 17.05);
+      tl.fromTo("#pkt-done", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 17.05);
+      tl.fromTo("#pkt-done", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 20.85);
+      tl.fromTo("#d-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 17.2);
+      tl.fromTo("#d-1", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 17.4);
+      tl.fromTo("#done", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 17.2);
+      tl.fromTo("#c1-back", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 17.25);
+      tl.fromTo("#c1-b2", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 17.45);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 21.2);
 
-      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 23.1);
-      tl.fromTo("#pkt-resume", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 23.1);
-      tl.fromTo("#pkt-resume", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 26.8);
-      tl.fromTo("#core-save", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 23.25);
-      tl.fromTo("#core-a2", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 23.45);
-      tl.fromTo("#ready-both", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 23.25);
-      tl.fromTo("#ready-b2", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 23.45);
-      tl.fromTo("#core", { borderColor: "#f0b429" }, { borderColor: "#5b8cff", duration: 0.25, immediateRender: false }, 23.25);
-      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 27.35);
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 21.45);
+      tl.fromTo("#pkt-bdone", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 21.45);
+      tl.fromTo("#pkt-bdone", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 24.85);
+      tl.fromTo("#d-1", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 21.6);
+      tl.fromTo("#d-2", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 21.8);
+      tl.fromTo("#c1-b2", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 21.65);
+      tl.fromTo("#c1-idle", { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, 21.85);
+      tl.fromTo("#core1", { borderColor: "#3ee0a2" }, { borderColor: "#243044", duration: 0.25, immediateRender: false }, 21.65);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 25.2);
 
-      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 27.65);
-      tl.fromTo("#core-a2", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 27.8);
-      tl.fromTo("#core-ask", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 28.0);
-      tl.fromTo("#core", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 27.8);
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 25.45);
+      tl.fromTo("#pkt-c", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 25.45);
+      tl.fromTo("#pkt-c", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 29.85);
+      tl.fromTo("#hot-d", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.7, ease: "power1.inOut" }, 25.45);
+      tl.fromTo("#pkt-d", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.6, ease: "power1.inOut" }, 25.6);
+      tl.fromTo("#pkt-d", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 29.85);
+      tl.fromTo("#q-b", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 25.6);
+      tl.fromTo("#q-cd", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 25.8);
+      tl.fromTo("#c1-idle", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 25.65);
+      tl.fromTo("#c1-c", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 25.85);
+      tl.fromTo("#core1", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 25.65);
+      tl.fromTo("#c2-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 25.7);
+      tl.fromTo("#c2-d", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 25.9);
+      tl.fromTo("#core2", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 25.7);
+      tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 30.2);
 
-      tl.set({}, {}, 38);
+      tl.fromTo("#line-8", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 30.45);
+      tl.fromTo("#pkt-cdone", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 30.45);
+      tl.fromTo("#pkt-cdone", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 34.6);
+      tl.fromTo("#hot-d2", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 30.45);
+      tl.fromTo("#pkt-d2", { y: 0, opacity: 0 }, { y: 8, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 30.45);
+      tl.fromTo("#pkt-d2", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 34.6);
+      tl.fromTo("#d-2", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 30.6);
+      tl.fromTo("#d-4", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 30.8);
+      tl.fromTo("#c1-c", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 30.65);
+      tl.fromTo("#c1-end", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 30.85);
+      tl.fromTo("#c2-d", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 30.7);
+      tl.fromTo("#c2-end", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 30.9);
+      tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 35.0);
+
+      tl.fromTo("#line-9", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 35.25);
+      tl.fromTo("#line-9", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 40.2);
+
+      tl.set({}, {}, 41);
       window.__timelines = window.__timelines || {};
       window.__timelines.main = tl;
     </script>
