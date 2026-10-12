@@ -49,7 +49,7 @@
       #cmd-on { left: 820px; top: 136px; }
       #cmd-image { left: 620px; top: 188px; }
       #cmd-gate { left: 1088px; top: 260px; }
-      #cmd-deploy { left: 820px; top: 500px; }
+      #cmd-deploy { left: 760px; top: 528px; }
       #cmd-pull { left: 560px; top: 360px; }
       #cmd-check { left: 250px; top: 250px; }
       #dev { left: 20px; top: 16px; }
@@ -62,7 +62,8 @@
       #pkt-on { left: 760px; top: 72px; }
       #pkt-image { left: 1100px; top: 144px; background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
       #pkt-gate { left: 1240px; top: 144px; background: #f0b429; box-shadow: 0 0 0 6px rgba(240, 180, 41, 0.22), 0 0 16px rgba(240, 180, 41, 0.8); }
-      #pkt-deploy { left: 1090px; top: 456px; background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      #pkt-deploy { left: 1090px; top: 456px; }
+      #pkt-deploy span { left: auto; right: 18px; top: -26px; }
       #pkt-pull { left: 850px; top: 342px; background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
       #pkt-check { left: 400px; top: 430px; }
       .pkt {
@@ -87,10 +88,10 @@
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="32" data-width="1920" data-height="1080">
-      <section id="board" class="clip" data-start="0" data-duration="32" data-track-index="0">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="35" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="35" data-track-index="0">
         <h1>CI/CD</h1>
-        <p class="sub">push, test, image, approval, then deploy</p>
+        <p class="sub">push, test, image, approve, then pull</p>
         <div class="stage">
           <svg class="wires" viewBox="0 0 1480 700">
             <path class="idle" d="M300 72 H460" />
@@ -104,7 +105,7 @@
             <path id="hot-on" class="hot" pathLength="100" d="M760 72 H1040" stroke="#5b8cff" />
             <path id="hot-image" class="hot" pathLength="100" d="M1100 144 C1100 210 850 190 850 230" stroke="#3ee0a2" />
             <path id="hot-gate" class="hot" pathLength="100" d="M1240 144 V400" stroke="#f0b429" />
-            <path id="hot-deploy" class="hot" pathLength="100" d="M1090 456 C900 520 760 486 660 486" stroke="#3ee0a2" />
+            <path id="hot-deploy" class="hot" pathLength="100" d="M1090 456 C900 520 760 486 660 486" stroke="#5b8cff" />
             <path id="hot-pull" class="hot" pathLength="100" d="M850 342 C850 390 510 390 510 430" stroke="#3ee0a2" />
             <path id="hot-check" class="hot" pathLength="100" d="M400 430 C200 300 460 220 610 128" stroke="#5b8cff" />
           </svg>
@@ -155,6 +156,7 @@
             <div class="who">live servers</div>
             <div class="row" data-layout-allow-overlap>
               <b id="prod-old" class="muted">previous tag</b>
+              <b id="prod-told" class="hide warn">run app:3f9c2a1</b>
               <b id="prod-new" class="hide ok">app:3f9c2a1</b>
             </div>
           </div>
@@ -163,7 +165,7 @@
           <div id="pkt-on" class="pkt" data-layout-allow-overflow><span>job</span></div>
           <div id="pkt-image" class="pkt" data-layout-allow-overflow><span>app:3f9c2a1</span></div>
           <div id="pkt-gate" class="pkt" data-layout-allow-overflow><span>deploy</span></div>
-          <div id="pkt-deploy" class="pkt" data-layout-allow-overflow><span>3f9c2a1</span></div>
+          <div id="pkt-deploy" class="pkt" data-layout-allow-overflow><span>run 3f9c2a1</span></div>
           <div id="pkt-pull" class="pkt" data-layout-allow-overflow><span>docker pull</span></div>
           <div id="pkt-check" class="pkt" data-layout-allow-overflow><span>pass</span></div>
 
@@ -171,7 +173,7 @@
           <p id="cmd-on" class="cmd">on: push</p>
           <p id="cmd-image" class="cmd">ghcr.io</p>
           <p id="cmd-gate" class="cmd">environment</p>
-          <p id="cmd-deploy" class="cmd">deploy</p>
+          <p id="cmd-deploy" class="cmd">run app:3f9c2a1</p>
           <p id="cmd-pull" class="cmd">docker pull</p>
           <p id="cmd-check" class="cmd">check</p>
           <p class="never">A failed test skips the image and the deploy. Never deploy latest.</p>
@@ -184,8 +186,9 @@
           <p id="line-5" class="hide">The job pushes app:3f9c2a1 to ghcr.io. The tag is the commit SHA, never latest.</p>
           <p id="line-6" class="hide">The deploy job needs the build, then waits on environment: production.</p>
           <p id="line-7" class="hide">Approve and deploy, or reject and fail the run. Secrets come after the yes.</p>
-          <p id="line-8" class="hide">Production pulls app:3f9c2a1. The tested bytes are the bytes that run.</p>
-          <p id="line-9" class="hide">The run ends green. Rollback is one deploy of the previous SHA.</p>
+          <p id="line-8" class="hide">The released job tells production to run app:3f9c2a1.</p>
+          <p id="line-9" class="hide">Then production pulls that tag from ghcr.io. The tested bytes are the bytes that run.</p>
+          <p id="line-10" class="hide">The run ends green. Rollback is one deploy of the previous SHA.</p>
         </div>
       </section>
     </div>
@@ -248,28 +251,34 @@
 
       tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 21.9);
       tl.fromTo("#hot-deploy", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.85, ease: "none" }, 22.0);
-      tl.fromTo("#pkt-deploy", { x: 0, y: 0, opacity: 0 }, { x: -200, y: 30, opacity: 1, duration: 0.4, ease: "none" }, 22.0);
-      tl.fromTo("#pkt-deploy", { x: -200, y: 30 }, { x: -380, y: 30, duration: 0.4, ease: "power1.out", immediateRender: false }, 22.44);
-      tl.fromTo("#pkt-deploy", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 22.88);
-      tl.fromTo("#hot-pull", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.8, ease: "power1.inOut" }, 22.1);
-      tl.fromTo("#pkt-pull", { x: 0, y: 0, opacity: 0 }, { x: -250, y: 68, opacity: 1, duration: 0.8, ease: "power1.inOut" }, 22.1);
-      tl.fromTo("#pkt-pull", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 22.95);
-      tl.fromTo("#prod", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 22.9);
+      tl.fromTo("#pkt-deploy", { x: 0, y: 0, opacity: 0 }, { x: -150, y: 24, opacity: 1, duration: 0.4, ease: "none" }, 22.0);
+      tl.fromTo("#pkt-deploy", { x: -150, y: 24 }, { x: -250, y: 28, duration: 0.35, ease: "power1.out", immediateRender: false }, 22.44);
+      tl.fromTo("#pkt-deploy", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 22.84);
+      tl.fromTo("#prod", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 22.9);
       tl.fromTo("#prod-old", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 22.9);
-      tl.fromTo("#prod-new", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 23.0);
+      tl.fromTo("#prod-told", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 23.0);
       tl.fromTo("#line-8", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 22.0);
 
-      tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 25.5);
-      tl.fromTo("#hot-check", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.9, ease: "none" }, 25.6);
-      tl.fromTo("#pkt-check", { x: 0, y: 0, opacity: 0 }, { x: 80, y: -140, opacity: 1, duration: 0.42, ease: "none" }, 25.6);
-      tl.fromTo("#pkt-check", { x: 80, y: -140 }, { x: 180, y: -270, duration: 0.44, ease: "power1.out", immediateRender: false }, 26.06);
-      tl.fromTo("#pkt-check", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 26.54);
-      tl.fromTo("#repo", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 26.5);
-      tl.fromTo("#repo-push", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 26.5);
-      tl.fromTo("#repo-green", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 26.6);
-      tl.fromTo("#line-9", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 25.6);
+      tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 25.2);
+      tl.fromTo("#hot-pull", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.8, ease: "power1.inOut" }, 25.3);
+      tl.fromTo("#pkt-pull", { x: 0, y: 0, opacity: 0 }, { x: -250, y: 68, opacity: 1, duration: 0.8, ease: "power1.inOut" }, 25.3);
+      tl.fromTo("#pkt-pull", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 26.15);
+      tl.fromTo("#prod", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 26.1);
+      tl.fromTo("#prod-told", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 26.1);
+      tl.fromTo("#prod-new", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 26.2);
+      tl.fromTo("#line-9", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 25.3);
 
-      tl.set({}, {}, 32);
+      tl.fromTo("#line-9", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 28.6);
+      tl.fromTo("#hot-check", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.9, ease: "none" }, 28.7);
+      tl.fromTo("#pkt-check", { x: 0, y: 0, opacity: 0 }, { x: 80, y: -140, opacity: 1, duration: 0.42, ease: "none" }, 28.7);
+      tl.fromTo("#pkt-check", { x: 80, y: -140 }, { x: 180, y: -270, duration: 0.44, ease: "power1.out", immediateRender: false }, 29.16);
+      tl.fromTo("#pkt-check", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 29.64);
+      tl.fromTo("#repo", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 29.6);
+      tl.fromTo("#repo-push", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 29.6);
+      tl.fromTo("#repo-green", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 29.7);
+      tl.fromTo("#line-10", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 28.7);
+
+      tl.set({}, {}, 35);
       window.__timelines = window.__timelines || {};
       window.__timelines.main = tl;
     </script>
