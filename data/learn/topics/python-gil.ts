@@ -1049,5 +1049,12 @@ export const pythonGil: Topic = {
     { label: 'Python docs: What’s New in 3.14', url: 'https://docs.python.org/3/whatsnew/3.14.html' },
     { label: 'PEP 779: free-threaded Python supported', url: 'https://peps.python.org/pep-0779/' },
     { label: 'PEP 684: per-interpreter GIL', url: 'https://peps.python.org/pep-0684/' }
-  ]
+  ],
+  film: {
+    src: '/learn/python-gil.mp4',
+    note: {
+      en: 'A free-threaded build can run bytecode on two cores. Compound updates can still race, and an unsafe C extension can turn the GIL back on.',
+      bn: 'free-threaded build দুটো core-এ bytecode চালাতে পারে। যৌগিক আপডেটে তবু race হতে পারে, আর অনিরাপদ C extension GIL আবার চালু করতে পারে।'
+    }
+  }
 }

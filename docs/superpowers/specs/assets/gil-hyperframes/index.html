@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 16px 36px 14px;
+      }
+      h1 { text-align: center; font-size: 40px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 18px; }
+      .stage { position: relative; width: 1480px; height: 640px; margin: 6px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 640px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 8px 12px; z-index: 1;
+      }
+      .k { font-family: ui-monospace, Menlo, monospace; font-size: 12px; letter-spacing: 0.12em; color: #c5d0e0; }
+      .who { margin-top: 1px; font-size: 18px; font-weight: 700; line-height: 1.12; }
+      .sm { margin-top: 3px; font-size: 14px; color: #c5d0e0; white-space: nowrap; }
+      .row { position: relative; height: 24px; margin-top: 6px; }
+      .row b { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 15px; font-weight: 700; }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      #t1 { left: 0; top: 52px; width: 220px; height: 104px; }
+      #interp { left: 400px; top: 52px; width: 250px; height: 104px; }
+      #cext { left: 900px; top: 52px; width: 280px; height: 104px; }
+      #t2 { left: 0; top: 250px; width: 220px; height: 104px; }
+      #gil { left: 400px; top: 250px; width: 250px; height: 104px; }
+      #io { left: 900px; top: 250px; width: 280px; height: 104px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt.job { background: #f0b429; box-shadow: 0 0 0 6px rgba(240, 180, 41, 0.22), 0 0 16px rgba(240, 180, 41, 0.85); }
+      .pkt span {
+        position: absolute; left: 50%; top: -40px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 15px; color: #f4f7fb;
+      }
+      .pkt.low span { top: -22px; }
+      .pkt.under span { top: 12px; }
+      #pkt-hold { left: 310px; top: 188px; }
+      #pkt-byte { left: 310px; top: 104px; }
+      #pkt-want { left: 310px; top: 286px; }
+      #pkt-rel { left: 310px; top: 338px; }
+      #pkt-t2 { left: 310px; top: 270px; }
+      #pkt-recv { left: 775px; top: 400px; }
+      #pkt-hold2 { left: 310px; top: 188px; }
+      #pkt-data { left: 775px; top: 428px; }
+      #pkt-hash { left: 775px; top: 20px; }
+      #pkt-t2b { left: 310px; top: 270px; }
+      .cmds { position: absolute; color: #c5d0e0; font-size: 15px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+      .c0 { left: 0; }
+      .c1 { left: 760px; }
+      #cmd-1 { top: 468px; }
+      #cmd-2 { top: 492px; }
+      #cmd-3 { top: 516px; }
+      #cmd-4 { top: 540px; }
+      #cmd-5 { top: 468px; }
+      #cmd-6 { top: 492px; }
+      #cmd-7 { top: 516px; }
+      .never { position: absolute; left: 0; top: 572px; width: 1460px; color: #c5d0e0; font-size: 15px; line-height: 1.3; }
+      .said { position: relative; height: 130px; margin-top: 2px; }
+      .said p { position: absolute; left: 8px; right: 8px; top: 0; text-align: center; font-size: 20px; line-height: 1.28; }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="46" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="46" data-track-index="0">
+        <h1>The Python GIL</h1>
+        <p class="sub">thread · GIL · bytecode · switch interval · interpreter · blocking I/O · C extension</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 640">
+            <path class="idle" d="M220 104 H400" />
+            <path class="idle" d="M110 156 V188 H525 V250" />
+            <path class="idle" d="M220 286 H400" />
+            <path class="idle" d="M220 338 H400" />
+            <path class="idle" d="M400 270 H220" />
+            <path class="idle" d="M110 354 V400 H1035 V354" />
+            <path class="idle" d="M1035 354 V428 H110 V354" />
+            <path class="idle" d="M110 52 V20 H1035 V52" />
+            <path id="hot-byte" class="hot" pathLength="100" d="M220 104 H400" stroke="#5b8cff" />
+            <path id="hot-hold" class="hot" pathLength="100" d="M110 156 V188 H525 V250" stroke="#3ee0a2" />
+            <path id="hot-want" class="hot" pathLength="100" d="M220 286 H400" stroke="#f0b429" />
+            <path id="hot-rel" class="hot" pathLength="100" d="M220 338 H400" stroke="#f0b429" />
+            <path id="hot-t2" class="hot" pathLength="100" d="M400 270 H220" stroke="#3ee0a2" />
+            <path id="hot-recv" class="hot" pathLength="100" d="M110 354 V400 H1035 V354" stroke="#f0b429" />
+            <path id="hot-data" class="hot" pathLength="100" d="M1035 354 V428 H110 V354" stroke="#3ee0a2" />
+            <path id="hot-hash" class="hot" pathLength="100" d="M110 52 V20 H1035 V52" stroke="#f0b429" />
+          </svg>
+          <div id="t1" class="card">
+            <div class="k">THREAD</div>
+            <div class="who">Thread 1</div>
+            <div class="sm">needs the GIL</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="t1-idle" class="muted">idle</b>
+              <b id="t1-has" class="ok hide">has the GIL</b>
+              <b id="t1-run" class="hotc hide">running</b>
+              <b id="t1-wait" class="hotc hide">waiting</b>
+              <b id="t1-c" class="hotc hide">in C code</b>
+              <b id="t1-want" class="hotc hide">wants the GIL</b>
+            </div>
+          </div>
+          <div id="interp" class="card">
+            <div class="k">EVAL</div>
+            <div class="who">Interpreter</div>
+            <div class="sm">runs bytecode</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="i-idle" class="muted">idle</b>
+              <b id="i-t1" class="hotc hide">running T1</b>
+              <b id="i-pause" class="muted hide">paused</b>
+              <b id="i-t2" class="ok hide">running T2</b>
+            </div>
+          </div>
+          <div id="cext" class="card">
+            <div class="k">C</div>
+            <div class="who">C extension</div>
+            <div class="sm">hashlib, zlib, NumPy</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="c-idle" class="muted">idle</b>
+              <b id="c-hash" class="hotc hide">hashing</b>
+              <b id="c-done" class="ok hide">done</b>
+            </div>
+          </div>
+          <div id="t2" class="card">
+            <div class="k">THREAD</div>
+            <div class="who">Thread 2</div>
+            <div class="sm">same process</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="t2-idle" class="muted">idle</b>
+              <b id="t2-wait" class="hotc hide">waiting</b>
+              <b id="t2-run" class="ok hide">running</b>
+              <b id="t2-recv" class="hotc hide">blocked in recv</b>
+              <b id="t2-want" class="hotc hide">wants the GIL</b>
+            </div>
+          </div>
+          <div id="gil" class="card">
+            <div class="k">LOCK</div>
+            <div class="who">The GIL</div>
+            <div class="sm">one holder</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="g-free" class="muted">free</b>
+              <b id="g-t1" class="ok hide">held by T1</b>
+              <b id="g-ask" class="hotc hide">T2 asked</b>
+              <b id="g-t2" class="ok hide">held by T2</b>
+              <b id="g-crel" class="hotc hide">C released it</b>
+            </div>
+          </div>
+          <div id="io" class="card">
+            <div class="k">I/O</div>
+            <div class="who">Network / disk</div>
+            <div class="sm">blocking call</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="io-idle" class="muted">outside world</b>
+              <b id="io-read" class="hotc hide">reading socket</b>
+              <b id="io-back" class="ok hide">call returned</b>
+            </div>
+          </div>
+          <div id="pkt-hold" class="pkt go"><span data-layout-allow-overflow>GIL</span></div>
+          <div id="pkt-byte" class="pkt"><span data-layout-allow-overflow>bytecode</span></div>
+          <div id="pkt-want" class="pkt job"><span data-layout-allow-overflow>wants it</span></div>
+          <div id="pkt-rel" class="pkt job low"><span data-layout-allow-overflow>release</span></div>
+          <div id="pkt-t2" class="pkt go"><span data-layout-allow-overflow>GIL</span></div>
+          <div id="pkt-recv" class="pkt job under"><span data-layout-allow-overflow>recv()</span></div>
+          <div id="pkt-hold2" class="pkt go"><span data-layout-allow-overflow>GIL</span></div>
+          <div id="pkt-data" class="pkt go under"><span data-layout-allow-overflow>data</span></div>
+          <div id="pkt-hash" class="pkt job under"><span data-layout-allow-overflow>sha256</span></div>
+          <div id="pkt-t2b" class="pkt go"><span data-layout-allow-overflow>GIL</span></div>
+          <p id="cmd-1" class="cmds c0">sys.getswitchinterval()</p>
+          <p id="cmd-2" class="cmds c0">sys.setswitchinterval(1e-6)</p>
+          <p id="cmd-3" class="cmds c0">sys._is_gil_enabled()</p>
+          <p id="cmd-4" class="cmds c0">python3.14t -X gil=0 script.py</p>
+          <p id="cmd-5" class="cmds c1">sysconfig.get_config_var("Py_GIL_DISABLED")</p>
+          <p id="cmd-6" class="cmds c1">dis.dis("counter += 1")</p>
+          <p id="cmd-7" class="cmds c1">hashlib.sha256(big)  # can overlap on threads</p>
+          <p class="never" data-layout-allow-overlap>Off this path: A free-threaded build can run bytecode on two cores. Compound updates can still race, and an unsafe C extension can turn the GIL back on.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">A thread must hold the GIL to run Python bytecode. Only one thread can hold it at a time.</p>
+          <p id="line-2" class="hide">The eval loop executes T1's bytecode. The GIL protects interpreter internals such as reference counts and built-in containers.</p>
+          <p id="line-3" class="hide">T2 is runnable but blocks on the GIL's condition variable. It cannot execute any Python code until it gets the GIL.</p>
+          <p id="line-4" class="hide">After the switch interval (default 5 ms) a waiter sets a drop request. The holder yields at its next check between bytecodes, so the timing is advisory.</p>
+          <p id="line-5" class="hide">The holder releases the GIL. With a forced switch, another waiter must take it, so the releaser cannot instantly grab it again.</p>
+          <p id="line-6" class="hide">Which waiting thread wins is the operating system's decision. The interpreter has no scheduler of its own.</p>
+          <p id="line-7" class="hide">Blocking I/O calls release the GIL before they wait. T2 sits in the kernel while T1 runs Python code: a real overlap of waiting and computing.</p>
+          <p id="line-8" class="hide">When the I/O call returns, T2 must re-acquire the GIL before it touches any Python object.</p>
+          <p id="line-9" class="hide">Some C extensions, such as hashlib on big data, zlib and NumPy, release the GIL around heavy work. Many extensions do not.</p>
+          <p id="line-10" class="hide">The C call and T2's bytecode run truly in parallel, on two cores.</p>
+          <p id="line-11" class="hide">Returning to Python code means re-taking the GIL. The GIL limits parallel Python bytecode, not every kind of parallel work.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.35);
+      tl.fromTo("#hot-hold", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 0.35);
+      tl.fromTo("#pkt-hold", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 0.35);
+      tl.fromTo("#pkt-hold", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 3.7);
+      tl.fromTo("#g-free", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.5);
+      tl.fromTo("#g-t1", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.7);
+      tl.fromTo("#t1-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.55);
+      tl.fromTo("#t1-has", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.75);
+      tl.fromTo("#gil", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 0.5);
+      tl.fromTo("#t1", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 0.55);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 4.0);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.2);
+      tl.fromTo("#hot-byte", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 4.2);
+      tl.fromTo("#pkt-byte", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 4.2);
+      tl.fromTo("#pkt-byte", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 7.6);
+      tl.fromTo("#t1-has", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 4.35);
+      tl.fromTo("#t1-run", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.55);
+      tl.fromTo("#i-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 4.4);
+      tl.fromTo("#i-t1", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.6);
+      tl.fromTo("#interp", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 4.4);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 8.0);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 8.2);
+      tl.fromTo("#hot-want", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 8.2);
+      tl.fromTo("#pkt-want", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 8.2);
+      tl.fromTo("#pkt-want", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 11.6);
+      tl.fromTo("#t2-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 8.35);
+      tl.fromTo("#t2-wait", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 8.55);
+      tl.fromTo("#t2", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 8.35);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 12.0);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 12.2);
+      tl.fromTo("#g-t1", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 12.35);
+      tl.fromTo("#g-ask", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 12.55);
+      tl.fromTo("#gil", { borderColor: "#3ee0a2" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 12.35);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 15.6);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 15.8);
+      tl.fromTo("#hot-rel", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 15.8);
+      tl.fromTo("#pkt-rel", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 15.8);
+      tl.fromTo("#pkt-rel", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 19.2);
+      tl.fromTo("#g-ask", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 15.95);
+      tl.fromTo("#g-free", { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, 16.15);
+      tl.fromTo("#t1-run", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 16.0);
+      tl.fromTo("#t1-wait", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 16.2);
+      tl.fromTo("#i-t1", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 16.05);
+      tl.fromTo("#i-pause", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 16.25);
+      tl.fromTo("#t1", { borderColor: "#3ee0a2" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 16.0);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 19.6);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 19.8);
+      tl.fromTo("#hot-t2", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 19.8);
+      tl.fromTo("#pkt-t2", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 19.8);
+      tl.fromTo("#pkt-t2", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 23.2);
+      tl.fromTo("#g-free", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 19.95);
+      tl.fromTo("#g-t2", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 20.15);
+      tl.fromTo("#t2-wait", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 20.0);
+      tl.fromTo("#t2-run", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 20.2);
+      tl.fromTo("#i-pause", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 20.05);
+      tl.fromTo("#i-t2", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 20.25);
+      tl.fromTo("#gil", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 19.95);
+      tl.fromTo("#t2", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 20.0);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 23.6);
+
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 23.8);
+      tl.fromTo("#hot-recv", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 23.8);
+      tl.fromTo("#pkt-recv", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 23.8);
+      tl.fromTo("#pkt-recv", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 27.4);
+      tl.fromTo("#pkt-hold2", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 23.95);
+      tl.fromTo("#pkt-hold2", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 27.4);
+      tl.fromTo("#g-t2", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 23.95);
+      tl.fromTo("#g-t1", { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, 24.15);
+      tl.fromTo("#t2-run", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 24.0);
+      tl.fromTo("#t2-recv", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 24.2);
+      tl.fromTo("#t1-wait", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 24.05);
+      tl.fromTo("#t1-run", { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, 24.25);
+      tl.fromTo("#i-t2", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 24.1);
+      tl.fromTo("#i-t1", { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, 24.3);
+      tl.fromTo("#io-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 24.15);
+      tl.fromTo("#io-read", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 24.35);
+      tl.fromTo("#io", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 24.15);
+      tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 27.8);
+
+      tl.fromTo("#line-8", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 28.0);
+      tl.fromTo("#hot-data", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 28.0);
+      tl.fromTo("#pkt-data", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 28.0);
+      tl.fromTo("#pkt-data", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 31.4);
+      tl.fromTo("#t2-recv", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 28.15);
+      tl.fromTo("#t2-want", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 28.35);
+      tl.fromTo("#io-read", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 28.2);
+      tl.fromTo("#io-back", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 28.4);
+      tl.fromTo("#io", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 28.2);
+      tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 31.8);
+
+      tl.fromTo("#line-9", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 32.0);
+      tl.fromTo("#hot-hash", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 32.0);
+      tl.fromTo("#pkt-hash", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 32.0);
+      tl.fromTo("#pkt-hash", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 35.6);
+      tl.fromTo("#g-t1", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 32.15);
+      tl.fromTo("#g-crel", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 32.35);
+      tl.fromTo("#t1-run", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 32.2);
+      tl.fromTo("#t1-c", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 32.4);
+      tl.fromTo("#c-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 32.25);
+      tl.fromTo("#c-hash", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 32.45);
+      tl.fromTo("#i-t1", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 32.3);
+      tl.fromTo("#i-pause", { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, 32.5);
+      tl.fromTo("#cext", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 32.25);
+      tl.fromTo("#line-9", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 36.0);
+
+      tl.fromTo("#line-10", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 36.2);
+      tl.fromTo("#pkt-t2b", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 36.2);
+      tl.fromTo("#pkt-t2b", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 39.6);
+      tl.fromTo("#g-crel", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 36.35);
+      tl.fromTo("#g-t2", { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, 36.55);
+      tl.fromTo("#t2-want", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 36.4);
+      tl.fromTo("#t2-run", { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, 36.6);
+      tl.fromTo("#i-pause", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 36.45);
+      tl.fromTo("#i-t2", { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, 36.65);
+      tl.fromTo("#line-10", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 40.0);
+
+      tl.fromTo("#line-11", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 40.2);
+      tl.fromTo("#c-hash", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 40.35);
+      tl.fromTo("#c-done", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 40.55);
+      tl.fromTo("#t1-c", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 40.4);
+      tl.fromTo("#t1-want", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 40.6);
+      tl.fromTo("#cext", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 40.35);
+
+      tl.set({}, {}, 46);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
