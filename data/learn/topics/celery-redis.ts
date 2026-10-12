@@ -644,5 +644,12 @@ export const celeryRedis: Topic = {
       url: 'https://docs.celeryq.dev/en/stable/userguide/configuration.html'
     },
     { label: 'Celery: Tasks', url: 'https://docs.celeryq.dev/en/stable/userguide/tasks.html' }
-  ]
+  ],
+  film: {
+    src: '/learn/celery-redis.mp4',
+    note: {
+      en: 'A TimeoutError with autoretry_for becomes RETRY, then FAILURE after max_retries. A countdown past visibility_timeout can deliver the task twice, so the task must be idempotent.',
+      bn: 'autoretry_for সহ TimeoutError হয় RETRY, তারপর max_retries-এর পরে FAILURE। visibility_timeout-এর চেয়ে লম্বা countdown টাস্ক দুবার দিতে পারে, তাই টাস্ককে idempotent হতে হবে।'
+    }
+  }
 }
