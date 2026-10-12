@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 16px 36px 14px;
+      }
+      h1 { text-align: center; font-size: 40px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 18px; }
+      .stage { position: relative; width: 1480px; height: 700px; margin: 6px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 700px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 8px 12px; z-index: 1;
+      }
+      .k { font-family: ui-monospace, Menlo, monospace; font-size: 12px; letter-spacing: 0.12em; color: #c5d0e0; }
+      .who { margin-top: 1px; font-size: 18px; font-weight: 700; line-height: 1.12; }
+      .sm { margin-top: 3px; font-size: 14px; color: #c5d0e0; white-space: nowrap; }
+      .row { position: relative; height: 22px; margin-top: 4px; }
+      .row b { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 15px; font-weight: 700; }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      .warn { color: #f0b429; }
+      #obj { left: 16px; top: 150px; width: 230px; height: 120px; }
+      #os { left: 400px; top: 150px; width: 230px; height: 120px; }
+      #gil { left: 780px; top: 150px; width: 250px; height: 120px; }
+      #blocked { left: 1180px; top: 150px; width: 250px; height: 120px; }
+      #waiter { left: 780px; top: 392px; width: 250px; height: 108px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.wait { background: #f0b429; box-shadow: 0 0 0 6px rgba(240, 180, 41, 0.22), 0 0 16px rgba(240, 180, 41, 0.85); }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt span {
+        position: absolute; left: 50%; top: -28px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 15px; color: #f4f7fb;
+      }
+      .pkt.under span { top: 16px; }
+      .pkt.side span { left: 20px; top: -8px; transform: none; }
+      #pkt-start { left: 300px; top: 210px; }
+      #pkt-byte { left: 680px; top: 210px; }
+      #pkt-wait { left: 1080px; top: 210px; }
+      #pkt-back { left: 1160px; top: 56px; }
+      #pkt-done { left: 905px; top: 310px; }
+      .cmds { position: absolute; color: #c5d0e0; font-size: 14px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+      .c1 { left: 760px; }
+      #cmd-1, #cmd-5 { top: 528px; }
+      #cmd-2, #cmd-6 { top: 552px; }
+      #cmd-3, #cmd-7 { top: 576px; }
+      #cmd-4, #cmd-8 { top: 600px; }
+      .never { position: absolute; left: 0; top: 636px; width: 1460px; color: #c5d0e0; font-size: 15px; line-height: 1.35; }
+      .said { position: relative; height: 150px; margin-top: 2px; }
+      .said p { position: absolute; left: 8px; right: 8px; top: 0; text-align: center; font-size: 20px; line-height: 1.28; }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="36" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="36" data-track-index="0">
+        <h1>Threading deep-dive</h1>
+        <p class="sub">Thread object · stack · interpreter · blocked call · join</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 700">
+            <path class="idle" d="M246 210 H400" />
+            <path class="idle" d="M630 210 H780" />
+            <path class="idle" d="M1030 210 H1180" />
+            <path class="idle" d="M1305 150 V56 H905 V150" />
+            <path class="idle" d="M905 270 V392" />
+            <path id="hot-start" class="hot" pathLength="100" d="M246 210 H400" stroke="#5b8cff" />
+            <path id="hot-byte" class="hot" pathLength="100" d="M630 210 H780" stroke="#5b8cff" />
+            <path id="hot-wait" class="hot" pathLength="100" d="M1030 210 H1180" stroke="#f0b429" />
+            <path id="hot-back" class="hot" pathLength="100" d="M1305 150 V56 H905 V150" stroke="#3ee0a2" />
+            <path id="hot-done" class="hot" pathLength="100" d="M905 270 V392" stroke="#3ee0a2" />
+          </svg>
+          <div id="obj" class="card">
+            <div class="k">THREAD</div>
+            <div class="who">Thread object</div>
+            <div class="sm">before start</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="obj-none" class="muted">ident None</b>
+              <b id="obj-live" class="hotc hide">is_alive true</b>
+              <b id="obj-dead" class="ok hide">is_alive false</b>
+            </div>
+          </div>
+          <div id="os" class="card">
+            <div class="k">KERNEL</div>
+            <div class="who">OS thread</div>
+            <div class="sm">own stack, native_id</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="os-none" class="muted">no thread yet</b>
+              <b id="os-run" class="hotc hide">run begins</b>
+              <b id="os-gil" class="warn hide">holds the GIL</b>
+              <b id="os-blk" class="warn hide">kernel blocked</b>
+              <b id="os-ready" class="hotc hide">runnable</b>
+              <b id="os-end" class="ok hide">run returned</b>
+            </div>
+          </div>
+          <div id="gil" class="card">
+            <div class="k">PYTHON</div>
+            <div class="who">Interpreter</div>
+            <div class="sm">bytecode, one thread</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="gil-idle" class="muted">idle</b>
+              <b id="gil-run" class="hotc hide">running bytecode</b>
+              <b id="gil-free" class="warn hide">GIL released</b>
+              <b id="gil-need" class="hotc hide">needs the GIL</b>
+              <b id="gil-done" class="ok hide">run returned</b>
+            </div>
+          </div>
+          <div id="blocked" class="card">
+            <div class="k">WAIT</div>
+            <div class="who">Blocked call</div>
+            <div class="sm">kernel marks blocked</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="blk-idle" class="muted">not in a call</b>
+              <b id="blk-block" class="warn hide">blocked</b>
+              <b id="blk-run" class="ok hide">runnable</b>
+            </div>
+          </div>
+          <div id="waiter" class="card">
+            <div class="k">WAIT</div>
+            <div class="who">join</div>
+            <div class="sm">caller blocks</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="join-idle" class="muted">not waiting</b>
+              <b id="join-back" class="ok hide">returns None</b>
+            </div>
+          </div>
+          <div id="pkt-start" class="pkt"><span data-layout-allow-overflow>start</span></div>
+          <div id="pkt-byte" class="pkt"><span data-layout-allow-overflow>bytecode</span></div>
+          <div id="pkt-wait" class="pkt wait"><span data-layout-allow-overflow>waiting</span></div>
+          <div id="pkt-back" class="pkt go under"><span data-layout-allow-overflow>resumed</span></div>
+          <div id="pkt-done" class="pkt go side"><span data-layout-allow-overflow>done</span></div>
+          <p id="cmd-1" class="cmds">t = threading.Thread(target=work)</p>
+          <p id="cmd-2" class="cmds">print(t.ident, t.is_alive())  # None False</p>
+          <p id="cmd-3" class="cmds">t.start()  # at most once, then run</p>
+          <p id="cmd-4" class="cmds">threading.stack_size(0)  # platform default, min 32 KiB</p>
+          <p id="cmd-5" class="cmds c1">t.daemon = True  # before start, or RuntimeError</p>
+          <p id="cmd-6" class="cmds c1">t.join(1.0)  # returns None; still = t.is_alive()</p>
+          <p id="cmd-7" class="cmds c1">stop = threading.Event()  # stop.wait() until stop.set()</p>
+          <p id="cmd-8" class="cmds c1">threading.excepthook  # ignores SystemExit</p>
+          <p class="never" data-layout-allow-overlap>Off this path: A daemon thread is stopped abruptly when the process exits, so open files and transactions may not be cleaned up. join before start, or joining the current thread, raises RuntimeError.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">The Thread object exists before any kernel thread. ident is None until start, and is_alive is false. daemon must be set before start, or you get RuntimeError. The main thread is not a daemon, so a thread it creates starts non-daemon.</p>
+          <p id="line-2" class="hide">start runs at most once and calls run on the new thread. is_alive is true from just before run until just after it returns. native_id is the kernel id, and it stays unique only until the thread ends.</p>
+          <p id="line-3" class="hide">On a default build, bytecode runs while this thread holds the GIL, so only one thread runs it. stack_size(0) keeps the platform default. The smallest size you may ask for is 32 KiB. The docs never state an 8 MB default.</p>
+          <p id="line-4" class="hide">A real blocking call releases the GIL, and the kernel marks the thread blocked. Another Python thread can run. Threads help waiting. They do not speed up pure-Python number work.</p>
+          <p id="line-5" class="hide">The kernel makes the thread runnable again. The next Python instruction still waits until this thread holds the GIL.</p>
+          <p id="line-6" class="hide">When run returns, is_alive becomes false. An exception there goes to threading.excepthook, which ignores SystemExit. join blocks the caller and returns None. After a timeout, call is_alive.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.35);
+      tl.fromTo("#obj", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.5);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 4.85);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 5.2);
+      tl.fromTo("#hot-start", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 5.2);
+      tl.fromTo("#pkt-start", { x: 0, opacity: 0 }, { x: 70, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 5.2);
+      tl.fromTo("#pkt-start", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 9.35);
+      tl.fromTo("#obj-none", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 5.35);
+      tl.fromTo("#obj-live", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 5.55);
+      tl.fromTo("#os-none", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 5.35);
+      tl.fromTo("#os-run", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 5.55);
+      tl.fromTo("#obj", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 5.35);
+      tl.fromTo("#os", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 5.35);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 9.7);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 10.05);
+      tl.fromTo("#hot-byte", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 10.05);
+      tl.fromTo("#pkt-byte", { x: 0, opacity: 0 }, { x: 60, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 10.05);
+      tl.fromTo("#pkt-byte", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 14.2);
+      tl.fromTo("#os-run", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 10.2);
+      tl.fromTo("#os-gil", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 10.4);
+      tl.fromTo("#gil-idle", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 10.2);
+      tl.fromTo("#gil-run", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 10.4);
+      tl.fromTo("#gil", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 10.2);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 14.55);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 14.9);
+      tl.fromTo("#hot-wait", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 14.9);
+      tl.fromTo("#pkt-wait", { x: 0, opacity: 0 }, { x: 60, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 14.9);
+      tl.fromTo("#pkt-wait", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 19.05);
+      tl.fromTo("#os-gil", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 15.05);
+      tl.fromTo("#os-blk", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 15.25);
+      tl.fromTo("#gil-run", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 15.05);
+      tl.fromTo("#gil-free", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 15.25);
+      tl.fromTo("#blk-idle", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 15.05);
+      tl.fromTo("#blk-block", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 15.25);
+      tl.fromTo("#os", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 15.05);
+      tl.fromTo("#gil", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 15.05);
+      tl.fromTo("#blocked", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 15.05);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 19.4);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 19.75);
+      tl.fromTo("#hot-back", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 19.75);
+      tl.fromTo("#pkt-back", { x: 0, opacity: 0 }, { x: -180, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 19.75);
+      tl.fromTo("#pkt-back", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 23.9);
+      tl.fromTo("#os-blk", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 19.9);
+      tl.fromTo("#os-ready", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 20.1);
+      tl.fromTo("#gil-free", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 19.9);
+      tl.fromTo("#gil-need", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 20.1);
+      tl.fromTo("#blk-block", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 19.9);
+      tl.fromTo("#blk-run", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 20.1);
+      tl.fromTo("#os", { borderColor: "#f0b429" }, { borderColor: "#5b8cff", duration: 0.25, immediateRender: false }, 19.9);
+      tl.fromTo("#gil", { borderColor: "#f0b429" }, { borderColor: "#5b8cff", duration: 0.25, immediateRender: false }, 19.9);
+      tl.fromTo("#blocked", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 19.9);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 24.25);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 24.6);
+      tl.fromTo("#hot-done", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 24.6);
+      tl.fromTo("#pkt-done", { y: 0, opacity: 0 }, { y: 60, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 24.6);
+      tl.fromTo("#pkt-done", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 29.2);
+      tl.fromTo("#obj-live", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 24.75);
+      tl.fromTo("#obj-dead", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 24.95);
+      tl.fromTo("#os-ready", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 24.75);
+      tl.fromTo("#os-end", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 24.95);
+      tl.fromTo("#gil-need", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 24.75);
+      tl.fromTo("#gil-done", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 24.95);
+      tl.fromTo("#join-idle", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 24.75);
+      tl.fromTo("#join-back", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 24.95);
+      tl.fromTo("#os", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 24.75);
+      tl.fromTo("#gil", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 24.75);
+      tl.fromTo("#waiter", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 24.75);
+
+      tl.set({}, {}, 36);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

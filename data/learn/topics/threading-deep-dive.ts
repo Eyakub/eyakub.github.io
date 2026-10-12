@@ -550,5 +550,12 @@ export const threadingDeepDive: Topic = {
     { label: 'threading — Thread objects, daemon, join, stack_size', url: 'https://docs.python.org/3/library/threading.html' },
     { label: 'threading.excepthook', url: 'https://docs.python.org/3/library/threading.html#threading.excepthook' },
     { label: 'Python glossary: global interpreter lock', url: 'https://docs.python.org/3/glossary.html' }
-  ]
+  ],
+  film: {
+    src: '/learn/threading-deep-dive.mp4',
+    note: {
+      en: 'A daemon thread is stopped abruptly when the process exits, so open files and transactions may not be cleaned up. join before start, or joining the current thread, raises RuntimeError.',
+      bn: 'ডেমন thread প্রসেস বেরোনোর সময় হঠাৎ থেমে যায়, তাই খোলা ফাইল আর ট্রানজ্যাকশন পরিষ্কার নাও হতে পারে। start-এর আগে join, বা বর্তমান thread-কে join, RuntimeError তোলে।'
+    }
+  }
 }
