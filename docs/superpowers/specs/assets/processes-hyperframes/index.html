@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 16px 36px 14px;
+      }
+      h1 { text-align: center; font-size: 40px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 18px; }
+      .stage { position: relative; width: 1480px; height: 620px; margin: 8px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 620px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 8px 12px; z-index: 1;
+      }
+      .k { font-family: ui-monospace, Menlo, monospace; font-size: 12px; letter-spacing: 0.12em; color: #c5d0e0; }
+      .who { margin-top: 1px; font-size: 18px; font-weight: 700; line-height: 1.12; }
+      .sm { margin-top: 3px; font-size: 14px; color: #c5d0e0; white-space: nowrap; }
+      .row { position: relative; height: 24px; margin-top: 6px; }
+      .row b { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 15px; font-weight: 700; }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      #t1 { left: 0; top: 36px; width: 220px; height: 108px; }
+      #mema { left: 400px; top: 36px; width: 270px; height: 108px; }
+      #t2 { left: 860px; top: 36px; width: 230px; height: 108px; }
+      #pipe { left: 140px; top: 260px; width: 280px; height: 108px; }
+      #pb { left: 620px; top: 260px; width: 250px; height: 108px; }
+      #memb { left: 1060px; top: 260px; width: 270px; height: 108px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt.job { background: #f0b429; box-shadow: 0 0 0 6px rgba(240, 180, 41, 0.22), 0 0 16px rgba(240, 180, 41, 0.85); }
+      .pkt span {
+        position: absolute; left: 50%; top: -40px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 15px; color: #f4f7fb;
+      }
+      .pkt.low span { top: -22px; }
+      .pkt.vert span { left: auto; right: 20px; top: -8px; transform: none; }
+      #pkt-w { left: 310px; top: 90px; }
+      #pkt-r { left: 765px; top: 90px; }
+      #pkt-w2 { left: 765px; top: 130px; }
+      #pkt-send { left: 190px; top: 190px; }
+      #pkt-bytes { left: 520px; top: 314px; }
+      #pkt-copy { left: 965px; top: 314px; }
+      #pkt-x99 { left: 965px; top: 314px; }
+      #pkt-reply { left: 520px; top: 356px; }
+      #pkt-back { left: 200px; top: 220px; }
+      .cmds { position: absolute; color: #c5d0e0; font-size: 15px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+      .c0 { left: 0; }
+      .c1 { left: 780px; }
+      #cmd-1 { top: 420px; }
+      #cmd-2 { top: 444px; }
+      #cmd-3 { top: 468px; }
+      #cmd-4 { top: 492px; }
+      #cmd-5 { top: 420px; }
+      #cmd-6 { top: 444px; }
+      #cmd-7 { top: 468px; }
+      .never { position: absolute; left: 0; top: 528px; width: 1460px; color: #c5d0e0; font-size: 15px; line-height: 1.3; }
+      .said { position: relative; height: 140px; margin-top: 4px; }
+      .said p { position: absolute; left: 8px; right: 8px; top: 0; text-align: center; font-size: 20px; line-height: 1.28; }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="44" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="44" data-track-index="0">
+        <h1>Processes and threads</h1>
+        <p class="sub">process · thread · address space · heap · pickle · IPC · shared memory</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 620">
+            <path class="idle" d="M220 90 H400" />
+            <path class="idle" d="M670 90 H860" />
+            <path class="idle" d="M860 130 H670" />
+            <path class="idle" d="M110 144 V190 H280 V260" />
+            <path class="idle" d="M420 314 H620" />
+            <path class="idle" d="M870 314 H1060" />
+            <path class="idle" d="M620 356 H420" />
+            <path class="idle" d="M240 260 V220 H40 V144" />
+            <path id="hot-w" class="hot" pathLength="100" d="M220 90 H400" stroke="#5b8cff" />
+            <path id="hot-r" class="hot" pathLength="100" d="M670 90 H860" stroke="#3ee0a2" />
+            <path id="hot-w2" class="hot" pathLength="100" d="M860 130 H670" stroke="#f0b429" />
+            <path id="hot-send" class="hot" pathLength="100" d="M110 144 V190 H280 V260" stroke="#f0b429" />
+            <path id="hot-bytes" class="hot" pathLength="100" d="M420 314 H620" stroke="#f0b429" />
+            <path id="hot-copy" class="hot" pathLength="100" d="M870 314 H1060" stroke="#3ee0a2" />
+            <path id="hot-reply" class="hot" pathLength="100" d="M620 356 H420" stroke="#3ee0a2" />
+            <path id="hot-back" class="hot" pathLength="100" d="M240 260 V220 H40 V144" stroke="#3ee0a2" />
+          </svg>
+          <div id="t1" class="card">
+            <div class="k">THREAD</div>
+            <div class="who">Thread 1</div>
+            <div class="sm">process A</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="t1-idle" class="muted">idle</b>
+              <b id="t1-w" class="hotc hide">wrote x = 1</b>
+              <b id="t1-sent" class="hotc hide">sent pickle</b>
+              <b id="t1-got" class="ok hide">got a copy</b>
+            </div>
+          </div>
+          <div id="mema" class="card">
+            <div class="k">HEAP</div>
+            <div class="who">Memory A</div>
+            <div class="sm">shared address space</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="ma-idle" class="muted">empty</b>
+              <b id="ma-1" class="hotc hide">x = 1</b>
+              <b id="ma-2" class="hotc hide">x = 2</b>
+              <b id="ma-same" class="ok hide">x = 2, unchanged</b>
+            </div>
+          </div>
+          <div id="t2" class="card">
+            <div class="k">THREAD</div>
+            <div class="who">Thread 2</div>
+            <div class="sm">same address space</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="t2-idle" class="muted">idle</b>
+              <b id="t2-see" class="hotc hide">sees x = 1</b>
+              <b id="t2-w" class="hotc hide">wrote x = 2</b>
+            </div>
+          </div>
+          <div id="pipe" class="card">
+            <div class="k">IPC</div>
+            <div class="who">Pipe / Queue</div>
+            <div class="sm">pickle over a pipe</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="p-idle" class="muted">idle</b>
+              <b id="p-flight" class="hotc hide">bytes in flight</b>
+              <b id="p-bytes" class="hotc hide">pickled bytes</b>
+            </div>
+          </div>
+          <div id="pb" class="card">
+            <div class="k">PROCESS</div>
+            <div class="who">Process B</div>
+            <div class="sm">own interpreter</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="b-idle" class="muted">idle</b>
+              <b id="b-recv" class="hotc hide">receiving</b>
+              <b id="b-un" class="hotc hide">unpickled</b>
+              <b id="b-own" class="ok hide">own interpreter</b>
+            </div>
+          </div>
+          <div id="memb" class="card">
+            <div class="k">HEAP</div>
+            <div class="who">Memory B</div>
+            <div class="sm">private address space</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="mb-idle" class="muted">empty</b>
+              <b id="mb-copy" class="hotc hide">x = 2 (copy)</b>
+              <b id="mb-99" class="ok hide">x = 99</b>
+            </div>
+          </div>
+          <div id="pkt-w" class="pkt"><span data-layout-allow-overflow>set x=1</span></div>
+          <div id="pkt-r" class="pkt go"><span data-layout-allow-overflow>read x</span></div>
+          <div id="pkt-w2" class="pkt job low"><span data-layout-allow-overflow>set x=2</span></div>
+          <div id="pkt-send" class="pkt job low"><span data-layout-allow-overflow>pickle(x)</span></div>
+          <div id="pkt-bytes" class="pkt job"><span data-layout-allow-overflow>bytes</span></div>
+          <div id="pkt-copy" class="pkt go"><span data-layout-allow-overflow>copy</span></div>
+          <div id="pkt-x99" class="pkt job"><span data-layout-allow-overflow>x=99</span></div>
+          <div id="pkt-reply" class="pkt go low"><span data-layout-allow-overflow>result</span></div>
+          <div id="pkt-back" class="pkt go vert"><span data-layout-allow-overflow>copy</span></div>
+          <p id="cmd-1" class="cmds c0">threading.Thread(target=f, args=(1,)).start()</p>
+          <p id="cmd-2" class="cmds c0">mp.get_context("spawn"); p.start(); p.join()</p>
+          <p id="cmd-3" class="cmds c0">q = mp.Queue(); q.put({"a": 1}); q.get()</p>
+          <p id="cmd-4" class="cmds c0">shared_memory.SharedMemory(create=True, size=1024)</p>
+          <p id="cmd-5" class="cmds c1">p.exitcode</p>
+          <p id="cmd-6" class="cmds c1">os.getpid(), threading.get_ident()</p>
+          <p id="cmd-7" class="cmds c1">ps -M &lt;pid&gt; / ps -T -p &lt;pid&gt;</p>
+          <p class="never" data-layout-allow-overlap>Off this path: A killed process leaves the other process running. A hard fault in one thread takes down the whole process. A plain Python exception ends only that thread.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">Thread 1 stores into a heap object. Threads in one process share one address space: globals, heap and open files.</p>
+          <p id="line-2" class="hide">Thread 2 reads the same object directly: no copy, no serialization, no IPC. Cheap, but shared mutable state needs synchronization.</p>
+          <p id="line-3" class="hide">Writes are visible to every thread of A at once. That is both the power and the hazard of threads.</p>
+          <p id="line-4" class="hide">Processes have separate address spaces. A multiprocessing Queue or Pipe pickles the object into bytes and sends them over an OS pipe or socket.</p>
+          <p id="line-5" class="hide">The receiving process reads the bytes. Cost grows with object size, and the object must be picklable.</p>
+          <p id="line-6" class="hide">Unpickling builds a new object in B's heap. It is a copy, not the same object. For real sharing, use shared_memory or Value/Array.</p>
+          <p id="line-7" class="hide">B mutates only its private heap. Nothing in process A can see this write.</p>
+          <p id="line-8" class="hide">Isolation is the main benefit of processes: no accidental sharing, no memory data races, and each process has its own GIL.</p>
+          <p id="line-9" class="hide">Results return the same way: pickled, then copied. This IPC cost is why chunking work into larger tasks matters.</p>
+          <p id="line-10" class="hide">Thread 1 unpickles a new object in A's heap. Sharing in Python threads is free; across processes every hand-off is a copy.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.35);
+      tl.fromTo("#hot-w", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 0.35);
+      tl.fromTo("#pkt-w", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0.35);
+      tl.fromTo("#pkt-w", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 3.9);
+      tl.fromTo("#t1-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.5);
+      tl.fromTo("#t1-w", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.7);
+      tl.fromTo("#ma-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.55);
+      tl.fromTo("#ma-1", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.75);
+      tl.fromTo("#t1", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.55);
+      tl.fromTo("#mema", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.6);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 4.2);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.45);
+      tl.fromTo("#hot-r", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 4.45);
+      tl.fromTo("#pkt-r", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 4.45);
+      tl.fromTo("#pkt-r", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 7.9);
+      tl.fromTo("#t2-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 4.6);
+      tl.fromTo("#t2-see", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.8);
+      tl.fromTo("#t2", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 4.6);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 8.2);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 8.45);
+      tl.fromTo("#hot-w2", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 8.45);
+      tl.fromTo("#pkt-w2", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 8.45);
+      tl.fromTo("#pkt-w2", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 12.05);
+      tl.fromTo("#t2-see", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 8.6);
+      tl.fromTo("#t2-w", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 8.8);
+      tl.fromTo("#ma-1", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 8.65);
+      tl.fromTo("#ma-2", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 8.85);
+      tl.fromTo("#t2", { borderColor: "#3ee0a2" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 8.6);
+      tl.fromTo("#mema", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 8.65);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 12.4);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 12.65);
+      tl.fromTo("#hot-send", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 12.65);
+      tl.fromTo("#pkt-send", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 12.65);
+      tl.fromTo("#pkt-send", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 16.45);
+      tl.fromTo("#t1-w", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 12.8);
+      tl.fromTo("#t1-sent", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 13.0);
+      tl.fromTo("#p-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 12.85);
+      tl.fromTo("#p-flight", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 13.05);
+      tl.fromTo("#t1", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 12.8);
+      tl.fromTo("#pipe", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 12.85);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 16.8);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 17.05);
+      tl.fromTo("#hot-bytes", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 17.05);
+      tl.fromTo("#pkt-bytes", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 17.05);
+      tl.fromTo("#pkt-bytes", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 20.85);
+      tl.fromTo("#p-flight", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 17.2);
+      tl.fromTo("#p-bytes", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 17.4);
+      tl.fromTo("#b-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 17.25);
+      tl.fromTo("#b-recv", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 17.45);
+      tl.fromTo("#pb", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 17.25);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 21.2);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 21.45);
+      tl.fromTo("#hot-copy", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 21.45);
+      tl.fromTo("#pkt-copy", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 21.45);
+      tl.fromTo("#pkt-copy", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 25.05);
+      tl.fromTo("#b-recv", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 21.6);
+      tl.fromTo("#b-un", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 21.8);
+      tl.fromTo("#mb-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 21.65);
+      tl.fromTo("#mb-copy", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 21.85);
+      tl.fromTo("#pb", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 21.6);
+      tl.fromTo("#memb", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 21.65);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 25.4);
+
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 25.65);
+      tl.fromTo("#pkt-x99", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 25.65);
+      tl.fromTo("#pkt-x99", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 29.25);
+      tl.fromTo("#b-un", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 25.8);
+      tl.fromTo("#b-own", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 26.0);
+      tl.fromTo("#mb-copy", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 25.85);
+      tl.fromTo("#mb-99", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 26.05);
+      tl.fromTo("#memb", { borderColor: "#3ee0a2" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 25.85);
+      tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 29.6);
+
+      tl.fromTo("#line-8", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 29.85);
+      tl.fromTo("#ma-2", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 30.0);
+      tl.fromTo("#ma-same", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 30.2);
+      tl.fromTo("#mema", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 30.0);
+      tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 33.6);
+
+      tl.fromTo("#line-9", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 33.85);
+      tl.fromTo("#hot-reply", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 33.85);
+      tl.fromTo("#pkt-reply", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 33.85);
+      tl.fromTo("#pkt-reply", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 37.45);
+      tl.fromTo("#p-bytes", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 34.0);
+      tl.fromTo("#p-flight", { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, 34.2);
+      tl.fromTo("#line-9", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 37.8);
+
+      tl.fromTo("#line-10", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 38.05);
+      tl.fromTo("#hot-back", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 38.05);
+      tl.fromTo("#pkt-back", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 38.05);
+      tl.fromTo("#pkt-back", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 43.4);
+      tl.fromTo("#p-flight", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 38.2);
+      tl.fromTo("#p-bytes", { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, 38.4);
+      tl.fromTo("#t1-sent", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 38.25);
+      tl.fromTo("#t1-got", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 38.45);
+      tl.fromTo("#t1", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 38.25);
+      tl.fromTo("#pipe", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 38.3);
+
+      tl.set({}, {}, 44);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

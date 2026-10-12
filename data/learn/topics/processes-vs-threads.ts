@@ -829,5 +829,12 @@ export const processesVsThreads: Topic = {
     { label: 'Python docs: threading', url: 'https://docs.python.org/3/library/threading.html' },
     { label: 'Python docs: What’s New in 3.14', url: 'https://docs.python.org/3/whatsnew/3.14.html' },
     { label: 'Python docs: concurrent.futures', url: 'https://docs.python.org/3/library/concurrent.futures.html' }
-  ]
+  ],
+  film: {
+    src: '/learn/processes-vs-threads.mp4',
+    note: {
+      en: 'A killed process leaves the other process running. A hard fault in one thread takes down the whole process. A plain Python exception ends only that thread.',
+      bn: 'একটা process মারা গেলে অন্য process চলতে থাকে। একটা thread-এ hard fault পুরো process নামিয়ে দেয়। সাধারণ Python exception শুধু সেই thread শেষ করে।'
+    }
+  }
 }
