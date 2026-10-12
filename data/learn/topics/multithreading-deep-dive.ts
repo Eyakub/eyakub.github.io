@@ -498,5 +498,12 @@ export const multithreadingDeepDive: Topic = {
     { label: 'ThreadPoolExecutor', url: 'https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor' },
     { label: 'threading.Lock and RLock', url: 'https://docs.python.org/3/library/threading.html' },
     { label: 'queue — thread-safe handoff', url: 'https://docs.python.org/3/library/queue.html' }
-  ]
+  ],
+  film: {
+    src: '/learn/multithreading-deep-dive.mp4',
+    note: {
+      en: 'A worker that waits on a future from the same pool can deadlock, including when max_workers is 1. if key in mapping then mapping[key] can miss, because another thread can delete the key between the check and the read.',
+      bn: 'একই পুলের future-এর জন্য অপেক্ষা করা worker ডেডলক করতে পারে, max_workers 1 হলেও। if key in mapping তারপর mapping[key] মিস করতে পারে, কারণ চেক আর পড়ার মাঝে অন্য thread কী মুছে দিতে পারে।'
+    }
+  }
 }

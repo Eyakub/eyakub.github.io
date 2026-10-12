@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 16px 36px 14px;
+      }
+      h1 { text-align: center; font-size: 40px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 18px; }
+      .stage { position: relative; width: 1480px; height: 730px; margin: 4px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 730px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 8px 12px; z-index: 1;
+      }
+      .k { font-family: ui-monospace, Menlo, monospace; font-size: 12px; letter-spacing: 0.12em; color: #c5d0e0; }
+      .who { margin-top: 1px; font-size: 18px; font-weight: 700; line-height: 1.12; }
+      .sm { margin-top: 3px; font-size: 14px; color: #c5d0e0; white-space: nowrap; }
+      .row { position: relative; height: 22px; margin-top: 4px; }
+      .row b { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 15px; font-weight: 700; }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      .warn { color: #f0b429; }
+      #a { left: 16px; top: 36px; width: 220px; height: 108px; }
+      #b { left: 16px; top: 300px; width: 220px; height: 108px; }
+      #heap { left: 500px; top: 156px; width: 270px; height: 130px; }
+      #lock { left: 1120px; top: 36px; width: 250px; height: 108px; }
+      #pool { left: 1080px; top: 320px; width: 300px; height: 120px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.wait { background: #f0b429; box-shadow: 0 0 0 6px rgba(240, 180, 41, 0.22), 0 0 16px rgba(240, 180, 41, 0.85); }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt span {
+        position: absolute; left: 50%; top: -28px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 15px; color: #f4f7fb;
+      }
+      #pkt-a { left: 400px; top: 190px; }
+      #pkt-b { left: 400px; top: 250px; }
+      #pkt-lock { left: 560px; top: 70px; }
+      #pkt-upd { left: 1040px; top: 221px; }
+      #pkt-job { left: 420px; top: 500px; }
+      .cmds { position: absolute; color: #c5d0e0; font-size: 14px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+      .c1 { left: 780px; }
+      #cmd-1, #cmd-5 { top: 548px; }
+      #cmd-2, #cmd-6 { top: 572px; }
+      #cmd-3, #cmd-7 { top: 596px; }
+      #cmd-4, #cmd-8 { top: 620px; }
+      .never { position: absolute; left: 0; top: 656px; width: 1460px; color: #c5d0e0; font-size: 15px; line-height: 1.35; }
+      .said { position: relative; height: 130px; margin-top: 2px; }
+      .said p { position: absolute; left: 8px; right: 8px; top: 0; text-align: center; font-size: 20px; line-height: 1.28; }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="36" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="36" data-track-index="0">
+        <h1>Multithreading deep-dive</h1>
+        <p class="sub">shared heap · lock · race condition · data race · pool</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 730">
+            <path class="idle" d="M236 90 H380 V190 H500" />
+            <path class="idle" d="M236 354 H380 V250 H500" />
+            <path class="idle" d="M236 70 H1120" />
+            <path class="idle" d="M1245 144 V221 H770" />
+            <path class="idle" d="M126 144 V250 H320 V500 H1230 V440" />
+            <path id="hot-a" class="hot" pathLength="100" d="M236 90 H380 V190 H500" stroke="#5b8cff" />
+            <path id="hot-b" class="hot" pathLength="100" d="M236 354 H380 V250 H500" stroke="#5b8cff" />
+            <path id="hot-lock" class="hot" pathLength="100" d="M236 70 H1120" stroke="#f0b429" />
+            <path id="hot-upd" class="hot" pathLength="100" d="M1245 144 V221 H770" stroke="#3ee0a2" />
+            <path id="hot-job" class="hot" pathLength="100" d="M126 144 V250 H320 V500 H1230 V440" stroke="#5b8cff" />
+          </svg>
+          <div id="a" class="card">
+            <div class="k">THREAD</div>
+            <div class="who">Thread A</div>
+            <div class="sm">one process</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="a-idle" class="muted">idle</b>
+              <b id="a-read" class="hotc hide">reading</b>
+              <b id="a-hold" class="warn hide">holds the lock</b>
+              <b id="a-upd" class="ok hide">updated</b>
+              <b id="a-job" class="hotc hide">job submitted</b>
+            </div>
+          </div>
+          <div id="b" class="card">
+            <div class="k">THREAD</div>
+            <div class="who">Thread B</div>
+            <div class="sm">same heap</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="b-idle" class="muted">idle</b>
+              <b id="b-read" class="hotc hide">reading</b>
+              <b id="b-wait" class="warn hide">waits</b>
+              <b id="b-saw" class="ok hide">sees the update</b>
+            </div>
+          </div>
+          <div id="heap" class="card">
+            <div class="k">HEAP</div>
+            <div class="who">Shared heap</div>
+            <div class="sm">one object</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="heap-idle" class="muted">shared</b>
+              <b id="heap-both" class="hotc hide">both reading</b>
+              <b id="heap-time" class="hotc hide">timing decides</b>
+              <b id="heap-native" class="warn hide">native write</b>
+              <b id="heap-wrote" class="ok hide">update visible</b>
+            </div>
+          </div>
+          <div id="lock" class="card">
+            <div class="k">LOCK</div>
+            <div class="who">Lock</div>
+            <div class="sm">Lock or RLock</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="lock-free" class="muted">free</b>
+              <b id="lock-held" class="warn hide">A holds it</b>
+              <b id="lock-rel" class="ok hide">released</b>
+            </div>
+          </div>
+          <div id="pool" class="card">
+            <div class="k">POOL</div>
+            <div class="who">Pool</div>
+            <div class="sm">queue.Queue handoff</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="pool-none" class="muted">no jobs</b>
+              <b id="pool-job" class="hotc hide">job queued</b>
+            </div>
+          </div>
+          <div id="pkt-a" class="pkt"><span data-layout-allow-overflow>A</span></div>
+          <div id="pkt-b" class="pkt"><span data-layout-allow-overflow>B</span></div>
+          <div id="pkt-lock" class="pkt wait"><span data-layout-allow-overflow>lock</span></div>
+          <div id="pkt-upd" class="pkt go"><span data-layout-allow-overflow>update</span></div>
+          <div id="pkt-job" class="pkt"><span data-layout-allow-overflow>job</span></div>
+          <p id="cmd-1" class="cmds">tally += 1  # several bytecode steps, not atomic</p>
+          <p id="cmd-2" class="cmds">with lock: tally += 1</p>
+          <p id="cmd-3" class="cmds">ThreadPoolExecutor()  # 3.13 default</p>
+          <p id="cmd-4" class="cmds">min(32, (os.process_cpu_count() or 1) + 4)</p>
+          <p id="cmd-5" class="cmds c1">executor = ThreadPoolExecutor(max_workers=1)</p>
+          <p id="cmd-6" class="cmds c1">executor.submit(wait_on_future)  # same pool</p>
+          <p id="cmd-7" class="cmds c1">if key in mapping:  # the key can vanish here</p>
+          <p id="cmd-8" class="cmds c1">return mapping[key]</p>
+          <p class="never" data-layout-allow-overlap>Off this path: A worker that waits on a future from the same pool can deadlock, including when max_workers is 1. if key in mapping then mapping[key] can miss, because another thread can delete the key between the check and the read.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">Threads in one process share the heap. That is the point and the hazard. Separate processes do not share it.</p>
+          <p id="line-2" class="hide">A race condition is an outcome that changes with timing. x += 1 is several bytecode instructions and is not atomic. The GIL does not make that update safe.</p>
+          <p id="line-3" class="hide">The glossary data race is several threads, the same memory, at least one write, and no synchronisation. It happens in native code, which a Python API may expose. A pure-Python timing bug is still a race condition. The names are not synonyms.</p>
+          <p id="line-4" class="hide">A Lock is not owned, so any thread may release it. An RLock is owned by the thread that took it, and that same thread may take it again. Two locks in opposite order is the deadlock on the locks page.</p>
+          <p id="line-5" class="hide">The lock orders this update before the next thread's read. Without it, the other thread can see a half-changed object. On a free-threaded build, dict and list use per-object locks, and a lock-free read can still see an in-between state.</p>
+          <p id="line-6" class="hide">Since 3.13, ThreadPoolExecutor defaults to min(32, (os.process_cpu_count() or 1) + 4). It reuses idle workers. The pool joins them before the interpreter exits, so do not park a long task there. queue.Queue is the safe handoff if you build the workers yourself.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.35);
+      tl.fromTo("#hot-a", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 0.5);
+      tl.fromTo("#pkt-a", { x: 0, opacity: 0 }, { x: 60, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0.5);
+      tl.fromTo("#pkt-a", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 4.55);
+      tl.fromTo("#hot-b", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 0.5);
+      tl.fromTo("#pkt-b", { x: 0, opacity: 0 }, { x: 60, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0.5);
+      tl.fromTo("#pkt-b", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 4.55);
+      tl.fromTo("#a-idle", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 0.5);
+      tl.fromTo("#a-read", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 0.7);
+      tl.fromTo("#b-idle", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 0.5);
+      tl.fromTo("#b-read", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 0.7);
+      tl.fromTo("#heap-idle", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 0.5);
+      tl.fromTo("#heap-both", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 0.7);
+      tl.fromTo("#a", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.5);
+      tl.fromTo("#b", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.5);
+      tl.fromTo("#heap", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.5);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 4.85);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 5.2);
+      tl.fromTo("#heap-both", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 5.35);
+      tl.fromTo("#heap-time", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 5.55);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 9.7);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 10.05);
+      tl.fromTo("#heap-time", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 10.2);
+      tl.fromTo("#heap-native", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 10.4);
+      tl.fromTo("#heap", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 10.2);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 14.55);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 14.9);
+      tl.fromTo("#hot-lock", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 14.9);
+      tl.fromTo("#pkt-lock", { x: 0, opacity: 0 }, { x: 360, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 14.9);
+      tl.fromTo("#pkt-lock", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 19.05);
+      tl.fromTo("#a-read", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 15.05);
+      tl.fromTo("#a-hold", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 15.25);
+      tl.fromTo("#b-read", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 15.05);
+      tl.fromTo("#b-wait", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 15.25);
+      tl.fromTo("#lock-free", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 15.05);
+      tl.fromTo("#lock-held", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 15.25);
+      tl.fromTo("#b", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 15.05);
+      tl.fromTo("#lock", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 15.05);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 19.4);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 19.75);
+      tl.fromTo("#hot-upd", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 19.75);
+      tl.fromTo("#pkt-upd", { x: 0, opacity: 0 }, { x: -200, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 19.75);
+      tl.fromTo("#pkt-upd", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 23.9);
+      tl.fromTo("#a-hold", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 19.9);
+      tl.fromTo("#a-upd", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 20.1);
+      tl.fromTo("#b-wait", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 19.9);
+      tl.fromTo("#b-saw", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 20.1);
+      tl.fromTo("#lock-held", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 19.9);
+      tl.fromTo("#lock-rel", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 20.1);
+      tl.fromTo("#heap-native", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 19.9);
+      tl.fromTo("#heap-wrote", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 20.1);
+      tl.fromTo("#b", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 19.9);
+      tl.fromTo("#lock", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 19.9);
+      tl.fromTo("#heap", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 19.9);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 24.25);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 24.6);
+      tl.fromTo("#hot-job", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 24.6);
+      tl.fromTo("#pkt-job", { x: 0, opacity: 0 }, { x: 520, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 24.6);
+      tl.fromTo("#pkt-job", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 29.2);
+      tl.fromTo("#a-upd", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 24.75);
+      tl.fromTo("#a-job", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 24.95);
+      tl.fromTo("#pool-none", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 24.75);
+      tl.fromTo("#pool-job", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 24.95);
+      tl.fromTo("#a", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 24.75);
+      tl.fromTo("#pool", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 24.75);
+
+      tl.set({}, {}, 36);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
