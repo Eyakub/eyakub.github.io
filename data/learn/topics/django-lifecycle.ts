@@ -1027,5 +1027,12 @@ export const djangoLifecycle: Topic = {
     { label: 'Django source: contrib/auth/middleware.py', url: 'https://raw.githubusercontent.com/django/django/main/django/contrib/auth/middleware.py' },
     { label: 'Django source: contrib/sessions/middleware.py', url: 'https://raw.githubusercontent.com/django/django/main/django/contrib/sessions/middleware.py' },
     { label: 'Django source: project template settings', url: 'https://raw.githubusercontent.com/django/django/main/django/conf/project_template/project_name/settings.py-tpl' }
-  ]
+  ],
+  film: {
+    src: '/learn/django-lifecycle.mp4',
+    note: {
+      en: 'A missing CSRF token is 403 before the view runs. No urlpatterns match is 404. An uncaught view exception is 500.',
+      bn: 'CSRF token না থাকলে view-এর আগেই 403। urlpatterns-এ মিল না থাকলে 404। view-এর uncaught exception 500।'
+    }
+  }
 }

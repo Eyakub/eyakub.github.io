@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 18px 36px 16px;
+      }
+      h1 { text-align: center; font-size: 42px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 20px; }
+      .stage { position: relative; width: 1480px; height: 590px; margin: 12px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 590px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 8px 12px; z-index: 1;
+      }
+      .k { font-family: ui-monospace, Menlo, monospace; font-size: 12px; letter-spacing: 0.12em; color: #c5d0e0; }
+      .who { margin-top: 1px; font-size: 18px; font-weight: 700; line-height: 1.12; }
+      .sm { margin-top: 3px; font-size: 14px; color: #c5d0e0; white-space: nowrap; }
+      .row { position: relative; height: 24px; margin-top: 6px; }
+      .row b { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 15px; font-weight: 700; }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      #browser { left: 0; top: 64px; width: 150px; height: 120px; }
+      #wsgi { left: 290px; top: 64px; width: 170px; height: 120px; }
+      #session { left: 600px; top: 64px; width: 180px; height: 120px; }
+      #csrf { left: 920px; top: 64px; width: 220px; height: 120px; }
+      #urls { left: 1280px; top: 64px; width: 200px; height: 120px; }
+      #template { left: 600px; top: 280px; width: 180px; height: 120px; }
+      #view { left: 920px; top: 280px; width: 220px; height: 120px; }
+      #db { left: 1280px; top: 280px; width: 200px; height: 120px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt span {
+        position: absolute; left: 50%; top: -72px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 15px; color: #f4f7fb;
+      }
+      .pkt.ret span { top: 88px; }
+      .pkt.back span { top: 48px; }
+      .pkt.vert span { left: auto; right: 20px; top: -8px; transform: none; }
+      #pkt-post { left: 220px; top: 108px; }
+      #pkt-hs { left: 530px; top: 108px; }
+      #pkt-hc { left: 850px; top: 108px; }
+      #pkt-path { left: 1210px; top: 108px; }
+      #pkt-pv { left: 1210px; top: 148px; }
+      #pkt-args { left: 1030px; top: 232px; }
+      #pkt-sql { left: 1210px; top: 324px; }
+      #pkt-rows { left: 1210px; top: 364px; }
+      #pkt-ctx { left: 850px; top: 324px; }
+      #pkt-html { left: 850px; top: 364px; }
+      #pkt-up { left: 1000px; top: 232px; }
+      #pkt-back { left: 850px; top: 148px; }
+      #pkt-ok1 { left: 530px; top: 148px; }
+      #pkt-ok2 { left: 220px; top: 148px; }
+      .never { position: absolute; left: 0; top: 536px; color: #c5d0e0; font-size: 16px; white-space: nowrap; }
+      .cmds { position: absolute; left: 0; color: #c5d0e0; font-size: 15px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+      #cmd-1 { top: 436px; }
+      #cmd-2 { top: 458px; }
+      #cmd-3 { top: 480px; }
+      #cmd-4 { top: 502px; }
+      .said { position: relative; height: 118px; margin-top: 8px; }
+      .said p { position: absolute; left: 8px; right: 8px; top: 4px; text-align: center; font-size: 21px; line-height: 1.25; }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="44" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="44" data-track-index="0">
+        <h1>Django lifecycle</h1>
+        <p class="sub">Request · Middleware · CSRF · URL routing · View · Template · Database</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 590">
+            <path class="idle" d="M150 108 H290" />
+            <path class="idle" d="M460 108 H600" />
+            <path class="idle" d="M780 108 H920" />
+            <path class="idle" d="M1140 108 H1280" />
+            <path class="idle" d="M1280 148 H1140" />
+            <path class="idle" d="M1030 184 V280" />
+            <path class="idle" d="M1140 324 H1280" />
+            <path class="idle" d="M1280 364 H1140" />
+            <path class="idle" d="M920 324 H780" />
+            <path class="idle" d="M780 364 H920" />
+            <path class="idle" d="M1000 280 V184" />
+            <path class="idle" d="M920 148 H780" />
+            <path class="idle" d="M600 148 H460" />
+            <path class="idle" d="M290 148 H150" />
+            <path id="hot-post" class="hot" pathLength="100" d="M150 108 H290" stroke="#5b8cff" />
+            <path id="hot-hs" class="hot" pathLength="100" d="M460 108 H600" stroke="#5b8cff" />
+            <path id="hot-hc" class="hot" pathLength="100" d="M780 108 H920" stroke="#5b8cff" />
+            <path id="hot-path" class="hot" pathLength="100" d="M1140 108 H1280" stroke="#5b8cff" />
+            <path id="hot-pv" class="hot" pathLength="100" d="M1280 148 H1140" stroke="#5b8cff" />
+            <path id="hot-args" class="hot" pathLength="100" d="M1030 184 V280" stroke="#5b8cff" />
+            <path id="hot-sql" class="hot" pathLength="100" d="M1140 324 H1280" stroke="#5b8cff" />
+            <path id="hot-rows" class="hot" pathLength="100" d="M1280 364 H1140" stroke="#3ee0a2" />
+            <path id="hot-ctx" class="hot" pathLength="100" d="M920 324 H780" stroke="#5b8cff" />
+            <path id="hot-html" class="hot" pathLength="100" d="M780 364 H920" stroke="#3ee0a2" />
+            <path id="hot-up" class="hot" pathLength="100" d="M1000 280 V184" stroke="#3ee0a2" />
+            <path id="hot-back" class="hot" pathLength="100" d="M920 148 H780" stroke="#3ee0a2" />
+            <path id="hot-ok1" class="hot" pathLength="100" d="M600 148 H460" stroke="#3ee0a2" />
+            <path id="hot-ok2" class="hot" pathLength="100" d="M290 148 H150" stroke="#3ee0a2" />
+          </svg>
+          <div id="browser" class="card">
+            <div class="k">CLIENT</div>
+            <div class="who">Browser</div>
+            <div class="sm">posts the form</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="br-ready" class="muted">ready</b>
+              <b id="br-post" class="hotc hide">POST /orders/</b>
+              <b id="br-ok" class="ok hide">has 200</b>
+            </div>
+          </div>
+          <div id="wsgi" class="card">
+            <div class="k">WSGI</div>
+            <div class="who">WSGIHandler</div>
+            <div class="sm">Gunicorn or ASGI</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="wg-idle" class="muted">HttpRequest</b>
+              <b id="wg-built" class="hotc hide">method, POST</b>
+              <b id="wg-out" class="ok hide">start_response</b>
+            </div>
+          </div>
+          <div id="session" class="card">
+            <div class="k">MIDDLEWARE</div>
+            <div class="who">Session + auth</div>
+            <div class="sm">request.user is lazy</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="se-idle" class="muted">MIDDLEWARE</b>
+              <b id="se-user" class="hotc hide">request.session</b>
+              <b id="se-save" class="ok hide">cookie saved</b>
+            </div>
+          </div>
+          <div id="csrf" class="card">
+            <div class="k">CSRF</div>
+            <div class="who">CsrfViewMiddleware</div>
+            <div class="sm">csrfmiddlewaretoken</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="cf-idle" class="muted">reads secret</b>
+              <b id="cf-ok" class="hotc hide">token matches</b>
+              <b id="cf-cookie" class="ok hide">sets cookie</b>
+            </div>
+          </div>
+          <div id="urls" class="card">
+            <div class="k">ROUTING</div>
+            <div class="who">URL resolver</div>
+            <div class="sm">ROOT_URLCONF</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="ur-idle" class="muted">urlpatterns</b>
+              <b id="ur-hit" class="hotc hide">first match</b>
+            </div>
+          </div>
+          <div id="template" class="card">
+            <div class="k">TEMPLATE</div>
+            <div class="who">Template</div>
+            <div class="sm">HTML-escaped</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="tp-idle" class="muted">waiting</b>
+              <b id="tp-run" class="hotc hide">context</b>
+              <b id="tp-html" class="ok hide">HttpResponse</b>
+            </div>
+          </div>
+          <div id="view" class="card">
+            <div class="k">VIEW</div>
+            <div class="who">View</div>
+            <div class="sm">your function</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="vw-idle" class="muted">not called yet</b>
+              <b id="vw-lazy" class="hotc hide">lazy QuerySet</b>
+              <b id="vw-rows" class="ok hide">rows cached</b>
+            </div>
+          </div>
+          <div id="db" class="card">
+            <div class="k">DATABASE</div>
+            <div class="who">Database</div>
+            <div class="sm">ORM + SQL</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="db-idle" class="muted">no SQL yet</b>
+              <b id="db-sql" class="hotc hide">SELECT</b>
+              <b id="db-rows" class="ok hide">rows returned</b>
+            </div>
+          </div>
+          <div id="pkt-post" class="pkt"><span data-layout-allow-overflow>POST /orders/</span></div>
+          <div id="pkt-hs" class="pkt"><span data-layout-allow-overflow>HttpRequest</span></div>
+          <div id="pkt-hc" class="pkt"><span data-layout-allow-overflow>HttpRequest</span></div>
+          <div id="pkt-path" class="pkt"><span data-layout-allow-overflow>/orders/</span></div>
+          <div id="pkt-pv" class="pkt ret"><span data-layout-allow-overflow>process_view</span></div>
+          <div id="pkt-args" class="pkt vert"><span data-layout-allow-overflow>request + args</span></div>
+          <div id="pkt-sql" class="pkt"><span data-layout-allow-overflow>SELECT dish</span></div>
+          <div id="pkt-rows" class="pkt go back"><span data-layout-allow-overflow>rows</span></div>
+          <div id="pkt-ctx" class="pkt"><span data-layout-allow-overflow>context</span></div>
+          <div id="pkt-html" class="pkt go back"><span data-layout-allow-overflow>HTML</span></div>
+          <div id="pkt-up" class="pkt go vert"><span data-layout-allow-overflow>HttpResponse</span></div>
+          <div id="pkt-back" class="pkt go ret"><span data-layout-allow-overflow>HttpResponse</span></div>
+          <div id="pkt-ok1" class="pkt go ret"><span data-layout-allow-overflow>200 OK</span></div>
+          <div id="pkt-ok2" class="pkt go ret"><span data-layout-allow-overflow>200 OK</span></div>
+          <p id="cmd-1" class="cmds">python manage.py runserver</p>
+          <p id="cmd-2" class="cmds">gunicorn myproject.wsgi · python -m uvicorn myproject.asgi:application</p>
+          <p id="cmd-3" class="cmds">&lt;form method="post"&gt;{% csrf_token %}</p>
+          <p id="cmd-4" class="cmds">python manage.py check --deploy · connection.queries · handler404</p>
+          <p class="never">Off this path: A missing CSRF token is 403 before the view runs. No urlpatterns match is 404. An uncaught view exception is 500.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">The browser sends POST /orders/ with a form body. Gunicorn calls WSGIHandler, which builds a WSGIRequest: an HttpRequest with method, POST, and META.</p>
+          <p id="line-2" class="hide">Middleware runs top-down through MIDDLEWARE. SessionMiddleware sets request.session. AuthenticationMiddleware adds request.user, loaded only on first use. CsrfViewMiddleware only reads its secret for now.</p>
+          <p id="line-3" class="hide">From ROOT_URLCONF, Django tries each urlpatterns entry in order against path_info and stops at the first match. That match gives a view plus any captured arguments.</p>
+          <p id="line-4" class="hide">Django then calls every process_view, top-down, just before the view. CsrfViewMiddleware runs after URL resolution, so it can see csrf_exempt. A POST needs a token matching the secret.</p>
+          <p id="line-5" class="hide">No process_view returned a response, so Django calls the view with the HttpRequest and the URL arguments. Dish.objects.filter only builds a lazy QuerySet. No SQL has run yet.</p>
+          <p id="line-6" class="hide">Evaluating the QuerySet runs the SELECT. Iterating, list, len, bool, and slicing with a step all evaluate it. Here the view does it, so the query runs now.</p>
+          <p id="line-7" class="hide">The database returns the matching rows. The QuerySet caches them, so reusing the same variable costs no new query. A fresh Dish.objects.all queries again.</p>
+          <p id="line-8" class="hide">render combines the template with the context and returns an HttpResponse. Variables are HTML-escaped by default. An unevaluated QuerySet in the context would query inside a for loop here.</p>
+          <p id="line-9" class="hide">The rendered page returns as an HttpResponse with status 200. A TemplateResponse renders later, after process_template_response, and only if the response has a render method.</p>
+          <p id="line-10" class="hide">The response passes back in reverse MIDDLEWARE order. CsrfViewMiddleware sets the CSRF cookie if one is needed. SessionMiddleware saves the session if it changed and sets its cookie.</p>
+          <p id="line-11" class="hide">WSGIHandler calls start_response with the status line and headers, then returns the body to the WSGI server, which sends it to the browser. Under ASGI, ASGIHandler does this job.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.4);
+      tl.fromTo("#hot-post", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 0.4);
+      tl.fromTo("#pkt-post", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 0.4);
+      tl.fromTo("#pkt-post", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 3.85);
+      tl.fromTo("#br-ready", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.55);
+      tl.fromTo("#br-post", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.75);
+      tl.fromTo("#wg-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.7);
+      tl.fromTo("#wg-built", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.9);
+      tl.fromTo("#browser", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.55);
+      tl.fromTo("#wsgi", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.7);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 3.95);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.2);
+      tl.fromTo("#hot-hs", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 4.2);
+      tl.fromTo("#pkt-hs", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 4.2);
+      tl.fromTo("#pkt-hs", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 4.9);
+      tl.fromTo("#hot-hc", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 5.1);
+      tl.fromTo("#pkt-hc", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 5.1);
+      tl.fromTo("#pkt-hc", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 7.65);
+      tl.fromTo("#se-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 4.35);
+      tl.fromTo("#se-user", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.55);
+      tl.fromTo("#session", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 4.35);
+      tl.fromTo("#csrf", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 5.25);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 7.75);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 8.0);
+      tl.fromTo("#hot-path", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 8.0);
+      tl.fromTo("#pkt-path", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 8.0);
+      tl.fromTo("#pkt-path", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 11.45);
+      tl.fromTo("#ur-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 8.15);
+      tl.fromTo("#ur-hit", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 8.35);
+      tl.fromTo("#urls", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 8.15);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 11.55);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 11.8);
+      tl.fromTo("#hot-pv", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 11.8);
+      tl.fromTo("#pkt-pv", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 11.8);
+      tl.fromTo("#pkt-pv", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 15.25);
+      tl.fromTo("#cf-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 11.95);
+      tl.fromTo("#cf-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 12.15);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 15.35);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 15.6);
+      tl.fromTo("#hot-args", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 15.6);
+      tl.fromTo("#pkt-args", { y: 0, opacity: 0 }, { y: 8, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 15.6);
+      tl.fromTo("#pkt-args", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 19.05);
+      tl.fromTo("#vw-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 15.75);
+      tl.fromTo("#vw-lazy", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 15.95);
+      tl.fromTo("#view", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 15.75);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 19.15);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 19.4);
+      tl.fromTo("#hot-sql", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 19.4);
+      tl.fromTo("#pkt-sql", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 19.4);
+      tl.fromTo("#pkt-sql", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 22.85);
+      tl.fromTo("#db-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 19.55);
+      tl.fromTo("#db-sql", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 19.75);
+      tl.fromTo("#db", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 19.55);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 22.95);
+
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 23.2);
+      tl.fromTo("#hot-rows", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 23.2);
+      tl.fromTo("#pkt-rows", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 23.2);
+      tl.fromTo("#pkt-rows", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 26.65);
+      tl.fromTo("#db-sql", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 23.35);
+      tl.fromTo("#db-rows", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 23.55);
+      tl.fromTo("#vw-lazy", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 23.35);
+      tl.fromTo("#vw-rows", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 23.55);
+      tl.fromTo("#db", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 23.35);
+      tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 26.75);
+
+      tl.fromTo("#line-8", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 27.0);
+      tl.fromTo("#hot-ctx", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 27.0);
+      tl.fromTo("#pkt-ctx", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 27.0);
+      tl.fromTo("#pkt-ctx", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 30.45);
+      tl.fromTo("#tp-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 27.15);
+      tl.fromTo("#tp-run", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 27.35);
+      tl.fromTo("#template", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 27.15);
+      tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 30.55);
+
+      tl.fromTo("#line-9", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 30.8);
+      tl.fromTo("#hot-html", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 30.8);
+      tl.fromTo("#pkt-html", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 30.8);
+      tl.fromTo("#pkt-html", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 34.25);
+      tl.fromTo("#tp-run", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 30.95);
+      tl.fromTo("#tp-html", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 31.15);
+      tl.fromTo("#template", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 30.95);
+      tl.fromTo("#view", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 31.15);
+      tl.fromTo("#line-9", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 34.35);
+
+      tl.fromTo("#line-10", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 34.6);
+      tl.fromTo("#hot-up", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 34.6);
+      tl.fromTo("#pkt-up", { y: 0, opacity: 0 }, { y: -8, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 34.6);
+      tl.fromTo("#pkt-up", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 35.25);
+      tl.fromTo("#hot-back", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 35.45);
+      tl.fromTo("#pkt-back", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 35.45);
+      tl.fromTo("#pkt-back", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 38.05);
+      tl.fromTo("#cf-ok", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 34.75);
+      tl.fromTo("#cf-cookie", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 34.95);
+      tl.fromTo("#csrf", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 34.75);
+      tl.fromTo("#se-user", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 35.6);
+      tl.fromTo("#se-save", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 35.8);
+      tl.fromTo("#session", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 35.6);
+      tl.fromTo("#line-10", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 38.15);
+
+      tl.fromTo("#line-11", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 38.4);
+      tl.fromTo("#hot-ok1", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 38.4);
+      tl.fromTo("#pkt-ok1", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 38.4);
+      tl.fromTo("#pkt-ok1", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 39.05);
+      tl.fromTo("#hot-ok2", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 39.25);
+      tl.fromTo("#pkt-ok2", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 39.25);
+      tl.fromTo("#pkt-ok2", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 43.4);
+      tl.fromTo("#wg-built", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 38.55);
+      tl.fromTo("#wg-out", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 38.75);
+      tl.fromTo("#br-post", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 39.4);
+      tl.fromTo("#br-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 39.6);
+      tl.fromTo("#wsgi", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 38.55);
+      tl.fromTo("#browser", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 39.4);
+
+      tl.set({}, {}, 44);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
