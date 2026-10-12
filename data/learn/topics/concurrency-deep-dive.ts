@@ -528,5 +528,12 @@ export const concurrencyDeepDive: Topic = {
     { label: 'sys.setswitchinterval', url: 'https://docs.python.org/3/library/sys.html#sys.setswitchinterval' },
     { label: 'CPython 3.14 GIL interval', url: 'https://github.com/python/cpython/blob/3.14/Python/ceval_gil.c' },
     { label: 'asyncio tasks', url: 'https://docs.python.org/3/library/asyncio-task.html' }
-  ]
+  ],
+  film: {
+    src: '/learn/concurrency-deep-dive.mp4',
+    note: {
+      en: 'A scheduler can keep picking the same task, so a ready task starves. An asyncio task that never awaits never returns to the loop. await asyncio.sleep(0) is enough to suspend.',
+      bn: 'Scheduler একই কাজ বারবার নিতে পারে, তাই একটা ready task starve হয়। যে asyncio task কখনো await করে না, সে loop-এ ফেরে না। থামতে await asyncio.sleep(0) যথেষ্ট।'
+    }
+  }
 }
