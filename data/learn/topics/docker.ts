@@ -792,5 +792,12 @@ export const docker: Topic = {
     { label: 'docker tag (CLI reference)', url: 'https://docs.docker.com/reference/cli/docker/image/tag/' },
     { label: 'docker volume create (CLI reference)', url: 'https://docs.docker.com/reference/cli/docker/volume/create/' },
     { label: 'docker network create (CLI reference)', url: 'https://docs.docker.com/reference/cli/docker/network/create/' }
-  ]
+  ],
+  film: {
+    src: '/learn/docker.mp4',
+    note: {
+      en: 'Without a volume, writes sit on the container layer and docker rm deletes them.',
+      bn: 'volume না থাকলে লেখা container layer-এ থাকে, আর docker rm সেগুলো মুছে দেয়।'
+    }
+  }
 }

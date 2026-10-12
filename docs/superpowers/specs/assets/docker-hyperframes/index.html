@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 22px 36px 18px;
+      }
+      h1 { text-align: center; font-size: 48px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 22px; }
+      .stage { position: relative; width: 1480px; height: 640px; margin: 12px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 640px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 12px 16px;
+      }
+      .k {
+        font-family: ui-monospace, Menlo, monospace; font-size: 13px;
+        letter-spacing: 0.14em; color: #c5d0e0;
+      }
+      .who { margin-top: 2px; font-size: 18px; font-weight: 700; }
+      .sm { margin-top: 6px; font-size: 15px; color: #c5d0e0; }
+      .row { position: relative; height: 28px; margin-top: 6px; }
+      .row b {
+        position: absolute; left: 0; top: 0; white-space: nowrap;
+        font-size: 18px; font-weight: 700;
+      }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      .warn { color: #f0b429; }
+      #dev { left: 16px; top: 250px; width: 200px; height: 120px; }
+      #file { left: 280px; top: 228px; width: 240px; height: 164px; }
+      #img { left: 600px; top: 196px; width: 270px; height: 220px; }
+      #reg { left: 610px; top: 12px; width: 250px; height: 128px; }
+      #ctr { left: 940px; top: 220px; width: 240px; height: 176px; }
+      #vol { left: 1250px; top: 246px; width: 210px; height: 140px; }
+      .cmd {
+        position: absolute; white-space: nowrap;
+        font-family: ui-monospace, Menlo, monospace; font-size: 16px; color: #c5d0e0;
+      }
+      #cmd-build { left: 16px; top: 200px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt span {
+        position: absolute; left: 50%; top: -26px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 16px; color: #f4f7fb;
+      }
+      .pkt span.side { left: 18px; top: -4px; transform: none; }
+      #pkt-write { left: 240px; top: 310px; }
+      #pkt-build { left: 540px; top: 310px; }
+      #pkt-push { left: 780px; top: 168px; }
+      #pkt-pull { left: 690px; top: 168px; }
+      #pkt-run { left: 890px; top: 310px; }
+      #pkt-run2 { left: 890px; top: 310px; }
+      #pkt-data { left: 1195px; top: 298px; }
+      #pkt-back { left: 1216px; top: 332px; }
+      .never { position: absolute; left: 16px; top: 590px; color: #c5d0e0; font-size: 18px; }
+      .said { position: relative; height: 92px; margin-top: 6px; }
+      .said p {
+        position: absolute; left: 24px; right: 24px; top: 8px; text-align: center;
+        font-size: 24px; line-height: 1.28;
+      }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="34" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="34" data-track-index="0">
+        <h1>Docker</h1>
+        <p class="sub">Dockerfile, image, registry, then a container</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 640">
+            <path class="idle" d="M216 310 H280" />
+            <path class="idle" d="M520 310 H600" />
+            <path class="idle" d="M735 140 V196" />
+            <path class="idle" d="M870 310 H940" />
+            <path class="idle" d="M1180 298 H1250" />
+            <path class="idle" d="M1250 332 H1180" />
+            <path id="hot-write" class="hot" pathLength="100" d="M216 310 H280" stroke="#5b8cff" />
+            <path id="hot-build" class="hot" pathLength="100" d="M520 310 H600" stroke="#5b8cff" />
+            <path id="hot-push" class="hot" pathLength="100" d="M735 196 V140" stroke="#5b8cff" />
+            <path id="hot-pull" class="hot" pathLength="100" d="M735 140 V196" stroke="#3ee0a2" />
+            <path id="hot-run" class="hot" pathLength="100" d="M870 310 H940" stroke="#5b8cff" />
+            <path id="hot-data" class="hot" pathLength="100" d="M1180 298 H1250" stroke="#5b8cff" />
+            <path id="hot-back" class="hot" pathLength="100" d="M1250 332 H1180" stroke="#3ee0a2" />
+          </svg>
+
+          <div id="dev" class="card">
+            <div class="k">DEVELOPER</div>
+            <div class="who">writes the file</div>
+            <div class="row"><b class="hotc">Dockerfile</b></div>
+          </div>
+          <div id="file" class="card">
+            <div class="k">DOCKERFILE</div>
+            <div class="who">instructions</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="df-idle" class="muted">text file</b>
+              <b id="df-ok" class="hotc hide">FROM COPY RUN CMD</b>
+            </div>
+            <p class="sm">.dockerignore</p>
+          </div>
+          <div id="img" class="card">
+            <div class="k">IMAGE</div>
+            <div class="who">read-only layers</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="im-idle" class="muted">not built</b>
+              <b id="im-built" class="ok hide">base · deps · code</b>
+              <b id="im-cache" class="hotc hide">2 cached, 1 new</b>
+              <b id="im-same" class="ok hide">same layers</b>
+            </div>
+            <p class="sm">myapp:1.0</p>
+            <p class="sm">install before COPY . .</p>
+          </div>
+          <div id="reg" class="card">
+            <div class="k">REGISTRY</div>
+            <div class="who">example.com</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="rg-idle" class="muted">not pushed</b>
+              <b id="rg-ok" class="ok hide">team/myapp:1.0</b>
+            </div>
+            <p class="sm">layers not re-sent</p>
+          </div>
+          <div id="ctr" class="card">
+            <div class="k">CONTAINER</div>
+            <div class="who">writable layer</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="ct-idle" class="muted">not running</b>
+              <b id="ct-up" class="ok hide">port 8000</b>
+              <b id="ct-gone" class="warn hide">removed</b>
+              <b id="ct-new" class="ok hide">fresh layer</b>
+            </div>
+            <p class="sm">-p 8000:8000</p>
+          </div>
+          <div id="vol" class="card">
+            <div class="k">VOLUME</div>
+            <div class="who">named volume</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="vo-idle" class="muted">outside</b>
+              <b id="vo-data" class="ok hide">holds /data</b>
+              <b id="vo-keep" class="ok hide">still there</b>
+              <b id="vo-back" class="hotc hide">mounted again</b>
+            </div>
+            <p class="sm">-v data:/data</p>
+          </div>
+
+          <p id="cmd-build" class="cmd">docker build -t myapp:1.0 .</p>
+
+          <div id="pkt-write" class="pkt"><span data-layout-allow-overflow>write</span></div>
+          <div id="pkt-build" class="pkt"><span data-layout-allow-overflow>build</span></div>
+          <div id="pkt-push" class="pkt"><span class="side" data-layout-allow-overflow>push</span></div>
+          <div id="pkt-pull" class="pkt go"><span class="side" data-layout-allow-overflow>pull</span></div>
+          <div id="pkt-run" class="pkt"><span data-layout-allow-overflow>run</span></div>
+          <div id="pkt-run2" class="pkt"><span data-layout-allow-overflow>run</span></div>
+          <div id="pkt-data" class="pkt"><span data-layout-allow-overflow>/data</span></div>
+          <div id="pkt-back" class="pkt go"><span data-layout-allow-overflow>mount</span></div>
+
+          <p class="never">Without a volume, docker rm deletes the writes.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">A Dockerfile lists instructions. FROM picks the base, COPY adds files, RUN runs a command, and CMD is the default. .dockerignore stays out of the context.</p>
+          <p id="line-2" class="hide">docker build -t myapp:1.0 . freezes the image. Each instruction adds a read-only layer. An image does not change once built.</p>
+          <p id="line-3" class="hide">Unchanged layers stay cached. A changed layer rebuilds every layer after it. Put pip install before COPY . . so a code edit skips the install.</p>
+          <p id="line-4" class="hide">docker push uploads the image. docker tag can add the registry host. Layers the registry already holds are not sent again.</p>
+          <p id="line-5" class="hide">docker pull downloads the image. With no tag it uses :latest. Layers already on the machine are not fetched again.</p>
+          <p id="line-6" class="hide">docker run -p 8000:8000 -v data:/data myapp adds a writable layer and runs CMD. -p publishes port 8000. The kernel is the host’s.</p>
+          <p id="line-7" class="hide">The named volume data is mounted at /data. Writes go there, not to the writable layer. Docker creates the volume if it is missing.</p>
+          <p id="line-8" class="hide">docker rm deletes the container and its writable layer. The named volume stays. docker rm -v removes only anonymous volumes.</p>
+          <p id="line-9" class="hide">A new container starts from the same image with a fresh writable layer. Mounting data brings the old files back.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.5);
+      tl.fromTo("#hot-write", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.6, ease: "power1.inOut" }, 0.5);
+      tl.fromTo("#pkt-write", { x: 0, opacity: 0 }, { x: 22, opacity: 1, duration: 0.6, ease: "power1.inOut" }, 0.5);
+      tl.fromTo("#pkt-write", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 1.15);
+      tl.fromTo("#df-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.7);
+      tl.fromTo("#df-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.85);
+      tl.fromTo("#file", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.3 }, 0.7);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 3.55);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 3.75);
+      tl.fromTo("#hot-build", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.6, ease: "power1.inOut" }, 3.75);
+      tl.fromTo("#pkt-build", { x: 0, opacity: 0 }, { x: 32, opacity: 1, duration: 0.6, ease: "power1.inOut" }, 3.75);
+      tl.fromTo("#pkt-build", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 4.4);
+      tl.fromTo("#im-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 4.25);
+      tl.fromTo("#im-built", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.4);
+      tl.fromTo("#img", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.3 }, 4.3);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 6.85);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 7.05);
+      tl.fromTo("#im-built", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 7.15);
+      tl.fromTo("#im-cache", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 7.3);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 10.15);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 10.35);
+      tl.fromTo("#hot-push", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 10.35);
+      tl.fromTo("#pkt-push", { y: 0, opacity: 0 }, { y: -16, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 10.35);
+      tl.fromTo("#pkt-push", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 10.95);
+      tl.fromTo("#rg-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 10.8);
+      tl.fromTo("#rg-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 10.95);
+      tl.fromTo("#reg", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 10.9);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 13.45);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 13.65);
+      tl.fromTo("#hot-pull", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 13.65);
+      tl.fromTo("#pkt-pull", { y: 0, opacity: 0 }, { y: 16, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 13.65);
+      tl.fromTo("#pkt-pull", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 14.25);
+      tl.fromTo("#im-cache", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 14.1);
+      tl.fromTo("#im-same", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 14.25);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 16.75);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 16.95);
+      tl.fromTo("#hot-run", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 16.95);
+      tl.fromTo("#pkt-run", { x: 0, opacity: 0 }, { x: 20, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 16.95);
+      tl.fromTo("#pkt-run", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 17.55);
+      tl.fromTo("#ct-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 17.4);
+      tl.fromTo("#ct-up", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 17.55);
+      tl.fromTo("#ctr", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 17.5);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 20.05);
+
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 20.25);
+      tl.fromTo("#hot-data", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 20.25);
+      tl.fromTo("#pkt-data", { x: 0, opacity: 0 }, { x: 30, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 20.25);
+      tl.fromTo("#pkt-data", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 20.85);
+      tl.fromTo("#vo-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 20.7);
+      tl.fromTo("#vo-data", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 20.85);
+      tl.fromTo("#vol", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 20.8);
+      tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 23.35);
+
+      tl.fromTo("#line-8", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 23.55);
+      tl.fromTo("#ct-up", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 23.65);
+      tl.fromTo("#ct-gone", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 23.8);
+      tl.fromTo("#ctr", { borderColor: "#3ee0a2" }, { borderColor: "#f0b429", duration: 0.3, immediateRender: false }, 23.7);
+      tl.fromTo("#vo-data", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 23.7);
+      tl.fromTo("#vo-keep", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 23.85);
+      tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 26.65);
+
+      tl.fromTo("#line-9", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 26.85);
+      tl.fromTo("#pkt-run2", { x: 0, opacity: 0 }, { x: 20, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 26.85);
+      tl.fromTo("#pkt-run2", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 27.4);
+      tl.fromTo("#hot-back", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 27.15);
+      tl.fromTo("#pkt-back", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 27.15);
+      tl.fromTo("#pkt-back", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 27.7);
+      tl.fromTo("#ct-gone", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 27.2);
+      tl.fromTo("#ct-new", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 27.35);
+      tl.fromTo("#ctr", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.3, immediateRender: false }, 27.3);
+      tl.fromTo("#vo-keep", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 27.25);
+      tl.fromTo("#vo-back", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 27.4);
+
+      tl.set({}, {}, 34);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
