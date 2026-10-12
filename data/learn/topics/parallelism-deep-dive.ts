@@ -545,5 +545,12 @@ export const parallelismDeepDive: Topic = {
     { label: "Gustafson's law", url: 'https://en.wikipedia.org/wiki/Gustafson%27s_law' },
     { label: 'Python glossary: concurrency and parallelism', url: 'https://docs.python.org/3/glossary.html' },
     { label: 'InterpreterPoolExecutor', url: 'https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.InterpreterPoolExecutor' }
-  ]
+  ],
+  film: {
+    src: '/learn/parallelism-deep-dive.mp4',
+    note: {
+      en: 'The formulas ignore split and merge overhead, so two cores can finish later than one. A default build runs Python bytecode on one thread. Processes, a C extension that releases the lock, a free-threaded build, or InterpreterPoolExecutor can use two cores.',
+      bn: 'সূত্র ভাগ আর মিলের খরচ ধরে না, তাই দুই কোর এক কোরের চেয়ে পরে শেষ করতে পারে। ডিফল্ট বিল্ড Python bytecode একটা thread-এ চালায়। প্রসেস, লক ছাড়া C extension, free-threaded বিল্ড, অথবা InterpreterPoolExecutor দুই কোর ব্যবহার করতে পারে।'
+    }
+  }
 }

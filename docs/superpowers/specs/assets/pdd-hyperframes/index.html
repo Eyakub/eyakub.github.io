@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 16px 36px 14px;
+      }
+      h1 { text-align: center; font-size: 40px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 18px; }
+      .stage { position: relative; width: 1480px; height: 640px; margin: 6px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 640px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 8px 12px; z-index: 1;
+      }
+      .k { font-family: ui-monospace, Menlo, monospace; font-size: 12px; letter-spacing: 0.12em; color: #c5d0e0; }
+      .who { margin-top: 1px; font-size: 18px; font-weight: 700; line-height: 1.12; }
+      .sm { margin-top: 3px; font-size: 14px; color: #c5d0e0; white-space: nowrap; }
+      .row { position: relative; height: 22px; margin-top: 4px; }
+      .row b { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 15px; font-weight: 700; }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      .warn { color: #f0b429; }
+      #serial { left: 10px; top: 190px; width: 240px; height: 108px; }
+      #c1 { left: 520px; top: 28px; width: 240px; height: 108px; }
+      #c2 { left: 520px; top: 360px; width: 240px; height: 108px; }
+      #join { left: 1120px; top: 190px; width: 280px; height: 108px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt span {
+        position: absolute; left: 50%; top: -40px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 15px; color: #f4f7fb;
+      }
+      .pkt.low span { top: -22px; }
+      #pkt-setup { left: 390px; top: 180px; }
+      #pkt-left { left: 390px; top: 150px; }
+      #pkt-right { left: 450px; top: 414px; }
+      #pkt-lin { left: 980px; top: 150px; }
+      #pkt-rin { left: 980px; top: 350px; }
+      .cmds { position: absolute; color: #c5d0e0; font-size: 14px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+      .c0 { left: 0; }
+      .c1 { left: 760px; }
+      #cmd-1, #cmd-4 { top: 492px; }
+      #cmd-2, #cmd-5 { top: 516px; }
+      #cmd-3 { top: 540px; }
+      .never { position: absolute; left: 0; top: 572px; width: 1460px; color: #c5d0e0; font-size: 15px; line-height: 1.35; }
+      .said { position: relative; height: 160px; margin-top: 2px; }
+      .said p { position: absolute; left: 8px; right: 8px; top: 0; text-align: center; font-size: 20px; line-height: 1.28; }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="36" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="36" data-track-index="0">
+        <h1>Parallelism deep-dive</h1>
+        <p class="sub">serial stretch · core · join · Amdahl · Gustafson</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 640">
+            <path class="idle" d="M250 220 H390 V82 H520" />
+            <path class="idle" d="M250 270 H390 V414 H520" />
+            <path class="idle" d="M760 82 H980 V190 H1120" />
+            <path class="idle" d="M760 414 H980 V298 H1120" />
+            <path id="hot-setup" class="hot" pathLength="100" d="M250 220 H390 V82 H520" stroke="#5b8cff" />
+            <path id="hot-right" class="hot" pathLength="100" d="M250 270 H390 V414 H520" stroke="#5b8cff" />
+            <path id="hot-lin" class="hot" pathLength="100" d="M760 82 H980 V190 H1120" stroke="#3ee0a2" />
+            <path id="hot-rin" class="hot" pathLength="100" d="M760 414 H980 V298 H1120" stroke="#3ee0a2" />
+          </svg>
+          <div id="serial" class="card">
+            <div class="k">SERIAL</div>
+            <div class="who">Serial stretch</div>
+            <div class="sm">one core</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="serial-idle" class="muted">waiting</b>
+              <b id="serial-count" class="hotc hide">counting</b>
+              <b id="serial-hand" class="warn hide">handing off</b>
+            </div>
+          </div>
+          <div id="c1" class="card">
+            <div class="k">CPU</div>
+            <div class="who">Core 1</div>
+            <div class="sm">separate stream</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="c1-idle" class="muted">idle</b>
+              <b id="c1-prep" class="warn hide">preparing</b>
+              <b id="c1-left" class="hotc hide">running left</b>
+              <b id="c1-done" class="ok hide">left done</b>
+            </div>
+          </div>
+          <div id="c2" class="card">
+            <div class="k">CPU</div>
+            <div class="who">Core 2</div>
+            <div class="sm">separate stream</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="c2-idle" class="muted">idle</b>
+              <b id="c2-right" class="hotc hide">running right</b>
+              <b id="c2-done" class="ok hide">right done</b>
+            </div>
+          </div>
+          <div id="join" class="card">
+            <div class="k">JOIN</div>
+            <div class="who">Join</div>
+            <div class="sm">the longer half waits</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="join-wait" class="muted">not yet</b>
+              <b id="join-merge" class="hotc hide">merging</b>
+              <b id="join-ceil" class="warn hide">ceiling set</b>
+              <b id="join-big" class="ok hide">bigger job</b>
+            </div>
+          </div>
+          <div id="pkt-setup" class="pkt low"><span data-layout-allow-overflow>setup</span></div>
+          <div id="pkt-left" class="pkt low"><span data-layout-allow-overflow>left</span></div>
+          <div id="pkt-right" class="pkt low"><span data-layout-allow-overflow>right</span></div>
+          <div id="pkt-lin" class="pkt go low"><span data-layout-allow-overflow>left in</span></div>
+          <div id="pkt-rin" class="pkt go low"><span data-layout-allow-overflow>right in</span></div>
+          <p id="cmd-1" class="cmds c0">def amdahl(p, n): return 1 / ((1 - p) + p / n)</p>
+          <p id="cmd-2" class="cmds c0">amdahl(0.95, 1_000_000_000)  # about 20</p>
+          <p id="cmd-3" class="cmds c0">def gustafson(n, s): return n - s * (n - 1)</p>
+          <p id="cmd-4" class="cmds c1">from concurrent.futures import ProcessPoolExecutor</p>
+          <p id="cmd-5" class="cmds c1">from concurrent.futures import InterpreterPoolExecutor  # 3.14</p>
+          <p class="never" data-layout-allow-overlap>Off this path: The formulas ignore split and merge overhead, so two cores can finish later than one. A default build runs Python bytecode on one thread. Processes, a C extension that releases the lock, a free-threaded build, or InterpreterPoolExecutor can use two cores.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">Startup, reading the input, and the final merge are serial. Extra cores sit idle while one core does that stretch.</p>
+          <p id="line-2" class="hide">One core takes the setup. The second core stays idle until a piece can run on its own.</p>
+          <p id="line-3" class="hide">Two instruction streams, one instant. That needs more than one core, and a runtime that is allowed to use both.</p>
+          <p id="line-4" class="hide">Wall-clock time is the serial stretches plus the longer parallel part, plus what the split itself cost.</p>
+          <p id="line-5" class="hide">Amdahl fixes the job size. Speedup is 1 / ((1 - p) + p / n), with p the fraction that splits. At p of 0.95 the ceiling is 20 times. At p of 0.5 it is 2 times.</p>
+          <p id="line-6" class="hide">Gustafson-Barsis, 1988, grows the job with the machine. Scaled speedup is about n - s(n - 1), where s is the serial share of the parallel run. Amdahl is the fixed job. Gustafson is the bigger one.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.35);
+      tl.fromTo("#serial-idle", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 0.5);
+      tl.fromTo("#serial-count", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 0.7);
+      tl.fromTo("#serial", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.5);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 4.8);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 5.2);
+      tl.fromTo("#hot-setup", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 5.2);
+      tl.fromTo("#pkt-setup", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 5.2);
+      tl.fromTo("#pkt-setup", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 9.2);
+      tl.fromTo("#serial-count", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 5.35);
+      tl.fromTo("#serial-hand", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 5.55);
+      tl.fromTo("#c1-idle", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 5.35);
+      tl.fromTo("#c1-prep", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 5.55);
+      tl.fromTo("#c1", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 5.35);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 9.65);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 10.0);
+      tl.fromTo("#pkt-left", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 10.0);
+      tl.fromTo("#pkt-left", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 14.0);
+      tl.fromTo("#hot-right", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 10.0);
+      tl.fromTo("#pkt-right", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 10.0);
+      tl.fromTo("#pkt-right", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 14.0);
+      tl.fromTo("#c1-prep", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 10.15);
+      tl.fromTo("#c1-left", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 10.35);
+      tl.fromTo("#c2-idle", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 10.15);
+      tl.fromTo("#c2-right", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 10.35);
+      tl.fromTo("#c1", { borderColor: "#f0b429" }, { borderColor: "#5b8cff", duration: 0.25, immediateRender: false }, 10.15);
+      tl.fromTo("#c2", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 10.15);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 14.45);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 14.8);
+      tl.fromTo("#hot-lin", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 14.8);
+      tl.fromTo("#pkt-lin", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 14.8);
+      tl.fromTo("#pkt-lin", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 18.8);
+      tl.fromTo("#hot-rin", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 14.8);
+      tl.fromTo("#pkt-rin", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 14.8);
+      tl.fromTo("#pkt-rin", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 18.8);
+      tl.fromTo("#c1-left", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 14.95);
+      tl.fromTo("#c1-done", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 15.15);
+      tl.fromTo("#c2-right", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 14.95);
+      tl.fromTo("#c2-done", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 15.15);
+      tl.fromTo("#join-wait", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 14.95);
+      tl.fromTo("#join-merge", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 15.15);
+      tl.fromTo("#c1", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 14.95);
+      tl.fromTo("#c2", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 14.95);
+      tl.fromTo("#join", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 14.95);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 19.25);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 19.6);
+      tl.fromTo("#join-merge", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 19.75);
+      tl.fromTo("#join-ceil", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 19.95);
+      tl.fromTo("#join", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 19.75);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 24.05);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 24.4);
+      tl.fromTo("#join-ceil", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 24.55);
+      tl.fromTo("#join-big", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 24.75);
+      tl.fromTo("#join", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 24.55);
+
+      tl.set({}, {}, 36);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
