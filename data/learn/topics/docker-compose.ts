@@ -858,5 +858,12 @@ export const dockerCompose: Topic = {
     { label: 'Redis: redis-cli (default port 6379, URI)', url: 'https://redis.io/docs/latest/develop/tools/cli/' },
     { label: 'Linux: network_namespaces(7)', url: 'https://man7.org/linux/man-pages/man7/network_namespaces.7.html' },
     { label: 'Kubernetes: overview', url: 'https://kubernetes.io/docs/concepts/overview/' }
-  ]
+  ],
+  film: {
+    src: '/learn/docker-compose.mp4',
+    note: {
+      en: 'Inside a container, localhost is that container. The service name db:5432 reaches Postgres.',
+      bn: 'container-এর ভেতরে localhost মানে সেই container। service name db:5432 দিয়ে Postgres-এ পৌঁছানো যায়।'
+    }
+  }
 }

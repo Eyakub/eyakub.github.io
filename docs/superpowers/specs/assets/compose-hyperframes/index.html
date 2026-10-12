@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 22px 36px 18px;
+      }
+      h1 { text-align: center; font-size: 48px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 22px; }
+      .stage { position: relative; width: 1480px; height: 640px; margin: 12px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 640px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      #net {
+        position: absolute; left: 348px; top: 32px; width: 740px; height: 456px;
+        border: 2px solid #243044; border-radius: 22px;
+      }
+      #net span {
+        position: absolute; left: 16px; top: 8px;
+        font-family: ui-monospace, Menlo, monospace; font-size: 13px;
+        letter-spacing: 0.14em; color: #c5d0e0;
+      }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 12px 16px; z-index: 1;
+      }
+      .k {
+        font-family: ui-monospace, Menlo, monospace; font-size: 13px;
+        letter-spacing: 0.14em; color: #c5d0e0;
+      }
+      .who { margin-top: 2px; font-size: 18px; font-weight: 700; }
+      .sm { margin-top: 6px; font-size: 15px; color: #c5d0e0; }
+      .row { position: relative; height: 28px; margin-top: 6px; }
+      .row b {
+        position: absolute; left: 0; top: 0; white-space: nowrap;
+        font-size: 18px; font-weight: 700;
+      }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      .warn { color: #f0b429; }
+      #you { left: 16px; top: 310px; width: 180px; height: 120px; }
+      #compose { left: 16px; top: 56px; width: 200px; height: 140px; }
+      #redis { left: 376px; top: 70px; width: 230px; height: 142px; }
+      #worker { left: 770px; top: 70px; width: 270px; height: 150px; }
+      #api { left: 376px; top: 304px; width: 230px; height: 156px; }
+      #db { left: 770px; top: 304px; width: 270px; height: 156px; }
+      #vol { left: 1190px; top: 314px; width: 250px; height: 140px; }
+      .cmd {
+        position: absolute; left: 16px; top: 236px; white-space: nowrap;
+        font-family: ui-monospace, Menlo, monospace; font-size: 16px; color: #c5d0e0;
+      }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt.job { background: #f0b429; box-shadow: 0 0 0 6px rgba(240, 180, 41, 0.22), 0 0 16px rgba(240, 180, 41, 0.85); }
+      .pkt span {
+        position: absolute; left: 50%; top: -26px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 16px; color: #f4f7fb;
+      }
+      .pkt span.side { left: 18px; top: -4px; transform: none; }
+      .pkt span.leftlab { left: auto; right: 12px; top: -22px; transform: none; }
+      #pkt-up { left: 196px; top: 258px; }
+      #pkt-port { left: 360px; top: 370px; }
+      #pkt-db { left: 688px; top: 378px; }
+      #pkt-job { left: 491px; top: 258px; }
+      #pkt-take { left: 688px; top: 145px; }
+      #pkt-data { left: 1090px; top: 378px; }
+      .never { position: absolute; left: 16px; top: 528px; color: #c5d0e0; font-size: 18px; }
+      .said { position: relative; height: 92px; margin-top: 6px; }
+      .said p {
+        position: absolute; left: 24px; right: 24px; top: 8px; text-align: center;
+        font-size: 24px; line-height: 1.28;
+      }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="37" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="37" data-track-index="0">
+        <h1>Docker Compose</h1>
+        <p class="sub">One network, one published port, a volume outside</p>
+        <div class="stage">
+          <div id="net"><span>PROJECT NETWORK</span></div>
+          <svg class="wires" viewBox="0 0 1480 640">
+            <path class="idle" d="M196 310 V196" />
+            <path class="idle" d="M196 370 H376" />
+            <path class="idle" d="M606 378 H770" />
+            <path class="idle" d="M491 304 V212" />
+            <path class="idle" d="M606 145 H770" />
+            <path class="idle" d="M1040 378 H1190" />
+            <path id="hot-up" class="hot" pathLength="100" d="M196 310 V196" stroke="#5b8cff" />
+            <path id="hot-port" class="hot" pathLength="100" d="M196 370 H376" stroke="#5b8cff" />
+            <path id="hot-db" class="hot" pathLength="100" d="M606 378 H770" stroke="#5b8cff" />
+            <path id="hot-job" class="hot" pathLength="100" d="M491 304 V212" stroke="#f0b429" />
+            <path id="hot-take" class="hot" pathLength="100" d="M606 145 H770" stroke="#f0b429" />
+            <path id="hot-vol" class="hot" pathLength="100" d="M1040 378 H1190" stroke="#3ee0a2" />
+          </svg>
+
+          <div id="compose" class="card">
+            <div class="k">COMPOSE</div>
+            <div class="who">compose.yaml</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="co-idle" class="muted">not read</b>
+              <b id="co-ok" class="ok hide">project_default</b>
+            </div>
+            <p class="sm">dependency order</p>
+          </div>
+          <div id="you" class="card">
+            <div class="k">YOU</div>
+            <div class="who">on the host</div>
+            <p class="sm">one published port</p>
+          </div>
+          <div id="redis" class="card">
+            <div class="k">REDIS</div>
+            <div class="who">broker</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="rd-idle" class="muted">not started</b>
+              <b id="rd-net" class="hotc hide">on network</b>
+              <b id="rd-start" class="warn hide">starting</b>
+              <b id="rd-run" class="ok hide">running</b>
+            </div>
+            <p class="sm">redis://redis:6379</p>
+          </div>
+          <div id="worker" class="card">
+            <div class="k">WORKER</div>
+            <div class="who">same image</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="wk-idle" class="muted">not started</b>
+              <b id="wk-net" class="hotc hide">on network</b>
+              <b id="wk-ok" class="ok hide">own command</b>
+            </div>
+            <p class="sm">celery -A app.worker worker</p>
+          </div>
+          <div id="api" class="card">
+            <div class="k">API</div>
+            <div class="who">web app</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="ap-idle" class="muted">not started</b>
+              <b id="ap-net" class="hotc hide">on network</b>
+              <b id="ap-ok" class="ok hide">port 8000</b>
+            </div>
+            <p class="sm">ports 8000:8000</p>
+          </div>
+          <div id="db" class="card">
+            <div class="k">DB</div>
+            <div class="who">Postgres</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="db-idle" class="muted">not started</b>
+              <b id="db-net" class="hotc hide">on network</b>
+              <b id="db-start" class="warn hide">starting</b>
+              <b id="db-ok" class="ok hide">healthy</b>
+            </div>
+            <p class="sm">healthcheck pg_isready</p>
+          </div>
+          <div id="vol" class="card">
+            <div class="k">PGDATA</div>
+            <div class="who">named volume</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="vo-idle" class="muted">outside</b>
+              <b id="vo-made" class="hotc hide">created</b>
+              <b id="vo-keep" class="ok hide">kept after down</b>
+            </div>
+            <p class="sm">down -v deletes it</p>
+          </div>
+
+          <p class="cmd">docker compose up</p>
+
+          <div id="pkt-up" class="pkt"><span data-layout-allow-overflow>up</span></div>
+          <div id="pkt-port" class="pkt"><span class="leftlab" data-layout-allow-overflow>localhost:8000</span></div>
+          <div id="pkt-db" class="pkt"><span data-layout-allow-overflow>db:5432</span></div>
+          <div id="pkt-job" class="pkt job"><span class="side" data-layout-allow-overflow>enqueue</span></div>
+          <div id="pkt-take" class="pkt job"><span data-layout-allow-overflow>dequeue</span></div>
+          <div id="pkt-data" class="pkt go"><span data-layout-allow-overflow>pgdata</span></div>
+
+          <p class="never">Inside api, localhost is that container. Use db:5432.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">docker compose up reads compose.yaml. It creates the network &lt;project&gt;_default, creates a missing named volume, then starts containers in dependency order.</p>
+          <p id="line-2" class="hide">Compose attaches every service to that network. DNS answers each service name with that container's address. The host hears nothing until a port is published.</p>
+          <p id="line-3" class="hide">api and worker list db and redis under depends_on, so those two start first and together. With no condition, Compose waits only until the process has started.</p>
+          <p id="line-4" class="hide">The db healthcheck runs pg_isready. Exit 0 means Postgres accepts connections. redis has no healthcheck, so service_started is enough.</p>
+          <p id="line-5" class="hide">condition: service_healthy starts api only after db is healthy. ports: 8000:8000 publishes host port 8000. db and redis publish nothing.</p>
+          <p id="line-6" class="hide">worker uses the same image as api. Its command replaces the image CMD, for example celery -A app.worker worker.</p>
+          <p id="line-7" class="hide">localhost:8000 reaches api. With no host IP, Docker publishes on every interface. The host has no route to db or redis.</p>
+          <p id="line-8" class="hide">DNS resolves db, so api connects to db:5432, the container port. ports plays no part. A URL is postgresql://app:pw@db:5432/app.</p>
+          <p id="line-9" class="hide">api pushes the job to redis://redis:6379. The host is the service name, and 6379 is the Redis port. Celery calls this store the broker.</p>
+          <p id="line-10" class="hide">The worker reads redis by name and runs the job. Redis only holds it, so api stays free. Add copies with --scale worker=3.</p>
+          <p id="line-11" class="hide">db writes to the named volume pgdata, outside the container. docker compose down keeps named volumes. docker compose down -v deletes them.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.45);
+      tl.fromTo("#hot-up", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 0.45);
+      tl.fromTo("#pkt-up", { y: 0, opacity: 0 }, { y: -24, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 0.45);
+      tl.fromTo("#pkt-up", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 1.05);
+      tl.fromTo("#co-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.85);
+      tl.fromTo("#co-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 1.05);
+      tl.fromTo("#compose", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.9);
+      tl.fromTo("#vo-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.9);
+      tl.fromTo("#vo-made", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 1.1);
+      tl.fromTo("#vol", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 1.0);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 3.45);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 3.7);
+      tl.fromTo("#net", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.35 }, 3.7);
+      tl.fromTo("#rd-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 3.85);
+      tl.fromTo("#rd-net", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.05);
+      tl.fromTo("#redis", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 3.95);
+      tl.fromTo("#wk-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 3.85);
+      tl.fromTo("#wk-net", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.05);
+      tl.fromTo("#worker", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 3.95);
+      tl.fromTo("#ap-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 3.85);
+      tl.fromTo("#ap-net", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.05);
+      tl.fromTo("#api", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 3.95);
+      tl.fromTo("#db-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 3.85);
+      tl.fromTo("#db-net", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.05);
+      tl.fromTo("#db", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 3.95);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 6.7);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 6.95);
+      tl.fromTo("#rd-net", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 7.05);
+      tl.fromTo("#rd-start", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 7.25);
+      tl.fromTo("#redis", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 7.15);
+      tl.fromTo("#db-net", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 7.05);
+      tl.fromTo("#db-start", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 7.25);
+      tl.fromTo("#db", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 7.15);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 9.95);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 10.2);
+      tl.fromTo("#db-start", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 10.3);
+      tl.fromTo("#db-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 10.5);
+      tl.fromTo("#db", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 10.4);
+      tl.fromTo("#rd-start", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 10.3);
+      tl.fromTo("#rd-run", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 10.5);
+      tl.fromTo("#redis", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 10.4);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 13.2);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 13.45);
+      tl.fromTo("#ap-net", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 13.55);
+      tl.fromTo("#ap-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 13.75);
+      tl.fromTo("#api", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 13.65);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 16.45);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 16.7);
+      tl.fromTo("#wk-net", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 16.8);
+      tl.fromTo("#wk-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 17.0);
+      tl.fromTo("#worker", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 16.9);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 19.7);
+
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 19.95);
+      tl.fromTo("#hot-port", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 19.95);
+      tl.fromTo("#pkt-port", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 19.95);
+      tl.fromTo("#pkt-port", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 20.55);
+      tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 22.95);
+
+      tl.fromTo("#line-8", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 23.2);
+      tl.fromTo("#hot-db", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 23.2);
+      tl.fromTo("#pkt-db", { x: 0, opacity: 0 }, { x: 12, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 23.2);
+      tl.fromTo("#pkt-db", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 23.8);
+      tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 26.2);
+
+      tl.fromTo("#line-9", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 26.45);
+      tl.fromTo("#hot-job", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 26.45);
+      tl.fromTo("#pkt-job", { y: 0, opacity: 0 }, { y: -16, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 26.45);
+      tl.fromTo("#pkt-job", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 27.05);
+      tl.fromTo("#line-9", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 29.45);
+
+      tl.fromTo("#line-10", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 29.7);
+      tl.fromTo("#hot-take", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 29.7);
+      tl.fromTo("#pkt-take", { x: 0, opacity: 0 }, { x: 12, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 29.7);
+      tl.fromTo("#pkt-take", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 30.3);
+      tl.fromTo("#line-10", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 32.7);
+
+      tl.fromTo("#line-11", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 32.95);
+      tl.fromTo("#hot-vol", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 32.95);
+      tl.fromTo("#pkt-data", { x: 0, opacity: 0 }, { x: 24, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 32.95);
+      tl.fromTo("#pkt-data", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 33.55);
+      tl.fromTo("#vo-made", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 33.4);
+      tl.fromTo("#vo-keep", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 33.6);
+      tl.fromTo("#vol", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 33.5);
+
+      tl.set({}, {}, 37);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
