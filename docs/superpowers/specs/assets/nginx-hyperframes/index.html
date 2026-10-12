@@ -50,6 +50,16 @@
       #pool-l { position: absolute; left: 1160px; top: 250px; width: 260px; }
       #pool-l .who { font-size: 22px; }
       #pool-l .sm { margin-top: 4px; font-size: 16px; color: #c5d0e0; }
+      #pool-l .rule {
+        margin-top: 12px; font-family: ui-monospace, Menlo, monospace;
+        font-size: 15px; line-height: 1.4; color: #f4f7fb;
+      }
+      #rr-live { position: relative; height: 40px; margin-top: 8px; }
+      #rr-live b {
+        position: absolute; left: 0; top: 0; width: 250px;
+        font-family: ui-monospace, Menlo, monospace; font-size: 15px;
+        font-weight: 650; line-height: 1.3; color: #9db7ff;
+      }
       .cmd {
         position: absolute; white-space: nowrap;
         font-family: ui-monospace, Menlo, monospace; font-size: 16px; color: #c5d0e0;
@@ -160,6 +170,12 @@
             <div class="k">UPSTREAM</div>
             <div class="who">backend</div>
             <div class="sm">round-robin · weight=1</div>
+            <p class="rule">score += weight<br>highest wins<br>winner -= total</p>
+            <div id="rr-live" data-layout-allow-overlap>
+              <b id="rr-s0">scores start at 0</b>
+              <b id="rr-s1" class="hide">1 and 1 pick app 1, then -1</b>
+              <b id="rr-s2" class="hide">0 and 2 pick app 2, then 0</b>
+            </div>
           </div>
 
           <p id="cmd-root" class="cmd">root /var/www</p>
@@ -247,6 +263,8 @@
       tl.fromTo("#pkt-app1", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 15.05);
       tl.fromTo("#nx-loc", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 14.95);
       tl.fromTo("#nx-rr1", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 15.1);
+      tl.fromTo("#rr-s0", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 15.1);
+      tl.fromTo("#rr-s1", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 15.2);
       tl.fromTo("#app1", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 15.05);
       tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 16.85);
 
@@ -269,6 +287,8 @@
       tl.fromTo("#pkt-app2", { opacity: 1 }, { opacity: 0, duration: 0.15, immediateRender: false }, 20.9);
       tl.fromTo("#nx-rr1", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 20.25);
       tl.fromTo("#nx-rr2", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 20.4);
+      tl.fromTo("#rr-s1", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 20.35);
+      tl.fromTo("#rr-s2", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 20.5);
       tl.fromTo("#app2", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 20.85);
       tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 22.25);
 
