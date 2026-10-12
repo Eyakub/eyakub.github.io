@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 22px 36px 18px;
+      }
+      h1 { text-align: center; font-size: 48px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 22px; }
+      .stage { position: relative; width: 1480px; height: 640px; margin: 12px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 640px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 12px 16px;
+      }
+      .k {
+        font-family: ui-monospace, Menlo, monospace; font-size: 13px;
+        letter-spacing: 0.14em; color: #c5d0e0;
+      }
+      .who { margin-top: 2px; font-size: 20px; font-weight: 700; }
+      .sm { margin-top: 6px; font-size: 15px; color: #c5d0e0; }
+      .row { position: relative; height: 28px; margin-top: 6px; }
+      .row b {
+        position: absolute; left: 0; top: 0; white-space: nowrap;
+        font-size: 20px; font-weight: 700;
+      }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      .warn { color: #f0b429; }
+      #ctl { left: 16px; top: 94px; width: 260px; height: 112px; }
+      #plane { left: 400px; top: 66px; width: 330px; height: 168px; }
+      #node { left: 830px; top: 80px; width: 250px; height: 140px; }
+      #pod { left: 1180px; top: 70px; width: 270px; height: 160px; }
+      #svc { left: 520px; top: 400px; width: 310px; height: 150px; }
+      #ing { left: 1020px; top: 408px; width: 290px; height: 142px; }
+      .cmd {
+        position: absolute; white-space: nowrap;
+        font-family: ui-monospace, Menlo, monospace; font-size: 16px; color: #c5d0e0;
+      }
+      #cmd-apply { left: 16px; top: 58px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt span {
+        position: absolute; left: 50%; top: -26px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 16px; color: #f4f7fb;
+      }
+      #pkt-apply { left: 310px; top: 150px; }
+      #pkt-bind { left: 760px; top: 150px; }
+      #pkt-start { left: 1100px; top: 150px; }
+      #pkt-ready { left: 1240px; top: 270px; }
+      #pkt-ing { left: 960px; top: 476px; }
+      .never { position: absolute; left: 16px; top: 588px; color: #c5d0e0; font-size: 18px; }
+      .said { position: relative; height: 92px; margin-top: 6px; }
+      .said p {
+        position: absolute; left: 24px; right: 24px; top: 8px; text-align: center;
+        font-size: 24px; line-height: 1.28;
+      }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="32" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="32" data-track-index="0">
+        <h1>Kubernetes</h1>
+        <p class="sub">Three Pods, one Service, then the Ingress</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 640">
+            <path class="idle" d="M276 150 H400" />
+            <path class="idle" d="M730 150 H830" />
+            <path class="idle" d="M1080 150 H1180" />
+            <path class="idle" d="M1315 230 C1315 330 830 310 675 400" />
+            <path class="idle" d="M1020 476 H830" />
+            <path id="hot-apply" class="hot" pathLength="100" d="M276 150 H400" stroke="#5b8cff" />
+            <path id="hot-bind" class="hot" pathLength="100" d="M730 150 H830" stroke="#5b8cff" />
+            <path id="hot-start" class="hot" pathLength="100" d="M1080 150 H1180" stroke="#5b8cff" />
+            <path id="hot-ready" class="hot" pathLength="100" d="M1315 230 C1315 330 830 310 675 400" stroke="#3ee0a2" />
+            <path id="hot-ing" class="hot" pathLength="100" d="M1020 476 H830" stroke="#5b8cff" />
+          </svg>
+
+          <div id="ctl" class="card">
+            <div class="k">KUBECTL</div>
+            <div class="who">desired count</div>
+            <div class="row"><b class="hotc">replicas: 3</b></div>
+          </div>
+          <div id="plane" class="card">
+            <div class="k">CONTROL PLANE</div>
+            <div class="who">API server · etcd</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="pl-idle" class="muted">stores the card</b>
+              <b id="pl-etcd" class="hotc hide">replicas: 3 in etcd</b>
+              <b id="pl-rs" class="ok hide">ReplicaSet · 3 Pods</b>
+            </div>
+            <p class="sm">scheduler · controllers</p>
+          </div>
+          <div id="node" class="card">
+            <div class="k">NODE</div>
+            <div class="who">kubelet</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="nd-idle" class="muted">no Pod yet</b>
+              <b id="nd-bound" class="hotc hide">Pod bound</b>
+            </div>
+            <p class="sm">kube-proxy is optional</p>
+          </div>
+          <div id="pod" class="card">
+            <div class="k">POD</div>
+            <div class="who">shared network</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="pd-idle" class="muted">not started</b>
+              <b id="pd-up" class="ok hide">containers up</b>
+              <b id="pd-new" class="ok hide">new Pod</b>
+            </div>
+            <p class="sm">container runtime</p>
+          </div>
+          <div id="svc" class="card">
+            <div class="k">SERVICE</div>
+            <div class="who">ClusterIP</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="sv-idle" class="muted">inside the cluster</b>
+              <b id="sv-ok" class="ok hide">EndpointSlices</b>
+            </div>
+            <p class="sm">labels: app=web</p>
+          </div>
+          <div id="ing" class="card">
+            <div class="k">INGRESS</div>
+            <div class="who">HTTP · HTTPS</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="in-idle" class="muted">no controller</b>
+              <b id="in-on" class="ok hide">controller on</b>
+            </div>
+            <p class="sm">Gateway API for new work</p>
+          </div>
+
+          <p id="cmd-apply" class="cmd">kubectl apply -f deploy.yaml</p>
+
+          <div id="pkt-apply" class="pkt"><span data-layout-allow-overflow>apply</span></div>
+          <div id="pkt-bind" class="pkt"><span data-layout-allow-overflow>bind</span></div>
+          <div id="pkt-start" class="pkt"><span data-layout-allow-overflow>start</span></div>
+          <div id="pkt-ready" class="pkt go"><span data-layout-allow-overflow>ready</span></div>
+          <div id="pkt-ing" class="pkt"><span data-layout-allow-overflow>Ingress</span></div>
+
+          <p class="never">A failed readiness probe removes the Pod. Liveness restarts it.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">kubectl apply stores replicas: 3 through the API server into etcd. The card does not start the Pods.</p>
+          <p id="line-2" class="hide">The Deployment controller creates a ReplicaSet, which creates Pods up to 3. You do not create it. A scale is not a rollout.</p>
+          <p id="line-3" class="hide">The scheduler binds a Pod with no node. A Pod is scheduled once. If it cannot start, the replacement is a new Pod.</p>
+          <p id="line-4" class="hide">The kubelet asks the container runtime to start the containers, then reports status. The runtime is not one program.</p>
+          <p id="line-5" class="hide">The default Service is a ClusterIP inside the cluster. It selects Pods by labels. Ready addresses are on EndpointSlices.</p>
+          <p id="line-6" class="hide">Ingress opens HTTP and HTTPS onto the Service only after a controller is installed. Gateway API is for new work.</p>
+          <p id="line-7" class="hide">A gone Pod is replaced, not moved. The card still says 3. A rollout starts only when the template changes. Undo returns that template.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.55);
+      tl.fromTo("#hot-apply", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.7, ease: "power1.inOut" }, 0.55);
+      tl.fromTo("#pkt-apply", { x: 0, opacity: 0 }, { x: 40, opacity: 1, duration: 0.7, ease: "power1.inOut" }, 0.55);
+      tl.fromTo("#pkt-apply", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 1.3);
+      tl.fromTo("#pl-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.7);
+      tl.fromTo("#pl-etcd", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.85);
+      tl.fromTo("#plane", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.3 }, 0.7);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 3.85);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.05);
+      tl.fromTo("#pl-etcd", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 4.1);
+      tl.fromTo("#pl-rs", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.25);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 7.65);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 7.85);
+      tl.fromTo("#hot-bind", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.65, ease: "power1.inOut" }, 7.85);
+      tl.fromTo("#pkt-bind", { x: 0, opacity: 0 }, { x: 28, opacity: 1, duration: 0.65, ease: "power1.inOut" }, 7.85);
+      tl.fromTo("#pkt-bind", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 8.55);
+      tl.fromTo("#nd-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 8.4);
+      tl.fromTo("#nd-bound", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 8.55);
+      tl.fromTo("#node", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 8.55);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 11.45);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 11.65);
+      tl.fromTo("#hot-start", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.65, ease: "power1.inOut" }, 11.65);
+      tl.fromTo("#pkt-start", { x: 0, opacity: 0 }, { x: 36, opacity: 1, duration: 0.65, ease: "power1.inOut" }, 11.65);
+      tl.fromTo("#pkt-start", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 12.35);
+      tl.fromTo("#pd-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 12.2);
+      tl.fromTo("#pd-up", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 12.35);
+      tl.fromTo("#pod", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.3 }, 12.35);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 15.25);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 15.45);
+      tl.fromTo("#hot-ready", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.7, ease: "power1.inOut" }, 15.45);
+      tl.fromTo("#pkt-ready", { x: 0, y: 0, opacity: 0 }, { x: -70, y: 80, opacity: 1, duration: 0.7, ease: "power1.inOut" }, 15.45);
+      tl.fromTo("#pkt-ready", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 16.2);
+      tl.fromTo("#sv-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 16.05);
+      tl.fromTo("#sv-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 16.2);
+      tl.fromTo("#svc", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 16.2);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 19.05);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 19.25);
+      tl.fromTo("#hot-ing", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.6, ease: "power1.inOut" }, 19.25);
+      tl.fromTo("#pkt-ing", { x: 0, opacity: 0 }, { x: -50, opacity: 1, duration: 0.6, ease: "power1.inOut" }, 19.25);
+      tl.fromTo("#pkt-ing", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 19.9);
+      tl.fromTo("#in-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 19.8);
+      tl.fromTo("#in-on", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 19.95);
+      tl.fromTo("#ing", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 19.95);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 22.85);
+
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 23.05);
+      tl.fromTo("#pod", { borderColor: "#3ee0a2" }, { borderColor: "#f0b429", duration: 0.35, immediateRender: false }, 23.15);
+      tl.fromTo("#pd-up", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 23.3);
+      tl.fromTo("#pd-new", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 23.45);
+      tl.fromTo("#pod", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.3, immediateRender: false }, 24.2);
+
+      tl.set({}, {}, 32);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

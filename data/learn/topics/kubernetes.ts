@@ -408,5 +408,12 @@ export const kubernetes: Topic = {
     { label: 'Service', url: 'https://kubernetes.io/docs/concepts/services-networking/service/' },
     { label: 'Ingress', url: 'https://kubernetes.io/docs/concepts/services-networking/ingress/' },
     { label: 'Pod lifecycle', url: 'https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/' }
-  ]
+  ],
+  film: {
+    src: '/learn/kubernetes.mp4',
+    note: {
+      en: 'A failed readiness probe removes the Pod from the Service. Liveness restarts it. CrashLoopBackOff is the wait.',
+      bn: 'ফেল করা রেডিনেস প্রোব পডকে সার্ভিস থেকে সরায়। লাইভনেস রিস্টার্ট করে। CrashLoopBackOff হলো অপেক্ষা।'
+    }
+  }
 }
