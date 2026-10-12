@@ -411,5 +411,12 @@ export const databases: Topic = {
     { label: 'PostgreSQL: CREATE INDEX', url: 'https://www.postgresql.org/docs/current/sql-createindex.html' },
     { label: 'SQLAlchemy: relationship loading', url: 'https://docs.sqlalchemy.org/en/20/orm/queryguide/relationships.html' },
     { label: 'SQLAlchemy: asyncio', url: 'https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html' }
-  ]
+  ],
+  film: {
+    src: '/learn/databases.mp4',
+    note: {
+      en: 'PostgreSQL aborts one transaction in a lock cycle. Which one is not predictable, so the aborted transaction must be retried. Lock rows in the same order.',
+      bn: 'PostgreSQL একটা লক চক্রে একটা ট্রানজ্যাকশন বাতিল করে। কোনটা বাতিল হবে সেটা আগে থেকে বলা যায় না, তাই বাতিল ট্রানজ্যাকশন আবার চেষ্টা করতে হয়। সারি একই ক্রমে লক করুন।'
+    }
+  }
 }

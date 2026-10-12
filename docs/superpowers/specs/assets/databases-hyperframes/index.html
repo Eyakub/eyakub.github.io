@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 16px 36px 14px;
+      }
+      h1 { text-align: center; font-size: 40px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 18px; }
+      .stage { position: relative; width: 1480px; height: 640px; margin: 8px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 640px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 8px 12px; z-index: 1;
+      }
+      .k { font-family: ui-monospace, Menlo, monospace; font-size: 12px; letter-spacing: 0.12em; color: #c5d0e0; }
+      .who { margin-top: 1px; font-size: 18px; font-weight: 700; line-height: 1.12; }
+      .sm { margin-top: 3px; font-size: 14px; color: #c5d0e0; white-space: nowrap; }
+      .row { position: relative; height: 24px; margin-top: 6px; }
+      .row b { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 15px; font-weight: 700; }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      #client { left: 0; top: 44px; width: 200px; height: 112px; }
+      #planner { left: 360px; top: 44px; width: 240px; height: 112px; }
+      #btree { left: 800px; top: 44px; width: 230px; height: 112px; }
+      #heap { left: 360px; top: 250px; width: 240px; height: 112px; }
+      #txn { left: 1060px; top: 250px; width: 250px; height: 112px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt.job { background: #f0b429; box-shadow: 0 0 0 6px rgba(240, 180, 41, 0.22), 0 0 16px rgba(240, 180, 41, 0.85); }
+      .pkt span {
+        position: absolute; left: 50%; top: -40px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 15px; color: #f4f7fb;
+      }
+      .pkt.low span { top: -22px; }
+      .pkt.under span { top: 10px; }
+      .pkt.vert span { left: auto; right: 20px; top: -8px; transform: none; }
+      #pkt-ask { left: 280px; top: 92px; }
+      #pkt-idx { left: 700px; top: 92px; }
+      #pkt-seq { left: 480px; top: 203px; }
+      #pkt-down { left: 915px; top: 230px; }
+      #pkt-left { left: 750px; top: 310px; }
+      #pkt-begin { left: 620px; top: 430px; }
+      #pkt-n { left: 280px; top: 190px; }
+      #pkt-in { left: 280px; top: 190px; }
+      #pkt-back { left: 280px; top: 220px; }
+      .cmds { position: absolute; color: #c5d0e0; font-size: 15px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+      .c0 { left: 0; }
+      .c1 { left: 780px; }
+      #cmd-1 { top: 468px; }
+      #cmd-2 { top: 492px; }
+      #cmd-3 { top: 516px; }
+      #cmd-4 { top: 540px; }
+      #cmd-5 { top: 468px; }
+      #cmd-6 { top: 492px; }
+      #cmd-7 { top: 516px; }
+      #cmd-8 { top: 540px; }
+      .never { position: absolute; left: 0; top: 578px; width: 1460px; color: #c5d0e0; font-size: 15px; line-height: 1.3; }
+      .said { position: relative; height: 130px; margin-top: 4px; }
+      .said p { position: absolute; left: 8px; right: 8px; top: 0; text-align: center; font-size: 20px; line-height: 1.28; }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="40" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="40" data-track-index="0">
+        <h1>Databases</h1>
+        <p class="sub">B-tree · heap · transaction · WAL · isolation · eager load</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 640">
+            <path class="idle" d="M200 92 H360" />
+            <path class="idle" d="M600 92 H800" />
+            <path class="idle" d="M480 156 V250" />
+            <path class="idle" d="M915 156 V310 H600" />
+            <path class="idle" d="M100 156 V430 H1185 V362" />
+            <path class="idle" d="M170 190 H400 V250" />
+            <path class="idle" d="M400 220 H170" />
+            <path id="hot-ask" class="hot" pathLength="100" d="M200 92 H360" stroke="#5b8cff" />
+            <path id="hot-idx" class="hot" pathLength="100" d="M600 92 H800" stroke="#5b8cff" />
+            <path id="hot-seq" class="hot" pathLength="100" d="M480 156 V250" stroke="#f0b429" />
+            <path id="hot-row" class="hot" pathLength="100" d="M915 156 V310 H600" stroke="#3ee0a2" />
+            <path id="hot-begin" class="hot" pathLength="100" d="M100 156 V430 H1185 V362" stroke="#3ee0a2" />
+            <path id="hot-trips" class="hot" pathLength="100" d="M170 190 H400 V250" stroke="#f0b429" />
+            <path id="hot-back" class="hot" pathLength="100" d="M400 220 H170" stroke="#3ee0a2" />
+          </svg>
+          <div id="client" class="card">
+            <div class="k">CLIENT</div>
+            <div class="who">Client</div>
+            <div class="sm">session</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="cl-idle" class="muted">one question</b>
+              <b id="cl-ask" class="hotc hide">SELECT</b>
+              <b id="cl-begin" class="ok hide">BEGIN</b>
+              <b id="cl-n" class="hotc hide">N+1</b>
+              <b id="cl-in" class="ok hide">eager load</b>
+              <b id="cl-page" class="ok hide">one page</b>
+            </div>
+          </div>
+          <div id="planner" class="card">
+            <div class="k">PLAN</div>
+            <div class="who">Planner</div>
+            <div class="sm">statistics</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="pl-idle" class="muted">cost model</b>
+              <b id="pl-choose" class="hotc hide">EXPLAIN</b>
+              <b id="pl-seq" class="hotc hide">Seq Scan</b>
+              <b id="pl-idx" class="ok hide">Index Scan</b>
+              <b id="pl-an" class="ok hide">ANALYZE</b>
+            </div>
+          </div>
+          <div id="btree" class="card">
+            <div class="k">INDEX</div>
+            <div class="who">B-tree</div>
+            <div class="sm">default index</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="bt-idle" class="muted">columns a, b</b>
+              <b id="bt-eq" class="hotc hide">equality + range</b>
+              <b id="bt-row" class="ok hide">leading a</b>
+            </div>
+          </div>
+          <div id="heap" class="card">
+            <div class="k">TABLE</div>
+            <div class="who">Heap</div>
+            <div class="sm">table pages</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="hp-idle" class="muted">rows</b>
+              <b id="hp-all" class="hotc hide">every row</b>
+              <b id="hp-one" class="ok hide">one row</b>
+              <b id="hp-n" class="hotc hide">per child</b>
+              <b id="hp-in" class="ok hide">IN query</b>
+              <b id="hp-rows" class="ok hide">rows back</b>
+            </div>
+          </div>
+          <div id="txn" class="card">
+            <div class="k">WAL</div>
+            <div class="who">Transaction</div>
+            <div class="sm">isolation</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="tx-idle" class="muted">ACID</b>
+              <b id="tx-wal" class="ok hide">WAL flush</b>
+              <b id="tx-snap" class="ok hide">Read Committed</b>
+            </div>
+          </div>
+          <div id="pkt-ask" class="pkt"><span data-layout-allow-overflow>SELECT</span></div>
+          <div id="pkt-idx" class="pkt"><span data-layout-allow-overflow>Index Scan</span></div>
+          <div id="pkt-seq" class="pkt job vert"><span data-layout-allow-overflow>Seq Scan</span></div>
+          <div id="pkt-down" class="pkt go vert"><span data-layout-allow-overflow>heap fetch</span></div>
+          <div id="pkt-left" class="pkt go"><span data-layout-allow-overflow>one row</span></div>
+          <div id="pkt-begin" class="pkt go low"><span data-layout-allow-overflow>BEGIN</span></div>
+          <div id="pkt-n" class="pkt job"><span data-layout-allow-overflow>per child</span></div>
+          <div id="pkt-in" class="pkt go"><span data-layout-allow-overflow>IN</span></div>
+          <div id="pkt-back" class="pkt go under"><span data-layout-allow-overflow>rows</span></div>
+          <p id="cmd-1" class="cmds c0">EXPLAIN (ANALYZE, BUFFERS) SELECT * FROM users WHERE email = 'a@b.c';</p>
+          <p id="cmd-2" class="cmds c0">CREATE INDEX CONCURRENTLY idx_users_email ON users (email);</p>
+          <p id="cmd-3" class="cmds c0">CREATE UNIQUE INDEX ON users (lower(email));</p>
+          <p id="cmd-4" class="cmds c0">BEGIN; UPDATE books SET out = true WHERE id = 1; COMMIT;</p>
+          <p id="cmd-5" class="cmds c1">SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;</p>
+          <p id="cmd-6" class="cmds c1">SELECT * FROM books WHERE id = 1 FOR UPDATE;</p>
+          <p id="cmd-7" class="cmds c1">select(User).options(selectinload(User.orders))</p>
+          <p id="cmd-8" class="cmds c1">ANALYZE users;</p>
+          <p class="never" data-layout-allow-overlap>Off this path: PostgreSQL aborts one transaction in a lock cycle. Which one is not predictable, so the aborted transaction must be retried. Lock rows in the same order.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">The planner reads the question and the table statistics, then picks a sequential scan or an index scan. EXPLAIN shows the plan and its cost. It does not run the query.</p>
+          <p id="line-2" class="hide">With no usable index the plan is a sequential scan. It reads every row, so the cost grows with the whole table, not with the number of matches.</p>
+          <p id="line-3" class="hide">A B-tree is the default index. It serves equality and range checks, then the row is read from the table. On columns a, b the index is most useful when the query constrains a. A query on only b usually will not limit the scan.</p>
+          <p id="line-4" class="hide">BEGIN groups the writes. The log of those writes is flushed before the data pages must be, and that flush is what makes COMMIT durable by default. ROLLBACK drops the group. synchronous_commit off reports success before the flush.</p>
+          <p id="line-5" class="hide">Read Committed is the default. Each statement sees only rows committed before that statement, and Read Uncommitted does the same, so dirty reads do not happen. Repeatable Read uses one snapshot for the whole transaction.</p>
+          <p id="line-6" class="hide">Lazy loading runs one query for the parent rows and another query per child. selectinload gathers those children with one IN query. joinedload uses one join, and a collection then needs unique(). Async sessions cannot do the lazy load, because implicit IO is not allowed.</p>
+          <p id="line-7" class="hide">The rows come back. A pool reuses connections instead of opening one per question. Ask for a page of rows, not the whole table. ANALYZE refreshes the statistics the planner used on the first step.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.35);
+      tl.fromTo("#hot-ask", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 0.35);
+      tl.fromTo("#pkt-ask", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 0.35);
+      tl.fromTo("#pkt-ask", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 4.55);
+      tl.fromTo("#cl-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.5);
+      tl.fromTo("#cl-ask", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.7);
+      tl.fromTo("#client", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.5);
+      tl.fromTo("#pl-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.55);
+      tl.fromTo("#pl-choose", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.75);
+      tl.fromTo("#planner", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.55);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 4.8);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 5.05);
+      tl.fromTo("#hot-seq", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 5.05);
+      tl.fromTo("#pkt-seq", { y: 0, opacity: 0 }, { y: 8, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 5.05);
+      tl.fromTo("#pkt-seq", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 9.05);
+      tl.fromTo("#pl-choose", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 5.2);
+      tl.fromTo("#pl-seq", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 5.4);
+      tl.fromTo("#planner", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 5.2);
+      tl.fromTo("#hp-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 5.25);
+      tl.fromTo("#hp-all", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 5.45);
+      tl.fromTo("#heap", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 5.25);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 9.3);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 9.55);
+      tl.fromTo("#hot-idx", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 9.55);
+      tl.fromTo("#pkt-idx", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 9.55);
+      tl.fromTo("#pkt-idx", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 11.25);
+      tl.fromTo("#pl-seq", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 9.7);
+      tl.fromTo("#pl-idx", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 9.9);
+      tl.fromTo("#planner", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 9.7);
+      tl.fromTo("#bt-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 9.75);
+      tl.fromTo("#bt-eq", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 9.95);
+      tl.fromTo("#btree", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 9.75);
+      tl.fromTo("#hot-row", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 11.45);
+      tl.fromTo("#pkt-down", { y: 0, opacity: 0 }, { y: 8, opacity: 1, duration: 0.45, ease: "power1.inOut" }, 11.45);
+      tl.fromTo("#pkt-down", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 12.7);
+      tl.fromTo("#pkt-left", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 12.9);
+      tl.fromTo("#pkt-left", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 15.05);
+      tl.fromTo("#bt-eq", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 12.95);
+      tl.fromTo("#bt-row", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 13.15);
+      tl.fromTo("#btree", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 12.95);
+      tl.fromTo("#hp-all", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 13.0);
+      tl.fromTo("#hp-one", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 13.2);
+      tl.fromTo("#heap", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 13.0);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 15.4);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 15.65);
+      tl.fromTo("#hot-begin", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.7, ease: "power1.inOut" }, 15.65);
+      tl.fromTo("#pkt-begin", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.6, ease: "power1.inOut" }, 15.65);
+      tl.fromTo("#pkt-begin", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 20.5);
+      tl.fromTo("#cl-ask", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 15.8);
+      tl.fromTo("#cl-begin", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 16.0);
+      tl.fromTo("#client", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 15.8);
+      tl.fromTo("#tx-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 15.85);
+      tl.fromTo("#tx-wal", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 16.05);
+      tl.fromTo("#txn", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 15.85);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 20.8);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 21.05);
+      tl.fromTo("#tx-wal", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 21.2);
+      tl.fromTo("#tx-snap", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 21.4);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 25.6);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 25.85);
+      tl.fromTo("#hot-trips", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 25.85);
+      tl.fromTo("#pkt-n", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 25.85);
+      tl.fromTo("#pkt-n", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 28.15);
+      tl.fromTo("#pkt-in", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 28.4);
+      tl.fromTo("#pkt-in", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 31.25);
+      tl.fromTo("#cl-begin", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 26.0);
+      tl.fromTo("#cl-n", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 26.2);
+      tl.fromTo("#client", { borderColor: "#3ee0a2" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 26.0);
+      tl.fromTo("#hp-one", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 26.05);
+      tl.fromTo("#hp-n", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 26.25);
+      tl.fromTo("#heap", { borderColor: "#3ee0a2" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 26.05);
+      tl.fromTo("#hp-n", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 28.5);
+      tl.fromTo("#hp-in", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 28.7);
+      tl.fromTo("#heap", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 28.5);
+      tl.fromTo("#cl-n", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 28.55);
+      tl.fromTo("#cl-in", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 28.75);
+      tl.fromTo("#client", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 28.55);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 31.6);
+
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 31.85);
+      tl.fromTo("#hot-back", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 31.85);
+      tl.fromTo("#pkt-back", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 31.85);
+      tl.fromTo("#pkt-back", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 38.9);
+      tl.fromTo("#cl-in", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 32.0);
+      tl.fromTo("#cl-page", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 32.2);
+      tl.fromTo("#hp-in", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 32.05);
+      tl.fromTo("#hp-rows", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 32.25);
+      tl.fromTo("#pl-idx", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 32.1);
+      tl.fromTo("#pl-an", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 32.3);
+      tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 39.2);
+
+      tl.set({}, {}, 40);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
