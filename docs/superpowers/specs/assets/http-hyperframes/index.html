@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 22px 36px 18px;
+      }
+      h1 { text-align: center; font-size: 48px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 22px; }
+      .stage { position: relative; width: 1480px; height: 500px; margin: 14px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 500px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      #site {
+        position: absolute; left: 316px; top: 198px; width: 1160px; height: 206px;
+        border: 2px solid #243044; border-radius: 22px;
+      }
+      #site span {
+        position: absolute; left: 16px; top: 8px;
+        font-family: ui-monospace, Menlo, monospace; font-size: 13px;
+        letter-spacing: 0.14em; color: #c5d0e0;
+      }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 10px 12px; z-index: 1;
+      }
+      .k {
+        font-family: ui-monospace, Menlo, monospace; font-size: 12px;
+        letter-spacing: 0.12em; color: #c5d0e0;
+      }
+      .who { margin-top: 2px; font-size: 18px; font-weight: 700; white-space: nowrap; }
+      .sm { margin-top: 4px; font-size: 14px; color: #c5d0e0; white-space: nowrap; }
+      .row { position: relative; height: 26px; margin-top: 8px; }
+      .row b {
+        position: absolute; left: 0; top: 0; white-space: nowrap;
+        font-size: 16px; font-weight: 700;
+      }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      #dns { left: 8px; top: 4px; width: 280px; height: 132px; }
+      #browser { left: 8px; top: 236px; width: 160px; height: 152px; }
+      #lb { left: 336px; top: 236px; width: 160px; height: 152px; }
+      #nginx { left: 664px; top: 236px; width: 164px; height: 152px; }
+      #app { left: 996px; top: 236px; width: 172px; height: 152px; }
+      #db { left: 1336px; top: 236px; width: 136px; height: 152px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt span {
+        position: absolute; left: 50%; top: -26px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 15px; color: #f4f7fb;
+      }
+      .pkt span.side { left: 18px; top: -4px; transform: none; }
+      #pkt-ask { left: 88px; top: 210px; }
+      #pkt-ans { left: 88px; top: 168px; }
+      #pkt-syn { left: 252px; top: 292px; }
+      #pkt-tls { left: 252px; top: 352px; }
+      #pkt-get { left: 252px; top: 292px; }
+      #pkt-fwd { left: 580px; top: 292px; }
+      #pkt-proxy { left: 912px; top: 292px; }
+      #pkt-sql { left: 1252px; top: 292px; }
+      #pkt-rows { left: 1252px; top: 352px; }
+      #pkt-b1 { left: 912px; top: 352px; }
+      #pkt-b2 { left: 580px; top: 352px; }
+      #pkt-b3 { left: 252px; top: 352px; }
+      .never { position: absolute; left: 8px; top: 418px; color: #c5d0e0; font-size: 18px; white-space: nowrap; }
+      .cmds { position: absolute; left: 8px; top: 452px; color: #c5d0e0; font-size: 16px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+      .cmds b { font-weight: 600; color: #c5d0e0; }
+      .said { position: relative; height: 96px; margin-top: 8px; }
+      .said p {
+        position: absolute; left: 24px; right: 24px; top: 8px; text-align: center;
+        font-size: 24px; line-height: 1.28;
+      }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="42" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="42" data-track-index="0">
+        <h1>HTTP journey</h1>
+        <p class="sub">request and response: DNS, HTTPS, load balancer, Nginx, app server</p>
+        <div class="stage">
+          <div id="site"><span>INSIDE THE SERVERS</span></div>
+          <svg class="wires" viewBox="0 0 1480 500">
+            <path class="idle" d="M88 224 V144" />
+            <path class="idle" d="M178 292 H326" />
+            <path class="idle" d="M506 292 H654" />
+            <path class="idle" d="M838 292 H986" />
+            <path class="idle" d="M1178 292 H1326" />
+            <path class="idle" d="M326 352 H178" />
+            <path class="idle" d="M654 352 H506" />
+            <path class="idle" d="M986 352 H838" />
+            <path class="idle" d="M1326 352 H1178" />
+            <path id="hot-dns" class="hot" pathLength="100" d="M88 224 V144" stroke="#5b8cff" />
+            <path id="hot-bl" class="hot" pathLength="100" d="M178 292 H326" stroke="#5b8cff" />
+            <path id="hot-ln" class="hot" pathLength="100" d="M506 292 H654" stroke="#5b8cff" />
+            <path id="hot-na" class="hot" pathLength="100" d="M838 292 H986" stroke="#5b8cff" />
+            <path id="hot-ad" class="hot" pathLength="100" d="M1178 292 H1326" stroke="#5b8cff" />
+            <path id="hot-ret-lb" class="hot" pathLength="100" d="M326 352 H178" stroke="#9db7ff" />
+            <path id="hot-ret-nl" class="hot" pathLength="100" d="M654 352 H506" stroke="#3ee0a2" />
+            <path id="hot-ret-an" class="hot" pathLength="100" d="M986 352 H838" stroke="#3ee0a2" />
+            <path id="hot-ret-da" class="hot" pathLength="100" d="M1326 352 H1178" stroke="#3ee0a2" />
+          </svg>
+
+          <div id="dns" class="card">
+            <div class="k">DNS</div>
+            <div class="who">DNS resolver</div>
+            <div class="sm">name to address</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="dn-idle" class="muted">recursive lookup</b>
+              <b id="dn-ok" class="ok hide">A 203.0.113.10</b>
+            </div>
+          </div>
+          <div id="browser" class="card">
+            <div class="k">BROWSER</div>
+            <div class="who">Browser</div>
+            <div class="sm">starts the request</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="br-idle" class="muted">cache first</b>
+              <b id="br-port" class="hotc hide">port 443</b>
+              <b id="br-keys" class="hotc hide">session keys</b>
+              <b id="br-page" class="ok hide">page rendered</b>
+            </div>
+          </div>
+          <div id="lb" class="card">
+            <div class="k">LOAD BALANCER</div>
+            <div class="who">Load balancer</div>
+            <div class="sm">ends TLS for HTTPS</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="lb-idle" class="muted">L7 reads HTTP</b>
+              <b id="lb-tls" class="hotc hide">TLS ended</b>
+              <b id="lb-pick" class="hotc hide">backend picked</b>
+              <b id="lb-relay" class="ok hide">relaying reply</b>
+            </div>
+          </div>
+          <div id="nginx" class="card">
+            <div class="k">NGINX</div>
+            <div class="who">Nginx</div>
+            <div class="sm">reverse proxy</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="nx-idle" class="muted">static from disk</b>
+              <b id="nx-ok" class="hotc hide">proxy_pass</b>
+            </div>
+          </div>
+          <div id="app" class="card">
+            <div class="k">APP SERVER</div>
+            <div class="who">App server</div>
+            <div class="sm">Uvicorn + FastAPI</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="ap-idle" class="muted">from the pool</b>
+              <b id="ap-sql" class="hotc hide">pooled query</b>
+              <b id="ap-ok" class="ok hide">200 JSON</b>
+            </div>
+          </div>
+          <div id="db" class="card">
+            <div class="k">DATABASE</div>
+            <div class="who">Database</div>
+            <div class="sm">stores the rows</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="db-idle" class="muted">waiting</b>
+              <b id="db-ok" class="ok hide">rows returned</b>
+            </div>
+          </div>
+
+          <div id="pkt-ask" class="pkt"><span class="side" data-layout-allow-overflow>example.com?</span></div>
+          <div id="pkt-ans" class="pkt go"><span class="side" data-layout-allow-overflow>203.0.113.10</span></div>
+          <div id="pkt-syn" class="pkt"><span data-layout-allow-overflow>TCP SYN</span></div>
+          <div id="pkt-tls" class="pkt"><span data-layout-allow-overflow>TLS certificate</span></div>
+          <div id="pkt-get" class="pkt"><span data-layout-allow-overflow>GET /api/items</span></div>
+          <div id="pkt-fwd" class="pkt"><span data-layout-allow-overflow>GET /api/items</span></div>
+          <div id="pkt-proxy" class="pkt"><span data-layout-allow-overflow>proxy_pass</span></div>
+          <div id="pkt-sql" class="pkt"><span data-layout-allow-overflow>SELECT items</span></div>
+          <div id="pkt-rows" class="pkt go"><span data-layout-allow-overflow>rows</span></div>
+          <div id="pkt-b1" class="pkt go"><span data-layout-allow-overflow>200 + JSON</span></div>
+          <div id="pkt-b2" class="pkt go"><span data-layout-allow-overflow>200 + JSON</span></div>
+          <div id="pkt-b3" class="pkt go"><span data-layout-allow-overflow>200 + JSON</span></div>
+
+          <p class="never">Off this path: port 80 gets 301 to https. 308 keeps the method. A refused app is 502. A timeout is 504.</p>
+          <p class="cmds"><b>dig +trace example.com</b> &nbsp;&nbsp; <b>curl -v https://example.com</b></p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">A cache miss. The recursive resolver looks up example.com. dig +trace follows the referrals.</p>
+          <p id="line-2" class="hide">The A record is 203.0.113.10, a documentation address. Caches reuse it until the TTL ends.</p>
+          <p id="line-3" class="hide">TCP port 443: client SYN, server SYN-ACK, client ACK. HTTP/3 uses QUIC instead.</p>
+          <p id="line-4" class="hide">HTTPS uses TLS 1.3: ClientHello, then the certificate. The load balancer ends TLS.</p>
+          <p id="line-5" class="hide">Over the encrypted connection the browser sends GET /api/items with a Host header.</p>
+          <p id="line-6" class="hide">The load balancer picks a backend, round-robin or least-connections, and can add X-Forwarded-For.</p>
+          <p id="line-7" class="hide">Nginx, the reverse proxy, forwards with proxy_pass. Static files it serves from disk itself.</p>
+          <p id="line-8" class="hide">The app server takes a pooled connection and runs SELECT * FROM items.</p>
+          <p id="line-9" class="hide">The rows come back. The app writes 200 OK and a JSON response body.</p>
+          <p id="line-10" class="hide">The 200 OK response returns through Nginx and the load balancer to the browser.</p>
+          <p id="line-11" class="hide">The browser renders the page. DevTools Timing splits DNS, connection, TTFB, and download.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.4);
+      tl.fromTo("#hot-dns", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 0.4);
+      tl.fromTo("#pkt-ask", { y: 0, opacity: 0 }, { y: -36, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 0.4);
+      tl.fromTo("#pkt-ask", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 3.05);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 3.15);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 3.4);
+      tl.fromTo("#pkt-ans", { y: 0, opacity: 0 }, { y: 36, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 3.4);
+      tl.fromTo("#pkt-ans", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 6.05);
+      tl.fromTo("#dn-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 3.5);
+      tl.fromTo("#dn-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 3.7);
+      tl.fromTo("#dns", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 3.55);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 6.15);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 6.4);
+      tl.fromTo("#hot-bl", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 6.4);
+      tl.fromTo("#pkt-syn", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 6.4);
+      tl.fromTo("#pkt-syn", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 9.05);
+      tl.fromTo("#br-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 6.5);
+      tl.fromTo("#br-port", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 6.7);
+      tl.fromTo("#browser", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 6.55);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 9.15);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 9.4);
+      tl.fromTo("#hot-ret-lb", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 9.4);
+      tl.fromTo("#pkt-tls", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 9.4);
+      tl.fromTo("#pkt-tls", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 12.05);
+      tl.fromTo("#br-port", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 9.5);
+      tl.fromTo("#br-keys", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 9.7);
+      tl.fromTo("#lb-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 9.5);
+      tl.fromTo("#lb-tls", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 9.7);
+      tl.fromTo("#lb", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 9.55);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 12.15);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 12.4);
+      tl.fromTo("#pkt-get", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 12.4);
+      tl.fromTo("#pkt-get", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 15.05);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 15.15);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 15.4);
+      tl.fromTo("#hot-ln", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 15.4);
+      tl.fromTo("#pkt-fwd", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 15.4);
+      tl.fromTo("#pkt-fwd", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 18.05);
+      tl.fromTo("#lb-tls", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 15.5);
+      tl.fromTo("#lb-pick", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 15.7);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 18.15);
+
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 18.4);
+      tl.fromTo("#hot-na", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 18.4);
+      tl.fromTo("#pkt-proxy", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 18.4);
+      tl.fromTo("#pkt-proxy", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 21.05);
+      tl.fromTo("#nx-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 18.5);
+      tl.fromTo("#nx-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 18.7);
+      tl.fromTo("#nginx", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 18.55);
+      tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 21.15);
+
+      tl.fromTo("#line-8", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 21.4);
+      tl.fromTo("#hot-ad", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 21.4);
+      tl.fromTo("#pkt-sql", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 21.4);
+      tl.fromTo("#pkt-sql", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 24.05);
+      tl.fromTo("#ap-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 21.5);
+      tl.fromTo("#ap-sql", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 21.7);
+      tl.fromTo("#app", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 21.55);
+      tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 24.15);
+
+      tl.fromTo("#line-9", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 24.4);
+      tl.fromTo("#hot-ret-da", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 24.4);
+      tl.fromTo("#pkt-rows", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 24.4);
+      tl.fromTo("#pkt-rows", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 27.05);
+      tl.fromTo("#db-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 24.5);
+      tl.fromTo("#db-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 24.7);
+      tl.fromTo("#db", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 24.55);
+      tl.fromTo("#ap-sql", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 24.5);
+      tl.fromTo("#ap-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 24.7);
+      tl.fromTo("#app", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 24.55);
+      tl.fromTo("#line-9", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 27.15);
+
+      tl.fromTo("#line-10", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 27.4);
+      tl.fromTo("#hot-ret-an", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 27.4);
+      tl.fromTo("#pkt-b1", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 27.4);
+      tl.fromTo("#pkt-b1", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 28.15);
+      tl.fromTo("#nginx", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 27.55);
+      tl.fromTo("#hot-ret-nl", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 28.25);
+      tl.fromTo("#pkt-b2", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 28.25);
+      tl.fromTo("#pkt-b2", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 29.0);
+      tl.fromTo("#pkt-b3", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 29.15);
+      tl.fromTo("#pkt-b3", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 31.9);
+      tl.fromTo("#lb-pick", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 29.05);
+      tl.fromTo("#lb-relay", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 29.25);
+      tl.fromTo("#lb", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 29.25);
+      tl.fromTo("#line-10", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 32.15);
+
+      tl.fromTo("#line-11", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 32.4);
+      tl.fromTo("#br-keys", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 32.5);
+      tl.fromTo("#br-page", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 32.7);
+      tl.fromTo("#browser", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 32.55);
+
+      tl.set({}, {}, 42);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

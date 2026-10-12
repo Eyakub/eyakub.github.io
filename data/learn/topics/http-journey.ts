@@ -849,5 +849,12 @@ export const httpJourney: Topic = {
     { label: 'OpenSSL: s_client', url: 'https://docs.openssl.org/master/man1/openssl-s_client' },
     { label: 'BIND: dig manual (+trace)', url: 'https://bind9.readthedocs.io/en/latest/manpages.html' },
     { label: 'Chrome DevTools: network timing', url: 'https://developer.chrome.com/docs/devtools/network/reference' }
-  ]
+  ],
+  film: {
+    src: '/learn/http-journey.mp4',
+    note: {
+      en: 'Plain HTTP on port 80 gets 301 to https. 308 keeps the method. A refused app is 502. A timeout is 504.',
+      bn: 'port 80-এর plain HTTP 301 পেয়ে https-এ যায়। 308 method রাখে। app না ধরলে 502। timeout হলে 504।'
+    }
+  }
 }
