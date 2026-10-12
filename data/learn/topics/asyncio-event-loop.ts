@@ -1055,5 +1055,12 @@ export const asyncioEventLoop: Topic = {
     { label: 'Linux man page: epoll(7)', url: 'https://man7.org/linux/man-pages/man7/epoll.7.html' },
     { label: 'FastAPI docs: async', url: 'https://fastapi.tiangolo.com/async/' },
     { label: 'AnyIO docs: threads', url: 'https://anyio.readthedocs.io/en/stable/threads.html' }
-  ]
+  ],
+  film: {
+    src: '/learn/asyncio-event-loop.mp4',
+    note: {
+      en: 'time.sleep or requests.get inside async def never yields, so every request waits. to_thread only keeps I/O off the loop; CPU-bound work needs a ProcessPoolExecutor. FastAPI runs def routes in AnyIO\'s threadpool.',
+      bn: 'time.sleep বা requests.get async def-এর ভেতরে কখনো control ছাড়ে না, তাই প্রতিটা request অপেক্ষা করে। to_thread শুধু I/O-কে loop থেকে সরায়; CPU-bound কাজে ProcessPoolExecutor লাগে। FastAPI def route AnyIO-র threadpool-এ চালায়।'
+    }
+  }
 }

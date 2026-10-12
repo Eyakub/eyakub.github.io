@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 16px 36px 14px;
+      }
+      h1 { text-align: center; font-size: 40px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 18px; }
+      .stage { position: relative; width: 1480px; height: 640px; margin: 6px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 640px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 8px 12px; z-index: 1;
+      }
+      .k { font-family: ui-monospace, Menlo, monospace; font-size: 12px; letter-spacing: 0.12em; color: #c5d0e0; }
+      .who { margin-top: 1px; font-size: 18px; font-weight: 700; line-height: 1.12; }
+      .sm { margin-top: 3px; font-size: 14px; color: #c5d0e0; white-space: nowrap; }
+      .row { position: relative; height: 22px; margin-top: 4px; }
+      .row b { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 15px; font-weight: 700; }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      .warn { color: #f0b429; }
+      #tasks { left: 0; top: 36px; width: 200px; height: 100px; }
+      #ready { left: 320px; top: 36px; width: 200px; height: 100px; }
+      #loop { left: 660px; top: 36px; width: 200px; height: 100px; }
+      #sel { left: 1020px; top: 36px; width: 200px; height: 100px; }
+      #net { left: 1360px; top: 36px; width: 120px; height: 100px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt.job { background: #f0b429; box-shadow: 0 0 0 6px rgba(240, 180, 41, 0.22), 0 0 16px rgba(240, 180, 41, 0.85); }
+      .pkt span {
+        position: absolute; left: 50%; top: -40px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 15px; color: #f4f7fb;
+      }
+      .pkt.low span { top: -22px; }
+      .pkt.under span { top: 12px; }
+      #pkt-ab { left: 260px; top: 86px; }
+      #pkt-runa { left: 610px; top: 86px; }
+      #pkt-await { left: 940px; top: 86px; }
+      #pkt-runb { left: 610px; top: 86px; }
+      #pkt-awaitb { left: 940px; top: 86px; }
+      #pkt-bytes { left: 1290px; top: 86px; }
+      #pkt-wake { left: 590px; top: 16px; }
+      #pkt-resume { left: 610px; top: 86px; }
+      #pkt-done { left: 430px; top: 190px; }
+      .cmds { position: absolute; color: #c5d0e0; font-size: 14px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+      .c0 { left: 0; }
+      .c1 { left: 860px; }
+      #cmd-1, #cmd-5 { top: 248px; }
+      #cmd-2, #cmd-6 { top: 274px; }
+      #cmd-3, #cmd-7 { top: 300px; }
+      #cmd-4, #cmd-8 { top: 326px; }
+      .never { position: absolute; left: 0; top: 368px; width: 1460px; color: #c5d0e0; font-size: 15px; line-height: 1.35; }
+      .said { position: relative; height: 140px; margin-top: 2px; }
+      .said p { position: absolute; left: 8px; right: 8px; top: 0; text-align: center; font-size: 20px; line-height: 1.28; }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="44" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="44" data-track-index="0">
+        <h1>The asyncio event loop</h1>
+        <p class="sub">task · ready queue · event loop · await · selector · socket</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 640">
+            <path class="idle" d="M200 86 H320" />
+            <path class="idle" d="M520 86 H660" />
+            <path class="idle" d="M860 86 H1020" />
+            <path class="idle" d="M1360 86 H1220" />
+            <path class="idle" d="M1120 36 V16 H420 V36" />
+            <path class="idle" d="M760 136 V190 H100 V136" />
+            <path id="hot-sched" class="hot" pathLength="100" d="M200 86 H320" stroke="#f0b429" />
+            <path id="hot-run" class="hot" pathLength="100" d="M520 86 H660" stroke="#5b8cff" />
+            <path id="hot-await" class="hot" pathLength="100" d="M860 86 H1020" stroke="#f0b429" />
+            <path id="hot-bytes" class="hot" pathLength="100" d="M1360 86 H1220" stroke="#3ee0a2" />
+            <path id="hot-wake" class="hot" pathLength="100" d="M1120 36 V16 H420 V36" stroke="#3ee0a2" />
+            <path id="hot-done" class="hot" pathLength="100" d="M760 136 V190 H100 V136" stroke="#3ee0a2" />
+          </svg>
+          <div id="tasks" class="card">
+            <div class="k">TASKS</div>
+            <div class="who">Your tasks</div>
+            <div class="sm">coroutines A, B</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="tasks-idle" class="muted">idle</b>
+              <b id="tasks-abq" class="warn hide">A, B queued</b>
+              <b id="tasks-arun" class="hotc hide">A runs, B queued</b>
+              <b id="tasks-await" class="warn hide">A waits, B queued</b>
+              <b id="tasks-brun" class="hotc hide">B runs, A waits</b>
+              <b id="tasks-both" class="warn hide">A, B waiting</b>
+              <b id="tasks-arun2" class="hotc hide">A runs, B waits</b>
+              <b id="tasks-done" class="ok hide">A done, B waits</b>
+            </div>
+          </div>
+          <div id="ready" class="card">
+            <div class="k">QUEUE</div>
+            <div class="who">Ready queue</div>
+            <div class="sm">callbacks</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="ready-idle" class="muted">idle</b>
+              <b id="ready-ab" class="warn hide">A, B</b>
+              <b id="ready-b" class="warn hide">B</b>
+              <b id="ready-empty" class="muted hide">empty</b>
+              <b id="ready-a" class="ok hide">A</b>
+            </div>
+          </div>
+          <div id="loop" class="card">
+            <div class="k">LOOP</div>
+            <div class="who">Event loop</div>
+            <div class="sm">one thread</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="loop-idle" class="muted">idle</b>
+              <b id="loop-runa" class="hotc hide">running A</b>
+              <b id="loop-asus" class="warn hide">A suspended</b>
+              <b id="loop-runb" class="hotc hide">running B</b>
+              <b id="loop-bsus" class="warn hide">B suspended</b>
+              <b id="loop-select" class="muted hide">idle in select</b>
+              <b id="loop-waking" class="hotc hide">waking</b>
+              <b id="loop-awake" class="ok hide">awake</b>
+              <b id="loop-idle2" class="muted hide">idle again</b>
+            </div>
+          </div>
+          <div id="sel" class="card">
+            <div class="k">SELECTOR</div>
+            <div class="who">Selector</div>
+            <div class="sm">epoll / kqueue</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="sel-idle" class="muted">idle</b>
+              <b id="sel-a" class="warn hide">watching A</b>
+              <b id="sel-ab" class="warn hide">watching A, B</b>
+              <b id="sel-sleep" class="muted hide">sleeping</b>
+              <b id="sel-ready" class="ok hide">A ready</b>
+              <b id="sel-b" class="warn hide">watching B</b>
+            </div>
+          </div>
+          <div id="net" class="card">
+            <div class="k">NET</div>
+            <div class="who">Sockets</div>
+            <div class="sm">network</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="net-idle" class="muted">idle</b>
+              <b id="net-data" class="ok hide">A's data in</b>
+              <b id="net-back" class="muted hide">network</b>
+            </div>
+          </div>
+          <div id="pkt-ab" class="pkt job"><span data-layout-allow-overflow>A, B</span></div>
+          <div id="pkt-runa" class="pkt"><span data-layout-allow-overflow>run A</span></div>
+          <div id="pkt-await" class="pkt job"><span data-layout-allow-overflow>await recv()</span></div>
+          <div id="pkt-runb" class="pkt"><span data-layout-allow-overflow>run B</span></div>
+          <div id="pkt-awaitb" class="pkt job"><span data-layout-allow-overflow>await recv()</span></div>
+          <div id="pkt-bytes" class="pkt go"><span data-layout-allow-overflow>A's bytes</span></div>
+          <div id="pkt-wake" class="pkt go under"><span data-layout-allow-overflow>wake A</span></div>
+          <div id="pkt-resume" class="pkt"><span data-layout-allow-overflow>resume A</span></div>
+          <div id="pkt-done" class="pkt go low"><span data-layout-allow-overflow>A done</span></div>
+          <p id="cmd-1" class="cmds c0">async with asyncio.TaskGroup() as tg: t1 = tg.create_task(a()); t2 = tg.create_task(b())</p>
+          <p id="cmd-2" class="cmds c0">loop = asyncio.get_running_loop(); await loop.run_in_executor(ProcessPoolExecutor(), cpu_fn, arg)</p>
+          <p id="cmd-3" class="cmds c0">sem = asyncio.Semaphore(10); async with sem: await fetch(u)</p>
+          <p id="cmd-4" class="cmds c0">asyncio.run(main(), debug=True)   # or PYTHONASYNCIODEBUG=1</p>
+          <p id="cmd-5" class="cmds c1">asyncio.run(main())</p>
+          <p id="cmd-6" class="cmds c1">res = await asyncio.to_thread(blocking_fn, arg)</p>
+          <p id="cmd-7" class="cmds c1">await asyncio.sleep(0)    # explicit yield to the loop</p>
+          <p id="cmd-8" class="cmds c1">async with asyncio.timeout(5): await slow()</p>
+          <p class="never" data-layout-allow-overlap>Off this path: time.sleep or requests.get inside async def never yields, so every request waits. to_thread only keeps I/O off the loop; CPU-bound work needs a ProcessPoolExecutor. FastAPI runs def routes in AnyIO's threadpool.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">create_task or gather wraps each coroutine in a Task and schedules its first step in the loop's ready queue.</p>
+          <p id="line-2" class="hide">The loop takes one callback from the ready queue and runs it until the coroutine awaits. Nothing else runs meanwhile: scheduling is cooperative.</p>
+          <p id="line-3" class="hide">await on an unfinished future suspends the coroutine and returns control to the loop. The socket is registered with the selector: epoll on Linux, kqueue on macOS and BSD.</p>
+          <p id="line-4" class="hide">This is the whole benefit. While A waits for I/O, B uses the thread, and waiting costs no CPU.</p>
+          <p id="line-5" class="hide">B registers its socket with the selector as well. Both tasks are now pending, and the ready queue is empty.</p>
+          <p id="line-6" class="hide">When idle, the loop blocks in select(timeout), where the timeout is the time to the next timer. The kernel tracks readiness, so many sockets cost little.</p>
+          <p id="line-7" class="hide">The kernel marks A's socket readable, so the blocked select call returns.</p>
+          <p id="line-8" class="hide">The loop learns that A's socket is ready and marks A ready to resume. Nothing has resumed A yet.</p>
+          <p id="line-9" class="hide">The Task continues the coroutine right after its await, with the received bytes as the result. A runs until it finishes or awaits again.</p>
+          <p id="line-10" class="hide">The Task completes and its done-callbacks are scheduled. One thread served both tasks: concurrent, but never parallel.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.35);
+      tl.fromTo("#hot-sched", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 0.35);
+      tl.fromTo("#pkt-ab", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0.35);
+      tl.fromTo("#pkt-ab", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 4.0);
+      tl.fromTo("#tasks-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.5);
+      tl.fromTo("#tasks-abq", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.7);
+      tl.fromTo("#ready-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.55);
+      tl.fromTo("#ready-ab", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.75);
+      tl.fromTo("#ready", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 0.55);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 4.3);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.6);
+      tl.fromTo("#hot-run", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 4.6);
+      tl.fromTo("#pkt-runa", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 4.6);
+      tl.fromTo("#pkt-runa", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 8.2);
+      tl.fromTo("#ready-ab", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 4.75);
+      tl.fromTo("#ready-b", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.95);
+      tl.fromTo("#loop-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 4.8);
+      tl.fromTo("#loop-runa", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 5.0);
+      tl.fromTo("#tasks-abq", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 4.85);
+      tl.fromTo("#tasks-arun", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 5.05);
+      tl.fromTo("#loop", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 4.8);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 8.5);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 8.8);
+      tl.fromTo("#hot-await", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 8.8);
+      tl.fromTo("#pkt-await", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 8.8);
+      tl.fromTo("#pkt-await", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 12.4);
+      tl.fromTo("#loop-runa", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 8.95);
+      tl.fromTo("#loop-asus", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 9.15);
+      tl.fromTo("#sel-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 9.0);
+      tl.fromTo("#sel-a", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 9.2);
+      tl.fromTo("#tasks-arun", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 9.05);
+      tl.fromTo("#tasks-await", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 9.25);
+      tl.fromTo("#loop", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 8.95);
+      tl.fromTo("#sel", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 9.0);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 12.7);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 13.0);
+      tl.fromTo("#pkt-runb", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 13.0);
+      tl.fromTo("#pkt-runb", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 16.6);
+      tl.fromTo("#loop-asus", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 13.15);
+      tl.fromTo("#loop-runb", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 13.35);
+      tl.fromTo("#ready-b", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 13.2);
+      tl.fromTo("#ready-empty", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 13.4);
+      tl.fromTo("#tasks-await", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 13.25);
+      tl.fromTo("#tasks-brun", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 13.45);
+      tl.fromTo("#loop", { borderColor: "#f0b429" }, { borderColor: "#5b8cff", duration: 0.25, immediateRender: false }, 13.15);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 16.9);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 17.2);
+      tl.fromTo("#pkt-awaitb", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 17.2);
+      tl.fromTo("#pkt-awaitb", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 20.8);
+      tl.fromTo("#loop-runb", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 17.35);
+      tl.fromTo("#loop-bsus", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 17.55);
+      tl.fromTo("#sel-a", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 17.4);
+      tl.fromTo("#sel-ab", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 17.6);
+      tl.fromTo("#tasks-brun", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 17.45);
+      tl.fromTo("#tasks-both", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 17.65);
+      tl.fromTo("#loop", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 17.35);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 21.1);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 21.4);
+      tl.fromTo("#loop-bsus", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 21.55);
+      tl.fromTo("#loop-select", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 21.75);
+      tl.fromTo("#sel-ab", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 21.6);
+      tl.fromTo("#sel-sleep", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 21.8);
+      tl.fromTo("#loop", { borderColor: "#f0b429" }, { borderColor: "#243044", duration: 0.25, immediateRender: false }, 21.55);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 25.3);
+
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 25.6);
+      tl.fromTo("#hot-bytes", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 25.6);
+      tl.fromTo("#pkt-bytes", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 25.6);
+      tl.fromTo("#pkt-bytes", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 29.2);
+      tl.fromTo("#net-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 25.75);
+      tl.fromTo("#net-data", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 25.95);
+      tl.fromTo("#sel-sleep", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 25.8);
+      tl.fromTo("#sel-ready", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 26.0);
+      tl.fromTo("#loop-select", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 25.85);
+      tl.fromTo("#loop-waking", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 26.05);
+      tl.fromTo("#net", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 25.75);
+      tl.fromTo("#sel", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 25.8);
+      tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 29.5);
+
+      tl.fromTo("#line-8", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 29.8);
+      tl.fromTo("#hot-wake", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 29.8);
+      tl.fromTo("#pkt-wake", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 29.8);
+      tl.fromTo("#pkt-wake", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 33.4);
+      tl.fromTo("#ready-empty", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 29.95);
+      tl.fromTo("#ready-a", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 30.15);
+      tl.fromTo("#loop-waking", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 30.0);
+      tl.fromTo("#loop-awake", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 30.2);
+      tl.fromTo("#sel-ready", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 30.05);
+      tl.fromTo("#sel-b", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 30.25);
+      tl.fromTo("#net-data", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 30.1);
+      tl.fromTo("#net-back", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 30.3);
+      tl.fromTo("#ready", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 29.95);
+      tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 33.7);
+
+      tl.fromTo("#line-9", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 34.0);
+      tl.fromTo("#pkt-resume", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 34.0);
+      tl.fromTo("#pkt-resume", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 37.6);
+      tl.fromTo("#loop-awake", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 34.15);
+      tl.fromTo("#loop-runa", { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, 34.35);
+      tl.fromTo("#ready-a", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 34.2);
+      tl.fromTo("#ready-empty", { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, 34.4);
+      tl.fromTo("#tasks-both", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 34.25);
+      tl.fromTo("#tasks-arun2", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 34.45);
+      tl.fromTo("#loop", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25, immediateRender: false }, 34.15);
+      tl.fromTo("#line-9", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 37.9);
+
+      tl.fromTo("#line-10", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 38.2);
+      tl.fromTo("#hot-done", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 38.2);
+      tl.fromTo("#pkt-done", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 38.2);
+      tl.fromTo("#pkt-done", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 42.4);
+      tl.fromTo("#tasks-arun2", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 38.35);
+      tl.fromTo("#tasks-done", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 38.55);
+      tl.fromTo("#loop-runa", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 38.4);
+      tl.fromTo("#loop-idle2", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 38.6);
+      tl.fromTo("#loop", { borderColor: "#5b8cff" }, { borderColor: "#243044", duration: 0.25, immediateRender: false }, 38.4);
+      tl.fromTo("#tasks", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 38.35);
+
+      tl.set({}, {}, 44);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
