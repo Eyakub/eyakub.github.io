@@ -405,5 +405,12 @@ export const authJwtOauth: Topic = {
     { label: 'RFC 7519: JWT', url: 'https://www.rfc-editor.org/rfc/rfc7519' },
     { label: 'RFC 9700: OAuth 2.0 security BCP', url: 'https://www.rfc-editor.org/rfc/rfc9700' },
     { label: 'OpenID Connect Core', url: 'https://openid.net/specs/openid-connect-core-1_0.html' }
-  ]
+  ],
+  film: {
+    src: '/learn/auth-jwt-oauth.mp4',
+    note: {
+      en: 'An intercepted authorization code without the code_verifier returns invalid_grant. Public clients must send PKCE. For confidential clients it is recommended.',
+      bn: 'code_verifier ছাড়া আটকানো authorization code invalid_grant দেয়। পাবলিক ক্লায়েন্টকে PKCE পাঠাতেই হয়। গোপন ক্লায়েন্টের জন্য সেটা সুপারিশ করা হয়।'
+    }
+  }
 }
