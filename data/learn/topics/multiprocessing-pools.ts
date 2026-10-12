@@ -904,5 +904,12 @@ export const multiprocessingPools: Topic = {
     { label: 'Python docs: concurrent.futures', url: 'https://docs.python.org/3/library/concurrent.futures.html' },
     { label: 'Python docs: What’s New in 3.14', url: 'https://docs.python.org/3/whatsnew/3.14.html' },
     { label: 'Celery docs: concurrency', url: 'https://docs.celeryq.dev/en/stable/userguide/concurrency/index.html' }
-  ]
+  ],
+  film: {
+    src: '/learn/multiprocessing-pools.mp4',
+    note: {
+      en: 'A lambda or nested function raises PicklingError. A missing __main__ guard raises a bootstrap error. A killed worker raises BrokenProcessPool, and a classic Pool can hang.',
+      bn: 'lambda বা nested ফাংশন PicklingError তোলে। __main__ guard না থাকলে bootstrap error হয়। মারা যাওয়া worker BrokenProcessPool তোলে, আর পুরনো Pool আটকে থাকতে পারে।'
+    }
+  }
 }
