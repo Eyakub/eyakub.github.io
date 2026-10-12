@@ -85,14 +85,33 @@
         font-size: 26px; line-height: 1.25;
       }
       .hide { opacity: 0; }
+      #ride { position: absolute; inset: 0; }
+      #chapter {
+        position: absolute; inset: 0; z-index: 4;
+        background: #0c1222; border-radius: 18px; opacity: 0;
+      }
+      #chapter .ch {
+        position: absolute; text-align: center; width: 100%;
+        top: 8px; color: #c5d0e0; font-size: 22px; letter-spacing: 0.04em;
+      }
+      #c-router { left: 40px; top: 48px; width: 460px; }
+      #c-reg { left: 1020px; top: 48px; width: 400px; }
+      #c-blue { left: 40px; top: 300px; width: 640px; border-color: #5b8cff; }
+      #c-green { left: 800px; top: 300px; width: 640px; }
+      #pkt-bg { left: 1200px; top: 160px; background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      #pkt-bg span { top: 18px; }
+      #pkt-sw { left: 500px; top: 250px; }
+      #pkt-sw span { left: auto; right: 18px; top: -26px; }
+      #cmd-sw { left: 430px; top: 248px; }
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="35" data-width="1920" data-height="1080">
-      <section id="board" class="clip" data-start="0" data-duration="35" data-track-index="0">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="47" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="47" data-track-index="0">
         <h1>CI/CD</h1>
         <p class="sub">push, test, image, approve, then pull</p>
         <div class="stage">
+          <div id="ride">
           <svg class="wires" viewBox="0 0 1480 700">
             <path class="idle" d="M300 72 H460" />
             <path class="idle" d="M760 72 H1040" />
@@ -153,7 +172,7 @@
           </div>
           <div id="prod" class="card">
             <div class="k">PRODUCTION</div>
-            <div class="who">live servers</div>
+            <div class="who">production server</div>
             <div class="row" data-layout-allow-overlap>
               <b id="prod-old" class="muted">previous tag</b>
               <b id="prod-told" class="hide warn">run app:3f9c2a1</b>
@@ -177,6 +196,53 @@
           <p id="cmd-pull" class="cmd">docker pull</p>
           <p id="cmd-check" class="cmd">check</p>
           <p class="never">A failed test skips the image and the deploy. Never deploy latest.</p>
+          </div>
+          <div id="chapter" data-layout-allow-overlap>
+            <p class="ch">Blue-green</p>
+            <div id="c-router" class="card">
+              <div class="k">ROUTER</div>
+              <div class="who">production traffic</div>
+              <div class="row" data-layout-allow-overlap>
+                <b id="rt-blue" class="ok">to blue</b>
+                <b id="rt-green" class="hide ok">to green</b>
+              </div>
+            </div>
+            <div id="c-reg" class="card">
+              <div class="k">REGISTRY</div>
+              <div class="who">ghcr.io</div>
+              <div class="row"><b class="ok">app:3f9c2a1</b></div>
+            </div>
+            <svg class="wires" viewBox="0 0 1480 700" aria-hidden="true">
+              <path class="idle" d="M270 160 V300" />
+              <path id="hot-live" class="hot" pathLength="100" d="M270 160 V300" stroke="#5b8cff" style="stroke-dashoffset: 0" />
+              <path class="idle" d="M270 160 C520 230 800 230 1080 300" />
+              <path id="hot-switch" class="hot" pathLength="100" d="M270 160 C520 230 800 230 1080 300" stroke="#3ee0a2" />
+              <path class="idle" d="M1220 160 V300" />
+              <path id="hot-bg" class="hot" pathLength="100" d="M1220 160 V300" stroke="#3ee0a2" />
+            </svg>
+            <div id="c-blue" class="card">
+              <div class="k">BLUE</div>
+              <div class="who">production server</div>
+              <div class="row" data-layout-allow-overlap>
+                <b id="blue-live" class="ok">live, old tag</b>
+                <b id="blue-kept" class="hide warn">kept for rollback</b>
+              </div>
+            </div>
+            <div id="c-green" class="card">
+              <div class="k">GREEN</div>
+              <div class="who">production server</div>
+              <div class="row" data-layout-allow-overlap>
+                <b id="green-idle" class="muted">idle</b>
+                <b id="green-has" class="hide">has app:3f9c2a1</b>
+                <b id="green-ok" class="hide ok">health check passed</b>
+                <b id="green-on" class="hide ok">now serving</b>
+              </div>
+            </div>
+            <div id="pkt-bg" class="pkt" data-layout-allow-overflow><span>app:3f9c2a1</span></div>
+            <div id="pkt-sw" class="pkt" data-layout-allow-overflow><span>switch</span></div>
+            <p id="cmd-bg" class="cmd" style="left: 1040px; top: 210px;">deploy to green</p>
+            <p id="cmd-sw" class="cmd">switch traffic</p>
+          </div>
         </div>
         <div class="said" data-layout-allow-overlap>
           <p id="line-1" class="hide">git push starts a workflow with on: push. pull_request can start one too.</p>
@@ -186,9 +252,13 @@
           <p id="line-5" class="hide">The job pushes app:3f9c2a1 to ghcr.io. The tag is the commit SHA, never latest.</p>
           <p id="line-6" class="hide">The deploy job needs the build, then waits on environment: production.</p>
           <p id="line-7" class="hide">Approve and deploy, or reject and fail the run. Secrets come after the yes.</p>
-          <p id="line-8" class="hide">The released job tells production to run app:3f9c2a1.</p>
-          <p id="line-9" class="hide">Then production pulls that tag from ghcr.io. The tested bytes are the bytes that run.</p>
+          <p id="line-8" class="hide">The released job tells the production server to run app:3f9c2a1.</p>
+          <p id="line-9" class="hide">Then the production server pulls that tag from ghcr.io. The tested bytes are the bytes that run.</p>
           <p id="line-10" class="hide">The run ends green. Rollback is one deploy of the previous SHA.</p>
+          <p id="line-11" class="hide">Blue-green keeps two production servers. Blue is live. Green is idle.</p>
+          <p id="line-12" class="hide">The new tag lands on the green production server. Blue still serves customers.</p>
+          <p id="line-13" class="hide">A health check hits the green production server directly. Traffic stays on blue.</p>
+          <p id="line-14" class="hide">The router sends production traffic to green. Blue stays up for a switch back.</p>
         </div>
       </section>
     </div>
@@ -278,7 +348,39 @@
       tl.fromTo("#repo-green", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 29.7);
       tl.fromTo("#line-10", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 28.7);
 
-      tl.set({}, {}, 35);
+      tl.fromTo("#line-10", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 33.1);
+      tl.fromTo("#ride", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 33.15);
+      tl.fromTo("#chapter", { opacity: 0 }, { opacity: 1, duration: 0.35 }, 33.5);
+      tl.fromTo("#line-11", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 33.5);
+
+      tl.fromTo("#line-11", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 36.6);
+      tl.fromTo("#hot-bg", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.7, ease: "power1.inOut" }, 36.7);
+      tl.fromTo("#pkt-bg", { y: 0, opacity: 0 }, { y: 100, opacity: 1, duration: 0.7, ease: "power1.inOut" }, 36.7);
+      tl.fromTo("#pkt-bg", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 37.45);
+      tl.fromTo("#green-idle", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 37.4);
+      tl.fromTo("#green-has", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 37.5);
+      tl.fromTo("#c-green", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 37.4);
+      tl.fromTo("#line-12", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 36.7);
+
+      tl.fromTo("#line-12", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 39.8);
+      tl.fromTo("#green-has", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 39.9);
+      tl.fromTo("#green-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 40.0);
+      tl.fromTo("#line-13", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 39.9);
+
+      tl.fromTo("#line-13", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 42.6);
+      tl.fromTo("#hot-switch", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.8, ease: "power1.inOut" }, 42.7);
+      tl.fromTo("#pkt-sw", { x: 0, y: 0, opacity: 0 }, { x: 160, y: 16, opacity: 1, duration: 0.8, ease: "power1.inOut" }, 42.7);
+      tl.fromTo("#pkt-sw", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 43.55);
+      tl.fromTo("#rt-blue", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 43.4);
+      tl.fromTo("#rt-green", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 43.5);
+      tl.fromTo("#blue-live", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 43.4);
+      tl.fromTo("#blue-kept", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 43.5);
+      tl.fromTo("#c-blue", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25 }, 43.4);
+      tl.fromTo("#green-ok", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 43.4);
+      tl.fromTo("#green-on", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 43.5);
+      tl.fromTo("#line-14", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 42.7);
+
+      tl.set({}, {}, 47);
       window.__timelines = window.__timelines || {};
       window.__timelines.main = tl;
     </script>

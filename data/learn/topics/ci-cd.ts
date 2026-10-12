@@ -71,7 +71,7 @@ export const ciCd: Topic = {
     queue: { en: 'Waiting for a yes', bn: 'অনুমোদনের অপেক্ষা' },
     error: { en: 'Something went wrong', bn: 'কিছু গোলমাল হয়েছে' }
   },
-  view: { wide: [ 1000, 400 ], narrow: [ 400, 540 ] },
+  view: { wide: [ 1000, 660 ], narrow: [ 400, 840 ] },
   nodes: {
     dev: {
       icon: 'user',
@@ -131,15 +131,57 @@ export const ciCd: Topic = {
     prod: {
       icon: 'server',
       name: { en: 'Production', bn: 'Production' },
-      sub: { en: 'Live servers', bn: 'চালু server' },
+      sub: { en: 'Production server', bn: 'প্রোডাকশন সার্ভার' },
       plain: {
         name: { en: 'The store', bn: 'দোকান' },
         sub: { en: 'Where people shop', bn: 'কেনাকাটার জায়গা' }
       },
       wide: [ 330, 305, 'down' ],
       narrow: [ 70, 450, 'down' ]
+    },
+    router: {
+      icon: 'route',
+      name: { en: 'Router', bn: 'রাউটার' },
+      sub: { en: 'Production traffic', bn: 'প্রোডাকশন ট্রাফিক' },
+      plain: {
+        name: { en: 'Front door', bn: 'সামনের দরজা' },
+        sub: { en: 'Picks a room', bn: 'একটা ঘর বেছে নেয়' }
+      },
+      wide: [ 500, 560, 'down' ],
+      narrow: [ 200, 620, 'up' ]
+    },
+    blue: {
+      icon: 'server',
+      name: { en: 'Blue', bn: 'ব্লু' },
+      sub: { en: 'Production server', bn: 'প্রোডাকশন সার্ভার' },
+      plain: {
+        name: { en: 'Live room', bn: 'চলন্ত ঘর' },
+        sub: { en: 'Production server', bn: 'প্রোডাকশন সার্ভার' }
+      },
+      wide: [ 220, 560, 'down' ],
+      narrow: [ 90, 750, 'down' ]
+    },
+    green: {
+      icon: 'server',
+      name: { en: 'Green', bn: 'গ্রিন' },
+      sub: { en: 'Production server', bn: 'প্রোডাকশন সার্ভার' },
+      plain: {
+        name: { en: 'Spare room', bn: 'অতিরিক্ত ঘর' },
+        sub: { en: 'Production server', bn: 'প্রোডাকশন সার্ভার' }
+      },
+      wide: [ 780, 560, 'down' ],
+      narrow: [ 300, 750, 'down' ]
     }
   },
+  groups: [
+    {
+      id: 'pair',
+      label: { en: 'Blue-green', bn: 'ব্লু-গ্রিন' },
+      plain: { en: 'Two rooms', bn: 'দুটো ঘর' },
+      wide: [ 80, 500, 840, 145 ],
+      narrow: [ 20, 560, 360, 250 ]
+    }
+  ],
   corridors: {
     'dev-repo': { wide: [ [ 100, 115 ], [ 330, 115 ] ], narrow: [ [ 70, 40 ], [ 70, 150 ] ] },
     'repo-runner': { wide: [ [ 330, 115 ], [ 790, 115 ] ], narrow: [ [ 70, 150 ], [ 135, 215 ], [ 320, 215 ] ] },
@@ -147,7 +189,10 @@ export const ciCd: Topic = {
     'runner-gate': { wide: [ [ 790, 115 ], [ 790, 305 ] ], narrow: [ [ 320, 215 ], [ 320, 450 ] ] },
     'gate-prod': { wide: [ [ 790, 305 ], [ 330, 305 ] ], narrow: [ [ 320, 450 ], [ 70, 450 ] ] },
     'registry-prod': { wide: [ [ 560, 210 ], [ 425, 210 ], [ 330, 305 ] ], narrow: [ [ 200, 290 ], [ 200, 320 ], [ 70, 450 ] ] },
-    'prod-repo': { wide: [ [ 330, 305 ], [ 330, 115 ] ], narrow: [ [ 70, 450 ], [ 30, 410 ], [ 30, 190 ], [ 70, 150 ] ] }
+    'prod-repo': { wide: [ [ 330, 305 ], [ 330, 115 ] ], narrow: [ [ 70, 450 ], [ 30, 410 ], [ 30, 190 ], [ 70, 150 ] ] },
+    'registry-green': { wide: [ [ 560, 210 ], [ 940, 210 ], [ 940, 560 ], [ 780, 560 ] ], narrow: [ [ 200, 290 ], [ 200, 540 ], [ 380, 540 ], [ 380, 750 ], [ 300, 750 ] ] },
+    'router-blue': { wide: [ [ 500, 560 ], [ 220, 560 ] ], narrow: [ [ 200, 620 ], [ 90, 620 ], [ 90, 750 ] ] },
+    'router-green': { wide: [ [ 500, 560 ], [ 780, 560 ] ], narrow: [ [ 200, 620 ], [ 300, 620 ], [ 300, 750 ] ] }
   },
   edges: {
     'dev-repo': { from: 'dev', to: 'repo', kind: 'request' },
@@ -158,6 +203,9 @@ export const ciCd: Topic = {
     'gate-prod': { from: 'gate', to: 'prod', kind: 'request' },
     'registry-prod': { from: 'registry', to: 'prod', kind: 'result' },
     'prod-repo': { from: 'prod', to: 'repo', kind: 'result' },
+    'registry-green': { from: 'registry', to: 'green', kind: 'request' },
+    'router-blue': { from: 'router', to: 'blue', kind: 'request' },
+    'router-green': { from: 'router', to: 'green', kind: 'request' },
     'runner-repo-err': { from: 'runner', to: 'repo', kind: 'error' },
     'repo-dev-err': { from: 'repo', to: 'dev', kind: 'error' }
   },
@@ -502,6 +550,102 @@ export const ciCd: Topic = {
           }
         }
       ]
+    },
+    {
+      id: 'blue-green',
+      label: { en: 'Two production servers', bn: 'দুটো প্রোডাকশন সার্ভার' },
+      whatIf: {
+        en: 'What if the new box goes to a spare production server first?',
+        bn: 'নতুন বাক্স আগে একটা অতিরিক্ত প্রোডাকশন সার্ভারে গেলে?'
+      },
+      branchAfter: 'approved',
+      steps: [
+        {
+          id: 'deploy-green',
+          moves: [
+            { edge: 'registry-green', label: 'app:3f9c2a1', plain: { en: 'New box', bn: 'নতুন বাক্স' } },
+            { edge: 'router-blue', label: 'live traffic', plain: { en: 'People stay', bn: 'লোকজন থাকে' } }
+          ],
+          state: {
+            green: { en: 'Has 3f9c2a1', bn: '3f9c2a1 আছে' },
+            blue: { en: 'Still serving', bn: 'এখনো চলছে' },
+            router: { en: 'Traffic to blue', bn: 'ট্রাফিক ব্লুতে' }
+          },
+          plainState: {
+            green: { en: 'Spare is ready', bn: 'অতিরিক্ত তৈরি' },
+            blue: { en: 'People are here', bn: 'লোকজন এখানে' },
+            router: { en: 'Door stays put', bn: 'দরজা আগের জায়গায়' }
+          },
+          title: { en: 'The spare server gets the box', bn: 'অতিরিক্ত সার্ভার বাক্স পায়' },
+          simple: {
+            en: 'The new box goes to the spare production server. The live production server keeps serving customers.',
+            bn: 'নতুন বাক্স অতিরিক্ত প্রোডাকশন সার্ভারে যায়। চলন্ত প্রোডাকশন সার্ভার গ্রাহকদের সার্ভ করতে থাকে।'
+          },
+          story: {
+            title: { en: 'Rubel fills the spare room', bn: 'রুবেল অতিরিক্ত ঘর ভরায়' },
+            text: {
+              en: 'Rubel sends the new numbered box to the spare room. Customers stay in the live room the whole time, so nobody waits on an empty shelf.',
+              bn: 'রুবেল নতুন নম্বরের বাক্সটা অতিরিক্ত ঘরে পাঠায়। গ্রাহকেরা পুরো সময় চলন্ত ঘরেই থাকে, তাই খালি তাকের জন্য কাউকে অপেক্ষা করতে হয় না।'
+            }
+          },
+          tech: {
+            en: 'The deploy starts `app:3f9c2a1` on the green production server. The blue production server keeps serving the old tag, and the router still sends customers there.',
+            bn: 'deploy গ্রিন প্রোডাকশন সার্ভারে `app:3f9c2a1` চালু করে। ব্লু প্রোডাকশন সার্ভার পুরনো tag সার্ভ করতে থাকে, আর রাউটার গ্রাহকদের এখনো সেখানে পাঠায়।'
+          }
+        },
+        {
+          id: 'health-green',
+          work: { node: 'green', kind: 'result' },
+          state: { green: { en: 'Health check passed', bn: 'health check পাস' } },
+          plainState: { green: { en: 'It looks healthy', bn: 'সুস্থ দেখাচ্ছে' } },
+          title: { en: 'The spare server is checked', bn: 'অতিরিক্ত সার্ভার যাচাই হয়' },
+          simple: {
+            en: 'Someone checks the spare production server directly. Customers still use the live one until the check passes.',
+            bn: 'কেউ অতিরিক্ত প্রোডাকশন সার্ভারটা সরাসরি দেখে। চেক পাস না হওয়া পর্যন্ত গ্রাহকেরা চলন্ত সার্ভারই ব্যবহার করে।'
+          },
+          story: {
+            title: { en: 'Rubel checks the spare room', bn: 'রুবেল অতিরিক্ত ঘর দেখে' },
+            text: {
+              en: 'Rubel walks into the spare room and checks the goods himself. The front door still opens on the live room, and customers notice nothing.',
+              bn: 'রুবেল অতিরিক্ত ঘরে ঢুকে নিজে মালপত্র দেখে। সামনের দরজা এখনো চলন্ত ঘরে খোলে, আর গ্রাহকেরা কিছু টের পায় না।'
+            }
+          },
+          tech: {
+            en: 'A health check calls the green production server directly, not through the router. Production traffic stays on the blue production server until green answers.',
+            bn: 'health check রাউটারের ভেতর দিয়ে নয়, গ্রিন প্রোডাকশন সার্ভারকে সরাসরি ডাকে। গ্রিন উত্তর না দেওয়া পর্যন্ত প্রোডাকশন ট্রাফিক ব্লু প্রোডাকশন সার্ভারেই থাকে।'
+          }
+        },
+        {
+          id: 'switch-green',
+          moves: [ { edge: 'router-green', label: 'switch', plain: { en: 'Open this door', bn: 'এই দরজা খুলুন' } } ],
+          state: {
+            router: { en: 'Traffic to green', bn: 'ট্রাফিক গ্রিনে' },
+            green: { en: 'Now serving', bn: 'এখন চলছে' },
+            blue: { en: 'Kept for rollback', bn: 'রোলব্যাকের জন্য আছে' }
+          },
+          plainState: {
+            router: { en: 'Door to the new one', bn: 'নতুনটার দরজা' },
+            green: { en: 'People come here', bn: 'লোকজন এখানে আসে' },
+            blue: { en: 'Old room waits', bn: 'পুরনো ঘর অপেক্ষা করে' }
+          },
+          title: { en: 'Traffic moves to the new server', bn: 'ট্রাফিক নতুন সার্ভারে যায়' },
+          simple: {
+            en: 'The front door now opens onto the new production server. The old production server stays on, so the door can switch back.',
+            bn: 'সামনের দরজা এখন নতুন প্রোডাকশন সার্ভারে খোলে। পুরনো প্রোডাকশন সার্ভার চালু থাকে, তাই দরজা আবার ঘোরানো যায়।'
+          },
+          story: {
+            title: { en: 'Rubel opens the spare room', bn: 'রুবেল অতিরিক্ত ঘর খোলে' },
+            text: {
+              en: 'Rubel turns the front door to the spare room. The live room stays lit with the old goods, so he can turn the door back in a moment.',
+              bn: 'রুবেল সামনের দরজা অতিরিক্ত ঘরের দিকে ঘোরায়। চলন্ত ঘর পুরনো মাল নিয়ে জ্বলে থাকে, তাই সে মুহূর্তেই দরজা ফিরিয়ে দিতে পারে।'
+            }
+          },
+          tech: {
+            en: 'The router sends production traffic to the green production server. Blue stays up with the old tag, so a rollback is switching the router back.',
+            bn: 'রাউটার প্রোডাকশন ট্রাফিক গ্রিন প্রোডাকশন সার্ভারে পাঠায়। ব্লু পুরনো tag নিয়ে চালু থাকে, তাই rollback মানে রাউটার আবার ঘোরানো।'
+          }
+        }
+      ]
     }
   ],
   analogy: {
@@ -562,6 +706,33 @@ export const ciCd: Topic = {
         d: {
           en: 'Where customers meet the finished goods.',
           bn: 'যেখানে গ্রাহকেরা তৈরি পণ্যের দেখা পায়।'
+        }
+      },
+      {
+        icon: 'route',
+        node: 'router',
+        name: { en: 'The front door', bn: 'সামনের দরজা' },
+        d: {
+          en: 'Sends customers to one production server, then can switch.',
+          bn: 'গ্রাহকদের একটা প্রোডাকশন সার্ভারে পাঠায়, তারপর ঘোরাতে পারে।'
+        }
+      },
+      {
+        icon: 'server',
+        node: 'blue',
+        name: { en: 'The live room', bn: 'চলন্ত ঘর' },
+        d: {
+          en: 'The production server customers are using right now.',
+          bn: 'যে প্রোডাকশন সার্ভার গ্রাহকেরা এই মুহূর্তে ব্যবহার করছে।'
+        }
+      },
+      {
+        icon: 'server',
+        node: 'green',
+        name: { en: 'The spare room', bn: 'অতিরিক্ত ঘর' },
+        d: {
+          en: 'The other production server, where the new box lands first.',
+          bn: 'অন্য প্রোডাকশন সার্ভার, যেখানে নতুন বাক্স আগে নামে।'
         }
       },
       {
@@ -650,8 +821,8 @@ export const ciCd: Topic = {
         bn: 'commit SHA দিয়ে tag করা অপরিবর্তনীয় image deploy করুন, production-এ gate রাখুন, আর rollback সহজ রাখুন।'
       },
       deep: {
-        en: 'Tag with `github.sha`, not `latest`, so a rollback is just deploying an older tag. On `pull_request` that value is the merge commit, not the branch head. Use an environment with reviewers and a `concurrency` group so two deploys never overlap, and keep database migrations backward-compatible.',
-        bn: '`latest` নয়, `github.sha` দিয়ে tag করুন, তাহলে rollback মানে শুধু পুরনো একটা tag deploy করা। `pull_request`-এ ওই মান merge commit, branch-এর মাথা নয়। reviewer-সহ environment আর `concurrency` group ব্যবহার করুন, যাতে দুটো deploy কখনো একসাথে না চলে, আর database migration পেছনের দিকে সামঞ্জস্যপূর্ণ রাখুন।'
+        en: 'Tag with `github.sha`, not `latest`, so a rollback is just deploying an older tag. On `pull_request` that value is the merge commit, not the branch head. Use an environment with reviewers and a `concurrency` group so two deploys never overlap, and keep database migrations backward-compatible. Blue-green keeps two production servers and switches the router after the idle one is healthy.',
+        bn: '`latest` নয়, `github.sha` দিয়ে tag করুন, তাহলে rollback মানে শুধু পুরনো একটা tag deploy করা। `pull_request`-এ ওই মান merge commit, branch-এর মাথা নয়। reviewer-সহ environment আর `concurrency` group ব্যবহার করুন, যাতে দুটো deploy কখনো একসাথে না চলে, আর database migration পেছনের দিকে সামঞ্জস্যপূর্ণ রাখুন। ব্লু-গ্রিন দুটো প্রোডাকশন সার্ভার রাখে, আর অলস সার্ভার সুস্থ হলে রাউটার ঘোরায়।'
       },
       redFlag: {
         en: '“Deploy `latest` straight to production.”',
@@ -788,8 +959,8 @@ export const ciCd: Topic = {
   film: {
     src: '/learn/ci-cd.mp4',
     note: {
-      en: 'The reviewer gate is continuous delivery. A failed test never pushes the image.',
-      bn: 'reviewer gate মানে continuous delivery। ব্যর্থ test image কখনো push করে না।'
+      en: 'The reviewer gate is continuous delivery. A failed test never pushes the image. The last chapter is blue-green on two production servers.',
+      bn: 'reviewer gate মানে continuous delivery। ব্যর্থ test image কখনো push করে না। শেষ অধ্যায় দুটো প্রোডাকশন সার্ভারে ব্লু-গ্রিন।'
     }
   }
 }
