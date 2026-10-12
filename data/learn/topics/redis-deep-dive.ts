@@ -523,5 +523,12 @@ export const redisDeepDive: Topic = {
     { label: 'Redis Pub/Sub', url: 'https://redis.io/docs/latest/develop/pubsub/' },
     { label: 'Redis streams', url: 'https://redis.io/docs/latest/develop/use-cases/streaming/' },
     { label: 'Redis 8 redis.conf', url: 'https://github.com/redis/redis/blob/8.0/redis.conf' }
-  ]
+  ],
+  film: {
+    src: '/learn/redis-deep-dive.mp4',
+    note: {
+      en: 'A stampede is many misses at once. One caller restocks while the others wait, or the timers differ. Do not let every miss hit the database.',
+      bn: 'স্ট্যাম্পিড মানে একসঙ্গে অনেক মিস। একজন রিফিল করুক, বাকিরা অপেক্ষা করুক, অথবা টাইমার আলাদা হোক। প্রতিটি মিসকে ডেটাবেসে যেতে দেবেন না।'
+    }
+  }
 }

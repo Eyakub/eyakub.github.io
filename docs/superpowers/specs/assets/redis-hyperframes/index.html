@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 16px 36px 14px;
+      }
+      h1 { text-align: center; font-size: 40px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 18px; }
+      .stage { position: relative; width: 1480px; height: 620px; margin: 8px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 620px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 8px 12px; z-index: 1;
+      }
+      .k { font-family: ui-monospace, Menlo, monospace; font-size: 12px; letter-spacing: 0.12em; color: #c5d0e0; }
+      .who { margin-top: 1px; font-size: 18px; font-weight: 700; line-height: 1.12; }
+      .sm { margin-top: 3px; font-size: 14px; color: #c5d0e0; white-space: nowrap; }
+      .row { position: relative; height: 24px; margin-top: 6px; }
+      .row b { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 15px; font-weight: 700; }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      #app { left: 0; top: 56px; width: 210px; height: 118px; }
+      #redis { left: 400px; top: 56px; width: 250px; height: 118px; }
+      #sub { left: 900px; top: 56px; width: 250px; height: 118px; }
+      #db { left: 0; top: 300px; width: 210px; height: 118px; }
+      #disk { left: 400px; top: 300px; width: 250px; height: 118px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt.job { background: #f0b429; box-shadow: 0 0 0 6px rgba(240, 180, 41, 0.22), 0 0 16px rgba(240, 180, 41, 0.85); }
+      .pkt span {
+        position: absolute; left: 50%; top: -56px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 15px; color: #f4f7fb;
+      }
+      .pkt.back span { top: 36px; }
+      .pkt.vert span { left: auto; right: 20px; top: -8px; transform: none; }
+      #pkt-get { left: 305px; top: 100px; }
+      #pkt-nil { left: 305px; top: 140px; }
+      #pkt-sel { left: 105px; top: 230px; }
+      #pkt-set { left: 305px; top: 100px; }
+      #pkt-hit { left: 305px; top: 100px; }
+      #pkt-save { left: 525px; top: 230px; }
+      #pkt-pub { left: 305px; top: 100px; }
+      #pkt-ear { left: 775px; top: 100px; }
+      .never { position: absolute; left: 0; top: 580px; color: #c5d0e0; font-size: 15px; white-space: nowrap; }
+      .cmds { position: absolute; left: 0; color: #c5d0e0; font-size: 15px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+      #cmd-1 { top: 450px; }
+      #cmd-2 { top: 474px; }
+      #cmd-3 { top: 498px; }
+      #cmd-4 { top: 522px; }
+      #cmd-5 { top: 546px; }
+      .said { position: relative; height: 120px; margin-top: 6px; }
+      .said p { position: absolute; left: 8px; right: 8px; top: 2px; text-align: center; font-size: 20px; line-height: 1.28; }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="36" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="36" data-track-index="0">
+        <h1>Redis</h1>
+        <p class="sub">cache-aside · TTL · eviction · RDB · pub/sub</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 620">
+            <path class="idle" d="M210 100 H400" />
+            <path class="idle" d="M400 140 H210" />
+            <path class="idle" d="M105 174 V300" />
+            <path class="idle" d="M525 174 V300" />
+            <path class="idle" d="M650 100 H900" />
+            <path id="hot-get" class="hot" pathLength="100" d="M210 100 H400" stroke="#5b8cff" />
+            <path id="hot-nil" class="hot" pathLength="100" d="M400 140 H210" stroke="#f0b429" />
+            <path id="hot-sel" class="hot" pathLength="100" d="M105 174 V300" stroke="#5b8cff" />
+            <path id="hot-save" class="hot" pathLength="100" d="M525 174 V300" stroke="#3ee0a2" />
+            <path id="hot-ear" class="hot" pathLength="100" d="M650 100 H900" stroke="#5b8cff" />
+          </svg>
+          <div id="app" class="card">
+            <div class="k">APP</div>
+            <div class="who">App</div>
+            <div class="sm">cache-aside</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="ap-idle" class="muted">owns the miss</b>
+              <b id="ap-get" class="hotc hide">GET</b>
+              <b id="ap-load" class="hotc hide">loads database</b>
+              <b id="ap-set" class="hotc hide">SET EX 300</b>
+              <b id="ap-hit" class="ok hide">hit</b>
+              <b id="ap-pub" class="hotc hide">PUBLISH</b>
+            </div>
+          </div>
+          <div id="redis" class="card">
+            <div class="k">CACHE</div>
+            <div class="who">Redis</div>
+            <div class="sm">one command thread</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="rd-idle" class="muted">in memory</b>
+              <b id="rd-look" class="hotc hide">GET</b>
+              <b id="rd-nil" class="hotc hide">nil</b>
+              <b id="rd-ttl" class="hotc hide">TTL 300s</b>
+              <b id="rd-hit" class="ok hide">keyspace hit</b>
+              <b id="rd-full" class="hotc hide">noeviction</b>
+              <b id="rd-save" class="ok hide">dump.rdb</b>
+              <b id="rd-pub" class="ok hide">published</b>
+            </div>
+          </div>
+          <div id="sub" class="card">
+            <div class="k">PUBSUB</div>
+            <div class="who">Subscriber</div>
+            <div class="sm">at-most-once</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="su-idle" class="muted">optional</b>
+              <b id="su-heard" class="ok hide">delivered</b>
+            </div>
+          </div>
+          <div id="db" class="card">
+            <div class="k">STORE</div>
+            <div class="who">Database</div>
+            <div class="sm">source of truth</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="db-idle" class="muted">not Redis</b>
+              <b id="db-read" class="ok hide">SELECT</b>
+            </div>
+          </div>
+          <div id="disk" class="card">
+            <div class="k">PERSIST</div>
+            <div class="who">Disk</div>
+            <div class="sm">dump.rdb</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="dk-idle" class="muted">AOF off</b>
+              <b id="dk-save" class="ok hide">BGSAVE</b>
+            </div>
+          </div>
+          <div id="pkt-get" class="pkt"><span data-layout-allow-overflow>GET user:42</span></div>
+          <div id="pkt-nil" class="pkt job back"><span data-layout-allow-overflow>nil</span></div>
+          <div id="pkt-sel" class="pkt vert"><span data-layout-allow-overflow>SELECT</span></div>
+          <div id="pkt-set" class="pkt"><span data-layout-allow-overflow>SET EX 300</span></div>
+          <div id="pkt-hit" class="pkt go"><span data-layout-allow-overflow>GET hit</span></div>
+          <div id="pkt-save" class="pkt go vert"><span data-layout-allow-overflow>BGSAVE</span></div>
+          <div id="pkt-pub" class="pkt"><span data-layout-allow-overflow>PUBLISH</span></div>
+          <div id="pkt-ear" class="pkt"><span data-layout-allow-overflow>PUBLISH</span></div>
+          <p id="cmd-1" class="cmds">SET user:42 {"id":42} EX 300</p>
+          <p id="cmd-2" class="cmds">CONFIG SET maxmemory-policy noeviction</p>
+          <p id="cmd-3" class="cmds">CONFIG SET maxmemory-policy allkeys-lru</p>
+          <p id="cmd-4" class="cmds">SCAN 0 MATCH user:* COUNT 100</p>
+          <p id="cmd-5" class="cmds">PUBLISH news hi</p>
+          <p class="never">Off this path: A stampede is many misses at once. One caller restocks while the others wait, or the timers differ. Do not let every miss hit the database.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">The app does cache-aside. A plain GET is constant time. One thread runs commands, so a long command makes every other client wait. I/O threads can move socket work off that thread.</p>
+          <p id="line-2" class="hide">A miss returns nil. The app, not Redis, decides to load the database. Redis does not stay in sync with it.</p>
+          <p id="line-3" class="hide">The database is the source of truth. Cache-aside means the app owns the miss, the load, and the later copy. Read-through would hide that inside the cache.</p>
+          <p id="line-4" class="hide">SET with EX stores the copy and a TTL in seconds. On a later write, delete the key. A timer alone can still leave a stale copy until it ends.</p>
+          <p id="line-5" class="hide">A hit skips the database. INFO stats counts keyspace hits and misses. The Celery page is the job queue, not this cache.</p>
+          <p id="line-6" class="hide">No maxmemory is the 64-bit default, so nothing is evicted. The default noeviction then rejects writes that need memory. Prefer allkeys-lru for a cache. TTL-only policies refuse writes when no key has a TTL. LRU and LFU sample keys.</p>
+          <p id="line-7" class="hide">Snapshots to dump.rdb are on by default and can lose minutes. The log stays off until appendonly yes, and its default fsync can drop about one second. Use both for stronger safety. Since 7.0 the log is a base file, increments, and a manifest.</p>
+          <p id="line-8" class="hide">Pub/sub is at-most-once. An offline subscriber misses the message, and there is no ack. Streams keep history, ids, and consumer groups when you need a replay.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.4);
+      tl.fromTo("#hot-get", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 0.4);
+      tl.fromTo("#pkt-get", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 0.4);
+      tl.fromTo("#pkt-get", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 3.5);
+      tl.fromTo("#ap-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.55);
+      tl.fromTo("#ap-get", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.75);
+      tl.fromTo("#app", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.55);
+      tl.fromTo("#rd-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.6);
+      tl.fromTo("#rd-look", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.8);
+      tl.fromTo("#redis", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.6);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 3.65);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 3.9);
+      tl.fromTo("#hot-nil", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 3.9);
+      tl.fromTo("#pkt-nil", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 3.9);
+      tl.fromTo("#pkt-nil", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 7.15);
+      tl.fromTo("#rd-look", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 4.05);
+      tl.fromTo("#rd-nil", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.25);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 7.3);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 7.55);
+      tl.fromTo("#hot-sel", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 7.55);
+      tl.fromTo("#pkt-sel", { y: 0, opacity: 0 }, { y: 8, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 7.55);
+      tl.fromTo("#pkt-sel", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 10.85);
+      tl.fromTo("#db-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 7.7);
+      tl.fromTo("#db-read", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 7.9);
+      tl.fromTo("#db", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 7.7);
+      tl.fromTo("#ap-get", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 7.75);
+      tl.fromTo("#ap-load", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 7.95);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 11.0);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 11.25);
+      tl.fromTo("#pkt-set", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 11.25);
+      tl.fromTo("#pkt-set", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 14.55);
+      tl.fromTo("#rd-nil", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 11.4);
+      tl.fromTo("#rd-ttl", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 11.6);
+      tl.fromTo("#ap-load", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 11.45);
+      tl.fromTo("#ap-set", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 11.65);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 14.7);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 14.95);
+      tl.fromTo("#pkt-hit", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 14.95);
+      tl.fromTo("#pkt-hit", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 18.25);
+      tl.fromTo("#rd-ttl", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 15.1);
+      tl.fromTo("#rd-hit", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 15.3);
+      tl.fromTo("#redis", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 15.1);
+      tl.fromTo("#ap-set", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 15.15);
+      tl.fromTo("#ap-hit", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 15.35);
+      tl.fromTo("#app", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 15.15);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 18.4);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 18.65);
+      tl.fromTo("#rd-hit", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 18.8);
+      tl.fromTo("#rd-full", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 19.0);
+      tl.fromTo("#redis", { borderColor: "#3ee0a2" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 18.8);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 22.85);
+
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 23.1);
+      tl.fromTo("#hot-save", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 23.1);
+      tl.fromTo("#pkt-save", { y: 0, opacity: 0 }, { y: 8, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 23.1);
+      tl.fromTo("#pkt-save", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 26.85);
+      tl.fromTo("#dk-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 23.25);
+      tl.fromTo("#dk-save", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 23.45);
+      tl.fromTo("#disk", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 23.25);
+      tl.fromTo("#rd-full", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 23.3);
+      tl.fromTo("#rd-save", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 23.5);
+      tl.fromTo("#redis", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 23.3);
+      tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 27.0);
+
+      tl.fromTo("#line-8", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 27.25);
+      tl.fromTo("#pkt-pub", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 27.25);
+      tl.fromTo("#pkt-pub", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 27.9);
+      tl.fromTo("#hot-ear", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 28.15);
+      tl.fromTo("#pkt-ear", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 28.15);
+      tl.fromTo("#pkt-ear", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 35.3);
+      tl.fromTo("#su-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 28.3);
+      tl.fromTo("#su-heard", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 28.5);
+      tl.fromTo("#sub", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 28.3);
+      tl.fromTo("#rd-save", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 28.2);
+      tl.fromTo("#rd-pub", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 28.4);
+      tl.fromTo("#ap-hit", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 27.4);
+      tl.fromTo("#ap-pub", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 27.6);
+
+      tl.set({}, {}, 36);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
