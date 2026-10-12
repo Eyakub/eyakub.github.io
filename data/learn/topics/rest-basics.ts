@@ -369,5 +369,12 @@ export const restBasics: Topic = {
     { label: 'RFC 5789: PATCH method', url: 'https://www.rfc-editor.org/rfc/rfc5789' },
     { label: 'MDN: HTTP request methods', url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods' },
     { label: 'FastAPI: handling errors', url: 'https://fastapi.tiangolo.com/tutorial/handling-errors/' }
-  ]
+  ],
+  film: {
+    src: '/learn/rest-basics.mp4',
+    note: {
+      en: '401 means no valid credentials, and the server sends WWW-Authenticate. 403 means the server understood and refuses.',
+      bn: '401 মানে বৈধ পরিচয় নেই, আর সার্ভার WWW-Authenticate পাঠায়। 403 মানে সার্ভার বুঝেছে এবং না করছে।'
+    }
+  }
 }

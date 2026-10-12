@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 22px 36px 18px;
+      }
+      h1 { text-align: center; font-size: 48px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 22px; }
+      .stage { position: relative; width: 1480px; height: 460px; margin: 18px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 460px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 12px 16px; z-index: 1;
+      }
+      .k {
+        font-family: ui-monospace, Menlo, monospace; font-size: 13px;
+        letter-spacing: 0.14em; color: #c5d0e0;
+      }
+      .who { margin-top: 2px; font-size: 22px; font-weight: 700; }
+      .sm { margin-top: 4px; font-size: 16px; color: #c5d0e0; white-space: nowrap; }
+      .row { position: relative; height: 28px; margin-top: 8px; }
+      .row b {
+        position: absolute; left: 0; top: 0; white-space: nowrap;
+        font-size: 18px; font-weight: 700;
+      }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      .warn { color: #f0b429; }
+      #client { left: 24px; top: 150px; width: 250px; height: 156px; }
+      #server { left: 520px; top: 150px; width: 280px; height: 156px; }
+      #store { left: 1060px; top: 150px; width: 280px; height: 156px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt.job { background: #f0b429; box-shadow: 0 0 0 6px rgba(240, 180, 41, 0.22), 0 0 16px rgba(240, 180, 41, 0.85); }
+      .pkt span {
+        position: absolute; left: 50%; top: -26px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 16px; color: #f4f7fb;
+      }
+      #pkt-get { left: 397px; top: 210px; }
+      #pkt-look { left: 930px; top: 210px; }
+      #pkt-row { left: 930px; top: 268px; }
+      #pkt-back { left: 397px; top: 268px; }
+      #pkt-post { left: 397px; top: 210px; }
+      #pkt-loc { left: 397px; top: 268px; }
+      #pkt-put { left: 397px; top: 210px; }
+      #pkt-patch { left: 930px; top: 210px; }
+      #pkt-del { left: 930px; top: 210px; }
+      .never { position: absolute; left: 24px; top: 360px; color: #c5d0e0; font-size: 18px; white-space: nowrap; }
+      .cmds { position: absolute; left: 24px; top: 398px; color: #c5d0e0; font-size: 16px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+      .said { position: relative; height: 100px; margin-top: 10px; }
+      .said p {
+        position: absolute; left: 20px; right: 20px; top: 8px; text-align: center;
+        font-size: 24px; line-height: 1.28;
+      }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="32" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="32" data-track-index="0">
+        <h1>REST basics</h1>
+        <p class="sub">URL, GET, POST, PUT, PATCH, DELETE</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 460">
+            <path class="idle" d="M286 210 H508" />
+            <path class="idle" d="M812 210 H1048" />
+            <path class="idle" d="M1048 268 H812" />
+            <path class="idle" d="M508 268 H286" />
+            <path id="hot-cs" class="hot" pathLength="100" d="M286 210 H508" stroke="#5b8cff" />
+            <path id="hot-ss" class="hot" pathLength="100" d="M812 210 H1048" stroke="#5b8cff" />
+            <path id="hot-ret-sc" class="hot" pathLength="100" d="M1048 268 H812" stroke="#3ee0a2" />
+            <path id="hot-ret-cd" class="hot" pathLength="100" d="M508 268 H286" stroke="#3ee0a2" />
+          </svg>
+          <div id="client" class="card">
+            <div class="k">CLIENT</div>
+            <div class="who">Client</div>
+            <div class="sm">sends the method</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="cl-idle" class="muted">ready</b>
+              <b id="cl-get" class="hotc hide">GET /parcels/42</b>
+              <b id="cl-has" class="ok hide">has 200</b>
+              <b id="cl-post" class="hotc hide">POST body</b>
+              <b id="cl-loc" class="ok hide">has Location</b>
+            </div>
+          </div>
+          <div id="server" class="card">
+            <div class="k">SERVER</div>
+            <div class="who">Server</div>
+            <div class="sm">method + resource</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="sv-idle" class="muted">maps the URL</b>
+              <b id="sv-look" class="hotc hide">looking up</b>
+              <b id="sv-ok" class="ok hide">200 sent</b>
+              <b id="sv-made" class="ok hide">201 + Location</b>
+            </div>
+          </div>
+          <div id="store" class="card">
+            <div class="k">STORE</div>
+            <div class="who">Store</div>
+            <div class="sm">stored state</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="st-idle" class="muted">waiting</b>
+              <b id="st-put" class="warn hide">replaced</b>
+              <b id="st-del" class="ok hide">URI cleared</b>
+            </div>
+          </div>
+          <div id="pkt-get" class="pkt"><span data-layout-allow-overflow>GET /parcels/42</span></div>
+          <div id="pkt-look" class="pkt"><span data-layout-allow-overflow>maps the URL</span></div>
+          <div id="pkt-row" class="pkt go"><span data-layout-allow-overflow>200</span></div>
+          <div id="pkt-back" class="pkt go"><span data-layout-allow-overflow>200</span></div>
+          <div id="pkt-post" class="pkt"><span data-layout-allow-overflow>POST body</span></div>
+          <div id="pkt-loc" class="pkt go"><span data-layout-allow-overflow>201 Location</span></div>
+          <div id="pkt-put" class="pkt job"><span data-layout-allow-overflow>PUT</span></div>
+          <div id="pkt-patch" class="pkt job"><span data-layout-allow-overflow>PATCH</span></div>
+          <div id="pkt-del" class="pkt"><span data-layout-allow-overflow>DELETE</span></div>
+          <p class="never">Off this path: 401 means no credentials and sends WWW-Authenticate. 403 means understood and refused.</p>
+          <p class="cmds">curl -i http://localhost:8000/parcels/42</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">GET /parcels/42 reads one resource. It is safe and idempotent, and it sends no body.</p>
+          <p id="line-2" class="hide">Only the server maps that URL to stored state. The interface is the method plus the resource.</p>
+          <p id="line-3" class="hide">A found representation comes back as 200. A missing resource is 404.</p>
+          <p id="line-4" class="hide">POST lets the server name the new resource. A repeat is not idempotent.</p>
+          <p id="line-5" class="hide">201 means a resource was created. Location names it, and a later GET should see it.</p>
+          <p id="line-6" class="hide">PUT replaces the resource and is idempotent. PATCH applies every change or none.</p>
+          <p id="line-7" class="hide">DELETE removes the URL’s current function. A second call leaves the same state.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.4);
+      tl.fromTo("#hot-cs", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 0.4);
+      tl.fromTo("#pkt-get", { x: 0, opacity: 0 }, { x: 8, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 0.4);
+      tl.fromTo("#pkt-get", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 3.9);
+      tl.fromTo("#cl-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.55);
+      tl.fromTo("#cl-get", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.75);
+      tl.fromTo("#client", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.55);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 4.05);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.3);
+      tl.fromTo("#hot-ss", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 4.3);
+      tl.fromTo("#pkt-look", { x: 0, opacity: 0 }, { x: 8, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 4.3);
+      tl.fromTo("#pkt-look", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 7.8);
+      tl.fromTo("#sv-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 4.45);
+      tl.fromTo("#sv-look", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.65);
+      tl.fromTo("#server", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 4.45);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 7.95);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 8.2);
+      tl.fromTo("#hot-ret-sc", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 8.2);
+      tl.fromTo("#pkt-row", { x: 0, opacity: 0 }, { x: -8, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 8.2);
+      tl.fromTo("#pkt-row", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 8.9);
+      tl.fromTo("#hot-ret-cd", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 9.05);
+      tl.fromTo("#pkt-back", { x: 0, opacity: 0 }, { x: -8, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 9.05);
+      tl.fromTo("#pkt-back", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 11.5);
+      tl.fromTo("#sv-look", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 8.35);
+      tl.fromTo("#sv-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 8.55);
+      tl.fromTo("#server", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 8.4);
+      tl.fromTo("#cl-get", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 9.15);
+      tl.fromTo("#cl-has", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 9.35);
+      tl.fromTo("#store", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25 }, 8.35);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 11.85);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 12.1);
+      tl.fromTo("#pkt-post", { x: 0, opacity: 0 }, { x: 8, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 12.1);
+      tl.fromTo("#pkt-post", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 15.4);
+      tl.fromTo("#cl-has", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 12.25);
+      tl.fromTo("#cl-post", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 12.45);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 15.75);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 16.0);
+      tl.fromTo("#pkt-loc", { x: 0, opacity: 0 }, { x: -8, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 16.0);
+      tl.fromTo("#pkt-loc", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 19.3);
+      tl.fromTo("#sv-ok", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 16.15);
+      tl.fromTo("#sv-made", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 16.35);
+      tl.fromTo("#cl-post", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 16.15);
+      tl.fromTo("#cl-loc", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 16.35);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 19.65);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 19.9);
+      tl.fromTo("#pkt-put", { x: 0, opacity: 0 }, { x: 8, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 19.9);
+      tl.fromTo("#pkt-put", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 20.55);
+      tl.fromTo("#pkt-patch", { x: 0, opacity: 0 }, { x: 8, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 20.75);
+      tl.fromTo("#pkt-patch", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 23.2);
+      tl.fromTo("#st-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 20.05);
+      tl.fromTo("#st-put", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 20.25);
+      tl.fromTo("#store", { borderColor: "#3ee0a2" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 20.1);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 23.55);
+
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 23.8);
+      tl.fromTo("#pkt-del", { x: 0, opacity: 0 }, { x: 8, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 23.8);
+      tl.fromTo("#pkt-del", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 27.2);
+      tl.fromTo("#st-put", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 23.95);
+      tl.fromTo("#st-del", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 24.15);
+      tl.fromTo("#store", { borderColor: "#f0b429" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 24.0);
+
+      tl.set({}, {}, 32);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
