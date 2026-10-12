@@ -1014,5 +1014,12 @@ export const fastapiLifecycle: Topic = {
     { label: 'FastAPI: Concurrency and async / await', url: 'https://fastapi.tiangolo.com/async/' },
     { label: 'FastAPI: Lifespan Events', url: 'https://fastapi.tiangolo.com/advanced/events/' },
     { label: 'Starlette: Middleware', url: 'https://www.starlette.dev/middleware/' }
-  ]
+  ],
+  film: {
+    src: '/learn/fastapi-lifecycle.mp4',
+    note: {
+      en: '422 never enters your function. An unhandled exception becomes 500, and CORSMiddleware adds no headers to it. Lifespan runs once in each worker.',
+      bn: '422 আপনার ফাংশনে ঢোকে না। অহ্যান্ডল্ড exception 500 হয়, আর CORSMiddleware তাতে হেডার জোড়ে না। Lifespan প্রতিটি worker-এ একবার চলে।'
+    }
+  }
 }

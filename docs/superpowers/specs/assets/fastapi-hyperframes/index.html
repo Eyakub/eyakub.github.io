@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 18px 36px 16px;
+      }
+      h1 { text-align: center; font-size: 42px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 20px; }
+      .stage { position: relative; width: 1480px; height: 590px; margin: 12px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 590px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 8px 12px; z-index: 1;
+      }
+      .k {
+        font-family: ui-monospace, Menlo, monospace; font-size: 12px;
+        letter-spacing: 0.12em; color: #c5d0e0;
+      }
+      .who { margin-top: 1px; font-size: 18px; font-weight: 700; line-height: 1.12; }
+      .sm { margin-top: 3px; font-size: 14px; color: #c5d0e0; white-space: nowrap; }
+      .row { position: relative; height: 24px; margin-top: 6px; }
+      .row b {
+        position: absolute; left: 0; top: 0; white-space: nowrap;
+        font-size: 15px; font-weight: 700;
+      }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      .warn { color: #f0b429; }
+      #client { left: 0; top: 64px; width: 160px; height: 120px; }
+      #uvicorn { left: 302px; top: 64px; width: 180px; height: 120px; }
+      #sem { left: 624px; top: 64px; width: 210px; height: 120px; }
+      #mw { left: 976px; top: 64px; width: 170px; height: 120px; }
+      #exm { left: 1290px; top: 64px; width: 190px; height: 120px; }
+      #bg { left: 302px; top: 280px; width: 180px; height: 120px; }
+      #fn { left: 624px; top: 280px; width: 210px; height: 120px; }
+      #deps { left: 976px; top: 280px; width: 170px; height: 120px; }
+      #router { left: 1290px; top: 280px; width: 190px; height: 120px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt.job { background: #f0b429; box-shadow: 0 0 0 6px rgba(240, 180, 41, 0.22), 0 0 16px rgba(240, 180, 41, 0.85); }
+      .pkt span {
+        position: absolute; left: 50%; top: -72px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 15px; color: #f4f7fb;
+      }
+      .pkt.ret span { top: 88px; }
+      .pkt.back span { top: 48px; }
+      .pkt.vert span { left: auto; right: 20px; top: -8px; transform: none; }
+      #pkt-cu { left: 231px; top: 108px; }
+      #pkt-us { left: 553px; top: 108px; }
+      #pkt-sm { left: 905px; top: 108px; }
+      #pkt-me { left: 1218px; top: 108px; }
+      #pkt-er { left: 1385px; top: 232px; }
+      #pkt-rd { left: 1218px; top: 324px; }
+      #pkt-dop { left: 905px; top: 324px; }
+      #pkt-opd { left: 905px; top: 364px; }
+      #pkt-dr { left: 1218px; top: 364px; }
+      #pkt-re { left: 1355px; top: 232px; }
+      #pkt-em { left: 1218px; top: 148px; }
+      #pkt-ms { left: 905px; top: 148px; }
+      #pkt-su { left: 553px; top: 148px; }
+      #pkt-uc { left: 231px; top: 148px; }
+      #pkt-bg { left: 553px; top: 364px; }
+      .never { position: absolute; left: 0; top: 536px; color: #c5d0e0; font-size: 16px; white-space: nowrap; }
+      .cmds { position: absolute; left: 0; color: #c5d0e0; font-size: 15px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+      #cmd-1 { top: 436px; }
+      #cmd-2 { top: 458px; }
+      #cmd-3 { top: 480px; }
+      #cmd-4 { top: 502px; }
+      .said { position: relative; height: 108px; margin-top: 8px; }
+      .said p {
+        position: absolute; left: 8px; right: 8px; top: 4px; text-align: center;
+        font-size: 22px; line-height: 1.25;
+      }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="48" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="48" data-track-index="0">
+        <h1>FastAPI request lifecycle</h1>
+        <p class="sub">Server (Uvicorn) · Request · App (FastAPI) · Route · Checkpoint (middleware) · Database</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 590">
+            <path class="idle" d="M160 108 H302" />
+            <path class="idle" d="M482 108 H624" />
+            <path class="idle" d="M834 108 H976" />
+            <path class="idle" d="M1146 108 H1290" />
+            <path class="idle" d="M1385 184 V280" />
+            <path class="idle" d="M1290 324 H1146" />
+            <path class="idle" d="M976 324 H834" />
+            <path class="idle" d="M834 364 H976" />
+            <path class="idle" d="M1146 364 H1290" />
+            <path class="idle" d="M1355 280 V184" />
+            <path class="idle" d="M1290 148 H1146" />
+            <path class="idle" d="M976 148 H834" />
+            <path class="idle" d="M624 148 H482" />
+            <path class="idle" d="M302 148 H160" />
+            <path class="idle" d="M624 364 H482" />
+            <path id="hot-cu" class="hot" pathLength="100" d="M160 108 H302" stroke="#5b8cff" />
+            <path id="hot-us" class="hot" pathLength="100" d="M482 108 H624" stroke="#5b8cff" />
+            <path id="hot-sm" class="hot" pathLength="100" d="M834 108 H976" stroke="#5b8cff" />
+            <path id="hot-me" class="hot" pathLength="100" d="M1146 108 H1290" stroke="#5b8cff" />
+            <path id="hot-er" class="hot" pathLength="100" d="M1385 184 V280" stroke="#5b8cff" />
+            <path id="hot-rd" class="hot" pathLength="100" d="M1290 324 H1146" stroke="#5b8cff" />
+            <path id="hot-dop" class="hot" pathLength="100" d="M976 324 H834" stroke="#5b8cff" />
+            <path id="hot-opd" class="hot" pathLength="100" d="M834 364 H976" stroke="#3ee0a2" />
+            <path id="hot-dr" class="hot" pathLength="100" d="M1146 364 H1290" stroke="#3ee0a2" />
+            <path id="hot-re" class="hot" pathLength="100" d="M1355 280 V184" stroke="#3ee0a2" />
+            <path id="hot-em" class="hot" pathLength="100" d="M1290 148 H1146" stroke="#3ee0a2" />
+            <path id="hot-ms" class="hot" pathLength="100" d="M976 148 H834" stroke="#3ee0a2" />
+            <path id="hot-su" class="hot" pathLength="100" d="M624 148 H482" stroke="#3ee0a2" />
+            <path id="hot-uc" class="hot" pathLength="100" d="M302 148 H160" stroke="#3ee0a2" />
+            <path id="hot-bg" class="hot" pathLength="100" d="M624 364 H482" stroke="#f0b429" />
+          </svg>
+          <div id="client" class="card">
+            <div class="k">CLIENT</div>
+            <div class="who">Client</div>
+            <div class="sm">sends the request</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="cl-ready" class="muted">ready</b>
+              <b id="cl-get" class="hotc hide">GET /items/42</b>
+              <b id="cl-ok" class="ok hide">has 200</b>
+            </div>
+          </div>
+          <div id="uvicorn" class="card">
+            <div class="k">SERVER</div>
+            <div class="who">Uvicorn</div>
+            <div class="sm">h11 or httptools</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="uv-parse" class="muted">ASGI scope</b>
+              <b id="uv-scope" class="hotc hide">scope sent</b>
+              <b id="uv-body" class="ok hide">body sent</b>
+            </div>
+          </div>
+          <div id="sem" class="card">
+            <div class="k">OUTERMOST</div>
+            <div class="who">ServerError<br>Middleware</div>
+            <div class="sm">unhandled → 500</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="sem-idle" class="muted">always outer</b>
+            </div>
+          </div>
+          <div id="mw" class="card">
+            <div class="k">CHECKPOINT</div>
+            <div class="who">Your middleware</div>
+            <div class="sm">CORSMiddleware</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="mw-idle" class="muted">add_middleware</b>
+              <b id="mw-in" class="hotc hide">runs first</b>
+              <b id="mw-out" class="ok hide">bottom to top</b>
+            </div>
+          </div>
+          <div id="exm" class="card">
+            <div class="k">INNERMOST</div>
+            <div class="who">Exception<br>Middleware</div>
+            <div class="sm">exception_handler</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="ex-idle" class="muted">around router</b>
+              <b id="ex-pass" class="ok hide">passes response</b>
+            </div>
+          </div>
+          <div id="bg" class="card">
+            <div class="k">AFTER</div>
+            <div class="who">Background<br>Tasks</div>
+            <div class="sm">no retries</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="bg-idle" class="muted">after the reply</b>
+              <b id="bg-go" class="warn hide">send_email()</b>
+            </div>
+          </div>
+          <div id="fn" class="card">
+            <div class="k">APP</div>
+            <div class="who">Your function</div>
+            <div class="sm">reads the database</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="fn-idle" class="muted">def or async def</b>
+              <b id="fn-run" class="hotc hide">threadpool</b>
+              <b id="fn-out" class="ok hide">filtered</b>
+            </div>
+          </div>
+          <div id="deps" class="card">
+            <div class="k">DEPENDS</div>
+            <div class="who">Dependencies</div>
+            <div class="sm">get_db yields</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="dp-idle" class="muted">Depends</b>
+              <b id="dp-yield" class="hotc hide">yield setup</b>
+            </div>
+          </div>
+          <div id="router" class="card">
+            <div class="k">ROUTE</div>
+            <div class="who">Router</div>
+            <div class="sm">path and method</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="rt-idle" class="muted">Starlette</b>
+              <b id="rt-id" class="hotc hide">item_id=42</b>
+            </div>
+          </div>
+          <div id="pkt-cu" class="pkt"><span data-layout-allow-overflow>GET /items/42</span></div>
+          <div id="pkt-us" class="pkt"><span data-layout-allow-overflow>scope, receive, send</span></div>
+          <div id="pkt-sm" class="pkt"><span data-layout-allow-overflow>request</span></div>
+          <div id="pkt-me" class="pkt"><span data-layout-allow-overflow>request</span></div>
+          <div id="pkt-er" class="pkt vert"><span data-layout-allow-overflow>request</span></div>
+          <div id="pkt-rd" class="pkt"><span data-layout-allow-overflow>path + body</span></div>
+          <div id="pkt-dop" class="pkt"><span data-layout-allow-overflow>item_id=42</span></div>
+          <div id="pkt-opd" class="pkt go back"><span data-layout-allow-overflow>return value</span></div>
+          <div id="pkt-dr" class="pkt go back"><span data-layout-allow-overflow>response</span></div>
+          <div id="pkt-re" class="pkt go vert"><span data-layout-allow-overflow>response</span></div>
+          <div id="pkt-em" class="pkt go ret"><span data-layout-allow-overflow>response</span></div>
+          <div id="pkt-ms" class="pkt go ret"><span data-layout-allow-overflow>response</span></div>
+          <div id="pkt-su" class="pkt go ret"><span data-layout-allow-overflow>200 OK</span></div>
+          <div id="pkt-uc" class="pkt go ret"><span data-layout-allow-overflow>200 OK</span></div>
+          <div id="pkt-bg" class="pkt job back"><span data-layout-allow-overflow>send_email()</span></div>
+          <p id="cmd-1" class="cmds">uvicorn app.main:app --reload</p>
+          <p id="cmd-2" class="cmds">uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4</p>
+          <p id="cmd-3" class="cmds">fastapi dev app/main.py · FastAPI(lifespan=lifespan)</p>
+          <p id="cmd-4" class="cmds">async def get_db(): yield s · background_tasks.add_task(send_email, to)</p>
+          <p class="never">Off this path: 422 never enters your function. An unhandled exception becomes 500, and CORSMiddleware adds no headers to it. Lifespan runs once in each worker.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">Uvicorn parses the HTTP bytes with h11 or httptools, builds an ASGI scope, and calls await app(scope, receive, send). FastAPI never touches the socket.</p>
+          <p id="line-2" class="hide">FastAPI subclasses Starlette. ServerErrorMiddleware is always the outermost layer, so any unhandled exception becomes a 500.</p>
+          <p id="line-3" class="hide">With add_middleware, the last one added is the outermost and runs first on the way in. The request goes top to bottom, and the response goes bottom to top.</p>
+          <p id="line-4" class="hide">ExceptionMiddleware sits innermost, around the router. It turns HTTPException and your registered handlers into responses.</p>
+          <p id="line-5" class="hide">The Router matches path and method and extracts path params like item_id. A missing path is 404, a wrong method is 405, and mounted sub-apps resolve here.</p>
+          <p id="line-6" class="hide">solve_dependencies runs each Depends, sub-dependencies first and cached per request, and the setup half of yield dependencies. Pydantic validates path, query, and body.</p>
+          <p id="line-7" class="hide">A def handler runs in a threadpool, an AnyIO worker thread. An async def handler runs on the event loop, so a blocking call inside it freezes every request.</p>
+          <p id="line-8" class="hide">response_model filters as the value leaves. Pydantic drops extra fields, then it becomes a JSONResponse. ORM objects need from_attributes=True.</p>
+          <p id="line-9" class="hide">The response flows back through the router and ExceptionMiddleware. That layer steps in only if an exception was raised.</p>
+          <p id="line-10" class="hide">The response passes your middleware from bottom to top, then ServerErrorMiddleware. CORS and GZip add headers or compression on this leg.</p>
+          <p id="line-11" class="hide">Uvicorn sends http.response.start and http.response.body. Status, headers, and body go on the wire. The client is done.</p>
+          <p id="line-12" class="hide">BackgroundTasks run after the response is sent, in the same process, with no retries. If the process dies, the task is lost. Yield dependency teardown also runs after, by default.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.4);
+      tl.fromTo("#hot-cu", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 0.4);
+      tl.fromTo("#pkt-cu", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 0.4);
+      tl.fromTo("#pkt-cu", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 3.95);
+      tl.fromTo("#cl-ready", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.55);
+      tl.fromTo("#cl-get", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.75);
+      tl.fromTo("#client", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.55);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 4.05);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.3);
+      tl.fromTo("#hot-us", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 4.3);
+      tl.fromTo("#pkt-us", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 4.3);
+      tl.fromTo("#pkt-us", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 7.85);
+      tl.fromTo("#uv-parse", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 4.45);
+      tl.fromTo("#uv-scope", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 4.65);
+      tl.fromTo("#uvicorn", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 4.45);
+      tl.fromTo("#sem", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 4.7);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 7.95);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 8.2);
+      tl.fromTo("#hot-sm", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 8.2);
+      tl.fromTo("#pkt-sm", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 8.2);
+      tl.fromTo("#pkt-sm", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 11.75);
+      tl.fromTo("#mw-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 8.35);
+      tl.fromTo("#mw-in", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 8.55);
+      tl.fromTo("#mw", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 8.35);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 11.85);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 12.1);
+      tl.fromTo("#hot-me", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 12.1);
+      tl.fromTo("#pkt-me", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 12.1);
+      tl.fromTo("#pkt-me", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 15.65);
+      tl.fromTo("#exm", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 12.25);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 15.75);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 16.0);
+      tl.fromTo("#hot-er", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 16.0);
+      tl.fromTo("#pkt-er", { y: 0, opacity: 0 }, { y: 8, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 16.0);
+      tl.fromTo("#pkt-er", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 19.55);
+      tl.fromTo("#rt-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 16.15);
+      tl.fromTo("#rt-id", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 16.35);
+      tl.fromTo("#router", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 16.15);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 19.65);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 19.9);
+      tl.fromTo("#hot-rd", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 19.9);
+      tl.fromTo("#pkt-rd", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 19.9);
+      tl.fromTo("#pkt-rd", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 23.45);
+      tl.fromTo("#dp-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 20.05);
+      tl.fromTo("#dp-yield", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 20.25);
+      tl.fromTo("#deps", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 20.05);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 23.55);
+
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 23.8);
+      tl.fromTo("#hot-dop", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 23.8);
+      tl.fromTo("#pkt-dop", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 23.8);
+      tl.fromTo("#pkt-dop", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 27.35);
+      tl.fromTo("#fn-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 23.95);
+      tl.fromTo("#fn-run", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 24.15);
+      tl.fromTo("#fn", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 23.95);
+      tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 27.45);
+
+      tl.fromTo("#line-8", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 27.7);
+      tl.fromTo("#hot-opd", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 27.7);
+      tl.fromTo("#pkt-opd", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 27.7);
+      tl.fromTo("#pkt-opd", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 31.25);
+      tl.fromTo("#fn-run", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 27.85);
+      tl.fromTo("#fn-out", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 28.05);
+      tl.fromTo("#fn", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 27.85);
+      tl.fromTo("#deps", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 28.05);
+      tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 31.35);
+
+      tl.fromTo("#line-9", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 31.6);
+      tl.fromTo("#hot-dr", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 31.6);
+      tl.fromTo("#pkt-dr", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 31.6);
+      tl.fromTo("#pkt-dr", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 32.25);
+      tl.fromTo("#hot-re", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 32.45);
+      tl.fromTo("#pkt-re", { y: 0, opacity: 0 }, { y: -8, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 32.45);
+      tl.fromTo("#pkt-re", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 35.15);
+      tl.fromTo("#router", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 31.75);
+      tl.fromTo("#ex-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 32.6);
+      tl.fromTo("#ex-pass", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 32.8);
+      tl.fromTo("#exm", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 32.6);
+      tl.fromTo("#line-9", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 35.25);
+
+      tl.fromTo("#line-10", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 35.5);
+      tl.fromTo("#hot-em", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 35.5);
+      tl.fromTo("#pkt-em", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 35.5);
+      tl.fromTo("#pkt-em", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 36.15);
+      tl.fromTo("#hot-ms", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 36.35);
+      tl.fromTo("#pkt-ms", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 36.35);
+      tl.fromTo("#pkt-ms", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 39.05);
+      tl.fromTo("#mw-in", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 35.65);
+      tl.fromTo("#mw-out", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 35.85);
+      tl.fromTo("#mw", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 35.65);
+      tl.fromTo("#sem", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 36.5);
+      tl.fromTo("#line-10", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 39.15);
+
+      tl.fromTo("#line-11", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 39.4);
+      tl.fromTo("#hot-su", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 39.4);
+      tl.fromTo("#pkt-su", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 39.4);
+      tl.fromTo("#pkt-su", { opacity: 1 }, { opacity: 0, duration: 0.16, immediateRender: false }, 40.05);
+      tl.fromTo("#hot-uc", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 40.25);
+      tl.fromTo("#pkt-uc", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 40.25);
+      tl.fromTo("#pkt-uc", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 42.95);
+      tl.fromTo("#uv-scope", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 39.55);
+      tl.fromTo("#uv-body", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 39.75);
+      tl.fromTo("#cl-get", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 40.4);
+      tl.fromTo("#cl-ok", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 40.6);
+      tl.fromTo("#uvicorn", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 39.55);
+      tl.fromTo("#client", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 40.4);
+      tl.fromTo("#line-11", { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, 43.05);
+
+      tl.fromTo("#line-12", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 43.3);
+      tl.fromTo("#hot-bg", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.55, ease: "power1.inOut" }, 43.3);
+      tl.fromTo("#pkt-bg", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.55, ease: "power1.inOut" }, 43.3);
+      tl.fromTo("#pkt-bg", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 47.4);
+      tl.fromTo("#bg-idle", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 43.45);
+      tl.fromTo("#bg-go", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 43.65);
+      tl.fromTo("#bg", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 43.45);
+
+      tl.set({}, {}, 48);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
