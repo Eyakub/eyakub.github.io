@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070b14; color: #f4f7fb;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      #root { width: 1920px; height: 1080px; }
+      #board {
+        position: absolute; left: 160px; top: 20px; width: 1600px; height: 1040px;
+        background: #0c1222; border: 1px solid #1c2740; border-radius: 32px;
+        padding: 16px 36px 14px;
+      }
+      h1 { text-align: center; font-size: 40px; font-weight: 700; letter-spacing: -0.04em; }
+      .sub { margin-top: 2px; text-align: center; color: #c5d0e0; font-size: 18px; }
+      .stage { position: relative; width: 1480px; height: 640px; margin: 6px auto 0; }
+      svg.wires { position: absolute; inset: 0; width: 1480px; height: 640px; }
+      .idle { fill: none; stroke: #4d6284; stroke-width: 3; }
+      .hot { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+      .card {
+        position: absolute; border-radius: 16px; background: #10192b;
+        border: 2px solid #243044; padding: 8px 12px; z-index: 1;
+      }
+      .k { font-family: ui-monospace, Menlo, monospace; font-size: 12px; letter-spacing: 0.12em; color: #c5d0e0; }
+      .who { margin-top: 1px; font-size: 18px; font-weight: 700; line-height: 1.12; }
+      .sm { margin-top: 3px; font-size: 14px; color: #c5d0e0; white-space: nowrap; }
+      .row { position: relative; height: 22px; margin-top: 4px; }
+      .row b { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 15px; font-weight: 700; }
+      .muted { color: #c5d0e0; font-weight: 600; }
+      .ok { color: #3ee0a2; }
+      .hotc { color: #9db7ff; }
+      .warn { color: #f0b429; }
+      .bad { color: #ff5b6a; }
+      #t1 { left: 20px; top: 48px; width: 250px; height: 108px; }
+      #lock { left: 615px; top: 48px; width: 250px; height: 108px; }
+      #t2 { left: 1210px; top: 48px; width: 250px; height: 108px; }
+      #ctr { left: 545px; top: 310px; width: 390px; height: 108px; }
+      .pkt {
+        position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+        border-radius: 50%; background: #5b8cff; opacity: 0; z-index: 3;
+        box-shadow: 0 0 0 6px rgba(91, 140, 255, 0.22), 0 0 16px rgba(91, 140, 255, 0.85);
+      }
+      .pkt.go { background: #3ee0a2; box-shadow: 0 0 0 6px rgba(62, 224, 162, 0.2), 0 0 16px rgba(62, 224, 162, 0.8); }
+      .pkt.job { background: #f0b429; box-shadow: 0 0 0 6px rgba(240, 180, 41, 0.22), 0 0 16px rgba(240, 180, 41, 0.85); }
+      .pkt span {
+        position: absolute; left: 50%; top: -40px; transform: translateX(-50%);
+        white-space: nowrap; font-family: ui-monospace, Menlo, monospace;
+        font-size: 15px; color: #f4f7fb;
+      }
+      .pkt.low span { top: -22px; }
+      .pkt.under span { top: 12px; }
+      #pkt-read1 { left: 380px; top: 210px; }
+      #pkt-read2 { left: 1100px; top: 210px; }
+      #pkt-write1 { left: 380px; top: 250px; }
+      #pkt-write2 { left: 1100px; top: 250px; }
+      #pkt-acq1 { left: 440px; top: 90px; }
+      #pkt-acq2 { left: 1040px; top: 90px; }
+      #pkt-fix1 { left: 380px; top: 250px; }
+      #pkt-hand { left: 1040px; top: 130px; }
+      #pkt-fix2 { left: 1100px; top: 250px; }
+      .cmds { position: absolute; color: #c5d0e0; font-size: 13px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+      .c0 { left: 0; }
+      .c1 { left: 760px; }
+      #cmd-1, #cmd-5 { top: 436px; }
+      #cmd-2, #cmd-6 { top: 458px; }
+      #cmd-3, #cmd-7 { top: 480px; }
+      #cmd-4, #cmd-8 { top: 502px; }
+      .never { position: absolute; left: 0; top: 536px; width: 1460px; color: #c5d0e0; font-size: 15px; line-height: 1.35; }
+      .said { position: relative; height: 150px; margin-top: 2px; }
+      .said p { position: absolute; left: 8px; right: 8px; top: 0; text-align: center; font-size: 20px; line-height: 1.28; }
+      .hide { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="42" data-width="1920" data-height="1080">
+      <section id="board" class="clip" data-start="0" data-duration="42" data-track-index="0">
+        <h1>Race conditions and locks</h1>
+        <p class="sub">race condition · shared counter · lock · critical section · acquire · release</p>
+        <div class="stage">
+          <svg class="wires" viewBox="0 0 1480 640">
+            <path class="idle" d="M620 310 V210 H145 V156" />
+            <path class="idle" d="M860 310 V210 H1335 V156" />
+            <path class="idle" d="M180 156 V250 H620 V310" />
+            <path class="idle" d="M1300 156 V250 H860 V310" />
+            <path class="idle" d="M270 90 H615" />
+            <path class="idle" d="M1210 90 H865" />
+            <path class="idle" d="M865 130 H1210" />
+            <path id="hot-read1" class="hot" pathLength="100" d="M620 310 V210 H145 V156" stroke="#3ee0a2" />
+            <path id="hot-read2" class="hot" pathLength="100" d="M860 310 V210 H1335 V156" stroke="#3ee0a2" />
+            <path id="hot-write1" class="hot" pathLength="100" d="M180 156 V250 H620 V310" stroke="#5b8cff" />
+            <path id="hot-write2" class="hot" pathLength="100" d="M1300 156 V250 H860 V310" stroke="#ff5b6a" />
+            <path id="hot-acq1" class="hot" pathLength="100" d="M270 90 H615" stroke="#f0b429" />
+            <path id="hot-acq2" class="hot" pathLength="100" d="M1210 90 H865" stroke="#f0b429" />
+            <path id="hot-hand" class="hot" pathLength="100" d="M865 130 H1210" stroke="#3ee0a2" />
+          </svg>
+          <div id="t1" class="card">
+            <div class="k">THREAD</div>
+            <div class="who">Thread 1</div>
+            <div class="sm">private stack</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="t1-idle" class="muted">idle</b>
+              <b id="t1-has0" class="hotc hide">private 0</b>
+              <b id="t1-has1" class="hotc hide">private 1</b>
+              <b id="t1-wrote" class="hotc hide">stored 1</b>
+              <b id="t1-lock" class="warn hide">holds lock</b>
+              <b id="t1-crit" class="hotc hide">in section</b>
+              <b id="t1-done" class="ok hide">done</b>
+            </div>
+          </div>
+          <div id="lock" class="card">
+            <div class="k">LOCK</div>
+            <div class="who">Lock A</div>
+            <div class="sm">threading.Lock</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="lk-free" class="muted">free</b>
+              <b id="lk-t1" class="warn hide">held by Thread 1</b>
+              <b id="lk-t2" class="hotc hide">held by Thread 2</b>
+              <b id="lk-free2" class="ok hide">free</b>
+            </div>
+          </div>
+          <div id="t2" class="card">
+            <div class="k">THREAD</div>
+            <div class="who">Thread 2</div>
+            <div class="sm">private stack</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="t2-idle" class="muted">idle</b>
+              <b id="t2-has0" class="hotc hide">private 0</b>
+              <b id="t2-wrote" class="bad hide">stored 1</b>
+              <b id="t2-idle2" class="muted hide">idle</b>
+              <b id="t2-wait" class="warn hide">blocked</b>
+              <b id="t2-lock" class="hotc hide">holds lock</b>
+              <b id="t2-done" class="ok hide">done</b>
+            </div>
+          </div>
+          <div id="ctr" class="card">
+            <div class="k">MEMORY</div>
+            <div class="who">Shared counter</div>
+            <div class="sm">one integer, both threads</div>
+            <div class="row" data-layout-allow-overlap>
+              <b id="ctr-0" class="muted">value = 0</b>
+              <b id="ctr-1" class="hotc hide">value = 1</b>
+              <b id="ctr-lost" class="bad hide">value = 1, not 2</b>
+              <b id="ctr-reset" class="muted hide">value = 0</b>
+              <b id="ctr-1b" class="ok hide">value = 1</b>
+              <b id="ctr-2" class="ok hide">value = 2</b>
+            </div>
+          </div>
+          <div id="pkt-read1" class="pkt go low"><span data-layout-allow-overflow>read 0</span></div>
+          <div id="pkt-read2" class="pkt go low"><span data-layout-allow-overflow>read 0</span></div>
+          <div id="pkt-write1" class="pkt under"><span data-layout-allow-overflow>write 1</span></div>
+          <div id="pkt-write2" class="pkt job under"><span data-layout-allow-overflow>write 1</span></div>
+          <div id="pkt-acq1" class="pkt job low"><span data-layout-allow-overflow>acquire</span></div>
+          <div id="pkt-acq2" class="pkt job low"><span data-layout-allow-overflow>acquire</span></div>
+          <div id="pkt-fix1" class="pkt go under"><span data-layout-allow-overflow>0+1, write 1</span></div>
+          <div id="pkt-hand" class="pkt go under"><span data-layout-allow-overflow>your turn</span></div>
+          <div id="pkt-fix2" class="pkt go under"><span data-layout-allow-overflow>1+1, write 2</span></div>
+          <p id="cmd-1" class="cmds c0">lock = threading.Lock(); with lock: counter += 1</p>
+          <p id="cmd-2" class="cmds c0">if lock.acquire(timeout=2): try: ... finally: lock.release()</p>
+          <p id="cmd-3" class="cmds c0">rlock = threading.RLock(); with rlock: with rlock:</p>
+          <p id="cmd-4" class="cmds c0">dis.dis("counter += 1")</p>
+          <p id="cmd-5" class="cmds c1">with ExitStack() as st: for lk in sorted((a, b), key=id): st.enter_context(lk)</p>
+          <p id="cmd-6" class="cmds c1">faulthandler.dump_traceback_later(10)</p>
+          <p id="cmd-7" class="cmds c1">sys.setswitchinterval(1e-6)  # repro only</p>
+          <p id="cmd-8" class="cmds c1">alock = asyncio.Lock(); async with alock: await update()</p>
+          <p class="never" data-layout-allow-overlap>Off this path: Python does not detect a deadlock. A global order, always Lock A then Lock B, removes the circular wait. threading.Lock is not reentrant; a second acquire in the same thread hangs. Use RLock when one thread must take the lock again.</p>
+        </div>
+        <div class="said" data-layout-allow-overlap>
+          <p id="line-1" class="hide">counter += 1 is load, add, store, not one step. Thread 1 loads 0 into its own private stack.</p>
+          <p id="line-2" class="hide">A thread switch between the load and the store is allowed at bytecode boundaries, even with the GIL.</p>
+          <p id="line-3" class="hide">The add happens on Thread 1's private value. The shared counter is untouched.</p>
+          <p id="line-4" class="hide">The store completes. Thread 2 does not know the counter has changed.</p>
+          <p id="line-5" class="hide">Lost update from a non-atomic read-modify-write. On modern CPython it often needs many iterations to show, but it is a real bug.</p>
+          <p id="line-6" class="hide">with lock: calls acquire() and guarantees release() in a finally, even if an exception is raised.</p>
+          <p id="line-7" class="hide">Lock.acquire() blocks until the lock is released. It also accepts timeout= or blocking=False.</p>
+          <p id="line-8" class="hide">This is the critical section. No other thread that needs the same lock can interleave with it.</p>
+          <p id="line-9" class="hide">Leaving the with block releases the lock. Thread 2's blocked acquire() then returns.</p>
+          <p id="line-10" class="hide">Serialised increments give the right result, but waiting costs throughput. Prefer designs that avoid shared state, such as queues.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#board", { y: 16 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+      tl.fromTo("#line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.35);
+      tl.fromTo("#hot-read1", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 0.35);
+      tl.fromTo("#pkt-read1", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0.35);
+      tl.fromTo("#pkt-read1", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 3.9);
+      tl.fromTo("#t1-idle", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 0.5);
+      tl.fromTo("#t1-has0", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 0.7);
+      tl.fromTo("#t1", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 0.5);
+      tl.fromTo("#line-1", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 4.2);
+
+      tl.fromTo("#line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.5);
+      tl.fromTo("#hot-read2", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 4.5);
+      tl.fromTo("#pkt-read2", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 4.5);
+      tl.fromTo("#pkt-read2", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 8.05);
+      tl.fromTo("#t2-idle", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 4.65);
+      tl.fromTo("#t2-has0", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 4.85);
+      tl.fromTo("#t2", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 4.65);
+      tl.fromTo("#line-2", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 8.35);
+
+      tl.fromTo("#line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 8.65);
+      tl.fromTo("#t1-has0", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 8.8);
+      tl.fromTo("#t1-has1", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 9.0);
+      tl.fromTo("#line-3", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 12.5);
+
+      tl.fromTo("#line-4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 12.8);
+      tl.fromTo("#hot-write1", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 12.8);
+      tl.fromTo("#pkt-write1", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 12.8);
+      tl.fromTo("#pkt-write1", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 16.35);
+      tl.fromTo("#t1-has1", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 12.95);
+      tl.fromTo("#t1-wrote", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 13.15);
+      tl.fromTo("#ctr-0", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 12.95);
+      tl.fromTo("#ctr-1", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 13.15);
+      tl.fromTo("#ctr", { borderColor: "#243044" }, { borderColor: "#5b8cff", duration: 0.25 }, 12.95);
+      tl.fromTo("#line-4", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 16.65);
+
+      tl.fromTo("#line-5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 16.95);
+      tl.fromTo("#hot-write2", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 16.95);
+      tl.fromTo("#pkt-write2", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 16.95);
+      tl.fromTo("#pkt-write2", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 20.5);
+      tl.fromTo("#t2-has0", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 17.1);
+      tl.fromTo("#t2-wrote", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 17.3);
+      tl.fromTo("#ctr-1", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 17.1);
+      tl.fromTo("#ctr-lost", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 17.3);
+      tl.fromTo("#ctr", { borderColor: "#5b8cff" }, { borderColor: "#ff5b6a", duration: 0.25, immediateRender: false }, 17.1);
+      tl.fromTo("#t2", { borderColor: "#f0b429" }, { borderColor: "#ff5b6a", duration: 0.25, immediateRender: false }, 17.1);
+      tl.fromTo("#line-5", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 20.8);
+
+      tl.fromTo("#line-6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 21.1);
+      tl.fromTo("#hot-acq1", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 21.1);
+      tl.fromTo("#pkt-acq1", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 21.1);
+      tl.fromTo("#pkt-acq1", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 24.65);
+      tl.fromTo("#ctr-lost", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 21.25);
+      tl.fromTo("#ctr-reset", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 21.45);
+      tl.fromTo("#t1-wrote", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 21.25);
+      tl.fromTo("#t1-lock", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 21.45);
+      tl.fromTo("#t2-wrote", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 21.25);
+      tl.fromTo("#t2-idle2", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 21.45);
+      tl.fromTo("#lk-free", { opacity: 1 }, { opacity: 0, duration: 0.18 }, 21.25);
+      tl.fromTo("#lk-t1", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 21.45);
+      tl.fromTo("#ctr", { borderColor: "#ff5b6a" }, { borderColor: "#243044", duration: 0.25, immediateRender: false }, 21.25);
+      tl.fromTo("#t1", { borderColor: "#5b8cff" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 21.25);
+      tl.fromTo("#t2", { borderColor: "#ff5b6a" }, { borderColor: "#243044", duration: 0.25, immediateRender: false }, 21.25);
+      tl.fromTo("#lock", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25 }, 21.25);
+      tl.fromTo("#line-6", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 24.95);
+
+      tl.fromTo("#line-7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 25.25);
+      tl.fromTo("#hot-acq2", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 25.25);
+      tl.fromTo("#pkt-acq2", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 25.25);
+      tl.fromTo("#pkt-acq2", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 28.8);
+      tl.fromTo("#t2-idle2", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 25.4);
+      tl.fromTo("#t2-wait", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 25.6);
+      tl.fromTo("#t2", { borderColor: "#243044" }, { borderColor: "#f0b429", duration: 0.25, immediateRender: false }, 25.4);
+      tl.fromTo("#line-7", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 29.1);
+
+      tl.fromTo("#line-8", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 29.4);
+      tl.fromTo("#pkt-fix1", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 29.4);
+      tl.fromTo("#pkt-fix1", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 32.95);
+      tl.fromTo("#t1-lock", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 29.55);
+      tl.fromTo("#t1-crit", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 29.75);
+      tl.fromTo("#ctr-reset", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 29.55);
+      tl.fromTo("#ctr-1b", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 29.75);
+      tl.fromTo("#ctr", { borderColor: "#243044" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 29.55);
+      tl.fromTo("#t1", { borderColor: "#f0b429" }, { borderColor: "#5b8cff", duration: 0.25, immediateRender: false }, 29.55);
+      tl.fromTo("#line-8", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 33.25);
+
+      tl.fromTo("#line-9", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 33.55);
+      tl.fromTo("#hot-hand", { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, 33.55);
+      tl.fromTo("#pkt-hand", { x: 0, opacity: 0 }, { x: 6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 33.55);
+      tl.fromTo("#pkt-hand", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 37.1);
+      tl.fromTo("#lk-t1", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 33.7);
+      tl.fromTo("#lk-t2", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 33.9);
+      tl.fromTo("#t1-crit", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 33.7);
+      tl.fromTo("#t1-done", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 33.9);
+      tl.fromTo("#t2-wait", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 33.7);
+      tl.fromTo("#t2-lock", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 33.9);
+      tl.fromTo("#t1", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 33.7);
+      tl.fromTo("#t2", { borderColor: "#f0b429" }, { borderColor: "#5b8cff", duration: 0.25, immediateRender: false }, 33.7);
+      tl.fromTo("#lock", { borderColor: "#f0b429" }, { borderColor: "#5b8cff", duration: 0.25, immediateRender: false }, 33.7);
+      tl.fromTo("#line-9", { opacity: 1 }, { opacity: 0, duration: 0.22, immediateRender: false }, 37.4);
+
+      tl.fromTo("#line-10", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 37.7);
+      tl.fromTo("#pkt-fix2", { x: 0, opacity: 0 }, { x: -6, opacity: 1, duration: 0.5, ease: "power1.inOut" }, 37.7);
+      tl.fromTo("#pkt-fix2", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 41.2);
+      tl.fromTo("#t2-lock", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 37.85);
+      tl.fromTo("#t2-done", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 38.05);
+      tl.fromTo("#ctr-1b", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 37.85);
+      tl.fromTo("#ctr-2", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 38.05);
+      tl.fromTo("#lk-t2", { opacity: 1 }, { opacity: 0, duration: 0.18, immediateRender: false }, 37.85);
+      tl.fromTo("#lk-free2", { opacity: 0 }, { opacity: 1, duration: 0.22 }, 38.05);
+      tl.fromTo("#t2", { borderColor: "#5b8cff" }, { borderColor: "#3ee0a2", duration: 0.25, immediateRender: false }, 37.85);
+      tl.fromTo("#lock", { borderColor: "#5b8cff" }, { borderColor: "#243044", duration: 0.25, immediateRender: false }, 37.85);
+
+      tl.set({}, {}, 42);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

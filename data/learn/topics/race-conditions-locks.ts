@@ -886,5 +886,12 @@ export const raceConditionsLocks: Topic = {
     { label: 'Python docs: asyncio synchronization primitives', url: 'https://docs.python.org/3/library/asyncio-sync.html' },
     { label: 'Python docs: free-threading HOWTO', url: 'https://docs.python.org/3/howto/free-threading-python.html' },
     { label: 'Python docs: sys.setswitchinterval', url: 'https://docs.python.org/3/library/sys.html' }
-  ]
+  ],
+  film: {
+    src: '/learn/race-conditions-locks.mp4',
+    note: {
+      en: 'Python does not detect a deadlock. A global order, always Lock A then Lock B, removes the circular wait. threading.Lock is not reentrant; a second acquire in the same thread hangs. Use RLock when one thread must take the lock again.',
+      bn: 'Python deadlock ধরে না। Global order সবসময় Lock A, তারপর Lock B হলে circular wait থাকে না। threading.Lock reentrant নয়; একই thread-এ দ্বিতীয় acquire আটকে যায়। একই thread আবার lock নিলে RLock ব্যবহার করুন।'
+    }
+  }
 }
