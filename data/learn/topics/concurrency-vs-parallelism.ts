@@ -842,5 +842,12 @@ export const concurrencyVsParallelism: Topic = {
     { label: 'Python docs: glossary (GIL)', url: 'https://docs.python.org/3/glossary.html' },
     { label: 'Python docs: concurrent.futures', url: 'https://docs.python.org/3/library/concurrent.futures.html' },
     { label: 'Python docs: free-threading HOWTO', url: 'https://docs.python.org/3/howto/free-threading-python.html' }
-  ]
+  ],
+  film: {
+    src: '/learn/concurrency-vs-parallelism.mp4',
+    note: {
+      en: 'On a GIL build, CPU-bound threads take turns, so both finish near 2t, not t. Use processes for that work.',
+      bn: 'GIL build-এ CPU-bound thread পালা করে চলে, তাই দুটোই প্রায় 2t-তে শেষ হয়, t-তে নয়। সেই কাজের জন্য process ব্যবহার করুন।'
+    }
+  }
 }
