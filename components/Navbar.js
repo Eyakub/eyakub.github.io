@@ -17,6 +17,14 @@ import {
 import NextLink from 'next/link'
 import styled from '@emotion/styled'
 import { AiOutlineMenu } from 'react-icons/ai'
+import { RESUME_URL } from './SectionHead'
+
+const LINKS = [
+  ['Work', '/#work'],
+  ['How I build', '/#build'],
+  ['Learn', '/learn'],
+  ['Experience', '/#experience'],
+]
 
 export default function Navbar({ enableTransition }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -42,17 +50,13 @@ export default function Navbar({ enableTransition }) {
 
           <DrawerBody>
             <Stack spacing="24px">
-              <Button as={NextLink} href="/" fontSize="16px" variant="ghost">
-                Home
-              </Button>
-              <Button as={NextLink} href="/projects" fontSize="16px" variant="ghost">
-                Projects
-              </Button>
-              <Button as={NextLink} href="/learn" fontSize="16px" variant="ghost">
-                Learn
-              </Button>
-              <Button as={NextLink} href="/blog" fontSize="16px" variant="ghost">
-                Blog
+              {LINKS.map(([label, href]) => (
+                <Button key={href} as={NextLink} href={href} onClick={onClose} fontSize="16px" variant="ghost">
+                  {label}
+                </Button>
+              ))}
+              <Button as="a" href={RESUME_URL} target="_blank" rel="noopener noreferrer" fontSize="16px" variant="outline">
+                Résumé
               </Button>
             </Stack>
           </DrawerBody>
@@ -96,17 +100,24 @@ export default function Navbar({ enableTransition }) {
             </Box>
           </NextLink>
           <Box mr={7} color="displayColor" display={{ base: 'none', md: 'block' }}>
-            <Button as={NextLink} href="/" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
-              Home
-            </Button>
-            <Button as={NextLink} href="/projects" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
-              Projects
-            </Button>
-            <Button as={NextLink} href="/learn" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
-              Learn
-            </Button>
-            <Button as={NextLink} href="/blog" p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
-              Blog
+            {LINKS.map(([label, href]) => (
+              <Button key={href} as={NextLink} href={href} p="4" fontSize="16px" variant="ghost" _hover={{ bg: 'gray.700' }}>
+                {label}
+              </Button>
+            ))}
+            <Button
+              as="a"
+              href={RESUME_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              ml={2}
+              p="4"
+              fontSize="16px"
+              variant="outline"
+              borderColor="#2a2e36"
+              _hover={{ bg: 'gray.700' }}
+            >
+              Résumé
             </Button>
           </Box>
           <Icon
