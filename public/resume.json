@@ -28,10 +28,10 @@
       "position": "Software Engineer",
       "startDate": "July 2025",
       "endDate": "Present",
-      "summary": "ExactSDS: AI features behind FastAPI for chemical-safety compliance. Hub One: Stride, where AI agents take quick, well-scoped tasks and the team builds the complex features.",
+      "summary": "ExactSDS: AI features behind FastAPI for chemical-safety compliance. Hub One: Stride, an agent-assisted task board in development.",
       "highlights": [
         "Developed and maintained FastAPI backend services powering AI features that combine several models for SDS-focused responses.",
-        "Building Stride, the task module of Hub One (SDS Manager's internal platform). AI agents take quick, well-scoped tasks from the board, fix, test and deploy them; the team builds the complex features and fixes.",
+        "Building Stride, an agent-assisted task board in Hub One (SDS Manager's internal platform), with Django and React.",
         "Engineered the SDS Authoring platform to automate Safety Data Sheet creation from user-provided data.",
         "Applied hazard classification using historical data and international standards for compliance.",
         "Optimized data ingestion pipelines to enhance model performance and response reliability.",
@@ -111,13 +111,12 @@
     },
     {
       "name": "Hub One · Stride",
-      "description": "Stride is the task module of Hub One, SDS Manager's internal platform for sales, marketing, communication and support. AI agents take the quick, well-scoped tasks from the board: fix, test, deploy. The team builds the complex features and fixes.",
+      "description": "An agent-assisted task board inside Hub One, SDS Manager's internal platform. In development for internal use, launching soon.",
       "url": "https://eyakub.github.io/projects",
       "keywords": [
-        "AI agents",
-        "Agentic engineering",
-        "Automated testing",
-        "CI/CD"
+        "Django",
+        "React",
+        "AI agents"
       ]
     },
     {

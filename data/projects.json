@@ -51,40 +51,24 @@
             "slug": "hub_one_stride",
             "title": "Hub One · Stride",
             "description": [
-                "Stride is the task module of Hub One, SDS Manager's internal platform for sales, marketing, communication and support. AI agents take the quick, well-scoped tasks from the board: fix, test, deploy. The team builds the complex features and fixes."
+                "An agent-assisted task board inside Hub One, SDS Manager's internal platform. In development for internal use, launching soon."
             ],
             "imageUrl": "/stride-cover.jpg",
             "liveUrl": "",
             "tags": [
-                "AI agents",
-                "Agentic engineering",
-                "Automated testing",
-                "CI/CD"
+                "Django",
+                "React",
+                "AI agents"
             ],
             "featured": true,
-            "meta": "Hub One · SDS Manager · internal platform",
-            "headline": "Stride: a task board where AI agents take the quick fixes",
-            "columns": [
-                [
-                    "What it is",
-                    "Hub One is SDS Manager's internal platform for sales, marketing, communication and support. Stride is its task module, in the spirit of ClickUp and Slack."
-                ],
-                [
-                    "What I build",
-                    "Most of my time goes into Stride. Agents pick up quick, well-scoped tasks from the board, write the fix, test it and deploy it."
-                ],
-                [
-                    "Who does what",
-                    "We build the complex features and hard fixes ourselves. Agents only take tasks that already have clear context, so people stay on the work that needs judgment."
-                ]
-            ],
+            "meta": "Hub One · SDS Manager · in development",
+            "headline": "Stride",
             "chips": [
-                "AI agents",
-                "Human-led",
-                "Agentic engineering",
-                "Automated testing",
-                "Continuous deployment"
-            ]
+                "Django",
+                "React",
+                "AI agents"
+            ],
+            "summary": "An agent-assisted task board inside Hub One, SDS Manager's internal platform. In development for internal use, launching soon."
         }
     },
     {
@@ -146,6 +130,20 @@
                 "DRF",
                 "Kubernetes",
                 "AWS"
+            ],
+            "columns": [
+                [
+                    "What it is",
+                    "Tournaments and mini-games that companies plug into their apps to keep users engaged."
+                ],
+                [
+                    "What I built",
+                    "Django/DRF backends for high-traffic apps, payment gateway integrations, and CI/CD to Kubernetes."
+                ],
+                [
+                    "What changed",
+                    "Payments expanded reach in Latin America by 20%. Unit testing cut bugs by 30%."
+                ]
             ]
         }
     },

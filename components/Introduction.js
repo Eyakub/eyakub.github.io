@@ -36,7 +36,7 @@ export default function Introduction() {
           <Link href="https://sdsmanager.com/" isExternal color="button1" fontWeight="600">
             SDS Manager
           </Link>
-          , building ExactSDS for chemical-safety compliance and Stride, an internal task board where AI agents handle the quick fixes.
+          , building ExactSDS for chemical-safety compliance and Stride, an agent-assisted task board that&apos;s still in development.
         </Text>
       </Stack>
 

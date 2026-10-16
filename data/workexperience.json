@@ -8,7 +8,7 @@
         "description": "",
         "responsibilities": [
             "Developed and maintained FastAPI backend services powering AI features that combine several models for SDS-focused responses.",
-            "Building Stride, the task module of Hub One (SDS Manager's internal platform). AI agents take quick, well-scoped tasks from the board, fix, test and deploy them; the team builds the complex features and fixes.",
+            "Building Stride, an agent-assisted task board in Hub One (SDS Manager's internal platform), with Django and React.",
             "Engineered the SDS Authoring platform to automate Safety Data Sheet creation from user-provided data.",
             "Applied hazard classification using historical data and international standards for compliance.",
             "Optimized data ingestion pipelines to enhance model performance and response reliability.",
@@ -18,16 +18,18 @@
         "technologies": [
             "FastAPI",
             "PostgreSQL",
+            "Django",
             "Python",
             "LLMs",
             "RAG",
             "AI agents",
             "Agentic engineering",
+            "React",
             "Tailwind CSS",
             "Docker"
         ],
         "logoUrl": "/sds_logo.webp",
-        "summary": "ExactSDS: AI features behind FastAPI for chemical-safety compliance. Hub One: Stride, where AI agents take quick, well-scoped tasks and the team builds the complex features."
+        "summary": "ExactSDS: AI features behind FastAPI for chemical-safety compliance. Hub One: Stride, an agent-assisted task board in development."
     },
     {
         "company": "Goama",
