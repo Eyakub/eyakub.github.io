@@ -3,7 +3,7 @@ import NextLink from 'next/link'
 import projectsData from '../data/projects.json'
 import SectionHead, { MONO } from './SectionHead'
 
-const Chips = ({ items }) => (
+export const Chips = ({ items }) => (
   <Wrap spacing="6px">
     {items.map((c) => (
       <WrapItem key={c}>
