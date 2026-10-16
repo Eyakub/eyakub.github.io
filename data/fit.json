@@ -1,0 +1,133 @@
+{
+  "EV": {
+    "python": {
+      "req": "Python",
+      "level": "strong",
+      "evidence": "6+ years; FastAPI at SDS Manager, Django and DRF at Goama and Aadi BD"
+    },
+    "fastapi": {
+      "req": "FastAPI",
+      "level": "strong",
+      "evidence": "Services behind ExactSDS; the Razlio AI and Razlio Commerce backends"
+    },
+    "django": {
+      "req": "Django / DRF",
+      "level": "strong",
+      "evidence": "High-traffic DRF at Goama, the Aadi BD marketplace, Stride at SDS Manager"
+    },
+    "postgres": {
+      "req": "PostgreSQL",
+      "level": "strong",
+      "evidence": "In every role since 2019"
+    },
+    "react": {
+      "req": "React / Next.js",
+      "level": "strong",
+      "evidence": "Next.js for Razlio AI, Razlio Commerce and this site; React in Stride and at Aadi BD"
+    },
+    "ts": {
+      "req": "TypeScript",
+      "level": "partial",
+      "evidence": "At Goama and on this site"
+    },
+    "docker": {
+      "req": "Docker",
+      "level": "strong",
+      "evidence": "At SDS Manager, Goama and Aadi BD"
+    },
+    "k8s": {
+      "req": "Kubernetes",
+      "level": "strong",
+      "evidence": "CI/CD to Kubernetes at Goama"
+    },
+    "tests": {
+      "req": "Testing, CI/CD",
+      "level": "strong",
+      "evidence": "Unit tests cut bugs 30% at Goama"
+    },
+    "go": {
+      "req": "Go",
+      "level": "gap",
+      "evidence": "No production Go"
+    },
+    "pay": {
+      "req": "Payment gateways",
+      "level": "strong",
+      "evidence": "Gateways at Goama (+20% Latin America reach) and Venture Solutions; COD, bKash and Nagad in Razlio Commerce"
+    },
+    "logistics": {
+      "req": "Couriers and logistics",
+      "level": "strong",
+      "evidence": "Aadi BD delivery system (+40% logistics efficiency) with Redx, Pathao, DHL and UPS; five couriers in Razlio Commerce"
+    },
+    "traffic": {
+      "req": "High traffic",
+      "level": "strong",
+      "evidence": "Django and DRF apps for high-traffic markets at Goama"
+    },
+    "pnl": {
+      "req": "Order and P&L reporting",
+      "level": "strong",
+      "evidence": "A P&L that counts costs in Razlio Commerce"
+    },
+    "kafka": {
+      "req": "Kafka",
+      "level": "gap",
+      "evidence": "No production Kafka"
+    },
+    "llm": {
+      "req": "LLM features",
+      "level": "strong",
+      "evidence": "Several models and retrieval over safety data at SDS Manager; the Razlio AI sales agent"
+    },
+    "evals": {
+      "req": "LLM evals",
+      "level": "gap",
+      "evidence": "No public eval write-up yet"
+    },
+    "agents": {
+      "req": "AI coding tools",
+      "level": "strong",
+      "evidence": "Agents take scoped tasks in Stride; built Rallo (★21) for agent workflows"
+    }
+  },
+  "PRESETS": [
+    {
+      "name": "Full-stack product",
+      "keys": [
+        "python",
+        "django",
+        "postgres",
+        "react",
+        "ts",
+        "docker",
+        "tests",
+        "go"
+      ]
+    },
+    {
+      "name": "Payments & commerce",
+      "keys": [
+        "pay",
+        "logistics",
+        "postgres",
+        "django",
+        "traffic",
+        "pnl",
+        "kafka"
+      ]
+    },
+    {
+      "name": "AI features",
+      "keys": [
+        "llm",
+        "fastapi",
+        "agents",
+        "python",
+        "postgres",
+        "docker",
+        "evals"
+      ]
+    }
+  ]
+}
