@@ -10,6 +10,7 @@
             "tags": [
                 "Python",
                 "FastAPI",
+                "PostgreSQL",
                 "Docker",
                 "LLMs",
                 "RAG",
@@ -26,6 +27,7 @@
             "chips": [
                 "Python",
                 "FastAPI",
+                "PostgreSQL",
                 "LLMs",
                 "RAG",
                 "Docker"
@@ -36,11 +38,12 @@
         "fields": {
             "slug": "rallo",
             "description": [
-                "A macOS desktop pet that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you."
+                "A macOS desktop pet built in Rust and Swift. It keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you."
             ],
             "imageUrl": "/rallo.png",
             "liveUrl": "https://github.com/Eyakub/Rallo",
             "tags": [
+                "Rust",
                 "Swift",
                 "SQLite",
                 "CLI",
@@ -52,6 +55,7 @@
             "headline": "Rallo",
             "summary": "A red panda on your Mac desktop that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you.",
             "chips": [
+                "Rust",
                 "Swift",
                 "SQLite",
                 "CLI-first",

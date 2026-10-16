@@ -16,6 +16,7 @@
         ],
         "technologies": [
             "FastAPI",
+            "PostgreSQL",
             "Python",
             "LLMs",
             "Tailwind CSS",
@@ -42,6 +43,7 @@
         "technologies": [
             "Python",
             "Django",
+            "PostgreSQL",
             "DRF",
             "Kubernetes",
             "AWS",
@@ -68,6 +70,7 @@
         "technologies": [
             "Python",
             "Django",
+            "PostgreSQL",
             "DRF",
             "AWS",
             "Docker",
@@ -92,6 +95,7 @@
         "technologies": [
             "Python",
             "Django",
+            "PostgreSQL",
             "DRF",
             "AWS",
             "Vue.js"
