@@ -5,7 +5,6 @@ import Introduction from '../components/Introduction'
 import ProofStrip from '../components/ProofStrip'
 import HowIBuild from '../components/HowIBuild'
 import FeaturedProjects from '../components/FeaturedProjects'
-import LearnBand from '../components/LearnBand'
 import WorkExperience from '../components/WorkExperience'
 import ContactMe from '../components/ContactMe'
 import HomeFooter from '../components/HomeFooter'
@@ -56,7 +55,6 @@ export default function Index() {
         <ProofStrip />
         <HowIBuild />
         <FeaturedProjects />
-        <LearnBand />
         <WorkExperience />
         <ContactMe />
         <HomeFooter />
