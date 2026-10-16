@@ -3,6 +3,7 @@ import { Stack } from '@chakra-ui/react'
 import Container from '../components/Container'
 import Introduction from '../components/Introduction'
 import ProofStrip from '../components/ProofStrip'
+import HowIBuild from '../components/HowIBuild'
 import FeaturedProjects from '../components/FeaturedProjects'
 import WorkExperience from '../components/WorkExperience'
 import ContactMe from '../components/ContactMe'
@@ -38,6 +39,7 @@ export default function Index() {
       <Stack as="main" alignItems="flex-start" mt={{ base: 4, md: 8 }} spacing={0} w="full">
         <Introduction />
         <ProofStrip />
+        <HowIBuild />
         <FeaturedProjects />
         <WorkExperience />
         <ContactMe />
