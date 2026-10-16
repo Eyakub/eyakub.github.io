@@ -36,7 +36,7 @@ export default function Introduction() {
           <Link href="https://sdsmanager.com/" isExternal color="button1" fontWeight="600">
             SDS Manager
           </Link>
-          , building AI-driven tooling for chemical-safety compliance.
+          , building AI compliance tooling in ExactSDS and the AI agents behind Hub One&apos;s Stride.
         </Text>
       </Stack>
 

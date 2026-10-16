@@ -12,7 +12,7 @@ Full-stack engineer in Dhaka shipping AI features. Python, FastAPI, Django, Post
 
 ## Experience
 
-- SDS Manager, Software Engineer (July 2025 – Present): FastAPI services for AI features, compliance tooling, hazard classification from historical data.
+- SDS Manager, Software Engineer (July 2025 – Present): ExactSDS: AI features behind FastAPI for chemical-safety compliance. Hub One: Stride, where AI agents pick up tasks, fix, test and deploy them.
 - Goama, Full-stack Developer (May 2022 – August 2025): Django/DRF for high-traffic apps, payments in Latin America (+20% reach), unit tests (−30% bugs), CI/CD to Kubernetes.
 - Aadi BD Ltd., Software Engineer (June 2020 – April 2022): Cross-border e-commerce, a local delivery system (+40% logistics efficiency), Redx, Pathao, DHL and UPS integrations.
 - Venture Solutions Ltd., Jr. Software Engineer (May 2019 – March 2020): Booking app for convention halls, internal CRM, payment gateway integration.
