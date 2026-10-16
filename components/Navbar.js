@@ -23,6 +23,7 @@ const LINKS = [
   ['Work', '/#work'],
   ['How I build', '/#build'],
   ['Learn', '/learn'],
+  ['Terminal', '/terminal'],
   ['Experience', '/#experience'],
 ]
 
