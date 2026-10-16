@@ -5,7 +5,7 @@
             "description": [
                 "AI-powered safety data sheet creation at SDS Manager: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, CLP, REACH and OSHA."
             ],
-            "imageUrl": "/sds_manager.png",
+            "imageUrl": "/exactsds-cover.jpg",
             "liveUrl": "https://exactsds.sdsmanager.com/",
             "tags": [
                 "Python",
