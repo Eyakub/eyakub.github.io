@@ -40,7 +40,7 @@
             "description": [
                 "A macOS desktop pet built in Rust and Swift. It keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you."
             ],
-            "imageUrl": "/rallo.png",
+            "imageUrl": "/rallo-cover.jpg",
             "liveUrl": "https://github.com/Eyakub/Rallo",
             "tags": [
                 "Rust",
@@ -61,7 +61,8 @@
                 "CLI-first",
                 "MIT"
             ],
-            "cta": "github.com/Eyakub/Rallo"
+            "cta": "github.com/Eyakub/Rallo",
+            "iconUrl": "/rallo.png"
         }
     },
     {

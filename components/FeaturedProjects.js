@@ -69,12 +69,11 @@ function Sds({ f }) {
 }
 
 function Plain({ f }) {
-  const rallo = f.slug === 'rallo'
   return (
     <Card>
       <Meta>{f.meta}</Meta>
       <Box display="flex" alignItems="center" gap="12px">
-        {rallo && <Image src={f.imageUrl} alt="" boxSize="48px" borderRadius="12px" />}
+        {f.iconUrl && <Image src={f.iconUrl} alt="" boxSize="48px" borderRadius="12px" />}
         <Title>{f.headline}</Title>
       </Box>
       <Text fontSize="15px" color="textSecondary">
