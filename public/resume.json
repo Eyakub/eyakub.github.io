@@ -1,0 +1,163 @@
+{
+  "basics": {
+    "name": "Eyakub Sorkar",
+    "label": "Backend + AI engineer",
+    "email": "eyakubsorkar@gmail.com",
+    "url": "https://eyakub.github.io/",
+    "summary": "Backend engineer in Dhaka shipping AI features in Python. FastAPI, Django, Next.js, and a team of coding agents.",
+    "location": {
+      "city": "Dhaka",
+      "countryCode": "BD"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "Eyakub",
+        "url": "https://github.com/Eyakub"
+      },
+      {
+        "network": "LinkedIn",
+        "username": "eyakub-sorkar",
+        "url": "https://linkedin.com/in/eyakub-sorkar"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "SDS Manager",
+      "position": "Software Engineer",
+      "startDate": "July 2025",
+      "endDate": "Present",
+      "summary": "FastAPI services for AI features, compliance tooling, hazard classification from historical data.",
+      "highlights": [
+        "Developed and maintained FastAPI backend services powering AI features that combine several models for SDS-focused responses.",
+        "Engineered the SDS Authoring platform to automate Safety Data Sheet creation from user-provided data.",
+        "Applied hazard classification using historical data and international standards for compliance.",
+        "Optimized data ingestion pipelines to enhance model performance and response reliability.",
+        "Built responsive frontend components with Tailwind CSS to improve usability.",
+        "Improved system scalability and maintainability through clean API design and testing practices."
+      ]
+    },
+    {
+      "name": "Goama",
+      "position": "Full-stack Developer",
+      "startDate": "May 2022",
+      "endDate": "August 2025",
+      "summary": "Django/DRF for high-traffic apps, payments in Latin America (+20% reach), unit tests (−30% bugs), CI/CD to Kubernetes.",
+      "highlights": [
+        "Led backend development with Python/Django/DRF, boosting API performance for high-traffic apps.",
+        "Implemented unit testing, resulting in a 30% reduction in bugs and improved code reliability.",
+        "Integrated third-party APIs and payment gateways, expanding market by 20% in Latin America.",
+        "Conducted code reviews, ensuring high-quality, maintainable, and performant code with constructive feedback",
+        "Managed CI/CD with Bitbucket and Kubernetes, automating deployment for improved reliability."
+      ]
+    },
+    {
+      "name": "Aadi BD Ltd.",
+      "position": "Software Engineer",
+      "startDate": "June 2020",
+      "endDate": "April 2022",
+      "summary": "Cross-border e-commerce, a local delivery system (+40% logistics efficiency), Redx, Pathao, DHL and UPS integrations.",
+      "highlights": [
+        "Developed and maintained an e-commerce platform serving millions of users worldwide.",
+        "Led local delivery system implementation, boosting logistics efficiency by 40%.",
+        "Conducted code reviews, ensuring high standards of quality, maintainability, and performance.",
+        "Built internal CRM and CMS, collaborating closely with a small, focused team.",
+        "Implemented API services and managed AWS EC2 instances and S3 for optimized performance.",
+        "Integrated logistics partners (Redx, Pathao, DHL, UPS), enhancing delivery processes and service reach."
+      ]
+    },
+    {
+      "name": "Venture Solutions Ltd.",
+      "position": "Jr. Software Engineer",
+      "startDate": "May 2019",
+      "endDate": "March 2020",
+      "summary": "Booking app for convention halls, internal CRM, payment gateway integration.",
+      "highlights": [
+        "Built booking app for convention hall/catering, increasing client satisfaction by 25%.",
+        "Developed an internal CRM and CMS to streamline project management processes.",
+        "Integrated payment gateway APIs and managed IFIC bank server application deployment."
+      ]
+    },
+    {
+      "name": "Tryonyx (now The Prestige Global)",
+      "position": "Internship",
+      "startDate": "Feb 2019",
+      "endDate": "May 2019",
+      "summary": "Python, Django and Flutter foundations.",
+      "highlights": [
+        "Gained foundational skills in Python/Django for web dev and Flutter for mobile app dev.",
+        "Teamwork & Management",
+        "Contributed to team projects, improving collaboration and understanding of software development lifecycle."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "SDS Manager",
+      "description": "AI-driven tooling for chemical-safety compliance: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, REACH and CLP.",
+      "url": "https://exactsds.sdsmanager.com/",
+      "keywords": [
+        "Python",
+        "FastAPI",
+        "Docker",
+        "LLMs",
+        "RAG",
+        "Tailwind CSS",
+        "Git"
+      ]
+    },
+    {
+      "name": "Rallo",
+      "description": "A red panda on your Mac desktop that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you.",
+      "url": "https://github.com/Eyakub/Rallo",
+      "keywords": [
+        "Swift",
+        "SQLite",
+        "CLI",
+        "macOS"
+      ]
+    },
+    {
+      "name": "Go Games",
+      "description": "Payment gateway integrations expanded reach in Latin America by 20%. Unit testing cut bugs by 30%. CI/CD to Kubernetes.",
+      "url": "https://go-games.gg/tournament?app=goama&country=SG",
+      "keywords": [
+        "Python",
+        "Django",
+        "DRF",
+        "Docker",
+        "AWS",
+        "Kubernetes",
+        "React",
+        "Node.js"
+      ]
+    },
+    {
+      "name": "Aadi BD",
+      "description": "Bangladesh’s first‑ever cross‑border marketplace. Aadi focuses on promoting Bangladesh and its strength in various industries at a global level ‑ Implemented as a part of my role at Aadi BD Ltd.",
+      "url": "https://eyakub.github.io/projects",
+      "keywords": [
+        "Python",
+        "Django",
+        "DRF",
+        "AWS",
+        "Docker",
+        "React"
+      ]
+    },
+    {
+      "name": "Moiur",
+      "description": "Moiur is a modern and appropriate solution for book community convention centers, and party centers - Implemented as a part of my role at Venture Solution Ltd.",
+      "url": "https://eyakub.github.io/projects",
+      "keywords": [
+        "Python",
+        "Django",
+        "DRF",
+        "AWS",
+        "Docker",
+        "VueJS"
+      ]
+    }
+  ]
+}

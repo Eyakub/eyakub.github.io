@@ -16,6 +16,18 @@ const DESCRIPTION =
 const URL = 'https://eyakub.github.io/'
 const OG_IMAGE = 'https://eyakub.github.io/og.png'
 
+const PERSON = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Eyakub Sorkar',
+  jobTitle: 'Software Engineer',
+  worksFor: { '@type': 'Organization', name: 'SDS Manager', url: 'https://sdsmanager.com/' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Dhaka', addressCountry: 'BD' },
+  url: URL,
+  sameAs: ['https://github.com/Eyakub', 'https://linkedin.com/in/eyakub-sorkar'],
+  knowsAbout: ['Python', 'FastAPI', 'Django', 'LLMs', 'RAG', 'Docker', 'Kubernetes'],
+}
+
 export default function Index() {
   return (
     <Container enableTransition={true}>
@@ -36,6 +48,7 @@ export default function Index() {
         <meta content={TITLE} property="twitter:title" />
         <meta content={DESCRIPTION} property="twitter:description" />
         <meta content={OG_IMAGE} property="twitter:image" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PERSON) }} />
       </Head>
 
       <Stack as="main" alignItems="flex-start" mt={{ base: 4, md: 8 }} spacing={0} w="full">

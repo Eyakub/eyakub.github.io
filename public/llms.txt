@@ -1,0 +1,29 @@
+# Eyakub Sorkar
+
+Backend engineer in Dhaka shipping AI features in Python. FastAPI, Django, Next.js, and a team of coding agents.
+
+## Links
+
+- Site: https://eyakub.github.io/
+- Learn: https://eyakub.github.io/learn
+- GitHub: https://github.com/Eyakub
+- LinkedIn: https://linkedin.com/in/eyakub-sorkar
+- Résumé: https://drive.google.com/file/d/1KPUkyNtMhGjGncjVA_U99YA6QZMr7WlN/view?usp=sharing
+
+## Experience
+
+- SDS Manager, Software Engineer (July 2025 – Present): FastAPI services for AI features, compliance tooling, hazard classification from historical data.
+- Goama, Full-stack Developer (May 2022 – August 2025): Django/DRF for high-traffic apps, payments in Latin America (+20% reach), unit tests (−30% bugs), CI/CD to Kubernetes.
+- Aadi BD Ltd., Software Engineer (June 2020 – April 2022): Cross-border e-commerce, a local delivery system (+40% logistics efficiency), Redx, Pathao, DHL and UPS integrations.
+- Venture Solutions Ltd., Jr. Software Engineer (May 2019 – March 2020): Booking app for convention halls, internal CRM, payment gateway integration.
+- Tryonyx (now The Prestige Global), Internship (Feb 2019 – May 2019): Python, Django and Flutter foundations.
+
+## Projects
+
+- [SDS Manager](https://exactsds.sdsmanager.com/): AI-driven tooling for chemical-safety compliance: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, REACH and CLP.
+- [Rallo](https://github.com/Eyakub/Rallo): A red panda on your Mac desktop that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you.
+- [Go Games](https://go-games.gg/tournament?app=goama&country=SG): Payment gateway integrations expanded reach in Latin America by 20%. Unit testing cut bugs by 30%. CI/CD to Kubernetes.
+- [Aadi BD](https://eyakub.github.io/projects): Bangladesh’s first‑ever cross‑border marketplace. Aadi focuses on promoting Bangladesh and its strength in various industries at a global level ‑ Implemented as a part of my role at Aadi BD Ltd.
+- [Moiur](https://eyakub.github.io/projects): Moiur is a modern and appropriate solution for book community convention centers, and party centers - Implemented as a part of my role at Venture Solution Ltd.
+
+Updated 2026-10-16.
