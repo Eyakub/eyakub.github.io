@@ -20,7 +20,7 @@ Full-stack engineer in Dhaka shipping AI features. Python, FastAPI, Django, Post
 
 ## Projects
 
-- [SDS Manager](https://exactsds.sdsmanager.com/): AI-driven tooling for chemical-safety compliance: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, REACH and CLP.
+- [ExactSDS](https://exactsds.sdsmanager.com/): AI-powered safety data sheet creation at SDS Manager: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, CLP, REACH and OSHA.
 - [Rallo](https://github.com/Eyakub/Rallo): A red panda on your Mac desktop that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you.
 - [Go Games](https://go-games.gg/tournament?app=goama&country=SG): Payment gateway integrations expanded reach in Latin America by 20%. Unit testing cut bugs by 30%. CI/CD to Kubernetes.
 - [Aadi BD](https://eyakub.github.io/projects): Bangladesh’s first‑ever cross‑border marketplace. Aadi focuses on promoting Bangladesh and its strength in various industries at a global level ‑ Implemented as a part of my role at Aadi BD Ltd.

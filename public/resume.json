@@ -94,8 +94,8 @@
   ],
   "projects": [
     {
-      "name": "SDS Manager",
-      "description": "AI-driven tooling for chemical-safety compliance: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, REACH and CLP.",
+      "name": "ExactSDS",
+      "description": "AI-powered safety data sheet creation at SDS Manager: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, CLP, REACH and OSHA.",
       "url": "https://exactsds.sdsmanager.com/",
       "keywords": [
         "Python",
