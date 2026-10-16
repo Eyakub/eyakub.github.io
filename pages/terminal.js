@@ -10,6 +10,7 @@ export default function TerminalPage() {
     <>
       <Head>
         <title>{TITLE}</title>
+        <meta name="robots" content="noindex" />
         <meta name="title" content={TITLE} />
         <meta name="description" content={DESCRIPTION} />
         <meta property="og:type" content="website" />
