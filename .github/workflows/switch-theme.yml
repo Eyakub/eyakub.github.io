@@ -9,7 +9,7 @@ on:
         description: Homepage theme
         type: choice
         # keep in sync with the ids in components/themes.js
-        options: [classic, terminal]
+        options: [classic, terminal, bento]
         required: true
 
 permissions:

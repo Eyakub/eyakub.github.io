@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import Head from 'next/head'
 import Container from '../components/Container'
 import { themeById } from '../components/themes'
@@ -23,11 +24,12 @@ const PERSON = {
 
 const theme = themeById(site.home)
 if (!theme) throw new Error(`data/site.json "home" is "${site.home}"; use one of the ids in components/themes.js`)
-const { Home } = theme
+const { Home, bare } = theme
+const Shell = bare ? Fragment : Container
 
 export default function Index() {
   return (
-    <Container enableTransition={true}>
+    <Shell {...(bare ? {} : { enableTransition: true })}>
       <Head>
         <title>{TITLE}</title>
         <meta content={TITLE} name="title" />
@@ -49,6 +51,6 @@ export default function Index() {
       </Head>
 
       <Home />
-    </Container>
+    </Shell>
   )
 }

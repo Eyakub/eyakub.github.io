@@ -3,7 +3,7 @@ import { Check, GitBranch, ListChecks, Network } from 'lucide-react'
 import ContributionGraph from './ContributionGraph'
 import SectionHead, { MONO } from './SectionHead'
 
-const STEPS = [
+export const STEPS = [
   [ListChecks, 'Spec and options', 'I write the spec, then compare two or three playable design options before any production code.'],
   [Network, 'Orchestrate', 'A planner agent splits the work. One maps the code, workers implement, a deep-reasoning agent takes the single hardest problem.'],
   [GitBranch, 'Isolate', 'Each task runs in its own git worktree, so parallel agents never step on each other.'],
