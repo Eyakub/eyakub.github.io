@@ -1,23 +1,9 @@
-import { useRef, useState } from 'react'
-import { Box, Button, Heading, Stack, Text } from '@chakra-ui/react'
+import { Button, Heading, Stack, Text } from '@chakra-ui/react'
 import { MONO } from './SectionHead'
 
 const EMAIL = 'eyakubsorkar@gmail.com'
 
 export default function ContactMe() {
-  const [copied, setCopied] = useState(false)
-  const mailRef = useRef(null)
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(EMAIL)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1800)
-    } catch {
-      window.getSelection().selectAllChildren(mailRef.current)
-    }
-  }
-
   return (
     <Stack
       as="section"
@@ -38,38 +24,26 @@ export default function ContactMe() {
         letterSpacing="-0.035em"
         sx={{ textWrap: 'balance' }}
       >
-        Working on backend or AI systems? Let&apos;s talk.
+        Building something with AI in it? Let&apos;s talk.
       </Heading>
       <Text maxW="56ch" color="textSecondary">
         Email is fastest. I&apos;m in Dhaka (UTC+6).
       </Text>
       <Stack direction="row" flexWrap="wrap" spacing={0} gap="10px" align="center">
-        <Box
-          ref={mailRef}
-          px="14px"
-          py="10px"
-          border="1px solid #2a2e36"
-          borderRadius="8px"
-          color="displayColor"
-          fontFamily={MONO}
-          fontSize="15px"
-          fontWeight="500"
-          overflowWrap="anywhere"
-          sx={{ userSelect: 'all' }}
-        >
-          {EMAIL}
-        </Box>
         <Button
-          onClick={copy}
+          as="a"
+          href={`mailto:${EMAIL}`}
           minH="44px"
           px="20px"
           bg="button1"
           color="#0b0c0f"
-          fontWeight="700"
+          fontFamily={MONO}
+          fontWeight="600"
+          overflowWrap="anywhere"
+          whiteSpace="normal"
           _hover={{ bg: '#34b67e' }}
-          aria-live="polite"
         >
-          {copied ? 'Copied' : 'Copy email'}
+          {EMAIL}
         </Button>
         <Button
           as="a"

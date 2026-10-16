@@ -10,9 +10,9 @@ import WorkExperience from '../components/WorkExperience'
 import ContactMe from '../components/ContactMe'
 import HomeFooter from '../components/HomeFooter'
 
-const TITLE = 'Eyakub Sorkar · Backend + AI engineer'
+const TITLE = 'Eyakub Sorkar · Full-stack + AI engineer'
 const DESCRIPTION =
-  'Backend engineer in Dhaka shipping AI features in Python. FastAPI, Django, Next.js, and a team of coding agents.'
+  'Full-stack engineer in Dhaka shipping AI features. Python, FastAPI, Django, PostgreSQL, Next.js, and a team of coding agents.'
 const URL = 'https://eyakub.github.io/'
 const OG_IMAGE = 'https://eyakub.github.io/og.png'
 
@@ -25,7 +25,7 @@ const PERSON = {
   address: { '@type': 'PostalAddress', addressLocality: 'Dhaka', addressCountry: 'BD' },
   url: URL,
   sameAs: ['https://github.com/Eyakub', 'https://linkedin.com/in/eyakub-sorkar'],
-  knowsAbout: ['Python', 'FastAPI', 'Django', 'LLMs', 'RAG', 'Docker', 'Kubernetes'],
+  knowsAbout: ['Python', 'FastAPI', 'Django', 'PostgreSQL', 'Next.js', 'LLMs', 'RAG', 'Docker', 'Kubernetes', 'Rust', 'Swift'],
 }
 
 export default function Index() {

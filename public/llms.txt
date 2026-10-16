@@ -1,6 +1,6 @@
 # Eyakub Sorkar
 
-Backend engineer in Dhaka shipping AI features in Python. FastAPI, Django, Next.js, and a team of coding agents.
+Full-stack engineer in Dhaka shipping AI features. Python, FastAPI, Django, PostgreSQL, Next.js, and a team of coding agents.
 
 ## Links
 

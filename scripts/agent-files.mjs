@@ -11,7 +11,7 @@ const GITHUB = 'https://github.com/Eyakub'
 const LINKEDIN = 'https://linkedin.com/in/eyakub-sorkar'
 const RESUME = 'https://drive.google.com/file/d/1KPUkyNtMhGjGncjVA_U99YA6QZMr7WlN/view?usp=sharing'
 const SUMMARY =
-  'Backend engineer in Dhaka shipping AI features in Python. FastAPI, Django, Next.js, and a team of coding agents.'
+  'Full-stack engineer in Dhaka shipping AI features. Python, FastAPI, Django, PostgreSQL, Next.js, and a team of coding agents.'
 const dates = (j) => `${j.startDate} – ${j.endDate}`
 const oneLine = (p) => p.summary || p.description.filter(Boolean)[0] || ''
 const link = (p) => p.liveUrl || `${SITE}/projects`
@@ -42,7 +42,7 @@ Updated ${home.asOf}.
 const resume = {
   basics: {
     name: 'Eyakub Sorkar',
-    label: 'Backend + AI engineer',
+    label: 'Full-stack + AI engineer',
     email: 'eyakubsorkar@gmail.com',
     url: `${SITE}/`,
     summary: SUMMARY,

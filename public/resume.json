@@ -1,10 +1,10 @@
 {
   "basics": {
     "name": "Eyakub Sorkar",
-    "label": "Backend + AI engineer",
+    "label": "Full-stack + AI engineer",
     "email": "eyakubsorkar@gmail.com",
     "url": "https://eyakub.github.io/",
-    "summary": "Backend engineer in Dhaka shipping AI features in Python. FastAPI, Django, Next.js, and a team of coding agents.",
+    "summary": "Full-stack engineer in Dhaka shipping AI features. Python, FastAPI, Django, PostgreSQL, Next.js, and a team of coding agents.",
     "location": {
       "city": "Dhaka",
       "countryCode": "BD"
@@ -100,6 +100,7 @@
       "keywords": [
         "Python",
         "FastAPI",
+        "PostgreSQL",
         "Docker",
         "LLMs",
         "RAG",
@@ -112,6 +113,7 @@
       "description": "A red panda on your Mac desktop that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you.",
       "url": "https://github.com/Eyakub/Rallo",
       "keywords": [
+        "Rust",
         "Swift",
         "SQLite",
         "CLI",

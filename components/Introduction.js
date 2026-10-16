@@ -27,12 +27,12 @@ export default function Introduction() {
           sx={{ textWrap: 'balance' }}
         >
           <Box as="strong" color="displayColor" fontWeight="600">
-            Backend engineer shipping AI features in Python.
+            Full-stack engineer shipping AI features.
           </Box>{' '}
           I build with a team of coding agents and review every line they write.
         </Text>
         <Text maxW="60ch" color="textSecondary">
-          6+ years across FastAPI, Django and Next.js. Now at{' '}
+          6+ years across Python, FastAPI, Django, PostgreSQL and Next.js. Now at{' '}
           <Link href="https://sdsmanager.com/" isExternal color="button1" fontWeight="600">
             SDS Manager
           </Link>
