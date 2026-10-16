@@ -1,13 +1,7 @@
 import Head from 'next/head'
-import { Stack } from '@chakra-ui/react'
 import Container from '../components/Container'
-import Introduction from '../components/Introduction'
-import ProofStrip from '../components/ProofStrip'
-import HowIBuild from '../components/HowIBuild'
-import FeaturedProjects from '../components/FeaturedProjects'
-import WorkExperience from '../components/WorkExperience'
-import ContactMe from '../components/ContactMe'
-import HomeFooter from '../components/HomeFooter'
+import { themeById } from '../components/themes'
+import site from '../data/site.json'
 
 const TITLE = 'Eyakub Sorkar · Full-stack engineer'
 const DESCRIPTION =
@@ -26,6 +20,10 @@ const PERSON = {
   sameAs: ['https://github.com/Eyakub', 'https://linkedin.com/in/eyakub-sorkar'],
   knowsAbout: ['Python', 'FastAPI', 'Django', 'PostgreSQL', 'Next.js', 'LLMs', 'RAG', 'Docker', 'Kubernetes', 'Rust', 'Swift'],
 }
+
+const theme = themeById(site.home)
+if (!theme) throw new Error(`data/site.json "home" is "${site.home}"; use one of the ids in components/themes.js`)
+const { Home } = theme
 
 export default function Index() {
   return (
@@ -50,15 +48,7 @@ export default function Index() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PERSON) }} />
       </Head>
 
-      <Stack as="main" alignItems="flex-start" mt={{ base: 4, md: 8 }} spacing={0} w="full">
-        <Introduction />
-        <ProofStrip />
-        <HowIBuild />
-        <FeaturedProjects />
-        <WorkExperience />
-        <ContactMe />
-        <HomeFooter />
-      </Stack>
+      <Home />
     </Container>
   )
 }
