@@ -1,6 +1,8 @@
 import { Heading, Text } from '@chakra-ui/react'
+import { JetBrains_Mono } from 'next/font/google'
 
-export const MONO = '"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace'
+const jetbrains = JetBrains_Mono({ subsets: ['latin'], display: 'swap' })
+export const MONO = `${jetbrains.style.fontFamily}, ui-monospace, SFMono-Regular, Menlo, monospace`
 export const RESUME_URL =
   'https://drive.google.com/file/d/1KPUkyNtMhGjGncjVA_U99YA6QZMr7WlN/view?usp=sharing'
 
