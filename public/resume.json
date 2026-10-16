@@ -110,6 +110,26 @@
       ]
     },
     {
+      "name": "Razlio AI",
+      "description": "An AI sales agent that chats with customers in Bengali and English on Messenger, WhatsApp, Instagram, Telegram and the web, sells from the live catalogue and takes the order.",
+      "url": "https://app.razlio.com/",
+      "keywords": [
+        "AI agents",
+        "LLMs",
+        "Chat commerce"
+      ]
+    },
+    {
+      "name": "Razlio Commerce",
+      "description": "A storefront on your own domain, cash on delivery and bKash or Nagad with transaction-ID checks, five couriers booked from the order, and a P&L that counts costs. Our own shop, Razlio Mart, runs on it.",
+      "url": "https://razlio.com/commerce/",
+      "keywords": [
+        "E-commerce",
+        "Payments",
+        "Courier integrations"
+      ]
+    },
+    {
       "name": "Hub One · Stride",
       "description": "An agent-assisted task board inside Hub One, SDS Manager's internal platform. In development for internal use, launching soon.",
       "url": "https://eyakub.github.io/projects",

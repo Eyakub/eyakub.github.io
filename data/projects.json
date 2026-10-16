@@ -48,6 +48,60 @@
     },
     {
         "fields": {
+            "slug": "razlio_ai",
+            "title": "Razlio AI",
+            "description": [
+                "An AI sales agent that answers customers in Bengali and English on Messenger, WhatsApp, Instagram, Telegram and the web, sells from the live catalogue and takes the order."
+            ],
+            "imageUrl": "/razlio-ai-cover.jpg",
+            "liveUrl": "https://app.razlio.com/",
+            "tags": [
+                "AI agents",
+                "LLMs",
+                "Chat commerce"
+            ],
+            "featured": true,
+            "meta": "Side project · Razlio",
+            "headline": "Razlio AI",
+            "summary": "An AI sales agent that chats with customers in Bengali and English on Messenger, WhatsApp, Instagram, Telegram and the web, sells from the live catalogue and takes the order.",
+            "chips": [
+                "AI agents",
+                "বাংলা + English",
+                "5 chat channels",
+                "Catalogue sync"
+            ],
+            "cta": "app.razlio.com"
+        }
+    },
+    {
+        "fields": {
+            "slug": "razlio_commerce",
+            "title": "Razlio Commerce",
+            "description": [
+                "A storefront and back office for Bangladeshi brands: your own domain, cash on delivery and bKash or Nagad, every major courier, and profit and loss that counts costs."
+            ],
+            "imageUrl": "/razlio-commerce-cover.jpg",
+            "liveUrl": "https://razlio.com/commerce/",
+            "tags": [
+                "E-commerce",
+                "Payments",
+                "Courier integrations"
+            ],
+            "featured": true,
+            "meta": "Side project · Razlio",
+            "headline": "Razlio Commerce",
+            "summary": "A storefront on your own domain, cash on delivery and bKash or Nagad with transaction-ID checks, five couriers booked from the order, and a P&L that counts costs. Our own shop, Razlio Mart, runs on it.",
+            "chips": [
+                "COD · bKash · Nagad",
+                "5 couriers",
+                "P&L",
+                "Database constraints"
+            ],
+            "cta": "razlio.com/commerce"
+        }
+    },
+    {
+        "fields": {
             "slug": "hub_one_stride",
             "title": "Hub One · Stride",
             "description": [
