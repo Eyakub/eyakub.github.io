@@ -114,9 +114,11 @@
       "description": "An AI sales agent that chats with customers in Bengali and English on Messenger, WhatsApp, Instagram, Telegram and the web, sells from the live catalogue and takes the order.",
       "url": "https://app.razlio.com/",
       "keywords": [
+        "FastAPI",
+        "Next.js",
         "AI agents",
         "LLMs",
-        "Chat commerce"
+        "Agentic engineering"
       ]
     },
     {
@@ -124,9 +126,11 @@
       "description": "A storefront on your own domain, cash on delivery and bKash or Nagad with transaction-ID checks, five couriers booked from the order, and a P&L that counts costs. Our own shop, Razlio Mart, runs on it.",
       "url": "https://razlio.com/commerce/",
       "keywords": [
+        "FastAPI",
+        "Next.js",
         "E-commerce",
         "Payments",
-        "Courier integrations"
+        "Agentic engineering"
       ]
     },
     {
