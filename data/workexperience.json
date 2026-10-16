@@ -7,7 +7,7 @@
         "location": "Dhaka, Bangladesh (On-site)",
         "description": "",
         "responsibilities": [
-            "Developed and maintained backend services using FastAPI, powering AI-driven chatbot solutions with Gemini models for SDS-focused responses.",
+            "Developed and maintained FastAPI backend services powering AI features that combine several models for SDS-focused responses.",
             "Engineered the SDS Authoring platform to automate Safety Data Sheet creation from user-provided data.",
             "Applied hazard classification using historical data and international standards for compliance.",
             "Optimized data ingestion pipelines to enhance model performance and response reliability.",
@@ -17,12 +17,13 @@
         "technologies": [
             "FastAPI",
             "Python",
-            "Gemini AI",
+            "LLMs",
             "Tailwind CSS",
             "Docker",
             "Git"
         ],
-        "logoUrl": "/sds_logo.webp"
+        "logoUrl": "/sds_logo.webp",
+        "summary": "FastAPI services for AI features, compliance tooling, hazard classification from historical data."
     },
     {
         "company": "Goama",
@@ -39,15 +40,15 @@
             "Managed CI/CD with Bitbucket and Kubernetes, automating deployment for improved reliability."
         ],
         "technologies": [
-            "React",
-            "Node.js",
-            "JavaScript",
-            "TypeScript",
+            "Python",
+            "Django",
+            "DRF",
+            "Kubernetes",
             "AWS",
-            "Docker",
-            "Git"
+            "React"
         ],
-        "logoUrl": "/goama_logo.webp"
+        "logoUrl": "/goama_logo.webp",
+        "summary": "Django/DRF for high-traffic apps, payments in Latin America (+20% reach), unit tests (−30% bugs), CI/CD to Kubernetes."
     },
     {
         "company": "Aadi BD Ltd.",
@@ -72,7 +73,8 @@
             "Vue.js",
             "Webpack"
         ],
-        "logoUrl": "/aadi_logo.png"
+        "logoUrl": "/aadi_logo.png",
+        "summary": "Cross-border e-commerce, a local delivery system (+40% logistics efficiency), Redx, Pathao, DHL and UPS integrations."
     },
     {
         "company": "Venture Solutions Ltd.",
@@ -91,10 +93,11 @@
             "CSS",
             "JavaScript"
         ],
-        "logoUrl": "/venture_logo.png"
+        "logoUrl": "/venture_logo.png",
+        "summary": "Booking app for convention halls, internal CRM, payment gateway integration."
     },
     {
-        "company": "Tryonyx(Currently The Prestige Global",
+        "company": "Tryonyx (now The Prestige Global)",
         "title": "Internship",
         "startDate": "Feb 2019",
         "endDate": "May 2019",
@@ -110,6 +113,7 @@
             "Django",
             "Flutter"
         ],
-        "logoUrl": "/prestige_logo.png"
+        "logoUrl": "/prestige_logo.png",
+        "summary": "Python, Django and Flutter foundations."
     }
 ]

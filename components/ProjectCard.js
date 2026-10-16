@@ -16,7 +16,7 @@ const TAG_COLORS = {
   django: 'green',
   drf: 'green',
   flask: 'green',
-  'gemini ai': 'purple',
+  llms: 'purple',
   react: 'blue',
   'next.js': 'gray',
   'node.js': 'green',
@@ -136,20 +136,14 @@ export default function ProjectCard({ project, featured = false, showAllTags = f
           )}
         </Flex>
 
-        {desc ? (
-          <Text
-            color="textSecondary"
-            fontSize="sm"
-            lineHeight="1.65"
-            noOfLines={3}
-          >
-            {desc}
-          </Text>
-        ) : (
-          <Text color="gray.500" fontSize="sm" fontStyle="italic">
-            Description coming soon.
-          </Text>
-        )}
+        <Text
+          color="textSecondary"
+          fontSize="sm"
+          lineHeight="1.65"
+          noOfLines={3}
+        >
+          {desc}
+        </Text>
 
         <Wrap spacing={2} mt="auto" pt={3} borderTop="1px solid #1c1f25">
           {visibleTags.map((t) => (

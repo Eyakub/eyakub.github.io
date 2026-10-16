@@ -3,7 +3,7 @@
         "fields": {
             "slug": "sds_manager",
             "description": [
-                ""
+                "AI-driven tooling for chemical-safety compliance: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, REACH and CLP."
             ],
             "imageUrl": "/sds_manager.png",
             "liveUrl": "https://exactsds.sdsmanager.com/",
@@ -11,11 +11,53 @@
                 "Python",
                 "FastAPI",
                 "Docker",
-                "Gemini AI",
+                "LLMs",
+                "RAG",
                 "Tailwind CSS",
                 "Git"
             ],
-            "title": "SDS Manager"
+            "title": "SDS Manager",
+            "featured": true,
+            "meta": "SDS Manager · Jul 2025 – now",
+            "headline": "AI for chemical-safety compliance",
+            "problem": "Safety data sheets have to follow strict, region-specific chemical regulations. Writing and checking them by hand is slow and error-prone.",
+            "built": "AI services behind FastAPI that combine several models, retrieval over historical safety data, and rule-based hazard classification.",
+            "hardPart": "Compliance comes first. Getting it right meant studying the regulations themselves: the global GHS standard and regional rules such as EU REACH and CLP.",
+            "chips": [
+                "Python",
+                "FastAPI",
+                "LLMs",
+                "RAG",
+                "Docker"
+            ]
+        }
+    },
+    {
+        "fields": {
+            "slug": "rallo",
+            "description": [
+                "A macOS desktop pet that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you."
+            ],
+            "imageUrl": "/rallo.png",
+            "liveUrl": "https://github.com/Eyakub/Rallo",
+            "tags": [
+                "Swift",
+                "SQLite",
+                "CLI",
+                "macOS"
+            ],
+            "title": "Rallo",
+            "featured": true,
+            "meta": "Side project · Sep 2026 · ★ 21",
+            "headline": "Rallo",
+            "summary": "A red panda on your Mac desktop that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you.",
+            "chips": [
+                "Swift",
+                "SQLite",
+                "CLI-first",
+                "MIT"
+            ],
+            "cta": "github.com/Eyakub/Rallo"
         }
     },
     {
@@ -36,7 +78,17 @@
                 "React",
                 "Node.js"
             ],
-            "title": "Go Games"
+            "title": "Go Games",
+            "featured": true,
+            "meta": "Goama · May 2022 – Aug 2025",
+            "headline": "Games and payments for high-traffic markets",
+            "summary": "Payment gateway integrations expanded reach in Latin America by 20%. Unit testing cut bugs by 30%. CI/CD to Kubernetes.",
+            "chips": [
+                "Django",
+                "DRF",
+                "Kubernetes",
+                "AWS"
+            ]
         }
     },
     {
