@@ -4,9 +4,10 @@ import Navbar from './Navbar'
 const Container = ({ enableTransition, children }) => {
     return (
       <Box
-        w={{ base: '100%', md: '70rem' }}
-        mx={{ base: '0', md: 'auto' }}
-        px={{ base: '22px', lg: 0 }}
+        w="100%"
+        maxW="calc(70rem + 44px)"
+        mx="auto"
+        px="22px"
         py={4}
         transition="0.4s"
       >
