@@ -1,5 +1,6 @@
 import { Box, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react'
 import { Check, GitBranch, ListChecks, Network } from 'lucide-react'
+import ContributionGraph from './ContributionGraph'
 import SectionHead, { MONO } from './SectionHead'
 
 const STEPS = [
@@ -34,6 +35,8 @@ export default function HowIBuild() {
           </Box>
         ))}
       </SimpleGrid>
+
+      <ContributionGraph />
     </Box>
   )
 }

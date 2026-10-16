@@ -2,7 +2,7 @@ import { Box, SimpleGrid, Text } from '@chakra-ui/react'
 import homepage from '../data/homepage.json'
 
 const CELLS = [
-  [homepage.contributions.toLocaleString('en-US'), 'GitHub contributions in the last 12 months'],
+  ['2', 'products of my own, both live'],
   [`★ ${homepage.ralloStars}`, 'stars on Rallo, my macOS app for agent workflows'],
   ['5', 'chat channels Razlio AI sells on, in Bengali and English'],
   ['6+ yrs', '5 companies, Python since 2019'],

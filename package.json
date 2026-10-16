@@ -10,6 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "deploy": "npm run build && gh-pages -d out --nojekyll",
+    "contributions": "node scripts/contributions.mjs",
     "test": "vitest run",
     "typecheck:learn": "tsc -p tsconfig.learn.json",
     "smoke:learn": "node scripts/learn-smoke.mjs",
