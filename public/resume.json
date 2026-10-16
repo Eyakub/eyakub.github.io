@@ -1,10 +1,10 @@
 {
   "basics": {
     "name": "Eyakub Sorkar",
-    "label": "Full-stack + AI engineer",
+    "label": "Full-stack engineer",
     "email": "eyakubsorkar@gmail.com",
     "url": "https://eyakub.github.io/",
-    "summary": "Full-stack engineer in Dhaka shipping AI features. Python, FastAPI, Django, PostgreSQL, Next.js, and a team of coding agents.",
+    "summary": "Full-stack engineer in Dhaka. I build the parts of a business that can't break: orders, payments, deliveries, compliance. Python, Django, FastAPI, PostgreSQL, Next.js.",
     "location": {
       "city": "Dhaka",
       "countryCode": "BD"

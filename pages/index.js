@@ -9,9 +9,9 @@ import WorkExperience from '../components/WorkExperience'
 import ContactMe from '../components/ContactMe'
 import HomeFooter from '../components/HomeFooter'
 
-const TITLE = 'Eyakub Sorkar · Full-stack + AI engineer'
+const TITLE = 'Eyakub Sorkar · Full-stack engineer'
 const DESCRIPTION =
-  'Full-stack engineer in Dhaka shipping AI features. Python, FastAPI, Django, PostgreSQL, Next.js, and a team of coding agents.'
+  "Full-stack engineer in Dhaka. I build the parts of a business that can't break: orders, payments, deliveries, compliance. Python, Django, FastAPI, PostgreSQL, Next.js."
 const URL = 'https://eyakub.github.io/'
 const OG_IMAGE = 'https://eyakub.github.io/og.png'
 

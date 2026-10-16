@@ -1,6 +1,6 @@
 # Eyakub Sorkar
 
-Full-stack engineer in Dhaka shipping AI features. Python, FastAPI, Django, PostgreSQL, Next.js, and a team of coding agents.
+Full-stack engineer in Dhaka. I build the parts of a business that can't break: orders, payments, deliveries, compliance. Python, Django, FastAPI, PostgreSQL, Next.js.
 
 ## Links
 

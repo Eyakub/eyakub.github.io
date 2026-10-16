@@ -12,7 +12,7 @@ const STEPS = [
 export default function HowIBuild() {
   return (
     <Box as="section" id="build" w="full" scrollMarginTop="80px" pt={{ base: '56px', md: '96px' }}>
-      <SectionHead eyebrow="How I build">One engineer, a team of agents, every change reviewed</SectionHead>
+      <SectionHead eyebrow="How I build">Agents take the scoped work. Tests and the browser decide what ships.</SectionHead>
 
       <SimpleGrid as="ol" columns={{ base: 1, sm: 2, md: 4 }} gap="12px" listStyleType="none" m={0} p={0}>
         {STEPS.map(([Icon, title, text], i) => (

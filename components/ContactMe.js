@@ -24,7 +24,7 @@ export default function ContactMe() {
         letterSpacing="-0.035em"
         sx={{ textWrap: 'balance' }}
       >
-        Building something with AI in it? Let&apos;s talk.
+        Building something that can&apos;t break? Let&apos;s talk.
       </Heading>
       <Text maxW="56ch" color="textSecondary">
         Email is fastest. I&apos;m in Dhaka (UTC+6).
