@@ -1,0 +1,48 @@
+# Switch the homepage theme from the Actions tab: Actions → "Switch homepage theme" → Run workflow.
+# Writes data/site.json on master, commits it so later pushes keep the choice, then starts the Pages deploy.
+name: Switch homepage theme
+
+on:
+  workflow_dispatch:
+    inputs:
+      home:
+        description: Homepage theme
+        type: choice
+        # keep in sync with the ids in components/themes.js
+        options: [classic, terminal]
+        required: true
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: switch-theme
+  cancel-in-progress: false
+
+jobs:
+  switch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Set home in data/site.json
+        env:
+          THEME: ${{ inputs.home }}
+        run: |
+          printf '{\n    "home": "%s"\n}\n' "$THEME" > data/site.json
+          if git diff --quiet data/site.json; then
+            echo "Homepage is already $THEME; redeploying as is."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore(site): switch homepage to $THEME" data/site.json
+            git push origin HEAD:master
+          fi
+      # pushes made with GITHUB_TOKEN don't trigger other workflows, so start the deploy explicitly
+      - name: Deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run nextjs.yml --ref master

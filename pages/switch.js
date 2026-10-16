@@ -32,9 +32,9 @@ export default function Switch() {
             </Heading>
             <Text color="textSecondary" maxW="62ch" lineHeight="1.65">
               Every homepage template this site can render. The one marked live is what visitors see on /. To change it,
-              set <Box as="code" fontFamily={MONO} fontSize="0.9em" color="displayColor">home</Box> in{' '}
-              <Box as="code" fontFamily={MONO} fontSize="0.9em" color="displayColor">data/site.json</Box> to a theme id
-              and deploy.
+              run <Box as="code" fontFamily={MONO} fontSize="0.9em" color="displayColor">Switch homepage theme</Box> from
+              the repo&apos;s Actions tab, or set <Box as="code" fontFamily={MONO} fontSize="0.9em" color="displayColor">home</Box>{' '}
+              in <Box as="code" fontFamily={MONO} fontSize="0.9em" color="displayColor">data/site.json</Box> and deploy.
             </Text>
           </Stack>
 
