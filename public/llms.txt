@@ -12,7 +12,7 @@ Full-stack engineer in Dhaka shipping AI features. Python, FastAPI, Django, Post
 
 ## Experience
 
-- SDS Manager, Software Engineer (July 2025 – Present): ExactSDS: AI features behind FastAPI for chemical-safety compliance. Hub One: Stride, where AI agents pick up tasks, fix, test and deploy them.
+- SDS Manager, Software Engineer (July 2025 – Present): ExactSDS: AI features behind FastAPI for chemical-safety compliance. Hub One: Stride, where AI agents take quick, well-scoped tasks and the team builds the complex features.
 - Goama, Full-stack Developer (May 2022 – August 2025): Django/DRF for high-traffic apps, payments in Latin America (+20% reach), unit tests (−30% bugs), CI/CD to Kubernetes.
 - Aadi BD Ltd., Software Engineer (June 2020 – April 2022): Cross-border e-commerce, a local delivery system (+40% logistics efficiency), Redx, Pathao, DHL and UPS integrations.
 - Venture Solutions Ltd., Jr. Software Engineer (May 2019 – March 2020): Booking app for convention halls, internal CRM, payment gateway integration.
@@ -21,7 +21,7 @@ Full-stack engineer in Dhaka shipping AI features. Python, FastAPI, Django, Post
 ## Projects
 
 - [ExactSDS](https://exactsds.sdsmanager.com/): AI-powered safety data sheet creation at SDS Manager: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, CLP, REACH and OSHA.
-- [Hub One · Stride](https://eyakub.github.io/projects): Stride is the task module of Hub One, SDS Manager's internal platform for sales, marketing, communication and support. AI agents pick tasks from the board, fix them, test them and deploy them.
+- [Hub One · Stride](https://eyakub.github.io/projects): Stride is the task module of Hub One, SDS Manager's internal platform for sales, marketing, communication and support. AI agents take the quick, well-scoped tasks from the board: fix, test, deploy. The team builds the complex features and fixes.
 - [Rallo](https://github.com/Eyakub/Rallo): A red panda on your Mac desktop that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you.
 - [Go Games](https://go-games.gg/tournament?app=goama&country=SG): Payment gateway integrations expanded reach in Latin America by 20%. Unit testing cut bugs by 30%. CI/CD to Kubernetes.
 - [Aadi BD](https://eyakub.github.io/projects): Bangladesh’s first‑ever cross‑border marketplace. Aadi focuses on promoting Bangladesh and its strength in various industries at a global level ‑ Implemented as a part of my role at Aadi BD Ltd.

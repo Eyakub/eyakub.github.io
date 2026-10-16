@@ -51,7 +51,7 @@
             "slug": "hub_one_stride",
             "title": "Hub One · Stride",
             "description": [
-                "Stride is the task module of Hub One, SDS Manager's internal platform for sales, marketing, communication and support. AI agents pick tasks from the board, fix them, test them and deploy them."
+                "Stride is the task module of Hub One, SDS Manager's internal platform for sales, marketing, communication and support. AI agents take the quick, well-scoped tasks from the board: fix, test, deploy. The team builds the complex features and fixes."
             ],
             "imageUrl": "/stride-cover.jpg",
             "liveUrl": "",
@@ -63,7 +63,7 @@
             ],
             "featured": true,
             "meta": "Hub One · SDS Manager · internal platform",
-            "headline": "Stride: a task board where AI agents ship the work",
+            "headline": "Stride: a task board where AI agents take the quick fixes",
             "columns": [
                 [
                     "What it is",
@@ -71,15 +71,16 @@
                 ],
                 [
                     "What I build",
-                    "Most of my time goes into Stride: AI agents that pick a task from the board, write the fix, test it and deploy it."
+                    "Most of my time goes into Stride. Agents pick up quick, well-scoped tasks from the board, write the fix, test it and deploy it."
                 ],
                 [
-                    "The loop",
-                    "Task on the board, agent picks it up, fix, tests, deploy. The plan, build and verify loop I use on my own work, running as a product."
+                    "Who does what",
+                    "We build the complex features and hard fixes ourselves. Agents only take tasks that already have clear context, so people stay on the work that needs judgment."
                 ]
             ],
             "chips": [
                 "AI agents",
+                "Human-led",
                 "Agentic engineering",
                 "Automated testing",
                 "Continuous deployment"
