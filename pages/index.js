@@ -8,6 +8,7 @@ import FeaturedProjects from '../components/FeaturedProjects'
 import LearnBand from '../components/LearnBand'
 import WorkExperience from '../components/WorkExperience'
 import ContactMe from '../components/ContactMe'
+import HomeFooter from '../components/HomeFooter'
 
 const TITLE = 'Eyakub Sorkar · Backend + AI engineer'
 const DESCRIPTION =
@@ -45,6 +46,7 @@ export default function Index() {
         <LearnBand />
         <WorkExperience />
         <ContactMe />
+        <HomeFooter />
       </Stack>
     </Container>
   )
