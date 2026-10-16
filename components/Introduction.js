@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Link, Stack, Text } from '@chakra-ui/react'
+import { Button, Heading, Link, Stack, Text } from '@chakra-ui/react'
 import { ArrowRight } from 'lucide-react'
 import { RESUME_URL } from './SectionHead'
 
@@ -19,24 +19,23 @@ export default function Introduction() {
           Eyakub Sorkar
         </Heading>
         <Text
-          maxW="34ch"
-          color="textSecondary"
-          fontSize={{ base: '20px', md: '30px' }}
-          lineHeight="1.3"
-          letterSpacing="-0.02em"
-          sx={{ textWrap: 'balance' }}
+          maxW="44ch"
+          color="#C9CBD0"
+          fontSize={{ base: '19px', md: '25px' }}
+          lineHeight="1.4"
+          letterSpacing="-0.015em"
+          sx={{ textWrap: 'pretty' }}
         >
-          <Box as="strong" color="displayColor" fontWeight="600">
-            Full-stack engineer shipping AI features.
-          </Box>{' '}
-          I build with a team of coding agents and review every line they write.
+          I&apos;m a full-stack engineer focused on the parts of a business that can&apos;t break: orders, payments,
+          deliveries, compliance. From chemical-safety law to courier networks, I build the systems underneath and the
+          screens people use every day.
         </Text>
         <Text maxW="60ch" color="textSecondary">
           6+ years across Python, FastAPI, Django, PostgreSQL and Next.js. Now at{' '}
           <Link href="https://sdsmanager.com/" isExternal color="button1" fontWeight="600">
             SDS Manager
           </Link>
-          , building ExactSDS for chemical-safety compliance and Stride, an agent-assisted task board that&apos;s still in development.
+          , building ExactSDS for safety data sheets and Stride, an agent-assisted task board that&apos;s still in development.
         </Text>
       </Stack>
 
