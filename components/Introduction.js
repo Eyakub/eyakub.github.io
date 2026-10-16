@@ -28,12 +28,12 @@ export default function Introduction() {
         >
           I build the parts of a business that can&apos;t break: orders, payments, deliveries, compliance.
         </Text>
-        <Text maxW="60ch" color="textSecondary">
-          Full-stack engineer, now at{' '}
+        <Text maxW="92ch" color="textSecondary">
+          6+ years across Python, FastAPI, Django, PostgreSQL and Next.js. Now at{' '}
           <Link href="https://sdsmanager.com/" isExternal color="button1" fontWeight="600">
             SDS Manager
-          </Link>{' '}
-          building ExactSDS.
+          </Link>
+          , building ExactSDS for safety data sheets and Stride, an agent-assisted task board that&apos;s still in development.
         </Text>
       </Stack>
 
