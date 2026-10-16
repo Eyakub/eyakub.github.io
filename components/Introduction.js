@@ -1,193 +1,98 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Image,
-  Link,
-  SlideFade,
-  Stack,
-  Text,
-  useBreakpointValue,
-} from '@chakra-ui/react'
-import { FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa'
-import { ArrowRight, FileText, ArrowDown } from 'lucide-react'
+import { Box, Button, Heading, Link, Stack, Text } from '@chakra-ui/react'
+import { ArrowRight } from 'lucide-react'
+import { RESUME_URL } from './SectionHead'
 
-const SOCIALS = [
-  { Icon: FaGithub, href: 'https://github.com/eyakub', label: 'GitHub' },
-  { Icon: FaLinkedin, href: 'https://linkedin.com/in/eyakub-sorkar', label: 'LinkedIn' },
-  { Icon: FaEnvelope, href: 'mailto:eyakubsorkar@gmail.com', label: 'Email' },
-]
-
-const RESUME_URL =
-  'https://drive.google.com/file/d/1KPUkyNtMhGjGncjVA_U99YA6QZMr7WlN/view?usp=sharing'
+const focusRing = { boxShadow: '0 0 0 3px rgba(60,207,145,0.4)' }
 
 export default function Introduction() {
-  const isLargerThan800 = useBreakpointValue({ base: false, md: true })
-
   return (
-    <Stack
-      align="flex-start"
-      justify="flex-start"
-      w="100%"
-      spacing={{ base: 6, md: 8 }}
-    >
-      {/* Name + greeting */}
-      <SlideFade direction="top" transition={{ enter: { duration: 0.4, delay: 0.7 } }} in={true}>
-        <Box position="relative">
-          <Image
-            position="absolute"
-            zIndex={0}
-            top={{ base: '-10px', md: '-30px' }}
-            left={{ base: '-12px', md: '-32px' }}
-            w={{ base: '80px', md: '160px' }}
-            alt=""
-            filter="invert(0.1)"
-            opacity={0.9}
-            src="https://svgsilh.com/svg/26432.svg"
-            pointerEvents="none"
-            aria-hidden
-          />
-          <Stack spacing={2} position="relative" zIndex={1}>
-            <Text color="button1" fontSize="display2" fontWeight="500">
-              Hey there, I&apos;m
-            </Text>
-            <Heading
-              color="displayColor"
-              fontSize="display"
-              lineHeight="0.95"
-              letterSpacing={{ sm: '-1.2px', md: '-1.8px' }}
-            >
-              Eyakub Sorkar.
-            </Heading>
-          </Stack>
-        </Box>
-      </SlideFade>
-
-      {/* Role headline */}
-      <SlideFade direction="top" transition={{ enter: { duration: 0.4, delay: 0.8 } }} in={true}>
+    <Stack as="section" w="full" spacing="20px" pt={{ base: '44px', md: '88px' }} pb="36px">
+      <Stack spacing="18px">
         <Heading
-          as="p"
-          color="textSecondary"
-          fontSize="display2"
-          fontWeight="500"
-          letterSpacing="-1.6px"
-          lineHeight="1.15"
+          as="h1"
+          color="displayColor"
+          fontSize={{ base: '46px', sm: '64px', md: '96px', lg: '112px' }}
+          fontWeight="800"
+          lineHeight="0.92"
+          letterSpacing="-0.045em"
         >
-          <Box as="span" color="displayColor">Software Engineer</Box>{' '}
-          with 6+ years building scalable, AI-augmented full-stack products.
+          Eyakub Sorkar
         </Heading>
-      </SlideFade>
-
-      {/* Supporting paragraph */}
-      <SlideFade direction="top" transition={{ enter: { duration: 0.4, delay: 0.9 } }} in={true}>
-        <Text color="textSecondary" fontSize="display3" lineHeight="1.7" maxW="58ch">
-          Strong foundation in Computer Science, committed to continuous learning — currently building full-stack systems — backends, data pipelines, and AI features — at{' '}
-          <Link
-            href="https://sdsmanager.com/"
-            isExternal
-            color="button1"
-            fontWeight="600"
-            _hover={{ color: '#34b67e', textDecoration: 'none' }}
-          >
+        <Text
+          maxW="34ch"
+          color="textSecondary"
+          fontSize={{ base: '20px', md: '30px' }}
+          lineHeight="1.3"
+          letterSpacing="-0.02em"
+          sx={{ textWrap: 'balance' }}
+        >
+          <Box as="strong" color="displayColor" fontWeight="600">
+            Backend engineer shipping AI features in Python.
+          </Box>{' '}
+          I build with a team of coding agents and review every line they write.
+        </Text>
+        <Text maxW="60ch" color="textSecondary">
+          6+ years across FastAPI, Django and Next.js. Now at{' '}
+          <Link href="https://sdsmanager.com/" isExternal color="button1" fontWeight="600">
             SDS Manager
           </Link>
-          .
+          , building AI-driven tooling for chemical-safety compliance.
         </Text>
-      </SlideFade>
+      </Stack>
 
-      {/* CTAs + socials */}
-      <SlideFade direction="top" transition={{ enter: { duration: 0.4, delay: 1.0 } }} in={true}>
-        <Stack
-          direction={{ base: 'column', sm: 'row' }}
-          spacing={{ base: 3, sm: 4 }}
-          align={{ base: 'stretch', sm: 'center' }}
-        >
-          <Button
-            as="a"
-            href="#projects"
-            bg="button1"
-            color="#0b0c0f"
-            fontWeight="700"
-            size={{ base: 'md', md: 'lg' }}
-            rightIcon={<ArrowRight size={16} />}
-            transition="all 0.2s ease"
-            _hover={{ bg: '#34b67e', transform: 'translateY(-1px)' }}
-            _focus={{ boxShadow: '0 0 0 3px rgba(60,207,145,0.4)' }}
-          >
-            View my work
-          </Button>
-          <Button
-            as={Link}
-            href={RESUME_URL}
-            isExternal
-            variant="outline"
-            color="displayColor"
-            borderColor="#2a2e36"
-            fontWeight="600"
-            size={{ base: 'md', md: 'lg' }}
-            leftIcon={<FileText size={16} />}
-            _hover={{ bg: '#0e0f12', borderColor: '#3a3f4a', textDecoration: 'none' }}
-          >
-            Resume
-          </Button>
-
-          <HStack
-            spacing={1}
-            pl={{ base: 0, sm: 2 }}
-            ml={{ base: 0, sm: 2 }}
-            borderLeft={{ base: 'none', sm: '1px solid #1c1f25' }}
-          >
-            {SOCIALS.map(({ Icon, href, label }) => (
-              <Link
-                key={label}
-                href={href}
-                isExternal
-                aria-label={label}
-                color="textSecondary"
-                p={2.5}
-                rounded="md"
-                transition="all 0.2s ease"
-                _hover={{ color: 'button1', bg: 'rgba(60,207,145,0.08)' }}
-                _focus={{ boxShadow: '0 0 0 2px rgba(60,207,145,0.5)' }}
-              >
-                <Icon size={18} />
-              </Link>
-            ))}
-          </HStack>
-        </Stack>
-      </SlideFade>
-
-      {/* Scroll hint */}
-      <SlideFade direction="top" transition={{ enter: { duration: 0.4, delay: 1.2 } }} in={true}>
-        <HStack
+      <Stack direction="row" flexWrap="wrap" spacing={0} gap="10px" align="center">
+        <Button
           as="a"
-          href="#about"
-          spacing={2}
-          color="textSecondary"
-          fontSize="xs"
-          fontWeight="500"
-          letterSpacing="0.2em"
-          textTransform="uppercase"
-          pt={{ base: 2, md: 4 }}
-          opacity={0.75}
-          transition="opacity 0.2s ease, color 0.2s ease"
-          _hover={{ opacity: 1, color: 'button1' }}
-          sx={{
-            '@keyframes scrollBounce': {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(4px)' },
-            },
-          }}
+          href="#work"
+          minH="44px"
+          px="20px"
+          bg="button1"
+          color="#0b0c0f"
+          fontWeight="700"
+          rightIcon={<ArrowRight size={16} />}
+          _hover={{ bg: '#34b67e' }}
+          _focusVisible={focusRing}
         >
-          <Text>Scroll to explore</Text>
-          <Box
-            as={ArrowDown}
-            boxSize="14px"
-            sx={{ animation: 'scrollBounce 1.6s ease-in-out infinite' }}
-          />
-        </HStack>
-      </SlideFade>
+          See case studies
+        </Button>
+        <Button
+          as="a"
+          href={RESUME_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="outline"
+          minH="44px"
+          px="20px"
+          color="displayColor"
+          borderColor="#2a2e36"
+          fontWeight="700"
+          _hover={{ bg: '#0e0f12', borderColor: '#3a3f4a' }}
+          _focusVisible={focusRing}
+        >
+          Résumé
+        </Button>
+        {[
+          ['GitHub', 'https://github.com/Eyakub'],
+          ['LinkedIn', 'https://linkedin.com/in/eyakub-sorkar'],
+        ].map(([label, href]) => (
+          <Button
+            key={label}
+            as="a"
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="ghost"
+            minH="44px"
+            px="10px"
+            color="#C9CBD0"
+            fontWeight="700"
+            _hover={{ bg: 'rgba(255,255,255,0.05)' }}
+            _focusVisible={focusRing}
+          >
+            {label}
+          </Button>
+        ))}
+      </Stack>
     </Stack>
   )
 }

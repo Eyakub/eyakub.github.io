@@ -1,84 +1,47 @@
 import Head from 'next/head'
-import { Box, Stack } from '@chakra-ui/react'
+import { Stack } from '@chakra-ui/react'
 import Container from '../components/Container'
 import Introduction from '../components/Introduction'
+import ProofStrip from '../components/ProofStrip'
 import FeaturedProjects from '../components/FeaturedProjects'
-import AboutMe from '../components/AboutMe'
+import WorkExperience from '../components/WorkExperience'
 import ContactMe from '../components/ContactMe'
-import WorkExperience from '../components/WorkExperience' 
 
-// Import JSON data
-import introductionData from '../data/introduction.json'
-import projectsData from '../data/projects.json'
-import contactMeData from '../data/contactMe.json'
-import workExperienceData from '../data/workexperience.json'
-
+const TITLE = 'Eyakub Sorkar · Backend + AI engineer'
+const DESCRIPTION =
+  'Backend engineer in Dhaka shipping AI features in Python. FastAPI, Django, Next.js, and a team of coding agents.'
+const URL = 'https://eyakub.github.io/'
+const OG_IMAGE = 'https://eyakub.github.io/og.png'
 
 export default function Index() {
   return (
-    <>
-      <Container enableTransition={true}>
-        <Head>
-          <title>Eyakub - Software Engineer</title>
-          <meta content="Eyakub - Software Engineer" name="title" />
-          <meta content="eyakub, eyakub website" name="keywords" />
-          <meta
-            content="Software Engineer based in Bangladesh."
-            name="description"
-          />
+    <Container enableTransition={true}>
+      <Head>
+        <title>{TITLE}</title>
+        <meta content={TITLE} name="title" />
+        <meta content="eyakub, eyakub website" name="keywords" />
+        <meta content={DESCRIPTION} name="description" />
 
-          <meta content="website" property="og:type" />
-          <meta content="https://eyakub.github.io" property="og:url" />
-          <meta
-            content="Eyakub - Software Engineer"
-            property="og:title"
-          />
-          <meta
-            content="Software Engineer based in Bangladesh."
-            property="og:description"
-          />
-          <meta
-            content="https://imgur.com/a/gY0ZSa5"
-            property="og:image"
-          />
+        <meta content="website" property="og:type" />
+        <meta content={URL} property="og:url" />
+        <meta content={TITLE} property="og:title" />
+        <meta content={DESCRIPTION} property="og:description" />
+        <meta content={OG_IMAGE} property="og:image" />
 
-          <meta content="summary_large_image" property="twitter:card" />
-          <meta content="https://eyakub.github.io/" property="twitter:url" />
-          <meta
-            content="Eyakub - Software Engineer"
-            property="twitter:title"
-          />
-          <meta
-            content="Software Engineer based in Bangladesh."
-            property="twitter:description"
-          />
-          <meta
-            content="https://imgur.com/a/gY0ZSa5"
-            property="twitter:image"
-          />
-        </Head>
+        <meta content="summary_large_image" property="twitter:card" />
+        <meta content={URL} property="twitter:url" />
+        <meta content={TITLE} property="twitter:title" />
+        <meta content={DESCRIPTION} property="twitter:description" />
+        <meta content={OG_IMAGE} property="twitter:image" />
+      </Head>
 
-        <Stack
-          as="main"
-          alignItems="flex-start"
-          justifyContent="center"
-          mt={{ base: '15vh', md: '20vh' }}
-          pb="144px"
-          spacing={{ base: '100px', md: '144px' }}
-        >
-          <Introduction introduction={introductionData} />
-          <Box id="about" w="full" scrollMarginTop="80px">
-            <AboutMe />
-          </Box>
-          <Box id="projects" w="full" scrollMarginTop="80px">
-            <FeaturedProjects projects={projectsData} />
-          </Box>
-          <WorkExperience  workExperience={workExperienceData}/>
-          <ContactMe contactMe={contactMeData} />
-        </Stack>
-      </Container>
-    </>
+      <Stack as="main" alignItems="flex-start" mt={{ base: 4, md: 8 }} spacing={0} w="full">
+        <Introduction />
+        <ProofStrip />
+        <FeaturedProjects />
+        <WorkExperience />
+        <ContactMe />
+      </Stack>
+    </Container>
   )
 }
-
-// Remove getStaticProps since data is now imported directly from JSON
