@@ -21,9 +21,6 @@
             "featured": true,
             "meta": "ExactSDS · SDS Manager · Jul 2025 – now",
             "headline": "AI for chemical-safety compliance",
-            "problem": "Safety data sheets have to follow strict, region-specific chemical regulations. Writing and checking them by hand is slow and error-prone.",
-            "built": "AI services behind FastAPI that combine several models, retrieval over historical safety data, and rule-based hazard classification.",
-            "hardPart": "Compliance comes first. Getting it right meant studying the regulations themselves: the global GHS standard and regional rules such as CLP and REACH in the EU and OSHA in the US.",
             "chips": [
                 "Python",
                 "FastAPI",
@@ -31,6 +28,60 @@
                 "LLMs",
                 "RAG",
                 "Docker"
+            ],
+            "columns": [
+                [
+                    "Problem",
+                    "Safety data sheets have to follow strict, region-specific chemical regulations. Writing and checking them by hand is slow and error-prone."
+                ],
+                [
+                    "What I built",
+                    "AI services behind FastAPI that combine several models, retrieval over historical safety data, and rule-based hazard classification."
+                ],
+                [
+                    "The hard part",
+                    "Compliance comes first. Getting it right meant studying the regulations themselves: the global GHS standard and regional rules such as CLP and REACH in the EU and OSHA in the US."
+                ]
+            ]
+        }
+    },
+    {
+        "fields": {
+            "slug": "hub_one_stride",
+            "title": "Hub One · Stride",
+            "description": [
+                "Stride is the task module of Hub One, SDS Manager's internal platform for sales, marketing, communication and support. AI agents pick tasks from the board, fix them, test them and deploy them."
+            ],
+            "imageUrl": "/stride-cover.jpg",
+            "liveUrl": "",
+            "tags": [
+                "AI agents",
+                "Agentic engineering",
+                "Automated testing",
+                "CI/CD"
+            ],
+            "featured": true,
+            "meta": "Hub One · SDS Manager · internal platform",
+            "headline": "Stride: a task board where AI agents ship the work",
+            "columns": [
+                [
+                    "What it is",
+                    "Hub One is SDS Manager's internal platform for sales, marketing, communication and support. Stride is its task module, in the spirit of ClickUp and Slack."
+                ],
+                [
+                    "What I build",
+                    "Most of my time goes into Stride: AI agents that pick a task from the board, write the fix, test it and deploy it."
+                ],
+                [
+                    "The loop",
+                    "Task on the board, agent picks it up, fix, tests, deploy. The plan, build and verify loop I use on my own work, running as a product."
+                ]
+            ],
+            "chips": [
+                "AI agents",
+                "Agentic engineering",
+                "Automated testing",
+                "Continuous deployment"
             ]
         }
     },

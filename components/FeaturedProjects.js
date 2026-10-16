@@ -42,17 +42,13 @@ const Title = ({ children }) => (
   </Heading>
 )
 
-function Sds({ f }) {
+function CaseStudy({ f }) {
   return (
     <Card wide>
       <Meta>{f.meta}</Meta>
       <Title>{f.headline}</Title>
-      <SimpleGrid columns={{ base: 1, md: 3 }} gap="18px">
-        {[
-          ['Problem', f.problem],
-          ['What I built', f.built],
-          ['The hard part', f.hardPart],
-        ].map(([h, t]) => (
+      <SimpleGrid columns={{ base: 1, md: f.columns.length }} gap="18px">
+        {f.columns.map(([h, t]) => (
           <Box key={h}>
             <Heading as="h4" mb="4px" fontSize="11px" textTransform="uppercase" letterSpacing="0.16em" color="button1">
               {h}
@@ -104,16 +100,11 @@ function Plain({ f }) {
 
 export default function FeaturedProjects() {
   const featured = projectsData.map((p) => p.fields).filter((f) => f.featured)
-  const sds = featured.find((f) => f.slug === 'sds_manager')
-  const rest = featured.filter((f) => f.slug !== 'sds_manager')
   return (
     <Box as="section" id="work" w="full" scrollMarginTop="80px" pt={{ base: '56px', md: '96px' }}>
       <SectionHead eyebrow="Selected work">Problems, what I built, what changed</SectionHead>
       <SimpleGrid columns={{ base: 1, md: 2 }} gap="12px">
-        <Sds f={sds} />
-        {rest.map((f) => (
-          <Plain key={f.slug} f={f} />
-        ))}
+        {featured.map((f) => (f.columns ? <CaseStudy key={f.slug} f={f} /> : <Plain key={f.slug} f={f} />))}
       </SimpleGrid>
       <Text mt="14px" fontSize="14px" color="textSecondary">
         Earlier: Aadi BD cross-border marketplace, Moiur booking platform.{' '}

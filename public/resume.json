@@ -109,6 +109,17 @@
       ]
     },
     {
+      "name": "Hub One · Stride",
+      "description": "Stride is the task module of Hub One, SDS Manager's internal platform for sales, marketing, communication and support. AI agents pick tasks from the board, fix them, test them and deploy them.",
+      "url": "https://eyakub.github.io/projects",
+      "keywords": [
+        "AI agents",
+        "Agentic engineering",
+        "Automated testing",
+        "CI/CD"
+      ]
+    },
+    {
       "name": "Rallo",
       "description": "A red panda on your Mac desktop that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you.",
       "url": "https://github.com/Eyakub/Rallo",
