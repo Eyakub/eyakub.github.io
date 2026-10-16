@@ -96,17 +96,14 @@
   "projects": [
     {
       "name": "ExactSDS",
-      "description": "AI-powered safety data sheet creation at SDS Manager: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, CLP, REACH and OSHA.",
+      "description": "AI-powered safety data sheet creation: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, CLP, REACH and OSHA.",
       "url": "https://exactsds.sdsmanager.com/",
       "keywords": [
-        "Python",
         "FastAPI",
         "PostgreSQL",
-        "Docker",
         "LLMs",
         "RAG",
-        "Tailwind CSS",
-        "Git"
+        "Agentic engineering"
       ]
     },
     {
@@ -117,7 +114,7 @@
         "FastAPI",
         "Next.js",
         "AI agents",
-        "LLMs",
+        "বাংলা + English",
         "Agentic engineering"
       ]
     },
@@ -128,8 +125,8 @@
       "keywords": [
         "FastAPI",
         "Next.js",
-        "E-commerce",
-        "Payments",
+        "COD · bKash · Nagad",
+        "5 couriers",
         "Agentic engineering"
       ]
     },
@@ -145,55 +142,47 @@
     },
     {
       "name": "Rallo",
-      "description": "A red panda on your Mac desktop that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you.",
+      "description": "A macOS desktop pet that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you. Built in Rust and Swift.",
       "url": "https://github.com/Eyakub/Rallo",
       "keywords": [
         "Rust",
         "Swift",
         "SQLite",
-        "CLI",
-        "macOS"
+        "CLI-first",
+        "MIT"
       ]
     },
     {
       "name": "Go Games",
-      "description": "Payment gateway integrations expanded reach in Latin America by 20%. Unit testing cut bugs by 30%. CI/CD to Kubernetes.",
+      "description": "Tournaments and mini-games that companies plug into their apps. Payments expanded reach in Latin America by 20%, and unit testing cut bugs by 30%.",
       "url": "https://go-games.gg/tournament?app=goama&country=SG",
       "keywords": [
-        "Python",
         "Django",
         "DRF",
-        "Docker",
-        "AWS",
         "Kubernetes",
-        "React",
-        "Node.js"
+        "AWS"
       ]
     },
     {
       "name": "Aadi BD",
-      "description": "Bangladesh’s first‑ever cross‑border marketplace. Aadi focuses on promoting Bangladesh and its strength in various industries at a global level ‑ Implemented as a part of my role at Aadi BD Ltd.",
+      "description": "Bangladesh's first cross-border marketplace, with a local delivery system (+40% logistics efficiency) and Redx, Pathao, DHL and UPS integrations.",
       "url": "https://eyakub.github.io/projects",
       "keywords": [
-        "Python",
         "Django",
         "DRF",
         "AWS",
-        "Docker",
         "React"
       ]
     },
     {
       "name": "Moiur",
-      "description": "Moiur is a modern and appropriate solution for book community convention centers, and party centers - Implemented as a part of my role at Venture Solution Ltd.",
+      "description": "Booking for convention halls and party centres, with catering, an internal CRM and a payment gateway.",
       "url": "https://eyakub.github.io/projects",
       "keywords": [
-        "Python",
         "Django",
         "DRF",
         "AWS",
-        "Docker",
-        "VueJS"
+        "Vue.js"
       ]
     }
   ]

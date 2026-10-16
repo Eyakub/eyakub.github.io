@@ -20,13 +20,13 @@ Full-stack engineer in Dhaka shipping AI features. Python, FastAPI, Django, Post
 
 ## Projects
 
-- [ExactSDS](https://exactsds.sdsmanager.com/): AI-powered safety data sheet creation at SDS Manager: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, CLP, REACH and OSHA.
+- [ExactSDS](https://exactsds.sdsmanager.com/): AI-powered safety data sheet creation: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, CLP, REACH and OSHA.
 - [Razlio AI](https://app.razlio.com/): An AI sales agent that chats with customers in Bengali and English on Messenger, WhatsApp, Instagram, Telegram and the web, sells from the live catalogue and takes the order.
 - [Razlio Commerce](https://razlio.com/commerce/): A storefront on your own domain, cash on delivery and bKash or Nagad with transaction-ID checks, five couriers booked from the order, and a P&L that counts costs. Our own shop, Razlio Mart, runs on it.
 - [Hub One · Stride](https://eyakub.github.io/projects): An agent-assisted task board inside Hub One, SDS Manager's internal platform. In development for internal use, launching soon.
-- [Rallo](https://github.com/Eyakub/Rallo): A red panda on your Mac desktop that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you.
-- [Go Games](https://go-games.gg/tournament?app=goama&country=SG): Payment gateway integrations expanded reach in Latin America by 20%. Unit testing cut bugs by 30%. CI/CD to Kubernetes.
-- [Aadi BD](https://eyakub.github.io/projects): Bangladesh’s first‑ever cross‑border marketplace. Aadi focuses on promoting Bangladesh and its strength in various industries at a global level ‑ Implemented as a part of my role at Aadi BD Ltd.
-- [Moiur](https://eyakub.github.io/projects): Moiur is a modern and appropriate solution for book community convention centers, and party centers - Implemented as a part of my role at Venture Solution Ltd.
+- [Rallo](https://github.com/Eyakub/Rallo): A macOS desktop pet that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you. Built in Rust and Swift.
+- [Go Games](https://go-games.gg/tournament?app=goama&country=SG): Tournaments and mini-games that companies plug into their apps. Payments expanded reach in Latin America by 20%, and unit testing cut bugs by 30%.
+- [Aadi BD](https://eyakub.github.io/projects): Bangladesh's first cross-border marketplace, with a local delivery system (+40% logistics efficiency) and Redx, Pathao, DHL and UPS integrations.
+- [Moiur](https://eyakub.github.io/projects): Booking for convention halls and party centres, with catering, an internal CRM and a payment gateway.
 
 Updated 2026-10-16.

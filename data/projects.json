@@ -2,33 +2,18 @@
     {
         "fields": {
             "slug": "sds_manager",
-            "description": [
-                "AI-powered safety data sheet creation at SDS Manager: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, CLP, REACH and OSHA."
-            ],
             "imageUrl": "/exactsds-cover.jpg",
             "liveUrl": "https://exactsds.sdsmanager.com/",
-            "tags": [
-                "Python",
-                "FastAPI",
-                "PostgreSQL",
-                "Docker",
-                "LLMs",
-                "RAG",
-                "Tailwind CSS",
-                "Git"
-            ],
             "title": "ExactSDS",
             "featured": true,
             "meta": "ExactSDS · SDS Manager · Jul 2025 – now",
             "headline": "AI for chemical-safety compliance",
             "chips": [
-                "Python",
                 "FastAPI",
                 "PostgreSQL",
                 "LLMs",
                 "RAG",
-                "Agentic engineering",
-                "Docker"
+                "Agentic engineering"
             ],
             "columns": [
                 [
@@ -43,25 +28,18 @@
                     "The hard part",
                     "Compliance comes first. Getting it right meant studying the regulations themselves: the global GHS standard and regional rules such as CLP and REACH in the EU and OSHA in the US."
                 ]
-            ]
+            ],
+            "kind": "work",
+            "status": "live",
+            "summary": "AI-powered safety data sheet creation: several models, retrieval over historical safety data and rule-based hazard classification, built on close study of GHS, CLP, REACH and OSHA."
         }
     },
     {
         "fields": {
             "slug": "razlio_ai",
             "title": "Razlio AI",
-            "description": [
-                "An AI sales agent that answers customers in Bengali and English on Messenger, WhatsApp, Instagram, Telegram and the web, sells from the live catalogue and takes the order."
-            ],
             "imageUrl": "/razlio-ai-cover.jpg",
             "liveUrl": "https://app.razlio.com/",
-            "tags": [
-                "FastAPI",
-                "Next.js",
-                "AI agents",
-                "LLMs",
-                "Agentic engineering"
-            ],
             "featured": true,
             "meta": "Founder · Razlio",
             "headline": "Razlio AI",
@@ -73,25 +51,17 @@
                 "বাংলা + English",
                 "Agentic engineering"
             ],
-            "cta": "app.razlio.com"
+            "cta": "app.razlio.com",
+            "kind": "founder",
+            "status": "live"
         }
     },
     {
         "fields": {
             "slug": "razlio_commerce",
             "title": "Razlio Commerce",
-            "description": [
-                "A storefront and back office for Bangladeshi brands: your own domain, cash on delivery and bKash or Nagad, every major courier, and profit and loss that counts costs."
-            ],
             "imageUrl": "/razlio-commerce-cover.jpg",
             "liveUrl": "https://razlio.com/commerce/",
-            "tags": [
-                "FastAPI",
-                "Next.js",
-                "E-commerce",
-                "Payments",
-                "Agentic engineering"
-            ],
             "featured": true,
             "meta": "Founder · Razlio",
             "headline": "Razlio Commerce",
@@ -103,54 +73,40 @@
                 "5 couriers",
                 "Agentic engineering"
             ],
-            "cta": "razlio.com/commerce"
+            "cta": "razlio.com/commerce",
+            "kind": "founder",
+            "status": "live"
         }
     },
     {
         "fields": {
             "slug": "hub_one_stride",
             "title": "Hub One · Stride",
-            "description": [
-                "An agent-assisted task board inside Hub One, SDS Manager's internal platform. In development for internal use, launching soon."
-            ],
             "imageUrl": "/stride-cover.jpg",
             "liveUrl": "",
-            "tags": [
-                "Django",
-                "React",
-                "AI agents"
-            ],
             "featured": true,
-            "meta": "Hub One · SDS Manager · in development",
+            "meta": "Hub One · SDS Manager",
             "headline": "Stride",
             "chips": [
                 "Django",
                 "React",
                 "AI agents"
             ],
-            "summary": "An agent-assisted task board inside Hub One, SDS Manager's internal platform. In development for internal use, launching soon."
+            "summary": "An agent-assisted task board inside Hub One, SDS Manager's internal platform. In development for internal use, launching soon.",
+            "kind": "work",
+            "status": "in-development"
         }
     },
     {
         "fields": {
             "slug": "rallo",
-            "description": [
-                "A macOS desktop pet built in Rust and Swift. It keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you."
-            ],
             "imageUrl": "/rallo-cover.jpg",
             "liveUrl": "https://github.com/Eyakub/Rallo",
-            "tags": [
-                "Rust",
-                "Swift",
-                "SQLite",
-                "CLI",
-                "macOS"
-            ],
             "title": "Rallo",
             "featured": true,
             "meta": "Side project · Sep 2026 · ★ 21",
             "headline": "Rallo",
-            "summary": "A red panda on your Mac desktop that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you.",
+            "summary": "A macOS desktop pet that keeps notes in view and waves when Claude Code, Codex or Gemini CLI is waiting on you. Built in Rust and Swift.",
             "chips": [
                 "Rust",
                 "Swift",
@@ -159,32 +115,21 @@
                 "MIT"
             ],
             "cta": "github.com/Eyakub/Rallo",
-            "iconUrl": "/rallo.png"
+            "iconUrl": "/rallo.png",
+            "kind": "open-source",
+            "status": "open-source"
         }
     },
     {
         "fields": {
             "slug": "go_games",
-            "description": [
-                "Developed engaging games for global companies, integrating a gamification platform for user engagement. Implemented as a part of my role at Goama."
-            ],
             "imageUrl": "/go-games-cover.jpg",
             "liveUrl": "https://go-games.gg/tournament?app=goama&country=SG",
-            "tags": [
-                "Python",
-                "Django",
-                "DRF",
-                "Docker",
-                "AWS",
-                "Kubernetes",
-                "React",
-                "Node.js"
-            ],
             "title": "Go Games",
             "featured": true,
             "meta": "Goama · May 2022 – Aug 2025",
             "headline": "Games and payments for high-traffic markets",
-            "summary": "Payment gateway integrations expanded reach in Latin America by 20%. Unit testing cut bugs by 30%. CI/CD to Kubernetes.",
+            "summary": "Tournaments and mini-games that companies plug into their apps. Payments expanded reach in Latin America by 20%, and unit testing cut bugs by 30%.",
             "chips": [
                 "Django",
                 "DRF",
@@ -204,45 +149,45 @@
                     "What changed",
                     "Payments expanded reach in Latin America by 20%. Unit testing cut bugs by 30%."
                 ]
-            ]
+            ],
+            "kind": "work",
+            "status": "live"
         }
     },
     {
         "fields": {
             "slug": "aadi_bd",
-            "description": [
-                "Bangladesh’s first‑ever cross‑border marketplace. Aadi focuses on promoting Bangladesh and its strength in various industries at a global level ‑ Implemented as a part of my role at Aadi BD Ltd."
-            ],
             "imageUrl": "/aadi-cover.jpg",
             "liveUrl": "",
-            "tags": [
-                "Python",
+            "title": "Aadi BD",
+            "kind": "work",
+            "status": "archived",
+            "meta": "Aadi BD · Jun 2020 – Apr 2022",
+            "chips": [
                 "Django",
                 "DRF",
                 "AWS",
-                "Docker",
                 "React"
             ],
-            "title": "Aadi BD"
+            "summary": "Bangladesh's first cross-border marketplace, with a local delivery system (+40% logistics efficiency) and Redx, Pathao, DHL and UPS integrations."
         }
     },
     {
         "fields": {
             "slug": "moiur",
-            "description": [
-                "Moiur is a modern and appropriate solution for book community convention centers, and party centers - Implemented as a part of my role at Venture Solution Ltd."
-            ],
             "imageUrl": "/moiur-cover.jpg",
             "liveUrl": "",
-            "tags": [
-                "Python",
+            "title": "Moiur",
+            "kind": "work",
+            "status": "archived",
+            "meta": "Venture Solutions · May 2019 – Mar 2020",
+            "chips": [
                 "Django",
                 "DRF",
                 "AWS",
-                "Docker",
-                "VueJS"
+                "Vue.js"
             ],
-            "title": "Moiur"
+            "summary": "Booking for convention halls and party centres, with catering, an internal CRM and a payment gateway."
         }
     }
 ]

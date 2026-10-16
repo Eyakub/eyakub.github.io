@@ -13,7 +13,6 @@ const RESUME = 'https://drive.google.com/file/d/1KPUkyNtMhGjGncjVA_U99YA6QZMr7Wl
 const SUMMARY =
   'Full-stack engineer in Dhaka shipping AI features. Python, FastAPI, Django, PostgreSQL, Next.js, and a team of coding agents.'
 const dates = (j) => `${j.startDate} – ${j.endDate}`
-const oneLine = (p) => p.summary || p.description.filter(Boolean)[0] || ''
 const link = (p) => p.liveUrl || `${SITE}/projects`
 
 const llms = `# Eyakub Sorkar
@@ -34,7 +33,7 @@ ${work.map((j) => `- ${j.company}, ${j.title} (${dates(j)}): ${j.summary}`).join
 
 ## Projects
 
-${projects.map((p) => `- [${p.title}](${link(p)}): ${oneLine(p)}`).join('\n')}
+${projects.map((p) => `- [${p.title}](${link(p)}): ${p.summary}`).join('\n')}
 
 Updated ${home.asOf}.
 `
@@ -62,9 +61,9 @@ const resume = {
   })),
   projects: projects.map((p) => ({
     name: p.title,
-    description: oneLine(p),
+    description: p.summary,
     url: link(p),
-    keywords: p.tags,
+    keywords: p.chips,
   })),
 }
 
