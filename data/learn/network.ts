@@ -67,3 +67,14 @@ export const WALKWAYS: { from: string; to: string; via?: Pt[] }[] = [
   { from: 'multiprocessing-pools', to: 'celery-redis' },
   { from: 'asyncio-event-loop', to: 'fastapi-lifecycle', via: [[810, 450], [540, 450], [540, 110]] },
 ]
+
+// The four stops a newcomer should ride first, in order.
+export const FIRST_RIDE = ['concurrency-vs-parallelism', 'processes-vs-threads', 'git-basics', 'celery-redis']
+
+// Row order for the hub's vertical route index. Lines that share an interchange run side by side as two lanes,
+// so every station is listed once and each line's stops still read in order down its lane.
+export const ROUTE_SECTIONS: { lanes: LineId[]; rows: string[] }[] = [
+  { lanes: ['backend', 'async'], rows: ['http-journey', 'rest-basics', 'fastapi-lifecycle', 'django-lifecycle', 'auth-jwt-oauth', 'celery-redis', 'redis-deep-dive', 'databases'] },
+  { lanes: ['git', 'devops'], rows: ['git-basics', 'github-pull-requests', 'docker', 'docker-compose', 'ci-cd', 'nginx', 'kubernetes', 'auto-scaling'] },
+  { lanes: ['concurrency'], rows: LINES.find((l) => l.id === 'concurrency')!.stops },
+]

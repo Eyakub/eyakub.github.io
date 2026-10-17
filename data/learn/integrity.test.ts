@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { TOPICS } from './index'
-import { STATIONS, LINES } from './network'
+import { FIRST_RIDE, LINES, ROUTE_SECTIONS, STATIONS } from './network'
 import type { L10n, Topic } from './types'
 import { bidirectionalCorridors, edgePoints, pointAt } from '../../components/learn/player/geometry'
 import { trips, workNodes } from '../../components/learn/player/flow'
@@ -191,5 +191,23 @@ describe.each(Object.values(TOPICS).map((t) => [t.slug, t] as [string, Topic]))(
 describe('network', () => {
   it('every line stop is a station', () => {
     LINES.forEach((l) => l.stops.forEach((s) => expect(STATIONS[s], `${l.id}:${s}`).toBeTruthy()))
+  })
+  it('the route index lists every station once, each on one of its lanes', () => {
+    const rows = ROUTE_SECTIONS.flatMap((sec) => sec.rows)
+    expect([...rows].sort()).toEqual(Object.keys(STATIONS).sort())
+    for (const sec of ROUTE_SECTIONS) {
+      for (const id of sec.rows) expect(sec.lanes.some((ln) => LINES.find((l) => l.id === ln)!.stops.includes(id)), id).toBe(true)
+    }
+  })
+  it('each lane reads its line in order', () => {
+    for (const sec of ROUTE_SECTIONS) {
+      for (const ln of sec.lanes) {
+        const line = LINES.find((l) => l.id === ln)!
+        expect(sec.rows.filter((id) => line.stops.includes(id)), ln).toEqual(line.stops)
+      }
+    }
+  })
+  it('the first ride stops are stations', () => {
+    FIRST_RIDE.forEach((id) => expect(STATIONS[id], id).toBeTruthy())
   })
 })

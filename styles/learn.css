@@ -58,16 +58,31 @@ html[lang="bn"] .learn-root{font-family:var(--f-bn);line-height:1.72}
 html[lang="bn"] .learn-root .lede{line-height:1.65}
 
 /* ---------- MAP VIEW ---------- */
-.learn-root .hero{display:grid;gap:18px;padding-block:28px 28px}
-.learn-root .hero h1{font-size:clamp(40px,7.4vw,74px);max-width:15ch}
+/* One symbol set across hero, map and index: white tick = stop, ink capsule = change lines, numbered ink disc = first ride, filled tick = learned. No cards on the hub. */
 .learn-root .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:var(--r-ctl);font-weight:650;font-size:var(--t-md);text-decoration:none;border:1.5px solid var(--ink);background:transparent}
 .learn-root .btn.primary{background:var(--ink);color:var(--paper)}
 .learn-root .btn svg{width:20px;height:20px}
-.learn-root .hero .btn{justify-self:start}
+.learn-root .chip{font-size:var(--t-xs);font-weight:600;padding:3px 10px;border-radius:var(--r-ctl);white-space:nowrap}
 
-.learn-root .map-card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-card);padding:10px 10px 4px;overflow:hidden}
+.learn-root .hub-hero{display:grid;gap:32px;padding-block:20px 36px}
+.learn-root .hub-intro{display:grid;gap:18px}
+.learn-root .hub-hero h1{font-size:clamp(42px,6.6vw,84px);max-width:16ch}
+@media (min-width:900px){
+  .learn-root .hub-hero{grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:64px;align-items:end;padding-block:36px 44px}
+}
+
+.learn-root .first-ride{display:grid;gap:12px;justify-items:start}
+.learn-root .first-ride h2{font-size:var(--t-sm);font-weight:600;color:var(--ink-2)}
+.learn-root .first-ride ol{list-style:none;margin:0 0 6px;padding:0;position:relative}
+.learn-root .first-ride ol::before{content:"";position:absolute;left:13px;top:22px;bottom:22px;width:4px;border-radius:2px;background:var(--ink)}
+.learn-root .first-ride a{position:relative;display:flex;align-items:center;gap:14px;min-height:44px;text-decoration:none;font-size:var(--t-lg);font-weight:650;font-stretch:87.5%;line-height:1.2}
+.learn-root .first-ride .num{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:var(--t-sm);font-weight:700;font-stretch:100%}
+.learn-root .first-ride a:hover .nm{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
+
+.learn-root .map-sec{padding-block:4px 0}
 .learn-root .network-svg{display:block;width:100%;height:auto}
 .learn-root .network-svg .ln{fill:none;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+.learn-root .network-svg .walk{fill:none;stroke:var(--ink-3);stroke-width:3;stroke-dasharray:2 6;stroke-linecap:round}
 .learn-root .network-svg .st{cursor:pointer}
 .learn-root .network-svg .st .hit{fill:transparent;stroke:transparent;stroke-width:3}
 .learn-root .network-svg .st:focus{outline:none}
@@ -76,48 +91,66 @@ html[lang="bn"] .learn-root .lede{line-height:1.65}
 .learn-root .network-svg .st:hover .dot{r:13}
 .learn-root .network-svg .st.soon .dot{fill:var(--paper);stroke:var(--ink-3)!important;stroke-width:2.5;stroke-dasharray:3.5 3}
 .learn-root .network-svg .st.x .dot{stroke:var(--ink)!important;stroke-width:4.5}
+.learn-root .network-svg .st.first .dot{fill:var(--ink);stroke:var(--ink)!important;stroke-width:3}
+.learn-root .network-svg .st.first:hover .dot{r:17}
 .learn-root .network-svg .st.done .dot{fill:var(--st)}
 .learn-root .network-svg .st .chk{fill:none;stroke:var(--surface);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
-.learn-root .network-svg text{fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:5px;stroke-linejoin:round;font-size:15.5px;font-weight:650;font-stretch:87.5%}
+/* The map sits on the page itself, so label halos use the paper colour. */
+.learn-root .network-svg text{fill:var(--ink);paint-order:stroke;stroke:var(--paper);stroke-width:5px;stroke-linejoin:round;font-size:15.5px;font-weight:650;font-stretch:87.5%}
+.learn-root .network-svg mask text{fill:#000;stroke:#000;stroke-width:14px}
+.learn-root .network-svg text.rn{fill:var(--paper);stroke:none;font-size:15px;font-weight:700;font-stretch:100%;text-anchor:middle;dominant-baseline:central;pointer-events:none}
 .learn-root .network-svg .st.soon text{fill:var(--ink-3);font-weight:500}
-.learn-root .line-key{display:flex;flex-wrap:wrap;gap:8px 22px;list-style:none;margin:14px 4px 0;padding:0;font-size:var(--t-sm);color:var(--ink-2)}
-.learn-root .line-key li{display:inline-flex;align-items:center;gap:8px}
-.learn-root .line-key i{width:22px;height:7px;border-radius:4px;background:var(--c)}
-.learn-root .preview-note{font-size:var(--t-sm);color:var(--ink-3);margin:10px 4px 0;max-width:72ch}
+@media (min-width:1200px){.learn-root .network-svg{max-height:calc(100dvh - 120px);margin-inline:auto}}
 
-.learn-root .start-here{padding-block:4px 20px}
-.learn-root .start-here h2{font-size:var(--t-xl);font-weight:700;font-stretch:87.5%;margin-bottom:12px}
-.learn-root .start-here ol{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.learn-root .start-here a{display:grid;grid-template-columns:36px 1fr;align-items:center;gap:14px;padding:12px 16px;min-height:56px;background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-card);color:inherit;text-decoration:none}
-.learn-root .start-here .num{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--paper);font-weight:700}
-.learn-root .start-here .sname,.learn-root .start-here .blurb{display:block}
-.learn-root .start-here .sname{font-weight:650}
-@media (min-width:760px){.learn-root .start-here ol{grid-template-columns:1fr 1fr}}
-.learn-root .blurb{display:block;font-size:var(--t-sm);color:var(--ink-2);font-weight:400;line-height:1.35}
-.learn-root .strips{padding-block:36px 8px}
-.learn-root .strips h2{font-size:var(--t-xl);font-weight:700;font-stretch:87.5%;margin-bottom:16px}
-.learn-root .strip-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
-.learn-root .strip{background:var(--surface);border:1px solid var(--rule);border-radius:18px;padding:18px 18px 10px;min-width:0}
-.learn-root .strip h3{display:flex;align-items:center;gap:10px;font-size:var(--t-lg);font-weight:700;font-stretch:87.5%;margin-bottom:6px}
-.learn-root .strip h3 i{width:26px;height:8px;border-radius:4px;background:var(--c)}
-.learn-root .strip-split{display:grid;gap:0 28px}
-@media (min-width:760px){
-  .learn-root .strip.many{grid-column:1 / -1}
-  .learn-root .strip-split{grid-template-columns:minmax(0,520px) minmax(0,520px);align-items:start;justify-content:start}
+.learn-root .map-key{display:flex;flex-wrap:wrap;gap:8px 24px;list-style:none;margin:14px 0 0;padding:14px 0 0;border-top:1px solid var(--rule);font-size:var(--t-sm);color:var(--ink-2)}
+.learn-root .map-key li{display:inline-flex;align-items:center;gap:8px}
+.learn-root .map-key svg{flex:none;width:28px;height:16px;overflow:visible}
+.learn-root .map-key .k-ln{fill:none;stroke-width:6;stroke-linecap:round}
+.learn-root .map-key .k-x{fill:var(--surface);stroke:var(--ink);stroke-width:3}
+.learn-root .map-key .k-first{fill:var(--ink)}
+.learn-root .map-key .k-rn{fill:var(--paper);font-size:11px;font-weight:700;text-anchor:middle;dominant-baseline:central}
+.learn-root .map-key .k-walk{fill:none;stroke:var(--ink-3);stroke-width:3;stroke-dasharray:2 5;stroke-linecap:round}
+
+/* Route index: a vertical strip map. Lanes are drawn per row so they stay joined however tall a row wraps. */
+.learn-root .route-index{padding-block:56px 0}
+.learn-root .route-index > h2{font-size:var(--t-xl);font-weight:700;font-stretch:87.5%;margin-bottom:18px}
+.learn-root .route-grid{display:grid;gap:40px 48px}
+@media (min-width:900px){
+  .learn-root .route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .learn-root .route-sec:last-child{grid-column:1 / -1}
+  .learn-root .route-sec:last-child ol{columns:2;column-gap:48px}
 }
-.learn-root .strip ol{list-style:none;margin:0;padding:0;position:relative}
-.learn-root .strip ol::before{content:"";position:absolute;left:13px;top:22px;bottom:22px;width:6px;border-radius:3px;background:var(--c)}
-.learn-root .strip li button{position:relative;display:grid;grid-template-columns:32px 1fr auto;align-items:center;gap:10px;width:100%;min-height:48px;padding:6px 0;border:0;background:transparent;text-align:left}
-.learn-root .strip .sdot{justify-self:center;width:18px;height:18px;border-radius:50%;background:var(--surface);border:4px solid var(--c);position:relative;z-index:1}
-.learn-root .strip .soon .sdot{border:2.5px dashed var(--ink-3);background:var(--paper)}
-.learn-root .strip .x .sdot{border-color:var(--ink);width:22px;height:22px}
-.learn-root .strip .sname{font-weight:600;line-height:1.25}
-.learn-root .strip .soon .sname{color:var(--ink-3);font-weight:500}
-.learn-root .strip .change{display:block;font-size:var(--t-xs);color:var(--ink-3);font-weight:500}
-.learn-root .chip{font-size:var(--t-xs);font-weight:600;padding:3px 10px;border-radius:var(--r-ctl);white-space:nowrap}
-.learn-root .chip.open{background:color-mix(in srgb,var(--c) 16%,var(--surface));color:var(--ink)}
-.learn-root .chip.later{border:1px dashed var(--rule);color:var(--ink-3)}
-.learn-root .chip.learned{background:var(--k-result);color:var(--k-result-on)}
+@media (min-width:1180px){
+  .learn-root .route-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .learn-root .route-sec:last-child{grid-column:auto}
+  .learn-root .route-sec:last-child ol{columns:auto}
+}
+.learn-root .route-sec{min-width:0}
+.learn-root .route-sec h3{display:flex;flex-wrap:wrap;gap:6px 20px;padding-bottom:12px;margin-bottom:4px;border-bottom:1px solid var(--rule);font-size:var(--t-md);font-weight:700;font-stretch:87.5%}
+.learn-root .route-sec h3 span{display:inline-flex;align-items:center;gap:8px}
+.learn-root .route-sec h3 i{width:22px;height:6px;border-radius:3px;background:var(--c)}
+.learn-root .route-sec ol{list-style:none;margin:0;padding:0}
+.learn-root .route-sec li{--lane0:16px;--lane1:44px;--dy:24px;position:relative;break-inside:avoid}
+.learn-root .route-sec li > a,.learn-root .route-sec li > button{display:grid;gap:3px;width:100%;min-height:60px;padding:13px 0 15px 66px;border:0;background:transparent;color:inherit;text-align:left;text-decoration:none}
+.learn-root .route-sec .lanes{position:absolute;inset:0 auto 0 0;width:60px;pointer-events:none}
+.learn-root .route-sec .rail{position:absolute;top:0;bottom:0;width:6px;margin-left:-3px;background:var(--c)}
+.learn-root .route-sec .rail.start{top:var(--dy)}
+.learn-root .route-sec .rail.end{bottom:auto;height:var(--dy)}
+.learn-root .route-sec .k0{left:var(--lane0)}
+.learn-root .route-sec .k1{left:var(--lane1)}
+.learn-root .route-sec .mk{position:absolute;z-index:1;top:var(--dy);width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:4px solid var(--c);background:var(--surface);display:grid;place-items:center;color:var(--paper);font-size:13px;font-weight:700;line-height:1}
+.learn-root .route-sec .mk.x{left:var(--lane0);width:calc(var(--lane1) - var(--lane0) + 24px);height:24px;margin:-12px 0 0 -12px;border-radius:12px;border-color:var(--ink)}
+.learn-root .route-sec .mk.ride{width:26px;height:26px;margin:-13px 0 0 -13px;border:0;background:var(--ink)}
+.learn-root .route-sec .mk.done{background:var(--c)}
+.learn-root .route-sec .mk svg{width:16px;height:16px;fill:none;stroke:var(--paper);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.learn-root .route-sec .soon .mk{border-style:dashed;border-color:var(--ink-3);background:var(--paper)}
+.learn-root .route-sec .sname{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;font-size:var(--t-md);font-weight:650;font-stretch:87.5%;line-height:1.3}
+.learn-root .route-sec .soon .nm{color:var(--ink-3);font-weight:500}
+.learn-root .route-sec a:hover .nm{text-decoration:underline;text-decoration-color:var(--c);text-decoration-thickness:2px;text-underline-offset:4px}
+.learn-root .route-sec .tag{font-size:var(--t-xs);font-weight:600;font-stretch:100%;line-height:20px;padding:0 7px;border:1px solid var(--rule);border-radius:6px;color:var(--ink-2)}
+.learn-root .route-sec .tag.ok{border-color:transparent;background:var(--k-result);color:var(--k-result-on)}
+.learn-root .route-sec .blurb{font-size:var(--t-sm);line-height:1.42;color:var(--ink-2);max-width:52ch}
+.learn-root .route-sec .change{font-size:var(--t-xs);font-weight:550;color:var(--ink-3)}
 
 /* ---------- TOPIC VIEW ---------- */
 .learn-root .crumb{padding-block:6px 0}
@@ -137,9 +170,6 @@ html[lang="bn"] .learn-root .lede{line-height:1.65}
 .learn-root .stage{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-card);padding:12px 12px 14px;min-width:0}
 @media (min-width:1180px){.learn-root .stage{position:sticky;top:calc(env(safe-area-inset-top,0px) + 84px)}
 .learn-root .flow-svg{max-height:calc(100dvh - 140px)}}
-@media (min-width:1200px){
-  .learn-root .network-svg{max-height:calc(100dvh - 120px);width:100%;display:block;margin-inline:auto}
-}
 @media (max-width:1179px){.learn-root .player .ride{display:contents}
 .learn-root .ride .now{order:1}
 .learn-root .stage{order:2}
@@ -283,9 +313,8 @@ html[lang="bn"] .learn-root .flow-svg text,html[lang="bn"] .learn-root .network-
 
 .learn-root .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);max-width:min(92vw,520px);background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:14px;font-size:var(--t-sm);font-weight:550;z-index:50;box-shadow:0 10px 30px color-mix(in srgb,var(--ink) 25%,transparent)}
 
+@media (max-width:899px){.learn-root .map-sec{display:none}}
 @media (max-width:639px){
-  .learn-root .map-sec{display:none}
-  .learn-root .line-key,.learn-root .preview-note{margin-inline:0}
   .learn-root .bar{padding-block:12px}
   .learn-root .brand span{font-size:var(--t-md)}
 }
@@ -300,7 +329,6 @@ html[lang="bn"] .learn-root .flow-svg text,html[lang="bn"] .learn-root .network-
 .learn-root .sources a{color:var(--ink-2)}
 .learn-root .flow-svg .group rect{fill:color-mix(in srgb,var(--ink) 4%,transparent);stroke:var(--rule);stroke-dasharray:6 5;stroke-width:1.5}
 .learn-root .flow-svg .group text{fill:var(--ink-3);font-size:13px;font-weight:600;paint-order:stroke;stroke:var(--surface);stroke-width:4px;stroke-linejoin:round}
-.learn-root .network-svg .walk{fill:none;stroke:var(--ink-3);stroke-width:3;stroke-dasharray:2 6;stroke-linecap:round}
 body:has(.learn-root){background:#F2F4F8}
 @media (prefers-color-scheme: dark){body:has(.learn-root){background:#0C121E}}
 

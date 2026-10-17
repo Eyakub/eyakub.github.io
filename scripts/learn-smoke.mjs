@@ -181,20 +181,22 @@ const checks = [
     assert(rendered, `topic page never rendered; h1: ${h1}`)
     noProblems(problems)
   }],
-  ['hub-strips-mobile', async () => {
+  ['hub-index-mobile', async () => {
     const { page, context } = await open('/learn', { width: 390, height: 844 })
     const mapVisible = await page.locator('.network-svg').isVisible().catch(() => false)
-    const strips = await page.locator('.strip').count()
-    await shot(page, 'hub-strips-mobile')
+    const sections = await page.locator('.route-sec').count()
+    const stops = await page.locator('.route-sec li').count()
+    await shot(page, 'hub-index-mobile')
     await context.close()
     assert(!mapVisible, 'network map visible on mobile')
-    assert(strips === 5, `expected 5 strips, got ${strips}`)
+    assert(sections === 3, `expected 3 route sections, got ${sections}`)
+    assert(stops === 26, `expected 26 index stops, got ${stops}`)
   }],
   ['hub-start-here', async () => {
     const { page, context } = await open('/learn', { width: 390, height: 844 })
-    await page.waitForSelector('.start-here a')
-    const hrefs = await page.locator('.start-here a').evaluateAll((els) => els.map((e) => e.getAttribute('href')))
-    const cta = await page.locator('.hero a.btn.primary').getAttribute('href')
+    await page.waitForSelector('.first-ride ol a')
+    const hrefs = await page.locator('.first-ride ol a').evaluateAll((els) => els.map((e) => e.getAttribute('href')))
+    const cta = await page.locator('.hub-hero a.btn.primary').getAttribute('href')
     const w = await page.evaluate(() => document.documentElement.scrollWidth)
     await shot(page, 'hub-start-here-mobile')
     await context.close()
@@ -527,7 +529,7 @@ const checks = [
     await page.waitForURL((u) => u.pathname === '/learn' || u.pathname === '/learn/')
     await page.waitForSelector('.network-svg .st[data-id="celery-redis"]')
     const station = await page.getAttribute('.network-svg .st[data-id="celery-redis"]', 'class')
-    const chip = await page.locator('.strip .chip.learned').first().textContent()
+    const chip = await page.locator('.route-sec .tag.ok').first().textContent()
     await context.close()
     assert(pressed === 'true', `aria-pressed ${pressed}`)
     assert(chip?.trim() === 'Learned', `chip ${chip}`)
