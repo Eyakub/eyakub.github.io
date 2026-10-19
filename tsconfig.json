@@ -29,7 +29,13 @@
     "components/learn/**/*.tsx",
     "contexts/LearnPrefsContext.tsx",
     "data/learn/**/*.ts",
-    "lib/learn/**/*.ts"
+    "lib/learn/**/*.ts",
+    "pages/workout/**/*.tsx",
+    "components/workout/**/*.ts",
+    "components/workout/**/*.tsx",
+    "contexts/WorkoutContext.tsx",
+    "data/workout/**/*.ts",
+    "lib/workout/**/*.ts"
   ],
   "exclude": [
     "node_modules",

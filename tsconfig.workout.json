@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "strict": true, "noEmit": true, "incremental": false },
+  "include": [
+    "next-env.d.ts",
+    "pages/workout/**/*.tsx",
+    "components/workout/**/*.ts",
+    "components/workout/**/*.tsx",
+    "contexts/WorkoutContext.tsx",
+    "data/workout/**/*.ts",
+    "lib/workout/**/*.ts"
+  ],
+  "exclude": ["node_modules", "**/*.test.ts"]
+}

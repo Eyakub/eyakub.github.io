@@ -13,6 +13,7 @@
     "contributions": "node scripts/contributions.mjs",
     "test": "vitest run",
     "typecheck:learn": "tsc -p tsconfig.learn.json",
+    "typecheck:workout": "tsc -p tsconfig.workout.json",
     "smoke:learn": "node scripts/learn-smoke.mjs",
     "shots:learn": "SMOKE_ONLY=step-shots LEARN_SHOTS=all node scripts/learn-smoke.mjs"
   },
