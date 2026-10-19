@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createDoc, currentRoutine, latestMeasurement, logMeasurement, measurementSeries, migrate, newId, planFor, routineAt, type OnboardingInput } from './doc'
+import { createDoc, currentRoutine, latestMeasurement, logMeasurement, measurementSeries, migrate, newId, planFor, routineAt, updateProfile, type OnboardingInput } from './doc'
 import type { ProgramSeed, RoutineVersion } from './types'
 
 const SEED: ProgramSeed = {
@@ -140,6 +140,46 @@ describe('logMeasurement', () => {
   it('ignores undefined patch fields instead of erasing data', () => {
     const next = logMeasurement(make(), '2026-10-20', { weightKg: undefined, waistIn: 36.5 }, later)
     expect(next.measurements[0]).toMatchObject({ weightKg: 82.4, waistIn: 36.5 })
+  })
+})
+
+describe('updateProfile', () => {
+  const later = new Date(2026, 9, 21, 8, 0)
+
+  it('merges the patch and bumps profile.updatedAt', () => {
+    const next = updateProfile(make(), { heightCm: 180, dumbbellKg: 10 }, later)
+    expect(next.profile).toEqual({
+      heightCm: 180,
+      targets: { weightKg: 75, waistIn: 34 },
+      equipment: ['dumbbells', 'bodyweight'],
+      dumbbellKg: 10,
+      updatedAt: later.toISOString(),
+    })
+  })
+  it('replaces targets and equipment as a whole', () => {
+    const next = updateProfile(make(), { targets: { weightKg: null, waistIn: 33 }, equipment: ['bodyweight', 'chair'] }, later)
+    expect(next.profile.targets).toEqual({ weightKg: null, waistIn: 33 })
+    expect(next.profile.equipment).toEqual(['bodyweight', 'chair'])
+  })
+  it('null clears a value, undefined leaves it alone', () => {
+    const next = updateProfile(make(), { heightCm: null, dumbbellKg: undefined }, later)
+    expect(next.profile.heightCm).toBeNull()
+    expect(next.profile.dumbbellKg).toBe(7.5)
+  })
+  it('leaves everything outside the profile untouched', () => {
+    const doc = make()
+    const next = updateProfile(doc, { heightCm: 181 }, later)
+    expect(next.measurements).toBe(doc.measurements)
+    expect(next.program).toBe(doc.program)
+    expect(next.createdAt).toBe(doc.createdAt)
+  })
+  it('does not mutate the input', () => {
+    const doc = make()
+    const before = JSON.stringify(doc)
+    const next = updateProfile(doc, { heightCm: 181, equipment: ['bodyweight'] }, later)
+    expect(next).not.toBe(doc)
+    expect(next.profile).not.toBe(doc.profile)
+    expect(JSON.stringify(doc)).toBe(before)
   })
 })
 

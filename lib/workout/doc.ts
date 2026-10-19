@@ -1,5 +1,5 @@
 import { toIsoDate, weekdayIndex } from './dates'
-import type { DayPlan, Equipment, Id, IsoDate, Measurement, ProgramSeed, RoutineVersion, WeekPlan, WorkoutDoc } from './types'
+import type { DayPlan, Equipment, Id, IsoDate, Measurement, Profile, ProgramSeed, RoutineVersion, WeekPlan, WorkoutDoc } from './types'
 
 export interface OnboardingInput {
   weightKg: number
@@ -12,6 +12,7 @@ export interface OnboardingInput {
 }
 
 export type MeasurementField = 'weightKg' | 'waistIn'
+export type ProfilePatch = Partial<Omit<Profile, 'updatedAt'>>
 
 export function newId(): string {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') return crypto.randomUUID()
@@ -74,6 +75,13 @@ export function logMeasurement(
   if (i < 0) return { ...doc, measurements: [...doc.measurements, { date, ...fields, updatedAt }] }
   const measurements = doc.measurements.map((m, j) => (j === i ? { ...m, ...fields, updatedAt } : m))
   return { ...doc, measurements }
+}
+
+// Shallow merge: a `targets` patch replaces the whole object, so pass both fields. Undefined keys are
+// skipped so a half-filled patch can't erase data; use null to clear a value.
+export function updateProfile(doc: WorkoutDoc, patch: ProfilePatch, now: Date): WorkoutDoc {
+  const fields = Object.fromEntries(Object.entries(patch).filter(([, v]) => v !== undefined)) as ProfilePatch
+  return { ...doc, profile: { ...doc.profile, ...fields, updatedAt: now.toISOString() } }
 }
 
 export function measurementSeries(doc: WorkoutDoc, field: MeasurementField): { date: IsoDate; value: number }[] {
