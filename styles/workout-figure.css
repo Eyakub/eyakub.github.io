@@ -4,7 +4,7 @@
 .wo-root .fig svg{display:block;width:100%;height:auto}
 .wo-root .wf line{stroke-linecap:round}
 .wo-root .wf polygon{stroke-linejoin:round}
-.wo-root .fig-pending{aspect-ratio:4/3;display:grid;place-items:center;text-align:center;padding:16px;color:var(--chalk-3,#80879A);font-size:13px;border:1px dashed var(--line,#283041);border-radius:var(--r-card,18px)}
+.wo-root .fig-pending{aspect-ratio:4/3;display:grid;place-items:center;text-align:center;padding:16px;color:var(--text-3);font-size:13px;border:1px dashed var(--line);border-radius:var(--r-card)}
 
 .wo-root .wf-body{stroke:var(--fig,#ECE9E1);fill:var(--fig,#ECE9E1)}
 .wo-root .wf-body circle,.wo-root .wf-body polygon{fill:var(--fig,#ECE9E1);stroke:var(--fig,#ECE9E1)}
@@ -21,6 +21,6 @@
 .wo-root .wf-hub{fill:var(--fig-db,#C9CCD1)}
 
 /* reduced motion: the figure stays still until the viewer starts it */
-.wo-root .fig-play{position:absolute;right:8px;bottom:8px;display:grid;place-items:center;width:36px;height:36px;padding:0;border-radius:50%;border:1px solid var(--line,#283041);background:var(--raised,#1D2330);color:var(--chalk,#ECE7DE)}
+.wo-root .fig-play{position:absolute;right:8px;bottom:8px;display:grid;place-items:center;width:36px;height:36px;padding:0;border-radius:50%;border:1px solid var(--line);background:var(--surface-2);color:var(--text)}
 .wo-root .fig-play::before{content:"";position:absolute;inset:-4px}
-.wo-root .fig-play .ico{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.wo-root .fig-play .ico{width:16px;height:16px;stroke-width:2}

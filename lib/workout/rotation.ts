@@ -5,7 +5,7 @@ import type { Id, IsoDate, RoutineVersion, SessionRecord, WorkoutDoc } from './t
 const byTime = (a: SessionRecord, b: SessionRecord) =>
   a.finishedAt < b.finishedAt ? -1 : a.finishedAt > b.finishedAt ? 1 : a.startedAt < b.startedAt ? -1 : a.startedAt > b.startedAt ? 1 : 0
 
-const chronological = (doc: WorkoutDoc) => [...doc.sessions].sort(byTime)
+export const chronological = (doc: WorkoutDoc) => [...doc.sessions].sort(byTime)
 
 /**
  * Routine ids done in the open cycle, in the order done. Sessions group into cycles from the first one

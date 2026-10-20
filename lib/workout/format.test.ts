@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatInches, formatKg, formatLoad, formatRange, formatRest, formatTarget } from './format'
+import { formatInches, formatKg, formatLoad, formatRange, formatRest, formatTarget, inWords } from './format'
 
 const t = (min: number, max: number, per?: 'side' | 'leg', sets = 3) => ({ sets, min, max, per })
 
@@ -57,5 +57,13 @@ describe('formatKg / formatInches', () => {
     expect(formatInches(35.25)).toBe('35.25')
     expect(formatInches(35.75)).toBe('35.75')
     expect(formatInches(35.3)).toBe('35.3')
+  })
+})
+
+describe('inWords', () => {
+  it('spells small counts and leaves large ones as digits', () => {
+    expect(inWords(4)).toBe('Four')
+    expect(inWords(12)).toBe('Twelve')
+    expect(inWords(15)).toBe('15')
   })
 })

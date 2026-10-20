@@ -1,29 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import Link from 'next/link'
 import { useWorkout } from '../../../contexts/WorkoutContext'
-import { formatDay, toIsoDate, weekNumberSince } from '../../../lib/workout/dates'
+import { formatLongDay } from '../../../lib/workout/dates'
 import { currentRoutine, type MeasurementField } from '../../../lib/workout/doc'
-import { nextUp } from '../../../lib/workout/rotation'
-import { estimateMinutes } from '../../../lib/workout/stats'
+import { nextUp, weekSessions } from '../../../lib/workout/rotation'
+import { GearIcon } from '../shell/icons'
+import { useToday } from '../shell/useToday'
+import { BodyStats } from './BodyStats'
 import { LogMeasurementSheet } from './LogMeasurementSheet'
-import { PlanCard } from './PlanCard'
-import { StatGrid } from './StatGrid'
-import { WeekSummary } from './WeekSummary'
-import { totalSets } from './plan'
-
-// A tab left open overnight should roll over to the next day when you come back to it
-function useToday(): Date {
-  const [today, setToday] = useState(() => new Date())
-  useEffect(() => {
-    const refresh = () =>
-      setToday((prev) => {
-        const now = new Date()
-        return toIsoDate(now) === toIsoDate(prev) ? prev : now
-      })
-    document.addEventListener('visibilitychange', refresh)
-    return () => document.removeEventListener('visibilitychange', refresh)
-  }, [])
-  return today
-}
+import { NextUpCard } from './NextUpCard'
+import { OtherRoutines } from './OtherRoutines'
+import { WeekSection } from './WeekSection'
 
 export function TodayView() {
   const { doc } = useWorkout()
@@ -34,29 +21,16 @@ export function TodayView() {
 
   return (
     <div className="screen">
-      <div className="topline">
-        <span className="eyebrow">
-          {formatDay(today)} · Week {weekNumberSince(doc.createdAt, today)}
-        </span>
-      </div>
-      <section className="day-hero">
-        <p className="eyebrow">Up next</p>
-        <h1 className="display day-title">{routine.name}</h1>
-        <p className="day-meta">
-          {routine.items.length} exercises · {totalSets(routine)} sets · about {estimateMinutes(routine)} min
-        </p>
-      </section>
-      <WeekSummary doc={doc} today={today} />
-      <PlanCard routine={routine} />
-      <StatGrid doc={doc} />
-      <div className="quick">
-        <button type="button" className="btn" onClick={() => setLogging('weightKg')}>
-          Log weight
-        </button>
-        <button type="button" className="btn" onClick={() => setLogging('waistIn')}>
-          Log waist
-        </button>
-      </div>
+      <header className="top">
+        <p className="date">{formatLongDay(today)}</p>
+        <Link className="iconbtn" href="/workout/settings" aria-label="Settings">
+          <GearIcon />
+        </Link>
+      </header>
+      <WeekSection sessions={weekSessions(doc, today)} goal={doc.program.weeklyGoal} />
+      <NextUpCard routine={routine} />
+      <OtherRoutines doc={doc} />
+      <BodyStats doc={doc} onLog={setLogging} />
       <LogMeasurementSheet field={logging} today={today} onClose={() => setLogging(null)} />
     </div>
   )

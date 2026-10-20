@@ -1,6 +1,7 @@
 import type { IsoDate, IsoTime } from './types'
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+const DAYS_LONG = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -34,6 +35,19 @@ export function startOfWeek(d: Date): Date {
 // "Tue 20 Oct". Fixed English names so the output doesn't depend on the browser locale.
 export function formatDay(d: Date): string {
   return `${DAYS[weekdayIndex(d)]} ${d.getDate()} ${MONTHS[d.getMonth()]}`
+}
+
+export const weekdayShort = (d: Date): string => DAYS[weekdayIndex(d)]
+export const weekdayLong = (d: Date): string => DAYS_LONG[weekdayIndex(d)]
+
+/** "20 Oct". */
+export function formatDayMonth(d: Date): string {
+  return `${d.getDate()} ${MONTHS[d.getMonth()]}`
+}
+
+/** "Tuesday 20 Oct". */
+export function formatLongDay(d: Date): string {
+  return `${weekdayLong(d)} ${formatDayMonth(d)}`
 }
 
 /** 1 for the Monday-based week containing `start`, 2 for the next, and so on (never below 1). */

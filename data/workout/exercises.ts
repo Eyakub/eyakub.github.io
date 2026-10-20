@@ -1,6 +1,5 @@
 import type { Exercise } from '../../lib/workout/types'
 
-// media stays empty until licensed demos are added; never put a guessed URL here.
 export const EXERCISES: Exercise[] = [
   {
     id: 'decline-push-up',
@@ -19,7 +18,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Hips sagging or piking up.', 'Elbows flared out to 90°.', 'Stopping halfway down.'],
     alternatives: ['push-up', 'pike-push-up'],
-    media: [],
     progression:
       'Add reps until you hit 15 on every set. Then lower over 3 s, pause 2 s at the bottom, or use a higher chair.',
   },
@@ -40,7 +38,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Half reps.', 'Head poking forward.', 'Hips sagging.'],
     alternatives: ['incline-push-up', 'wide-push-up', 'decline-push-up'],
-    media: [],
     progression:
       'Add reps until you hit 15 on every set. Then lower over 3 s, pause 2 s at the bottom, or move to decline or diamond push-ups.',
   },
@@ -64,7 +61,6 @@ export const EXERCISES: Exercise[] = [
       'Wrist pain: move hands slightly forward or a little apart.',
     ],
     alternatives: ['push-up', 'db-overhead-triceps-extension'],
-    media: [],
     progression:
       'Add reps until you hit 12 on every set. Then lower over 3 s or pause 2 s with your chest on your hands.',
   },
@@ -85,7 +81,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Arching the lower back.', 'Pressing forward instead of straight up.'],
     alternatives: ['pike-push-up'],
-    media: [],
     progression:
       'Your dumbbells stay at 7.5 kg, so add reps until you hit 12 on every set. Then lower over 3 s, pause 1 s at your shoulders, or press one arm at a time.',
   },
@@ -105,7 +100,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Shrugging the shoulders up.', 'Swinging the weight.'],
     alternatives: ['db-shoulder-press'],
-    media: [],
     progression:
       'Add reps until you hit 15 on both sets. Then pause 2 s at the top and lower over 3 s.',
   },
@@ -126,7 +120,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Elbows drifting wide.', 'Arching the lower back.'],
     alternatives: ['diamond-push-up'],
-    media: [],
     progression:
       'Add reps until you hit 15 on both sets. Then lower over 3 s, or do one arm at a time with the dumbbell in one hand.',
   },
@@ -151,7 +144,6 @@ export const EXERCISES: Exercise[] = [
       'Craning your neck to reach the bar.',
     ],
     alternatives: ['negative-pull-up', 'chin-up', 'db-bent-over-row'],
-    media: [],
     progression:
       'Add a rep to your first set before anything else. Past 8 clean reps, lower over 3 s or pause with your chin over the bar.',
   },
@@ -172,7 +164,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Rounding the lower back.', 'Standing up as you pull.', 'Jerking the weight.'],
     alternatives: ['db-single-arm-row', 'pull-up'],
-    media: [],
     progression:
       'Your dumbbells stay at 7.5 kg, so progress with tempo: hold 2 s at the top and lower over 3 s.',
   },
@@ -193,7 +184,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Twisting the torso to lift.', 'Pulling to the chest instead of the hip.'],
     alternatives: ['db-bent-over-row'],
-    media: [],
     progression:
       'Add reps until you hit 12 on each side for every set. Then pause 2 s at the top and lower over 3 s.',
   },
@@ -213,7 +203,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Swinging the torso.', 'Elbows drifting forward.', 'Rushing the lowering.'],
     alternatives: ['db-hammer-curl', 'chin-up'],
-    media: [],
     progression:
       'Add reps until you hit 12 on every set. Then lower over 3 s, or pause 2 s halfway up.',
   },
@@ -233,7 +222,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Swinging.', 'Letting the wrists bend.'],
     alternatives: ['db-biceps-curl'],
-    media: [],
     progression: 'Once both sets reach 12 reps, lower over 3 s.',
   },
   {
@@ -253,7 +241,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Holding your breath.', 'Swinging.'],
     alternatives: ['scapular-pull-up'],
-    media: [],
     progression:
       'Add 5 s a session until you hold 40 s on both sets. Then keep your shoulder blades pulled down for the whole hold.',
   },
@@ -274,7 +261,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Heels lifting.', 'Knees caving in.'],
     alternatives: ['db-bulgarian-split-squat', 'split-squat'],
-    media: [],
     progression:
       'Once 15 reps feel easy, lower over 3 s and pause 2 s at the bottom. When that is easy too, move your volume to split squats.',
   },
@@ -295,7 +281,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Front foot too close, so the heel lifts.', 'Pushing with the back leg.'],
     alternatives: ['split-squat', 'reverse-lunge'],
-    media: [],
     progression:
       'Once 10 reps per leg feel easy, lower over 3 s and pause 2 s at the bottom. Then add a rep per leg, up to 12.',
   },
@@ -316,7 +301,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Rounding the back.', 'Bending the knees into a squat.'],
     alternatives: ['db-single-leg-rdl', 'glute-bridge'],
-    media: [],
     progression:
       'Once 12 reps feel easy, lower over 3 s and pause 1 s at the stretch. Then move to single-leg Romanian deadlifts.',
   },
@@ -336,7 +320,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Bouncing at the bottom.', 'Short range of motion.'],
     alternatives: ['single-leg-calf-raise'],
-    media: [],
     progression:
       'Once 20 reps feel easy, pause 2 s at the top and lower over 3 s. Then move to single-leg calf raises.',
   },
@@ -356,7 +339,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Bouncing at the bottom.', 'Bending the knee to cheat the lift.', 'Leaning on the wall.'],
     alternatives: ['standing-calf-raise'],
-    media: [],
     progression:
       'Add reps until the set is easy. Then pause 2 s at the top and lower over 3 s.',
   },
@@ -376,7 +358,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Swinging the legs.', 'Moving the legs without lifting the hips.'],
     alternatives: ['dead-bug'],
-    media: [],
     progression:
       'Once 15 reps feel easy, take 3 s up and 3 s down. Then straighten your knees a little as you lower.',
   },
@@ -396,7 +377,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Hips sagging.', 'Hips too high.'],
     alternatives: ['side-plank', 'dead-bug'],
-    media: [],
     progression:
       'Once you hold 45 s in a straight line on every set, add 5 s a session. Or lift one foot off the floor for a few seconds at a time.',
   },
@@ -416,7 +396,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Half reps.', 'Swinging.'],
     alternatives: ['pull-up', 'negative-pull-up'],
-    media: [],
     progression:
       'Add a rep to your first set before anything else. Past 8 clean reps, lower over 3 s or pause with your chin over the bar.',
   },
@@ -436,7 +415,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Hands so wide the shoulders pinch.', 'Elbows straight out to the sides.'],
     alternatives: ['push-up'],
-    media: [],
     progression:
       'Add reps until you hit 15 on every set. Then lower over 3 s or pause 2 s at the bottom.',
   },
@@ -456,7 +434,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Front knee caving in.', 'Short step that lifts the front heel.'],
     alternatives: ['split-squat', 'db-bulgarian-split-squat'],
-    media: [],
     progression:
       'Once 12 reps per leg feel easy, lower over 3 s and pause 1 s at the bottom. Then move to Bulgarian split squats.',
   },
@@ -477,7 +454,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Lower back lifting off the floor.', 'Moving fast.'],
     alternatives: ['plank', 'reverse-crunch'],
-    media: [],
     progression:
       'Once 10 reps per side feel easy, take 4 s per rep. Then straighten your legs more as you lower them.',
   },
@@ -497,7 +473,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Dropping the last third.', 'Jumping up so fast that the lowering is rushed.'],
     alternatives: ['pull-up'],
-    media: [],
   },
   {
     id: 'scapular-pull-up',
@@ -515,7 +490,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Bending the elbows.', 'Swinging or kicking to move.'],
     alternatives: ['dead-hang'],
-    media: [],
   },
   {
     id: 'pike-push-up',
@@ -533,7 +507,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Elbows flaring wide.', 'Hips dropping so it turns into a regular push-up.'],
     alternatives: ['db-shoulder-press'],
-    media: [],
   },
   {
     id: 'incline-push-up',
@@ -551,7 +524,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Hips sagging.', 'Using a chair that can slide.'],
     alternatives: ['push-up'],
-    media: [],
   },
   {
     id: 'split-squat',
@@ -569,7 +541,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Front heel lifting.', 'Front knee caving in.'],
     alternatives: ['reverse-lunge'],
-    media: [],
   },
   {
     id: 'glute-bridge',
@@ -587,7 +558,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Arching the lower back at the top.', 'Pushing through the toes instead of the heels.'],
     alternatives: ['db-romanian-deadlift'],
-    media: [],
   },
   {
     id: 'side-plank',
@@ -605,7 +575,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Hips sagging.', 'Rolling your chest toward the floor.'],
     alternatives: ['plank'],
-    media: [],
   },
   {
     id: 'db-single-leg-rdl',
@@ -623,7 +592,6 @@ export const EXERCISES: Exercise[] = [
     ],
     mistakes: ['Hips opening toward the ceiling.', 'Rounding the back.'],
     alternatives: ['db-romanian-deadlift'],
-    media: [],
   },
 ]
 

@@ -15,7 +15,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => ({ pr
 export default function WorkoutExercise({ id }: Props) {
   return (
     <WorkoutLayout title={EXERCISE_BY_ID[id].name}>
-      <ExerciseDetailView id={id} />
+      <ExerciseDetailView key={id} id={id} />
     </WorkoutLayout>
   )
 }

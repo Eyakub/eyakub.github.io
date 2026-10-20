@@ -101,7 +101,7 @@ export function ExerciseFigure({ id, autoplay = true, playOnHover = false, aspec
   return (
     <div className={cls}>
       <div ref={stageRef} style={{ aspectRatio: figureAspect(id, aspect).toFixed(4) }} />
-      {reduced && (
+      {reduced && !playOnHover && (
         <button
           type="button"
           className="fig-play"

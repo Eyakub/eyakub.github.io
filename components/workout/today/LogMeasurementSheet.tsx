@@ -43,8 +43,8 @@ function LogForm({ field, today, onClose }: { field: MeasurementField; today: Da
   return (
     <form className="sheet-form" onSubmit={save} noValidate>
       <div className="sheet-head">
-        <h2 className="sheet-title">{copy.title}</h2>
-        <span className="eyebrow">{formatDay(today)}</span>
+        <h2>{copy.title}</h2>
+        <span className="lbl">{formatDay(today)}</span>
       </div>
       <NumberField
         id="wo-log"
@@ -57,10 +57,10 @@ function LogForm({ field, today, onClose }: { field: MeasurementField; today: Da
         error={error}
       />
       <div className="sheet-actions">
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-go">
           Save
         </button>
-        <button type="button" className="btn btn-ghost" onClick={onClose}>
+        <button type="button" className="btn btn-quiet" onClick={onClose}>
           Cancel
         </button>
       </div>

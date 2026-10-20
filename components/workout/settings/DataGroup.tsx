@@ -50,10 +50,10 @@ export function DataGroup({ doc }: { doc: WorkoutDoc }) {
   }
 
   return (
-    <section className="group">
-      <h2 className="sec-title group-title">Your data</h2>
+    <section className="sec">
+      <h2>Your data</h2>
       <p className="foot-note">Saved in this browser only.</p>
-      <div className="quick" style={{ marginTop: 8 }}>
+      <div className="quick">
         <button type="button" className="btn" onClick={exportBackup}>
           Export backup
         </button>
@@ -67,20 +67,20 @@ export function DataGroup({ doc }: { doc: WorkoutDoc }) {
           That file isn&apos;t a workout backup.
         </p>
       )}
-      <button type="button" className="btn btn-danger btn-wide" style={{ marginTop: 10 }} onClick={() => setConfirm('reset')}>
+      <button type="button" className="btn btn-danger btn-wide" onClick={() => setConfirm('reset')}>
         Reset all data
       </button>
 
       <Sheet open={confirm === 'import'} onClose={cancel} label="Import backup">
         <div className="sheet-head">
-          <h2 className="sheet-title">Import backup</h2>
+          <h2>Import backup</h2>
         </div>
         <p>Replace the data in this browser with this backup?</p>
         <div className="sheet-actions">
-          <button type="button" className="btn btn-primary" onClick={doImport}>
+          <button type="button" className="btn btn-go" onClick={doImport}>
             Replace data
           </button>
-          <button type="button" className="btn btn-ghost" onClick={cancel}>
+          <button type="button" className="btn btn-quiet" onClick={cancel}>
             Cancel
           </button>
         </div>
@@ -88,14 +88,14 @@ export function DataGroup({ doc }: { doc: WorkoutDoc }) {
 
       <Sheet open={confirm === 'reset'} onClose={() => setConfirm(null)} label="Reset all data">
         <div className="sheet-head">
-          <h2 className="sheet-title">Delete everything?</h2>
+          <h2>Delete everything?</h2>
         </div>
         <p>This removes your sessions, measurements and settings from this browser. Export a backup first if you want to keep them.</p>
         <div className="sheet-actions">
           <button type="button" className="btn btn-danger" onClick={doReset}>
             Delete all workout data
           </button>
-          <button type="button" className="btn btn-ghost" data-autofocus onClick={() => setConfirm(null)}>
+          <button type="button" className="btn btn-quiet" data-autofocus onClick={() => setConfirm(null)}>
             Cancel
           </button>
         </div>

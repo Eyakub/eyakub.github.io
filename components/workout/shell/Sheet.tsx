@@ -23,7 +23,7 @@ export function Sheet({ open, onClose, label, children }: Props) {
     document.body.style.overflow = 'hidden'
     // [data-autofocus] lets a confirm sheet put focus on the safe choice instead of the destructive one
     const find = (sel: string) => panel.current?.querySelector<HTMLElement>(sel) ?? null
-    const first = find('[data-autofocus]') ?? find('input') ?? find('.btn-primary') ?? find('button')
+    const first = find('[data-autofocus]') ?? find('input') ?? find('.btn-go') ?? find('button')
     first?.focus()
     return () => {
       document.body.style.overflow = prevOverflow

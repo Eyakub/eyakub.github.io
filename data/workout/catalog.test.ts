@@ -47,10 +47,6 @@ describe('exercise catalog', () => {
       expect(e.mistakes.length, `${e.id} mistakes`).toBeGreaterThanOrEqual(1)
     }
   })
-
-  it('ships no media yet', () => {
-    for (const e of EXERCISES) expect(e.media, e.id).toEqual([])
-  })
 })
 
 describe('starting program', () => {

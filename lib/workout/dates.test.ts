@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { addDays, formatDay, parseIsoDate, startOfWeek, toIsoDate, weekdayIndex, weekNumberSince } from './dates'
+import { addDays, formatDay, formatDayMonth, formatLongDay, parseIsoDate, startOfWeek, toIsoDate, weekdayIndex, weekdayLong, weekdayShort, weekNumberSince } from './dates'
 
 const d = (y: number, m: number, day: number, h = 0) => new Date(y, m - 1, day, h)
 
@@ -82,5 +82,16 @@ describe('weekNumberSince', () => {
   })
   it('never goes below 1', () => {
     expect(weekNumberSince(start, d(2026, 9, 1))).toBe(1)
+  })
+})
+
+describe('weekday names and long dates', () => {
+  it('names the weekday in full and short', () => {
+    expect(weekdayShort(d(2026, 10, 19))).toBe('Mon')
+    expect(weekdayLong(d(2026, 10, 25))).toBe('Sunday')
+  })
+  it('formats day-month and the long day', () => {
+    expect(formatDayMonth(d(2026, 8, 5))).toBe('5 Aug')
+    expect(formatLongDay(d(2026, 10, 20))).toBe('Tuesday 20 Oct')
   })
 })

@@ -27,3 +27,10 @@ export function formatKg(n: number): string {
 export function formatInches(n: number): string {
   return Math.abs(n * 10 - Math.round(n * 10)) < 1e-6 ? n.toFixed(1) : n.toFixed(2)
 }
+
+const WORDS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve']
+
+/** 4 -> "Four" for small counts; larger numbers stay digits. */
+export function inWords(n: number): string {
+  return WORDS[n] ?? String(n)
+}

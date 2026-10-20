@@ -13,21 +13,6 @@ export type Pattern = 'push' | 'pull' | 'legs' | 'core'
 export type Difficulty = 1 | 2 | 3
 export type Measure = 'reps' | 'seconds'
 
-export type Licence = 'CC BY-SA 3.0' | 'CC BY-SA 4.0' | 'CC BY 4.0' | 'CC0'
-export interface MediaCredit {
-  author: string
-  licence: Licence
-  sourceUrl: string
-}
-
-// Only media checked to show this exact exercise goes in here. An empty list renders the
-// "no demo yet" state; never borrow another exercise's media.
-export type ExerciseMedia =
-  | { kind: 'frames'; frames: [string, string]; alt: string; credit: MediaCredit }
-  | { kind: 'image'; src: string; alt: string; credit: MediaCredit }
-  | { kind: 'gif'; src: string; poster: string; alt: string; credit: MediaCredit }
-  | { kind: 'youtube'; videoId: string; start?: number; title: string; channel: string }
-
 export interface Exercise {
   id: Id
   name: string
@@ -42,7 +27,6 @@ export interface Exercise {
   mistakes: string[]
   /** Ids of other catalog exercises that train the same thing. */
   alternatives: Id[]
-  media: ExerciseMedia[]
   /** How to progress once the top of the range is hit, given 7.5 kg dumbbells. */
   progression?: string
 }

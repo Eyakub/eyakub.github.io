@@ -1,25 +1,16 @@
-import { Fragment, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
+import { useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { useWorkout } from '../../../contexts/WorkoutContext'
 import { readBackupFile } from '../../../lib/workout/backup'
 import type { OnboardingInput } from '../../../lib/workout/doc'
 import { RANGES, checkOptional, checkRequired, type FieldRange } from '../../../lib/workout/fields'
-import { EQUIPMENT_LABEL } from '../../../lib/workout/labels'
-import type { Equipment } from '../../../lib/workout/types'
+import { EQUIPMENT_PICKS, type EquipmentPick } from '../../../lib/workout/labels'
 import { NumberField } from '../shell/NumberField'
-import { CheckIcon } from '../shell/icons'
+import { EquipmentChecklist } from './EquipmentChecklist'
 
-type Pick = Exclude<Equipment, 'bodyweight'>
 type Key = 'weight' | 'waist' | 'height' | 'goalWeight' | 'goalWaist' | 'dumbbell'
 
-const PICKS: { id: Pick; hint?: string }[] = [
-  { id: 'dumbbells' },
-  { id: 'pull-up-bar' },
-  { id: 'chair', hint: 'Decline push-ups, split squats, supported rows' },
-  { id: 'step', hint: 'Calf raises' },
-]
-
 const BLANK: Record<Key, string> = { weight: '', waist: '', height: '', goalWeight: '', goalWaist: '', dumbbell: '7.5' }
-const ALL_PICKED: Record<Pick, boolean> = { dumbbells: true, 'pull-up-bar': true, chair: true, step: true }
+const ALL_PICKED: Record<EquipmentPick, boolean> = { dumbbells: true, 'pull-up-bar': true, chair: true, step: true }
 
 interface Spec { key: Key; range: FieldRange; required?: boolean }
 
@@ -67,7 +58,7 @@ export function Onboarding() {
       heightCm: values.height ?? null,
       targetWeightKg: values.goalWeight ?? null,
       targetWaistIn: values.goalWaist ?? null,
-      equipment: [...PICKS.filter((p) => picked[p.id]).map((p) => p.id), 'bodyweight'],
+      equipment: [...EQUIPMENT_PICKS.filter((p) => picked[p.id]).map((p) => p.id), 'bodyweight'],
       dumbbellKg: picked.dumbbells ? (values.dumbbell as number) : 7.5,
     }
     completeOnboarding(input)
@@ -88,17 +79,16 @@ export function Onboarding() {
 
   return (
     <div className="screen onb">
-      <div className="onb-head">
-        <p className="eyebrow">Set up</p>
-        <h1 className="display page-title">Your starting point</h1>
-        <p className="onb-lede">Saved in this browser only.</p>
-      </div>
+      <header className="page-head">
+        <h1 className="page-title">Your starting point</h1>
+        <p className="page-sub">Saved in this browser only.</p>
+      </header>
 
       <form className="onb-form" onSubmit={submit} noValidate>
         <NumberField id="wo-weight" label="Weight, kg" placeholder="kg" value={text.weight} onChange={set('weight')} error={errors.weight} />
 
         <div className="sec">
-          <p className="eyebrow">Optional</p>
+          <p className="lbl">Optional</p>
           <div className="onb-grid">
             <NumberField id="wo-waist" label="Waist, in" placeholder="in" value={text.waist} onChange={set('waist')} error={errors.waist} />
             <NumberField id="wo-height" label="Height, cm" placeholder="cm" value={text.height} onChange={set('height')} error={errors.height} />
@@ -107,47 +97,14 @@ export function Onboarding() {
           </div>
         </div>
 
-        <section className="sec" aria-labelledby="wo-equipment">
-          <h2 className="sec-title" id="wo-equipment">
-            Equipment
-          </h2>
-          <div className="opts">
-            {PICKS.map((p) => (
-              <Fragment key={p.id}>
-                <label className="opt">
-                  <input
-                    type="checkbox"
-                    checked={picked[p.id]}
-                    onChange={(e) => setPicked((s) => ({ ...s, [p.id]: e.target.checked }))}
-                  />
-                  <span className="opt-box" aria-hidden="true">
-                    <CheckIcon />
-                  </span>
-                  <span className="opt-t">
-                    {EQUIPMENT_LABEL[p.id]}
-                    {p.hint && <small>{p.hint}</small>}
-                  </span>
-                </label>
-                {p.id === 'dumbbells' && picked.dumbbells && (
-                  <div className="opt-extra">
-                    <NumberField
-                      id="wo-dumbbell"
-                      label="Dumbbell weight, kg each"
-                      value={text.dumbbell}
-                      onChange={set('dumbbell')}
-                      error={errors.dumbbell}
-                      compact
-                    />
-                  </div>
-                )}
-              </Fragment>
-            ))}
-          </div>
-          <p className="foot-note">Bodyweight is always included.</p>
-        </section>
+        <EquipmentChecklist
+          picked={picked}
+          onPick={(id, on) => setPicked((p) => ({ ...p, [id]: on }))}
+          dumbbell={{ value: text.dumbbell, error: errors.dumbbell, onChange: set('dumbbell') }}
+        />
 
         <div className="onb-foot">
-          <button type="submit" className="btn btn-primary btn-wide">
+          <button type="submit" className="btn btn-go btn-wide">
             Start tracking
           </button>
           <button type="button" className="link" onClick={() => fileRef.current?.click()}>

@@ -4,20 +4,9 @@ export function TodaySkeleton() {
       <span className="sr-only" role="status">
         Loading
       </span>
-      <div className="topline">
-        <span className="sk sk-line" />
-      </div>
-      <div className="day-hero">
-        <span className="sk sk-line sm" />
-        <span className="sk sk-title" />
-      </div>
-      <ol className="week" aria-hidden="true">
-        {Array.from({ length: 7 }, (_, i) => (
-          <li key={i}>
-            <span className="sk sk-pill" />
-          </li>
-        ))}
-      </ol>
+      <span className="sk sk-line" />
+      <span className="sk sk-head" />
+      <span className="sk sk-bar" />
       <span className="sk sk-card" />
     </div>
   )
