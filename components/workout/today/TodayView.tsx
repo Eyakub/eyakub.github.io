@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useWorkout } from '../../../contexts/WorkoutContext'
-import { formatDay, toIsoDate, weekDates, weekNumberSince, weekdayIndex } from '../../../lib/workout/dates'
-import { planFor, type MeasurementField } from '../../../lib/workout/doc'
+import { formatDay, toIsoDate, weekNumberSince } from '../../../lib/workout/dates'
+import { currentRoutine, type MeasurementField } from '../../../lib/workout/doc'
+import { nextUp } from '../../../lib/workout/rotation'
 import { estimateMinutes } from '../../../lib/workout/stats'
 import { LogMeasurementSheet } from './LogMeasurementSheet'
 import { PlanCard } from './PlanCard'
 import { StatGrid } from './StatGrid'
-import { WeekStrip } from './WeekStrip'
-import { dayView, totalSets } from './plan'
+import { WeekSummary } from './WeekSummary'
+import { totalSets } from './plan'
 
 // A tab left open overnight should roll over to the next day when you come back to it
 function useToday(): Date {
@@ -27,18 +28,9 @@ function useToday(): Date {
 export function TodayView() {
   const { doc } = useWorkout()
   const today = useToday()
-  const [picked, setPicked] = useState<number | null>(null)
   const [logging, setLogging] = useState<MeasurementField | null>(null)
-  if (!doc) return null
-
-  const selected = picked ?? weekdayIndex(today)
-  const view = dayView(doc, planFor(doc, today))
-  const meta =
-    view.kind === 'routine'
-      ? `${view.routine.items.length} exercises · ${totalSets(view.routine)} sets · about ${estimateMinutes(view.routine)} min`
-      : view.kind === 'recovery'
-        ? 'Easy movement. Nothing heavy.'
-        : 'No training planned.'
+  const routine = doc ? currentRoutine(doc, nextUp(doc)) : undefined
+  if (!doc || !routine) return null
 
   return (
     <div className="screen">
@@ -48,13 +40,15 @@ export function TodayView() {
         </span>
       </div>
       <section className="day-hero">
-        <p className="eyebrow">Today</p>
-        <h1 className="display day-title">{view.title}</h1>
-        <p className="day-meta">{meta}</p>
+        <p className="eyebrow">Up next</p>
+        <h1 className="display day-title">{routine.name}</h1>
+        <p className="day-meta">
+          {routine.items.length} exercises · {totalSets(routine)} sets · about {estimateMinutes(routine)} min
+        </p>
       </section>
-      <WeekStrip doc={doc} today={today} selected={selected} onSelect={setPicked} />
-      <PlanCard doc={doc} date={weekDates(today)[selected]} isToday={selected === weekdayIndex(today)} />
-      <StatGrid doc={doc} today={today} />
+      <WeekSummary doc={doc} today={today} />
+      <PlanCard routine={routine} />
+      <StatGrid doc={doc} />
       <div className="quick">
         <button type="button" className="btn" onClick={() => setLogging('weightKg')}>
           Log weight

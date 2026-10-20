@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createDoc, currentRoutine, latestMeasurement, logMeasurement, measurementSeries, migrate, newId, planFor, routineAt, updateProfile, type OnboardingInput } from './doc'
+import { createDoc, currentRoutine, latestMeasurement, logMeasurement, measurementSeries, migrate, newId, routineAt, updateProfile, type OnboardingInput } from './doc'
 import type { ProgramSeed, RoutineVersion } from './types'
 
 const SEED: ProgramSeed = {
@@ -17,16 +17,8 @@ const SEED: ProgramSeed = {
       items: [{ exerciseId: 'row', target: { sets: 3, min: 8, max: 10 }, restSec: 90, load: { kind: 'dumbbell', kg: 7.5, count: 1 } }],
     },
   ],
-  week: [
-    { kind: 'routine', routineId: 'a' },
-    { kind: 'routine', routineId: 'b' },
-    { kind: 'recovery' },
-    { kind: 'routine', routineId: 'a' },
-    { kind: 'rest' },
-    { kind: 'routine', routineId: 'b' },
-    { kind: 'rest' },
-  ],
-  recovery: [{ name: 'Walk', dose: '20 min' }],
+  order: ['a', 'b'],
+  weeklyGoal: 4,
 }
 
 const INPUT: OnboardingInput = {
@@ -65,10 +57,10 @@ describe('createDoc', () => {
     expect(doc.routines[0]).toMatchObject({ routineId: 'a', version: 1, createdAt: iso, name: 'Day A' })
     expect(doc.program.current).toEqual({ a: 1, b: 1 })
   })
-  it('copies week and recovery from the seed', () => {
-    expect(doc.program.week).toEqual(SEED.week)
-    expect(doc.program.week).not.toBe(SEED.week)
-    expect(doc.program.recovery).toEqual(SEED.recovery)
+  it('copies the rotation and weekly goal from the seed', () => {
+    expect(doc.program.order).toEqual(SEED.order)
+    expect(doc.program.order).not.toBe(SEED.order)
+    expect(doc.program.weeklyGoal).toBe(4)
     expect(doc.program.updatedAt).toBe(iso)
   })
   it('fills the profile from the input', () => {
@@ -104,15 +96,6 @@ describe('routine lookup', () => {
     expect(routineAt(doc, 'a', 1)?.name).toBe('Day A')
     expect(routineAt(doc, 'a', 2)?.name).toBe('Day A v2')
     expect(routineAt(doc, 'a', 3)).toBeUndefined()
-  })
-})
-
-describe('planFor', () => {
-  it('maps a date to its weekday slot, Monday first', () => {
-    const doc = make()
-    expect(planFor(doc, new Date(2026, 9, 19))).toEqual({ kind: 'routine', routineId: 'a' })
-    expect(planFor(doc, new Date(2026, 9, 21))).toEqual({ kind: 'recovery' })
-    expect(planFor(doc, new Date(2026, 9, 25))).toEqual({ kind: 'rest' })
   })
 })
 
@@ -232,6 +215,12 @@ describe('migrate', () => {
     expect(migrate({ ...doc, measurements: {} })).toBeNull()
     expect(migrate({ ...doc, routines: 'x' })).toBeNull()
     expect(migrate({ ...doc, profile: null })).toBeNull()
-    expect(migrate({ ...doc, program: { ...doc.program, week: [] } })).toBeNull()
+    for (const bad of [{ order: undefined }, { order: [] }, { order: 'push' }, { order: ['push', 3] }]) {
+      expect(migrate({ ...doc, program: { ...doc.program, ...bad } })).toBeNull()
+    }
+    for (const bad of [undefined, 0, -1, '4', NaN]) {
+      expect(migrate({ ...doc, program: { ...doc.program, weeklyGoal: bad } })).toBeNull()
+    }
+    expect(migrate({ ...doc, program: { ...doc.program, current: null } })).toBeNull()
   })
 })

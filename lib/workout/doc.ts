@@ -1,5 +1,5 @@
-import { toIsoDate, weekdayIndex } from './dates'
-import type { DayPlan, Equipment, Id, IsoDate, Measurement, Profile, ProgramSeed, RoutineVersion, WeekPlan, WorkoutDoc } from './types'
+import { toIsoDate } from './dates'
+import type { Equipment, Id, IsoDate, Measurement, Profile, ProgramSeed, RoutineVersion, WorkoutDoc } from './types'
 
 export interface OnboardingInput {
   weightKg: number
@@ -37,9 +37,9 @@ export function createDoc(seed: ProgramSeed, input: OnboardingInput, now: Date, 
     },
     routines: seed.routines.map((r) => ({ ...r, version: 1, createdAt: iso })),
     program: {
-      week: [...seed.week] as WeekPlan,
+      order: [...seed.order],
+      weeklyGoal: seed.weeklyGoal,
       current: Object.fromEntries(seed.routines.map((r) => [r.routineId, 1])),
-      recovery: [...seed.recovery],
       updatedAt: iso,
     },
     sessions: [],
@@ -54,10 +54,6 @@ export function routineAt(doc: WorkoutDoc, routineId: Id, version: number): Rout
 export function currentRoutine(doc: WorkoutDoc, routineId: Id): RoutineVersion | undefined {
   const version = doc.program.current[routineId]
   return version === undefined ? undefined : routineAt(doc, routineId, version)
-}
-
-export function planFor(doc: WorkoutDoc, date: Date): DayPlan {
-  return doc.program.week[weekdayIndex(date)]
 }
 
 export function logMeasurement(
@@ -103,7 +99,8 @@ export function migrate(raw: unknown): WorkoutDoc | null {
   if (typeof raw.deviceId !== 'string' || typeof raw.createdAt !== 'string') return null
   if (!Array.isArray(raw.routines) || !Array.isArray(raw.sessions) || !Array.isArray(raw.measurements)) return null
   if (!isObject(raw.profile) || !isObject(raw.program)) return null
-  const { week, current, recovery } = raw.program
-  if (!Array.isArray(week) || week.length !== 7 || !isObject(current) || !Array.isArray(recovery)) return null
+  const { order, weeklyGoal, current } = raw.program
+  if (!Array.isArray(order) || order.length === 0 || !order.every((id) => typeof id === 'string')) return null
+  if (typeof weeklyGoal !== 'number' || !(weeklyGoal > 0) || !isObject(current)) return null
   return raw as unknown as WorkoutDoc
 }

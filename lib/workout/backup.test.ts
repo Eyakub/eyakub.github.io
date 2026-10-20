@@ -5,8 +5,8 @@ import type { ProgramSeed } from './types'
 
 const SEED: ProgramSeed = {
   routines: [{ routineId: 'a', name: 'Day A', warmup: [], items: [] }],
-  week: Array.from({ length: 7 }, () => ({ kind: 'rest' as const })) as ProgramSeed['week'],
-  recovery: [],
+  order: ['a'],
+  weeklyGoal: 4,
 }
 const NOW = new Date(2026, 9, 20, 9, 30)
 const doc = createDoc(

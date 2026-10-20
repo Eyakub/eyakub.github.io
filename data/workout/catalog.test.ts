@@ -93,11 +93,11 @@ describe('starting program', () => {
     }
   })
 
-  it('has a seven-day week pointing at real routines', () => {
-    expect(SEED.week).toHaveLength(7)
-    for (const day of SEED.week) {
-      if (day.kind === 'routine') expect(routineIds).toContain(day.routineId)
-    }
+  it('rotates through every routine once, with a sane weekly goal', () => {
+    expect([...SEED.order].sort()).toEqual([...routineIds].sort())
+    expect(new Set(SEED.order).size).toBe(SEED.order.length)
+    expect(SEED.weeklyGoal).toBeGreaterThanOrEqual(1)
+    expect(SEED.weeklyGoal).toBeLessThanOrEqual(7)
   })
 
   it('has unique routine ids', () => {

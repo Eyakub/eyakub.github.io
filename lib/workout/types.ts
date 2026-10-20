@@ -80,21 +80,13 @@ export interface RoutineVersion {
   createdAt: IsoTime
 }
 
-export type DayPlan = { kind: 'routine'; routineId: Id } | { kind: 'recovery' } | { kind: 'rest' }
-
-/** Monday first: index 0 = Monday … 6 = Sunday. */
-export type WeekPlan = [DayPlan, DayPlan, DayPlan, DayPlan, DayPlan, DayPlan, DayPlan]
-
-export interface RecoveryItem {
-  name: string
-  dose: string
-}
-
 export interface ProgramState {
-  week: WeekPlan
+  /** Routine ids in rotation order; the next one up is the first not yet done in the open cycle. */
+  order: Id[]
+  /** Sessions per week to aim for, on any days. */
+  weeklyGoal: number
   /** Current version per routine id. */
   current: Record<Id, number>
-  recovery: RecoveryItem[]
   updatedAt: IsoTime
 }
 
@@ -161,9 +153,9 @@ export interface WorkoutDoc {
   measurements: Measurement[]
 }
 
-/** What data/workout/program.ts ships: the starting routines and week. */
+/** What data/workout/program.ts ships: the starting routines and rotation. */
 export interface ProgramSeed {
   routines: Omit<RoutineVersion, 'version' | 'createdAt'>[]
-  week: WeekPlan
-  recovery: RecoveryItem[]
+  order: Id[]
+  weeklyGoal: number
 }

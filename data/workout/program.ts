@@ -93,18 +93,6 @@ export const SEED: ProgramSeed = {
       ],
     },
   ],
-  week: [
-    { kind: 'routine', routineId: 'push' },
-    { kind: 'routine', routineId: 'pull' },
-    { kind: 'recovery' },
-    { kind: 'routine', routineId: 'legs' },
-    { kind: 'recovery' },
-    { kind: 'routine', routineId: 'full' },
-    { kind: 'rest' },
-  ],
-  recovery: [
-    { name: 'Easy walk', dose: '30 min' },
-    { name: 'Hip and shoulder mobility', dose: '10 min' },
-    { name: 'Easy dead hang', dose: '2 × 20 s' },
-  ],
+  order: ['push', 'pull', 'legs', 'full'],
+  weeklyGoal: 4,
 }

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useWorkout } from '../../../contexts/WorkoutContext'
 import { EXERCISE_BY_ID } from '../../../data/workout/exercises'
 import { DIFFICULTY_LABEL, EQUIPMENT_LABEL } from '../../../lib/workout/labels'
-import { exerciseDays } from '../../../lib/workout/schedule'
+import { routinesWith } from '../../../lib/workout/rotation'
 import type { Exercise } from '../../../lib/workout/types'
 import { AlternativeList } from '../exercise/AlternativeList'
 import { ExerciseMedia } from '../exercise/ExerciseMedia'
@@ -23,7 +23,7 @@ export function ExerciseDetailView({ id }: { id: string }) {
   const ex = EXERCISE_BY_ID[id]
   if (!ex || !doc) return null
 
-  const days = exerciseDays(doc, ex.id)
+  const routines = routinesWith(doc, ex.id)
   return (
     <div className="screen">
       <Link className="back" href="/workout/library">
@@ -45,8 +45,8 @@ export function ExerciseDetailView({ id }: { id: string }) {
           <dd>{DIFFICULTY_LABEL[ex.difficulty]}</dd>
         </div>
         <div>
-          <dt>In your week</dt>
-          <dd>{days.length ? days.join(', ') : 'Not scheduled'}</dd>
+          <dt>In your routines</dt>
+          <dd>{routines.length ? routines.map((r) => r.name).join(', ') : 'Not in a routine'}</dd>
         </div>
       </dl>
       <section className="sec">

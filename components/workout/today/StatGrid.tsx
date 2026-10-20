@@ -1,13 +1,11 @@
 import type { ReactNode } from 'react'
 import { formatInches, formatKg } from '../../../lib/workout/format'
 import { measurementSeries, type MeasurementField } from '../../../lib/workout/doc'
-import { streak, weekProgress } from '../../../lib/workout/stats'
 import type { WorkoutDoc } from '../../../lib/workout/types'
 import { Sparkline } from './Sparkline'
 
 interface Props {
   doc: WorkoutDoc
-  today: Date
 }
 
 interface MeasureProps {
@@ -47,31 +45,15 @@ function MeasureStat({ doc, field, label, unit, goal, format }: MeasureProps) {
   )
 }
 
-export function StatGrid({ doc, today }: Props) {
-  const run = streak(doc, today)
-  const { planned, done } = weekProgress(doc, today)
+export function StatGrid({ doc }: Props) {
+  const total = doc.sessions.length
   return (
     <section aria-label="Your numbers">
       <div className="stats">
         <div className="stat">
-          <span className="eyebrow">Streak</span>
-          <span className="stat-v">
-            {run}
-            <small>{run === 1 ? 'session' : 'sessions'}</small>
-          </span>
-          <span className="stat-s">{run > 0 ? 'In a row' : 'Starts with your next session'}</span>
-        </div>
-        <div className="stat">
-          <span className="eyebrow">This week</span>
-          <span className="stat-v">
-            {done}
-            <small>of {planned}</small>
-          </span>
-          <div className="weekdots" aria-hidden="true">
-            {Array.from({ length: planned }, (_, i) => (
-              <span key={i} className={i < done ? 'on' : ''} />
-            ))}
-          </div>
+          <span className="eyebrow">Sessions</span>
+          <span className="stat-v">{total}</span>
+          <span className="stat-s">{total > 0 ? 'Logged so far' : 'Starts with your next session'}</span>
         </div>
         <MeasureStat doc={doc} field="weightKg" label="Weight" unit="kg" goal={doc.profile.targets.weightKg} format={formatKg} />
         <MeasureStat doc={doc} field="waistIn" label="Waist" unit="in" goal={doc.profile.targets.waistIn} format={formatInches} />

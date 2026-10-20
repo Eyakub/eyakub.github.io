@@ -31,11 +31,6 @@ export function startOfWeek(d: Date): Date {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate() - weekdayIndex(d))
 }
 
-export function weekDates(d: Date): Date[] {
-  const monday = startOfWeek(d)
-  return Array.from({ length: 7 }, (_, i) => addDays(monday, i))
-}
-
 // "Tue 20 Oct". Fixed English names so the output doesn't depend on the browser locale.
 export function formatDay(d: Date): string {
   return `${DAYS[weekdayIndex(d)]} ${d.getDate()} ${MONTHS[d.getMonth()]}`

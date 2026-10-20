@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useWorkout } from '../../../contexts/WorkoutContext'
 import { EXERCISES } from '../../../data/workout/exercises'
 import { EQUIPMENT_LABEL } from '../../../lib/workout/labels'
-import { exerciseDays } from '../../../lib/workout/schedule'
+import { routinesWith } from '../../../lib/workout/rotation'
 import type { Exercise } from '../../../lib/workout/types'
 import { ExerciseGlyph } from '../exercise/ExerciseGlyph'
 import { SearchIcon } from '../shell/icons'
@@ -21,6 +21,9 @@ const FILTERS: { id: FilterId; label: string; test: (e: Exercise) => boolean }[]
   { id: 'bodyweight', label: 'Bodyweight', test: (e) => !e.equipment.includes('dumbbells') && !e.equipment.includes('pull-up-bar') },
 ]
 
+// "Legs + Core" -> "Legs" so the tag stays on one line
+const shortName = (name: string) => name.split(/[\s+]/)[0]
+
 const matchesQuery = (e: Exercise, q: string) => [e.name, ...e.primary, ...e.secondary].join(' ').toLowerCase().includes(q)
 
 export function LibraryView() {
@@ -28,8 +31,8 @@ export function LibraryView() {
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<FilterId>('all')
 
-  const days = useMemo(
-    () => new Map(EXERCISES.map((e) => [e.id, doc ? exerciseDays(doc, e.id) : []])),
+  const tags = useMemo(
+    () => new Map(EXERCISES.map((e) => [e.id, doc ? routinesWith(doc, e.id).map((r) => shortName(r.name)) : []])),
     [doc],
   )
 
@@ -68,7 +71,7 @@ export function LibraryView() {
       <ul className="lib">
         {rows.length === 0 && <li className="empty">Nothing matches “{query.trim()}”. Try a muscle, like “lats”.</li>}
         {rows.map((e) => {
-          const tag = days.get(e.id) ?? []
+          const tag = tags.get(e.id) ?? []
           return (
             <li key={e.id}>
               <Link className="lib-row" href={`/workout/library/${e.id}`}>

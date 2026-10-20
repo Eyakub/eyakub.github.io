@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { addDays, formatDay, parseIsoDate, startOfWeek, toIsoDate, weekDates, weekdayIndex, weekNumberSince } from './dates'
+import { addDays, formatDay, parseIsoDate, startOfWeek, toIsoDate, weekdayIndex, weekNumberSince } from './dates'
 
 const d = (y: number, m: number, day: number, h = 0) => new Date(y, m - 1, day, h)
 
@@ -54,16 +54,6 @@ describe('weekdayIndex / startOfWeek', () => {
   })
   it('crosses a month boundary', () => {
     expect(toIsoDate(startOfWeek(d(2026, 11, 1)))).toBe('2026-10-26')
-  })
-})
-
-describe('weekDates', () => {
-  it('lists Mon..Sun, including through the October fall-back', () => {
-    expect(weekDates(d(2026, 10, 22)).map(toIsoDate)).toEqual([
-      '2026-10-19', '2026-10-20', '2026-10-21', '2026-10-22', '2026-10-23', '2026-10-24', '2026-10-25',
-    ])
-    expect(weekDates(d(2026, 10, 25)).map(toIsoDate)[0]).toBe('2026-10-19')
-    expect(weekDates(d(2026, 10, 26)).map(toIsoDate)[6]).toBe('2026-11-01')
   })
 })
 
