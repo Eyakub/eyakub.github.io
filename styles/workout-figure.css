@@ -1,0 +1,26 @@
+/* Exercise figures (components/workout/figure): an animated SVG drawn in code, "Plates" look.
+   A parent can recolour one by setting --fig, --fig-far, --fig-m, --fig-prop, --fig-mat, --fig-floor, --fig-db or --fig-plate. */
+.wo-root .fig{position:relative}
+.wo-root .fig svg{display:block;width:100%;height:auto}
+.wo-root .wf line{stroke-linecap:round}
+.wo-root .wf polygon{stroke-linejoin:round}
+.wo-root .fig-pending{aspect-ratio:4/3;display:grid;place-items:center;text-align:center;padding:16px;color:var(--chalk-3,#80879A);font-size:13px;border:1px dashed var(--line,#283041);border-radius:var(--r-card,18px)}
+
+.wo-root .wf-body{stroke:var(--fig,#ECE9E1);fill:var(--fig,#ECE9E1)}
+.wo-root .wf-body circle,.wo-root .wf-body polygon{fill:var(--fig,#ECE9E1);stroke:var(--fig,#ECE9E1)}
+.wo-root .wf-far{stroke:var(--fig-far,#8C9097)}
+.wo-root .wf-muscle{stroke:var(--fig-m,var(--c,#D63E31));fill:var(--fig-m,var(--c,#D63E31))}
+.wo-root .wf-muscle circle{fill:var(--fig-m,var(--c,#D63E31));stroke:none}
+.wo-root .wf-far-m{opacity:.55}
+.wo-root .wf-prop{stroke:var(--fig-prop,#5E626A);fill:var(--fig-prop,#5E626A)}
+.wo-root .wf-prop circle{fill:var(--fig-prop,#5E626A)}
+.wo-root .wf rect.wf-mat{fill:var(--fig-mat,#34363B)}
+.wo-root .wf-floor{stroke:var(--fig-floor,#45484E);stroke-width:1.2}
+.wo-root .wf-db line,.wo-root .wf line.wf-db{stroke:var(--fig-db,#C9CCD1)}
+.wo-root .wf-plate{fill:var(--fig-plate,#2B2D31);stroke:var(--fig-db,#C9CCD1);stroke-width:1.4}
+.wo-root .wf-hub{fill:var(--fig-db,#C9CCD1)}
+
+/* reduced motion: the figure stays still until the viewer starts it */
+.wo-root .fig-play{position:absolute;right:8px;bottom:8px;display:grid;place-items:center;width:36px;height:36px;padding:0;border-radius:50%;border:1px solid var(--line,#283041);background:var(--raised,#1D2330);color:var(--chalk,#ECE7DE)}
+.wo-root .fig-play::before{content:"";position:absolute;inset:-4px}
+.wo-root .fig-play .ico{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}

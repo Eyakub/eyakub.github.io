@@ -5,6 +5,7 @@ import { prismDarkTheme } from '../styles/prism'
 import '../styles/martyr.css'
 import '../styles/learn.css'
 import '../styles/workout.css'
+import '../styles/workout-figure.css'
 const GlobalStyle = ({ children }) => {
   return (
     <>
