@@ -1,59 +1,73 @@
 # Workout (`/workout`) — Design Spec
 
-- **Date:** 2026-10-20
-- **Status:** Approved (mock and phase plan), Phase 2 in progress
-- **Approved mock:** `docs/superpowers/specs/assets/2026-10-20-workout-mock.html`
+- **Date:** 2026-10-20 (round two the same day)
+- **Status:** Approved. Plates direction, rotation schedule, animated figure.
+- **Approved mock:** `docs/superpowers/specs/assets/workout-v2/index.html` (Plates). The QA sheet for every animation is `movements.html` beside it.
+- **Superseded:** the round-one mock (`2026-10-20-workout-mock.html`): dark and brass, with fixed weekdays.
 
 ---
 
 ## 1. Intent
 
-A private home-workout dashboard for Eyakub: follow the weekly routine, learn each exercise's technique, log sets and reps, see progressive overload, record weight and waist, and stay consistent.
+A private home-workout dashboard for Eyakub. It should help him:
+- train four times a week on whatever days work;
+- learn each exercise's technique from an animated demo;
+- log sets and reps, and see progressive overload;
+- record weight and waist;
+- stay consistent.
 
-- **Equipment:** two 7.5 kg dumbbells, a pull-up bar, bodyweight, plus a chair and a step at home. No bands, no gym.
-- **Week:** Mon Push · Tue Pull · Wed active recovery · Thu Legs + Core · Fri active recovery · Sat Full body · Sun rest.
-- **The routine is starting data, not code.** It is editable, and edits never change logged history.
+**Equipment:** two 7.5 kg dumbbells, a pull-up bar, and bodyweight. He also has a chair and a step at home. No bands, no gym.
+
+**Schedule:** the four workouts (Push → Pull → Legs + Core → Full body) come in a fixed order, and that order carries across weeks.
+- The weekly goal is four sessions, on any days.
+- If he picks a different workout, or misses a day, the skipped workout stays next.
+- No day is ever "missed"; the week simply shows how many of the four are done.
+
+**Routines are starting data, not code.** They can be edited, and edits never change logged history.
 
 ## 2. Decisions
 
 | Topic | Decision | Why |
 |---|---|---|
-| Route | `pages/workout/*`, own layout, no portfolio navbar | Same pattern as `/learn` |
-| Privacy | Unlisted, `noindex`, excluded from the sitemap, not linked anywhere | Static site: anyone with the URL gets an empty app; data stays in the browser |
+| Route | `pages/workout/*` with its own layout and no portfolio navbar | Same pattern as `/learn` |
+| Privacy | Unlisted, `noindex`, excluded from the sitemap, not linked from anywhere | It's a static site, so anyone with the URL just gets an empty app; the data stays in the browser |
 | Personal numbers | Entered on first launch, never committed | The repo is public |
-| Storage | One `WorkoutDoc` JSON in `localStorage` (`workout:doc`) | Small data (≈2 KB per session). Backup file and gist sync use the same JSON |
-| Sync (later phase) | Secret GitHub gist via a gist-only token pasted per device | Works from GitHub Pages with no backend and no new dependency |
-| Versioning | `RoutineVersion` is append-only; editing makes version + 1 | History keeps the version it was logged with |
-| History | `SessionRecord` is a full snapshot: names, targets, loads, reps, swaps, skips | Never re-read from the live routine or catalog |
-| Merge rule | Records have ids and `updatedAt`; sessions and routines append-only; measurements one row per date, last write wins | Lets two devices merge |
+| Storage | One `WorkoutDoc` JSON in `localStorage` (`workout:doc`) | The data is small (about 2 KB per session). The backup file and gist sync use the same JSON |
+| Sync (later phase) | A secret GitHub gist, using a gist-only token pasted on each device | Works from GitHub Pages with no backend and no new dependency |
+| Versioning | `RoutineVersion` is append-only; an edit creates version + 1 | History keeps the version each session was logged with |
+| History | Each `SessionRecord` is a full snapshot: names, targets, loads, reps, swaps, skips | It is never re-read from the live routine or catalog |
+| Merge rule | Records have ids and `updatedAt`. Sessions and routines are append-only. Measurements are one row per date, last write wins | Lets two devices merge |
+| Schedule | `program.order` (the rotation) plus `program.weeklyGoal` (4). Next up = the first workout in the order not yet done in the open cycle | A cycle closes once all four workouts are done, so a skipped one stays next |
+| Demos | An animated figure drawn in code (SVG), one rig for every exercise | Accurate to each move, no licensing, works offline, loads instantly |
 | Charts | Hand-drawn SVG, no chart library | Four small charts; fast |
-| Look | Dark-first, brass accent, Archivo condensed display, Instrument Sans body, Geist Mono data; stopwatch-dial rest timer | Approved mock |
+| Look | **Plates**: rubber-floor dark. Each workout has a bumper-plate colour (Push red, Pull blue, Legs yellow, Full green), and the week loads plates onto a barbell. Sofia Sans Extra Condensed italic for display, Sofia Sans for body | The user picked it over Blueprint |
 
-## 3. Exercise media
+## 3. Exercise demos
 
-A media entry is added only after checking it shows that exact exercise. Otherwise the card shows "No demo linked yet". Never use another exercise's demo.
+Each exercise has its own animation, built from one figure rig (pose keyframes, two-bone IK, working muscles in the workout's colour, a caption that follows the rep).
+- An exercise without an animation shows a "No demo yet" state. Never show another exercise's animation in its place.
+- The figure respects `prefers-reduced-motion`: it shows a still pose that the user can play.
 
-| Source | Use | Licence |
-|---|---|---|
-| Everkinetic (github.com/everkinetic/data) | Two-frame start/end art, hosted here, looped | CC BY-SA 4.0, credit required |
-| wger image API | Gaps, checked one image at a time; skip AI-flagged and authorless images | CC BY-SA 3.0 / 4.0 per image |
-| Wikimedia Commons (Wensceslao set) | Push-ups, squats, jumping jacks | CC BY-SA 4.0 |
-| YouTube, privacy-enhanced embed | Exercises with no licensed media; iframe loads only on tap | Embed only |
-| free-exercise-db | Text cross-check only | Unlicense text; images have unknown origin, not used |
-| ExerciseDB, MuscleWiki | Not used | Terms forbid redistribution or re-hosting |
-
-Every hosted asset is credited under the media and on `/workout/credits`.
+A 3D version was prototyped and dropped in favour of the faster 2D figure. The licensed-media research (Everkinetic, wger, Wikimedia Commons, YouTube embeds) is kept in the project memory in case photos or video are wanted later.
 
 ## 4. Phases
 
 1. Repo review, proposal, mock. **Done.**
-2. Layout, types, catalog, starting program, storage, first-launch setup, Today, Library, exercise detail, settings (targets, equipment, backup, reset).
-3. Workout mode: session flow, resume, swaps, add/remove sets, rest timer, licensed media and credits.
-4. History and progress: charts, personal records, progression hints, week plan and routine editor.
+2. Layout, types, catalog, starting program, storage, first-launch setup, Today, Library, exercise detail, settings (targets, equipment, backup, reset). **Built in the round-one look, being reworked to Plates and the rotation.**
+3. Workout mode:
+   - session flow: warm-up, then each exercise with its figure, sets, technique and swaps;
+   - resume after a reload, pause, skip, add or remove sets;
+   - rest timer with a sheet and a minimised pill, plus sound;
+   - end, save or discard, and a done screen.
+4. History and progress:
+   - sessions per week, coloured by workout;
+   - weight trend;
+   - reps per exercise;
+   - personal records, progression hints, routine editor.
 5. Gist sync, accessibility pass, reduced motion, performance, add-to-home-screen, smoke test.
 
 ## 5. Open items
 
 - Waist target not set yet.
-- Missed-day policy (shift the plan or skip it) is undecided. Phase 2 marks a missed day and moves on.
 - Hold timer for plank and dead hang (Phase 3).
+- Side plank has no animation yet.

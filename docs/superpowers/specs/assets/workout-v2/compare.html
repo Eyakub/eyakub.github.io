@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plates or Blueprint</title>
+<meta name="robots" content="noindex">
+<style>
+  /* Neutral frame so neither direction gets an advantage: mid grey, system type, the phones do the talking. */
+  :root{--bg:#2B2C30;--panel:#34363B;--line:#4A4C52;--text:#F2F2F0;--text-2:#BDBFC4;--text-3:#9A9CA2}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto;padding:32px max(16px,env(safe-area-inset-left,0px)) 80px}
+  h1{font-size:34px;line-height:1.1;margin:0 0 8px;letter-spacing:-.01em}
+  .lede{color:var(--text-2);max-width:62ch;margin:0 0 24px}
+  table{width:100%;border-collapse:collapse;margin:0 0 40px;font-size:15px}
+  th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+  thead th{color:var(--text-3);font-weight:600;font-size:13px}
+  tbody th{color:var(--text-3);font-weight:600;width:22%}
+  td{color:var(--text-2);width:39%}
+  .table-scroll{overflow-x:auto}
+  section{margin:0 0 56px}
+  h2{font-size:24px;margin:0 0 4px}
+  .what{color:var(--text-2);margin:0 0 16px;max-width:62ch}
+  .pair{display:flex;gap:24px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory}
+  figure{margin:0;flex:none;scroll-snap-align:start}
+  figcaption{font-weight:700;margin:0 0 8px;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  figcaption a{color:var(--text-3);font-weight:500;font-size:13px}
+  iframe{display:block;width:390px;height:800px;border:1px solid var(--line);border-radius:28px;background:#000}
+  @media (max-width:860px){iframe{width:min(360px,82vw);height:740px}}
+  .note{color:var(--text-3);font-size:14px;margin-top:8px;max-width:390px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Plates or Blueprint</h1>
+  <p class="lede">The same app in two looks, screen by screen. Everything here is live: figures move, buttons work, and the rest timer counts down. Scroll each row sideways on a phone.</p>
+
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th></th><th>Plates</th><th>Blueprint</th></tr></thead>
+    <tbody>
+      <tr><th>Feels like</th><td>A gym floor. Bold, colourful, energetic.</td><td>A coach's technique sheet. Calm, precise, instructional.</td></tr>
+      <tr><th>Colour</th><td>Each workout has a bumper-plate colour: Push red, Pull blue, Legs yellow, Full green.</td><td>Navy grid paper and white lines, with yellow highlighter for what matters.</td></tr>
+      <tr><th>Exercise figure</th><td>Solid shape, with the working muscles in the workout's colour.</td><td>Outline drawing with joint angles and movement paths you can switch on.</td></tr>
+      <tr><th>Your week</th><td>A barbell. Each session loads a plate.</td><td>Four boxes, plus a loop diagram of the rotation.</td></tr>
+      <tr><th>Rest timer</th><td>A plate that empties as time runs down.</td><td>A protractor with a sweeping hand.</td></tr>
+      <tr><th>Best if you want</th><td>Motivation at a glance.</td><td>To check your form closely.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <section>
+    <h2>Today</h2>
+    <p class="what">The first screen: how many sessions you've done this week and which workout is next.</p>
+    <div class="pair">
+      <figure><figcaption>Plates <a href="index.html?dir=plates">open full size</a></figcaption><iframe title="Plates, Today" src="index.html?embed=1&amp;dir=plates&amp;screen=home"></iframe></figure>
+      <figure><figcaption>Blueprint <a href="index.html?dir=blueprint">open full size</a></figcaption><iframe title="Blueprint, Today" src="index.html?embed=1&amp;dir=blueprint&amp;screen=home"></iframe></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>During a workout</h2>
+    <p class="what">The demo for the current exercise, your target, last time's reps and the sets you log. Tap a set's tick to start the rest timer.</p>
+    <div class="pair">
+      <figure><figcaption>Plates</figcaption><iframe title="Plates, workout" src="index.html?embed=1&amp;dir=plates&amp;screen=workout" loading="lazy"></iframe></figure>
+      <figure><figcaption>Blueprint</figcaption><iframe title="Blueprint, workout" src="index.html?embed=1&amp;dir=blueprint&amp;screen=workout" loading="lazy"></iframe></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Rest timer</h2>
+    <p class="what">Opens after each set. You can pause it, add or take off 15 seconds, or hide it and keep reading.</p>
+    <div class="pair">
+      <figure><figcaption>Plates</figcaption><iframe title="Plates, rest timer" src="index.html?embed=1&amp;dir=plates&amp;screen=rest" loading="lazy"></iframe></figure>
+      <figure><figcaption>Blueprint</figcaption><iframe title="Blueprint, rest timer" src="index.html?embed=1&amp;dir=blueprint&amp;screen=rest" loading="lazy"></iframe></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Exercise library</h2>
+    <p class="what">All 31 exercises. Hover over a figure (or tap it on a phone) to see it move.</p>
+    <div class="pair">
+      <figure><figcaption>Plates</figcaption><iframe title="Plates, exercise library" src="index.html?embed=1&amp;dir=plates&amp;screen=library" loading="lazy"></iframe></figure>
+      <figure><figcaption>Blueprint</figcaption><iframe title="Blueprint, exercise library" src="index.html?embed=1&amp;dir=blueprint&amp;screen=library" loading="lazy"></iframe></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>One exercise in detail</h2>
+    <p class="what">The technique view: the goblet squat with steps, common mistakes and what to do when it gets easy.</p>
+    <div class="pair">
+      <figure><figcaption>Plates</figcaption><iframe title="Plates, exercise detail" src="index.html?embed=1&amp;dir=plates&amp;screen=detail" loading="lazy"></iframe></figure>
+      <figure><figcaption>Blueprint</figcaption><iframe title="Blueprint, exercise detail" src="index.html?embed=1&amp;dir=blueprint&amp;screen=detail" loading="lazy"></iframe></figure>
+    </div>
+    <p class="note">Blueprint shows the knee angle changing as the squat goes down and up. Plates keeps the figure clean.</p>
+  </section>
+
+  <section>
+    <h2>Progress</h2>
+    <p class="what">Sessions per week against your goal of 4, coloured by workout so a skipped one stands out. Below that, weight and reps per exercise. This is sample history.</p>
+    <div class="pair">
+      <figure><figcaption>Plates</figcaption><iframe title="Plates, progress" src="index.html?embed=1&amp;dir=plates&amp;screen=progress" loading="lazy"></iframe></figure>
+      <figure><figcaption>Blueprint</figcaption><iframe title="Blueprint, progress" src="index.html?embed=1&amp;dir=blueprint&amp;screen=progress" loading="lazy"></iframe></figure>
+    </div>
+  </section>
+</div>
+</body>
+</html>

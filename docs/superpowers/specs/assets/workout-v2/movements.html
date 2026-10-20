@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Movement sheet</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400;600&family=Sofia+Sans+Extra+Condensed:ital,wght@1,800&display=swap">
+<style>
+  :root{--ground:#202124;--ink:#F2F0EA;--dim:#9BA0A8;--line:#34363B;
+    --wf-body:#ECE9E1;--wf-far:#8D9097;--wf-muscle:#E0483B;--wf-prop:#5B5F66;--wf-floor:#4A4D53;--wf-db:#2B2D31;--wf-db-edge:#C9CCD1}
+  body{margin:0;background:var(--ground);color:var(--ink);font:15px/1.5 "Sofia Sans",system-ui,sans-serif;padding:24px max(16px,4vw) 64px}
+  h1{font:italic 800 56px/1 "Sofia Sans Extra Condensed",sans-serif;margin:0 0 4px}
+  p.lede{color:var(--dim);margin:0 0 28px;max-width:60ch}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:28px 24px}
+  .card h2{font:italic 800 28px/1 "Sofia Sans Extra Condensed",sans-serif;margin:0 0 6px}
+  .stage{background:#26282C;border-radius:14px;overflow:hidden}
+  .stage svg{display:block;width:100%;height:auto}
+  .phase{color:var(--dim);font-size:13px;margin:6px 0 8px;min-height:20px}
+  .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+  .strip svg{display:block;width:100%;height:auto;background:#26282C;border-radius:8px}
+  .strip span{display:block;text-align:center;font-size:11px;color:var(--dim)}
+  /* figure */
+  .wf line{stroke-linecap:round}
+  .wf-body{stroke:var(--wf-body);fill:var(--wf-body)}
+  .wf-body circle,.wf-body polygon{fill:var(--wf-body);stroke:var(--wf-body)}
+  .wf polygon.wf-body{stroke-linejoin:round}
+  .wf-far{stroke:var(--wf-far)}
+  .wf-muscle{stroke:var(--wf-muscle);fill:var(--wf-muscle)}
+  .wf-muscle circle{fill:var(--wf-muscle);stroke:none}
+  .wf-far-m{opacity:.55}
+  .wf-prop{stroke:var(--wf-prop);fill:var(--wf-prop)}
+  .wf-prop circle{fill:var(--wf-prop)}
+  .wf rect.wf-mat{fill:#3A3D43}
+  .wf-floor{stroke:var(--wf-floor);stroke-width:1.2}
+  .wf-db{stroke:var(--wf-db-edge)}
+  .wf-db line{stroke:var(--wf-db-edge)}
+  .wf-plate{fill:var(--wf-db);stroke:var(--wf-db-edge);stroke-width:1.4}
+  .wf-hub{fill:var(--wf-db-edge)}
+  .wf-annot{fill:none;stroke:#F2C230;stroke-width:.9}
+  .wf-dash{stroke-dasharray:2 2}
+  .wf-annot-t{fill:#F2C230;font:600 6px "Sofia Sans",sans-serif}
+  .wf-trace{fill:none;stroke:#F2C230;stroke-width:.7;stroke-dasharray:1.5 2;opacity:.8}
+</style>
+</head>
+<body>
+<h1>Movement sheet</h1>
+<p class="lede">Every exercise in the program, animated by one figure rig. Below each one: four still frames across a rep, plus the angle and path annotations used in technique view.</p>
+<div class="grid" id="grid"></div>
+<script src="figure.js"></script>
+<script>
+  const names = {
+    'push-up':'Push-up','wide-push-up':'Wide push-up','diamond-push-up':'Diamond push-up','decline-push-up':'Decline push-up',
+    'db-shoulder-press':'Dumbbell shoulder press','db-lateral-raise':'Lateral raise','db-overhead-triceps-extension':'Overhead triceps extension',
+    'pull-up':'Pull-up','dead-hang':'Dead hang','scapular-pull-up':'Scapular pull-up','chin-up':'Chin-up',
+    'db-bent-over-row':'Bent-over row','db-single-arm-row':'Supported single-arm row','db-biceps-curl':'Biceps curl','db-hammer-curl':'Hammer curl',
+    'db-goblet-squat':'Goblet squat','db-bulgarian-split-squat':'Bulgarian split squat','db-romanian-deadlift':'Romanian deadlift',
+    'standing-calf-raise':'Standing calf raise','reverse-crunch':'Reverse crunch','dead-bug':'Dead bug','plank':'Plank','reverse-lunge':'Reverse lunge','incline-push-up':'Incline push-up','pike-push-up':'Pike push-up','negative-pull-up':'Negative pull-up','split-squat':'Split squat','glute-bridge':'Glute bridge','single-leg-calf-raise':'Single-leg calf raise','db-single-leg-rdl':'Single-leg Romanian deadlift'}
+  const grid = document.getElementById('grid')
+  for (const id of WorkoutFigure.ids()) {
+    const card = document.createElement('section'); card.className = 'card'
+    card.innerHTML = `<h2>${names[id] || id}</h2><div class="stage"></div><p class="phase"></p><div class="strip"></div>`
+    grid.appendChild(card)
+    const phase = card.querySelector('.phase')
+    WorkoutFigure.mount(card.querySelector('.stage'), id, { annotate: true, onPhase: (p) => { phase.textContent = p } })
+    const strip = card.querySelector('.strip')
+    for (const u of [0, .25, .5, .75]) {
+      const cell = document.createElement('div'); strip.appendChild(cell)
+      const f = WorkoutFigure.mount(cell, id, { autoplay: false })
+      f.render(u)
+      const s = document.createElement('span'); s.textContent = 't ' + u; cell.appendChild(s)
+    }
+  }
+</script>
+</body>
+</html>
