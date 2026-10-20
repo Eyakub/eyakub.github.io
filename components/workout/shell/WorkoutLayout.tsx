@@ -10,7 +10,7 @@ import { ToastProvider } from './Toast'
 const body = Sofia_Sans({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-wo-body', display: 'swap' })
 const display = Sofia_Sans_Extra_Condensed({ subsets: ['latin'], weight: ['700', '800'], style: ['normal', 'italic'], variable: '--font-wo-display', display: 'swap' })
 
-function Gate({ children }: { children: ReactNode }) {
+function Gate({ children, bare }: { children: ReactNode; bare: boolean }) {
   const { status } = useWorkout()
   if (status === 'loading') {
     return (
@@ -33,14 +33,19 @@ function Gate({ children }: { children: ReactNode }) {
   return (
     <div className="app">
       <main className="viewport">{children}</main>
-      <TabBar />
+      {!bare && <TabBar />}
     </div>
   )
 }
 
-interface Props { title: string; children: ReactNode }
+interface Props {
+  title: string
+  children: ReactNode
+  /** Hides the tab bar, for a screen that takes over the whole phone (a workout in progress). */
+  bare?: boolean
+}
 
-export function WorkoutLayout({ title, children }: Props) {
+export function WorkoutLayout({ title, children, bare = false }: Props) {
   return (
     <>
       <Head>
@@ -53,7 +58,7 @@ export function WorkoutLayout({ title, children }: Props) {
       <div className={`wo-root ${display.variable} ${body.variable}`}>
         <WorkoutProvider>
           <ToastProvider>
-            <Gate>{children}</Gate>
+            <Gate bare={bare}>{children}</Gate>
           </ToastProvider>
         </WorkoutProvider>
       </div>

@@ -79,6 +79,8 @@ export interface Profile {
   targets: { weightKg: number | null; waistIn: number | null }
   equipment: Equipment[]
   dumbbellKg: number
+  /** Chime when the rest between sets ends. */
+  sound: boolean
   updatedAt: IsoTime
 }
 
@@ -124,6 +126,36 @@ export interface SessionRecord {
   updatedAt: IsoTime
 }
 
+/** Rest countdown between sets. While running, endsAt is set; while paused, endsAt is null and leftSec holds what's left. */
+export interface RestState {
+  totalSec: number
+  endsAt: IsoTime | null
+  leftSec: number
+  /** The set that started it, for the "After set 2 of push-ups" line. */
+  after: { exercise: number; set: number }
+}
+
+/** A workout in progress. Saved inside the doc so a reload, closed tab or trip to another page resumes it. */
+export interface ActiveSession {
+  id: Id
+  routineId: Id
+  routineVersion: number
+  routineName: string
+  /** Local date the session started; the finished record keeps it. */
+  date: IsoDate
+  startedAt: IsoTime
+  /** Training seconds banked before the current run. */
+  elapsedSec: number
+  /** When the clock last started; null while paused. */
+  runningSince: IsoTime | null
+  /** -1 is the warm-up, otherwise an index into exercises. */
+  step: number
+  warmupDone: boolean[]
+  exercises: SessionExercise[]
+  rest: RestState | null
+  updatedAt: IsoTime
+}
+
 export interface WorkoutDoc {
   schema: 1
   deviceId: Id
@@ -135,6 +167,8 @@ export interface WorkoutDoc {
   /** Append-only snapshots. */
   sessions: SessionRecord[]
   measurements: Measurement[]
+  /** The workout being done right now, if any. */
+  active: ActiveSession | null
 }
 
 /** What data/workout/program.ts ships: the starting routines and rotation. */

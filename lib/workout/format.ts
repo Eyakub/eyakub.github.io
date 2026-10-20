@@ -5,6 +5,12 @@ export function formatRange(t: Target, m: Measure): string {
   return `${range}${m === 'seconds' ? ' s' : ''}${t.per ? `/${t.per}` : ''}`
 }
 
+/** Like formatRange, but spelled out for a screen with room: "10–12 each side". */
+export function formatRangeEach(t: Target, m: Measure): string {
+  const range = t.min === t.max ? `${t.min}` : `${t.min}–${t.max}`
+  return `${range}${m === 'seconds' ? ' s' : ''}${t.per ? ` each ${t.per}` : ''}`
+}
+
 export function formatTarget(t: Target, m: Measure): string {
   return `${t.sets} × ${formatRange(t, m)}`
 }
@@ -17,6 +23,12 @@ export function formatRest(sec: number): string {
 export function formatLoad(l: Load): string {
   if (l.kind === 'bodyweight') return 'Bodyweight'
   return `${l.kg} kg${l.count === 2 ? ' ×2' : ''}`
+}
+
+/** "Bodyweight", "7.5 kg" or "2 × 7.5 kg". */
+export function formatLoadLong(l: Load): string {
+  if (l.kind === 'bodyweight') return 'Bodyweight'
+  return l.count === 2 ? `2 × ${l.kg} kg` : `${l.kg} kg`
 }
 
 export function formatKg(n: number): string {

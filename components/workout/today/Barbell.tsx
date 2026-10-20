@@ -5,13 +5,15 @@ interface Props {
   /** This week's sessions, oldest first. */
   sessions: SessionRecord[]
   goal: number
+  /** Slides the newest plate onto the bar. */
+  loadNewest?: boolean
 }
 
 const SLOT = 46
 const FIRST = 80
 
 // One plate per session, coloured by workout. Empty dashed slots fill up to the goal; extra sessions add plates.
-export function Barbell({ sessions, goal }: Props) {
+export function Barbell({ sessions, goal, loadNewest }: Props) {
   const slots = Math.max(goal, sessions.length)
   const width = Math.max(340, FIRST + slots * SLOT + 4)
   const names = sessions.map((s) => `${s.routineName} on ${weekdayLong(parseIsoDate(s.date))}`)
@@ -27,7 +29,7 @@ export function Barbell({ sessions, goal }: Props) {
         const s = sessions[i]
         if (!s) return <rect key={i} className="pl-empty" x={x} y="4" width="38" height="108" rx="7" />
         return (
-          <g key={s.id} className="bb-plate">
+          <g key={s.id} className={loadNewest && i === sessions.length - 1 ? 'bb-plate is-new' : 'bb-plate'}>
             <rect className={`pl pl-${s.routineId}`} x={x} y="4" width="38" height="108" rx="7" />
             <rect className="pl-ring" x={x + 5} y="10" width="28" height="96" rx="5" />
             <text x={x + 19} y="128" textAnchor="middle">

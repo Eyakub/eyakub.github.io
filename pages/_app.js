@@ -6,6 +6,7 @@ import '../styles/martyr.css'
 import '../styles/learn.css'
 import '../styles/workout.css'
 import '../styles/workout-figure.css'
+import '../styles/workout-session.css'
 const GlobalStyle = ({ children }) => {
   return (
     <>

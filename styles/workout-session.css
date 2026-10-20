@@ -1,0 +1,80 @@
+/* /workout/session: the workout in progress, its rest sheet and the done screen. Same tokens and scoping as
+   workout.css; the shared pieces (.facts, .steps, .mistakes, .alts, .ready, .switch, sheets) live there. */
+
+/* ---------- header ---------- */
+.wo-root .wbar{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) var(--gut) 12px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:4;background:var(--bg)}
+.wo-root .wbar-mid{text-align:center;display:grid;line-height:1.2}
+.wo-root .wbar-mid b{font-family:var(--f-display);font-weight:800;font-size:22px;font-style:italic}
+.wo-root .wbar-mid span{color:var(--text-2);font-size:14px}
+.wo-root .wbar .btn{min-height:44px;padding:0 14px}
+.wo-root .wdots{grid-column:1/-1;display:flex;gap:6px;justify-content:center}
+.wo-root .wdots i{width:22px;height:8px;border-radius:4px;background:var(--line)}
+.wo-root .wdots i.on{background:var(--c)}
+.wo-root .wdots i.cur{background:var(--text)}
+.wo-root .wdots i.skip{background:repeating-linear-gradient(90deg,var(--text-3) 0 3px,transparent 3px 6px)}
+
+/* ---------- exercise step ---------- */
+.wo-root .ex-screen .stage{background:var(--surface);border-radius:22px;padding:6px 6px 12px;margin-inline:-6px}
+.wo-root .ex-screen .phase{padding:0 14px;font-family:var(--f-display);font-style:italic;font-weight:800;font-size:24px;color:var(--text);line-height:1.1}
+.wo-root .stage-n{position:absolute;top:12px;right:16px;font-family:var(--f-display);font-style:italic;font-weight:800;font-size:28px;line-height:1;color:var(--c)}
+.wo-root .stage-n small{font-size:16px;color:var(--text-3)}
+.wo-root .facts-big dd{font-size:30px}
+.wo-root .last{color:var(--text-2)}
+.wo-root .last b{color:var(--text);font-weight:700;margin-left:6px}
+.wo-root .swapped{color:var(--text-3);font-size:14px}
+
+.wo-root .sets{display:grid;gap:8px}
+.wo-root .set{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:8px 8px 8px 14px;background:var(--surface);border-radius:var(--r-card);transition:background .2s}
+.wo-root .set.is-done{background:color-mix(in srgb,var(--c,var(--go)) 18%,var(--surface))}
+.wo-root .set-n{font-weight:700;color:var(--text-2);font-size:15px;min-width:44px}
+.wo-root .stepper{display:inline-grid;grid-template-columns:40px 52px 40px;align-items:center;justify-self:start}
+.wo-root .stepper button{height:44px;border:0;background:none;font-size:22px;color:var(--text-2);border-radius:var(--r-btn)}
+.wo-root .stepper input{width:52px;height:44px;border:0;background:transparent;text-align:center;font-family:var(--f-display);font-weight:800;font-size:28px;font-variant-numeric:tabular-nums;padding:0;border-radius:0}
+.wo-root .stepper input:focus{outline:none;box-shadow:inset 0 -2px 0 var(--go)}
+.wo-root .tick{width:48px;height:48px;border-radius:50%;border:2px solid var(--text-3);background:transparent;padding:0;display:grid;place-items:center;color:transparent;transition:background .18s,border-color .18s,transform .18s}
+.wo-root .tick svg{width:22px;height:22px;stroke-width:2.8}
+.wo-root .tick[aria-pressed="true"]{background:var(--c,var(--go));border-color:var(--c,var(--go));color:var(--on,var(--go-ink));animation:wo-pop .3s ease}
+@keyframes wo-pop{50%{transform:scale(1.12)}}
+.wo-root .set-tools{display:flex;gap:8px;flex-wrap:wrap}
+.wo-root .set-tools .btn{min-height:40px;font-size:14px;font-weight:600}
+
+.wo-root .fold{border-bottom:1px solid var(--line)}
+.wo-root .fold:first-child{border-top:1px solid var(--line)}
+.wo-root .fold summary{list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:54px;font-weight:700;cursor:pointer}
+.wo-root .fold summary::-webkit-details-marker{display:none}
+.wo-root .fold summary::after{content:"";width:9px;height:9px;border-right:2px solid var(--text-3);border-bottom:2px solid var(--text-3);transform:rotate(45deg) translateY(-3px);transition:transform .2s}
+.wo-root .fold[open] summary::after{transform:rotate(-135deg) translateY(-2px)}
+.wo-root .fold-body{padding-bottom:16px}
+.wo-root button.alt{width:100%;text-align:left;background:transparent;cursor:pointer}
+.wo-root .alts .alt-back{border-style:dashed}
+.wo-root .stepnav{display:grid;grid-template-columns:auto auto 1fr;gap:8px}
+
+/* ---------- warm-up ---------- */
+.wo-root .warm li{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
+.wo-root .dose{color:var(--text-2);font-variant-numeric:tabular-nums}
+
+/* ---------- rest sheet ---------- */
+.wo-root .sheet-head-c{align-items:center}
+.wo-root .rest-plate{position:relative;width:min(240px,64vw);aspect-ratio:1;justify-self:center}
+.wo-root .rest-plate svg{width:100%;height:100%}
+.wo-root .rp-rim{fill:var(--c);opacity:.18}
+.wo-root .rp-track{fill:none;stroke:var(--surface-2);stroke-width:14}
+.wo-root .rp-arc{fill:none;stroke:var(--c);stroke-width:14;transition:stroke-dashoffset .2s linear}
+.wo-root .rp-insert{fill:var(--bg);stroke:#9EA2AA;stroke-width:3}
+.wo-root .rp-read{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:0}
+.wo-root .rp-time{font-family:var(--f-display);font-style:italic;font-weight:800;font-size:58px;line-height:1;font-variant-numeric:tabular-nums}
+.wo-root .rp-of{font-size:13px;color:var(--text-3);font-weight:600}
+.wo-root .is-up .rp-time{color:var(--c)}
+.wo-root .rest-next{text-align:center;color:var(--text-2);font-size:15px}
+.wo-root .rest-next b{color:var(--text)}
+.wo-root .rest-ctl{display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:10px}
+.wo-root .rest-ctl .btn{padding:0 10px;white-space:nowrap}
+.wo-root .rest-foot{display:flex;justify-content:space-between;align-items:center}
+.wo-root .lbl-switch{display:flex;align-items:center;gap:10px;color:var(--text-2);font-size:15px}
+.wo-root .rest-pill{position:fixed;top:calc(100px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:8;border:0;border-radius:999px;padding:8px 16px;min-height:44px;background:var(--go);color:var(--go-ink);font-weight:800;box-shadow:0 8px 24px -8px rgba(0,0,0,.6)}
+
+/* ---------- done, and today's side of it ---------- */
+.wo-root .done-screen{padding-top:40px}
+.wo-root .bb-plate.is-new{animation:wo-load .7s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes wo-load{from{transform:translateX(160px);opacity:.2}}
+.wo-root .inprog-name{font-size:clamp(40px,13vw,54px);line-height:.9}

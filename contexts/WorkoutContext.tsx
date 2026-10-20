@@ -2,8 +2,9 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { SEED } from '../data/workout/program'
 import { toIsoDate } from '../lib/workout/dates'
 import { createDoc, logMeasurement, newId, updateProfile as applyProfile, type OnboardingInput, type ProfilePatch } from '../lib/workout/doc'
+import { discardSession as dropActive, finishSession as saveActive, startSession as openSession } from '../lib/workout/session'
 import { clearDoc, loadDoc, saveDoc } from '../lib/workout/storage'
-import type { WorkoutDoc } from '../lib/workout/types'
+import type { ActiveSession, Id, SessionRecord, WorkoutDoc } from '../lib/workout/types'
 
 type Status = 'loading' | 'new' | 'ready'
 interface State { status: Status; doc: WorkoutDoc | null }
@@ -14,6 +15,13 @@ interface WorkoutValue {
   completeOnboarding: (input: OnboardingInput) => void
   logToday: (patch: { weightKg?: number; waistIn?: number }) => void
   updateProfile: (patch: ProfilePatch) => void
+  /** Opens a session on that routine, replacing one already open. */
+  startSession: (routineId: Id) => void
+  /** Applies a change to the open session and saves it; returning the same object skips the save. */
+  updateActive: (fn: (a: ActiveSession, now: Date) => ActiveSession) => void
+  /** Saves the open session as a record and returns it, or null if none was open. */
+  finishSession: () => SessionRecord | null
+  discardSession: () => void
   replaceDoc: (doc: WorkoutDoc) => void
   resetAll: () => void
 }
@@ -72,6 +80,38 @@ export function WorkoutProvider({ children }: { children: ReactNode }) {
     [commit],
   )
 
+  const startSession = useCallback(
+    (routineId: Id) => {
+      const doc = docRef.current
+      if (doc) commit(openSession(doc, routineId, new Date()))
+    },
+    [commit],
+  )
+
+  const updateActive = useCallback(
+    (fn: (a: ActiveSession, now: Date) => ActiveSession) => {
+      const doc = docRef.current
+      if (!doc?.active) return
+      const now = new Date()
+      const next = fn(doc.active, now)
+      if (next !== doc.active) commit({ ...doc, active: { ...next, updatedAt: now.toISOString() } })
+    },
+    [commit],
+  )
+
+  const finishSession = useCallback((): SessionRecord | null => {
+    const doc = docRef.current
+    if (!doc?.active) return null
+    const next = saveActive(doc, new Date())
+    commit(next)
+    return next.sessions[next.sessions.length - 1]
+  }, [commit])
+
+  const discardSession = useCallback(() => {
+    const doc = docRef.current
+    if (doc) commit(dropActive(doc))
+  }, [commit])
+
   const resetAll = useCallback(() => {
     clearDoc()
     cachedDoc = null
@@ -80,8 +120,20 @@ export function WorkoutProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const value = useMemo<WorkoutValue>(
-    () => ({ status: state.status, doc: state.doc, completeOnboarding, logToday, updateProfile, replaceDoc: commit, resetAll }),
-    [state, completeOnboarding, logToday, updateProfile, commit, resetAll],
+    () => ({
+      status: state.status,
+      doc: state.doc,
+      completeOnboarding,
+      logToday,
+      updateProfile,
+      startSession,
+      updateActive,
+      finishSession,
+      discardSession,
+      replaceDoc: commit,
+      resetAll,
+    }),
+    [state, completeOnboarding, logToday, updateProfile, startSession, updateActive, finishSession, discardSession, commit, resetAll],
   )
 
   return <WorkoutContext.Provider value={value}>{children}</WorkoutContext.Provider>

@@ -24,10 +24,11 @@ export function Sheet({ open, onClose, label, children }: Props) {
     // [data-autofocus] lets a confirm sheet put focus on the safe choice instead of the destructive one
     const find = (sel: string) => panel.current?.querySelector<HTMLElement>(sel) ?? null
     const first = find('[data-autofocus]') ?? find('input') ?? find('.btn-go') ?? find('button')
-    first?.focus()
+    // preventScroll: the sheet is fixed, so focusing into it must not move the page behind it
+    first?.focus({ preventScroll: true })
     return () => {
       document.body.style.overflow = prevOverflow
-      if (opener?.isConnected) opener.focus()
+      if (opener?.isConnected) opener.focus({ preventScroll: true })
     }
   }, [open])
 

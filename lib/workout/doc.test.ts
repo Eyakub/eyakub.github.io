@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { createDoc, currentRoutine, latestMeasurement, logMeasurement, measurementSeries, migrate, newId, routineAt, updateProfile, type OnboardingInput } from './doc'
+import { startSession } from './session'
 import type { ProgramSeed, RoutineVersion } from './types'
 
 const SEED: ProgramSeed = {
@@ -69,8 +70,12 @@ describe('createDoc', () => {
       targets: { weightKg: 75, waistIn: 34 },
       equipment: ['dumbbells', 'bodyweight'],
       dumbbellKg: 7.5,
+      sound: true,
       updatedAt: iso,
     })
+  })
+  it('starts with no workout in progress', () => {
+    expect(doc.active).toBeNull()
   })
   it('records the first measurement for today', () => {
     expect(doc.measurements).toEqual([{ date: '2026-10-20', weightKg: 82.4, waistIn: 37.5, updatedAt: iso }])
@@ -136,8 +141,14 @@ describe('updateProfile', () => {
       targets: { weightKg: 75, waistIn: 34 },
       equipment: ['dumbbells', 'bodyweight'],
       dumbbellKg: 10,
+      sound: true,
       updatedAt: later.toISOString(),
     })
+  })
+  it('switches the rest chime off and on', () => {
+    const off = updateProfile(make(), { sound: false }, later)
+    expect(off.profile.sound).toBe(false)
+    expect(updateProfile(off, { sound: true }, later).profile.sound).toBe(true)
   })
   it('replaces targets and equipment as a whole', () => {
     const next = updateProfile(make(), { targets: { weightKg: null, waistIn: 33 }, equipment: ['bodyweight', 'chair'] }, later)
@@ -202,6 +213,38 @@ describe('migrate', () => {
     const doc = make()
     expect(migrate(doc)).toBe(doc)
     expect(migrate(JSON.parse(JSON.stringify(doc)))).toEqual(doc)
+  })
+  it('treats a doc saved before workout mode as having no session and the chime on', () => {
+    const { active: _active, ...rest } = make()
+    const { sound: _sound, ...profile } = rest.profile
+    const old = { ...rest, profile }
+    const doc = migrate(JSON.parse(JSON.stringify(old)))
+    expect(doc?.active).toBeNull()
+    expect(doc?.profile.sound).toBe(true)
+    expect(doc).toEqual(make())
+  })
+  it('fills a missing active or sound on its own', () => {
+    const { active: _active, ...noActive } = make()
+    expect(migrate(noActive)?.active).toBeNull()
+    expect(migrate(noActive)?.profile).toEqual(make().profile)
+    const { sound: _sound, ...profile } = make().profile
+    expect(migrate({ ...make(), profile })?.profile.sound).toBe(true)
+  })
+  it('keeps a chime that was switched off', () => {
+    expect(migrate({ ...make(), profile: { ...make().profile, sound: false } })?.profile.sound).toBe(false)
+  })
+  it('keeps a workout in progress through JSON', () => {
+    const doc = startSession(make(), 'a', NOW)
+    expect(doc.active).not.toBeNull()
+    const back = migrate(JSON.parse(JSON.stringify(doc)))
+    expect(back).toEqual(doc)
+    expect(back?.active?.routineName).toBe('Day A')
+  })
+  it('rejects an active that is not an object or has no exercises', () => {
+    const doc = make()
+    for (const bad of ['yes', 5, true, [], {}, { step: 0 }, { step: 0, exercises: [] }, { step: 'x', exercises: [], warmupDone: [] }]) {
+      expect(migrate({ ...doc, active: bad })).toBeNull()
+    }
   })
   it('rejects garbage without throwing', () => {
     for (const bad of [null, undefined, 42, 'doc', [], {}, { schema: 2 }, { schema: 1 }]) {

@@ -7,6 +7,7 @@ import { BackIcon } from '../shell/icons'
 import { DataGroup } from './DataGroup'
 import { EquipmentGroup } from './EquipmentGroup'
 import { TargetRow } from './TargetRow'
+import { WorkoutGroup } from './WorkoutGroup'
 
 const whole = (n: number) => String(n)
 
@@ -64,6 +65,7 @@ export function SettingsView() {
       </section>
 
       <EquipmentGroup doc={doc} />
+      <WorkoutGroup doc={doc} />
       <DataGroup doc={doc} />
     </div>
   )

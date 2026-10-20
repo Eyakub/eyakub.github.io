@@ -5,9 +5,11 @@ import { Barbell } from './Barbell'
 interface Props {
   sessions: SessionRecord[]
   goal: number
+  /** Plays the load-on animation for the newest plate. */
+  loadNewest?: boolean
 }
 
-export function WeekSection({ sessions, goal }: Props) {
+export function WeekSection({ sessions, goal, loadNewest }: Props) {
   const done = sessions.length
   return (
     <section className="week" aria-label="This week">
@@ -17,7 +19,7 @@ export function WeekSection({ sessions, goal }: Props) {
           <b>{done}</b> of {goal}
         </p>
       </div>
-      <Barbell sessions={sessions} goal={goal} />
+      <Barbell sessions={sessions} goal={goal} loadNewest={loadNewest} />
       <p className="week-note">
         {done >= goal
           ? `${inWords(goal)} done. Anything else this week is a bonus.`

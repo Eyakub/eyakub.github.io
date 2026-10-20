@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatInches, formatKg, formatLoad, formatRange, formatRest, formatTarget, inWords } from './format'
+import { formatInches, formatKg, formatLoad, formatLoadLong, formatRange, formatRangeEach, formatRest, formatTarget, inWords } from './format'
 
 const t = (min: number, max: number, per?: 'side' | 'leg', sets = 3) => ({ sets, min, max, per })
 
@@ -16,6 +16,18 @@ describe('formatRange', () => {
     expect(formatRange(t(10, 12, 'side'), 'reps')).toBe('10–12/side')
     expect(formatRange(t(8, 8, 'leg'), 'reps')).toBe('8/leg')
     expect(formatRange(t(20, 30, 'side'), 'seconds')).toBe('20–30 s/side')
+  })
+})
+
+describe('formatRangeEach', () => {
+  it('spells out the side or leg', () => {
+    expect(formatRangeEach(t(10, 12, 'side'), 'reps')).toBe('10–12 each side')
+    expect(formatRangeEach(t(8, 8, 'leg'), 'reps')).toBe('8 each leg')
+    expect(formatRangeEach(t(20, 30, 'side'), 'seconds')).toBe('20–30 s each side')
+  })
+  it('matches formatRange when there is no side', () => {
+    expect(formatRangeEach(t(10, 15), 'reps')).toBe('10–15')
+    expect(formatRangeEach(t(45, 45), 'seconds')).toBe('45 s')
   })
 })
 
@@ -43,6 +55,14 @@ describe('formatLoad', () => {
     expect(formatLoad({ kind: 'dumbbell', kg: 7.5, count: 1 })).toBe('7.5 kg')
     expect(formatLoad({ kind: 'dumbbell', kg: 7.5, count: 2 })).toBe('7.5 kg ×2')
     expect(formatLoad({ kind: 'dumbbell', kg: 10, count: 2 })).toBe('10 kg ×2')
+  })
+})
+
+describe('formatLoadLong', () => {
+  it('reads as a fact: bodyweight, one dumbbell or a pair', () => {
+    expect(formatLoadLong({ kind: 'bodyweight' })).toBe('Bodyweight')
+    expect(formatLoadLong({ kind: 'dumbbell', kg: 7.5, count: 1 })).toBe('7.5 kg')
+    expect(formatLoadLong({ kind: 'dumbbell', kg: 7.5, count: 2 })).toBe('2 × 7.5 kg')
   })
 })
 

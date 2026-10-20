@@ -55,3 +55,8 @@ export const PauseIcon = () => (
     <path d="M9 6v12M15 6v12" />
   </Svg>
 )
+export const ChevronDownIcon = () => (
+  <Svg>
+    <path d="M6 9l6 6 6-6" />
+  </Svg>
+)

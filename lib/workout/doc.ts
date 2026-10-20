@@ -33,6 +33,7 @@ export function createDoc(seed: ProgramSeed, input: OnboardingInput, now: Date, 
       targets: { weightKg: input.targetWeightKg, waistIn: input.targetWaistIn },
       equipment: [...input.equipment],
       dumbbellKg: input.dumbbellKg,
+      sound: true,
       updatedAt: iso,
     },
     routines: seed.routines.map((r) => ({ ...r, version: 1, createdAt: iso })),
@@ -44,6 +45,7 @@ export function createDoc(seed: ProgramSeed, input: OnboardingInput, now: Date, 
     },
     sessions: [],
     measurements: [measurement],
+    active: null,
   }
 }
 
@@ -93,7 +95,8 @@ export function latestMeasurement(doc: WorkoutDoc, field: MeasurementField): { d
 
 const isObject = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v)
 
-// Shape check only. Schema 1 is the only version so far, so there is nothing to upgrade yet.
+// Shape check, plus filling in what older saves lack: no `active` means no workout in progress, and a
+// missing `profile.sound` means the chime is on. Returns the same object when nothing needed filling.
 export function migrate(raw: unknown): WorkoutDoc | null {
   if (!isObject(raw) || raw.schema !== 1) return null
   if (typeof raw.deviceId !== 'string' || typeof raw.createdAt !== 'string') return null
@@ -102,5 +105,18 @@ export function migrate(raw: unknown): WorkoutDoc | null {
   const { order, weeklyGoal, current } = raw.program
   if (!Array.isArray(order) || order.length === 0 || !order.every((id) => typeof id === 'string')) return null
   if (typeof weeklyGoal !== 'number' || !(weeklyGoal > 0) || !isObject(current)) return null
-  return raw as unknown as WorkoutDoc
+
+  const { active } = raw
+  if (active !== undefined && active !== null && !isActive(active)) return null
+  const soundOk = typeof raw.profile.sound === 'boolean'
+  if (active !== undefined && soundOk) return raw as unknown as WorkoutDoc
+  return {
+    ...raw,
+    active: active ?? null,
+    profile: soundOk ? raw.profile : { ...raw.profile, sound: true },
+  } as unknown as WorkoutDoc
 }
+
+// Enough to be sure the session screen can render it; the rest is trusted like the rest of the doc.
+const isActive = (v: unknown): boolean =>
+  isObject(v) && typeof v.step === 'number' && Array.isArray(v.exercises) && Array.isArray(v.warmupDone)
